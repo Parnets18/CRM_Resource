@@ -3,19 +3,23 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Authentication logic here
+    // Add your authentication logic here
+    console.log({ email, password, role });
     navigate("/dashboard");
   };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-black p-4">
       <div className="absolute inset-0 z-0">
@@ -48,6 +52,25 @@ export default function LoginPage() {
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent className="space-y-4">
+              {/* Role Selection Dropdown */}
+              <div className="space-y-2">
+                <Label className="text-gray-300">Login As</Label>
+                <Select value={role} onValueChange={setRole} required>
+                  <SelectTrigger className="border-gray-800 bg-gray-900/50 text-white focus:border-purple-500 focus:ring-purple-500/20">
+                    <SelectValue placeholder="Select your role" />
+                  </SelectTrigger>
+                  <SelectContent className="bg-gray-900 border-gray-800 text-white">
+                    <SelectItem value="admin">Admin</SelectItem>
+                    <SelectItem value="hr-manager">HR Manager</SelectItem>
+                    <SelectItem value="employee">Employee</SelectItem>
+                    <SelectItem value="project-manager">Project Manager</SelectItem>
+                    <SelectItem value="site-supervisor">Site Supervisor</SelectItem>
+                    <SelectItem value="procurement-officer">Procurement Officer</SelectItem>
+                    <SelectItem value="accountant">Accountant</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-gray-300">
                   Email
@@ -85,7 +108,7 @@ export default function LoginPage() {
               </div>
             </CardContent>
             <CardFooter className="flex flex-col">
-            <Button
+              <Button
                 type="submit"
                 className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg shadow-purple-600/20 mt-4"
               >
