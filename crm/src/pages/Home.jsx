@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, ChevronDown } from "lucide-react";
-import { Link } from "react-router-dom";
+import { ChevronDown } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 
 export default function Home() {
+  const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [currentFeature, setCurrentFeature] = useState(0);
 
@@ -25,25 +26,24 @@ export default function Home() {
 
   const features = [
     {
-      title: "SuperAdmin Control",
+      title: "CRM Management",
       description: "Manage multiple companies with a powerful admin dashboard",
       color: "from-pink-500 to-purple-600",
     },
     {
-      title: "Company Management",
+      title: "Cnstruction CRM",
       description: "Create detailed company profiles with custom modules",
       color: "from-cyan-500 to-blue-600",
     },
     {
-      title: "HR Module",
-      description: "Comprehensive HR tools for employee management",
+      title: "Resturant CRM",
+      description: "Resturant CRM for  management",
       color: "from-amber-500 to-orange-600",
     },
   ];
 
   return (
     <div className="flex min-h-screen flex-col bg-gradient-to-b from-black to-gray-900 text-white">
-     
       <header
         className={`sticky top-0 z-50 w-full backdrop-blur transition-all duration-300 ${
           scrolled ? "bg-black/80 border-b border-gray-800" : "bg-transparent"
@@ -77,15 +77,6 @@ export default function Home() {
                 className="mr-2 border-purple-500 text-purple-400 hover:text-purple-300 hover:bg-purple-950/30"
               >
                 Login
-              </Button>
-            </Link>
-            <Link to="/register">
-              <Button
-                size="lg"
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg shadow-purple-600/20"
-              >
-                Get Started
-                <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
             </Link>
           </div>
@@ -127,31 +118,6 @@ export default function Home() {
                     comprehensive CRM platform.
                   </motion.p>
                 </div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: 0.6 }}
-                  className="flex flex-col gap-2 min-[400px]:flex-row"
-                >
-                  <Link href="/login">
-                    <Button
-                      size="lg"
-                      className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg shadow-purple-600/20"
-                    >
-                      Get Started
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </Link>
-                  <Link href="/demo">
-                    <Button
-                      size="lg"
-                      variant="outline"
-                      className="border-purple-500 text-purple-400 hover:text-purple-300 hover:bg-purple-950/30"
-                    >
-                      View Demo
-                    </Button>
-                  </Link>
-                </motion.div>
               </div>
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -255,37 +221,20 @@ export default function Home() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.2 }}
                   viewport={{ once: true }}
-                  className={`grid gap-1 rounded-xl border border-purple-500/20 p-6 transition-all hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10 ${
+                  className={`grid gap-1 rounded-xl border border-purple-500/20 p-6 transition-all hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10 cursor-pointer ${
                     currentFeature === index ? "bg-gradient-to-br bg-opacity-20 " + feature.color : "bg-gray-900/50"
                   }`}
+                  onClick={() => navigate('/login')}
                 >
                   <h3 className="text-xl font-bold text-white">{feature.title}</h3>
                   <p className="text-gray-400">{feature.description}</p>
                 </motion.div>
               ))}
             </div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="mt-12 flex justify-center"
-            >
-              <Link href="/login">
-                <Button
-                  size="lg"
-                  className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg shadow-purple-600/20"
-                >
-                  Start Your Free Trial
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-            </motion.div>
           </div>
         </section>
       </main>
-     
+
       <footer className="border-t border-gray-800 py-6 md:py-0 bg-black">
         <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
           <p className="text-center text-sm leading-loose text-gray-400 md:text-left">
