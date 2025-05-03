@@ -2,6 +2,7 @@ import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Home from './pages/Home';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
+import Dashboard from '../Dashboard/dashBoard';
 function App() {
   return (
     <BrowserRouter>
@@ -9,6 +10,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path='/register' element={<RegisterPage/>}/>
+        <Route path='/Dashboard' element={<Dashboard/>}/>
       </Routes>
     </BrowserRouter>
   );

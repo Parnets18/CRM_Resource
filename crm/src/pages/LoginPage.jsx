@@ -14,7 +14,7 @@ export default function LoginPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Authentication logic here
-    navigate("/dashboard");
+    navigate("/Dashboard");
   };
   return (
     <div className="flex min-h-screen items-center justify-center bg-black p-4">
@@ -88,7 +88,7 @@ export default function LoginPage() {
             <Button
                 type="submit"
                 className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg shadow-purple-600/20 mt-4"
-              >
+                 >
                 Login
               </Button>
               <p className="mt-4 text-center text-sm text-gray-400">
