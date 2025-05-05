@@ -4,6 +4,9 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import SiteManagement from './Admin/SiteManagement';
 import Dashboard from './Admin/Dashboard';
+import Nav from './Admin/Nav';
+import AdminPayroll from './Admin/HR/AdminPayroll';
+import HRManager from './Admin/HR/HRManager';
 //import sideNavbar from './Admin/SideNavbar';
 function App() {
   return (
@@ -14,6 +17,9 @@ function App() {
         <Route path='/register' element={<RegisterPage/>}/>
         <Route path='/dashboard' element={<Dashboard/>}/>
         <Route path='/siteManagement' element={<SiteManagement/>}/>
+        <Route path='/Nav' element={<Nav/>}/>
+        <Route path='/adminPayroll' element={<AdminPayroll/>}/>
+        <Route path='/manager' element={<HRManager/>}/>
         {/*<Route path='/sideNavbar' element={<sideNavbar/>}/> */}
       </Routes>
     </BrowserRouter>
