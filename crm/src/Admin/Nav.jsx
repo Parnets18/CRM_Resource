@@ -19,7 +19,7 @@ export default function Nav() {
       subtabs: [
         { title: "Admin", icon: UserPlus ,  path: "/adminPayroll"},
         { title: "HR Manager", icon: FileSpreadsheet, path:"/manager" },
-        { title: "Employee", icon: Calendar }
+        { title: "Employee", icon: Calendar, path:"/employee" }
       ]
     },
     {
@@ -27,9 +27,9 @@ export default function Nav() {
       icon: Users,
       id: "site",
       subtabs: [
-        { title: "Admin", icon: Building },
-        { title: "Project Manager", icon: Settings },
-        { title: "Site Supervisor", icon: Users2 }
+        { title: "Admin", icon: Building, path:"/siteadmin" },
+        { title: "Project Manager", icon: Settings ,path:"/siteproject"},
+        { title: "Site Supervisor", icon: Users2 ,path:""}
       ]
     },
     {
@@ -37,11 +37,11 @@ export default function Nav() {
       icon: Warehouse,
       id: "inventory",
       subtabs: [
-        { title: "Site Supervisor", icon: ClipboardList },
-        { title: "Procurement Office", icon: Package },
+        { title: "Site Supervisor", icon: ClipboardList,path:"/inventorysite"},
+        { title: "Procurement Office", icon: Package ,path:"/inventoryofficer"},
         
-        { title: "Project Manager", icon: Users },
-        { title: "Admin", icon: BarChart3 }
+        { title: "Project Manager", icon: Users ,path:"/inventorymanager"},
+        { title: "Admin", icon: BarChart3 , path:"/inventoryadmin"}
       ]
     },
     {
@@ -49,8 +49,8 @@ export default function Nav() {
       icon: ShoppingCart,
       id: "purchase",
       subtabs: [
-        { title: "Procurement Officer", icon: CreditCard },
-        { title: "Accountant", icon: Users },
+        { title: "Procurement Officer", icon: CreditCard, path: "/purchaseofficer" },
+        { title: "Accountant", icon: Users , path:"/purchaseaccountant"},
         { title: "Admin", icon: Receipt },
         
       ]

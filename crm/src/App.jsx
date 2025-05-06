@@ -11,6 +11,11 @@ import Employee from './Admin/HR/Employee';
 import SiteAdmin from './Admin/Site Management/SiteAdmin';
 import SiteProject from './Admin/Site Management/SiteProject';
 import InventorySite from './Admin/Inventory/InventorySite';
+import InventoryOfficer from './Admin/Inventory/InventoryOfficer';
+import Inventorymanager from './Admin/Inventory/InventoryManager';
+import InventoryAdmin from "./Admin/Inventory/InventoryAdmin";
+import PurchaseOfficer from './Admin/PurchaseManagement/PurchaseOfficer';
+import PurchaseAccountant from './Admin/PurchaseManagement/PurchaseAccountant';
 //import SiteSupervisor from './Admin/Site Management/SiteSupervisor';
 //import sideNavbar from './Admin/SideNavbar';
 function App() {
@@ -30,6 +35,11 @@ function App() {
         <Route path='/siteproject' element={<SiteProject/>}/>
         <Route path='/inventorysite' element={<InventorySite/>}/>
         {/* <Route path='/sitesupervisor' element={<SiteSupervisor/>}/> */}
+        <Route path='/inventoryofficer' element={<InventoryOfficer/>}/>
+        <Route path='/inventorymanager' element={<Inventorymanager/>}/>
+        <Route path='/inventoryadmin' element={<InventoryAdmin/>}/>
+        <Route path='/purchaseofficer' element={<PurchaseOfficer/>}/>
+        <Route path='/purchaseaccountant' element={<PurchaseAccountant/>}/>
         {/*<Route path='/sideNavbar' element={<sideNavbar/>}/> */}
       </Routes>
     </BrowserRouter>
