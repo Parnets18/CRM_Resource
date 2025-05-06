@@ -7,6 +7,11 @@ import Dashboard from './Admin/Dashboard';
 import Nav from './Admin/Nav';
 import AdminPayroll from './Admin/HR/AdminPayroll';
 import HRManager from './Admin/HR/HRManager';
+import Employee from './Admin/HR/Employee';
+import SiteAdmin from './Admin/Site Management/SiteAdmin';
+import SiteProject from './Admin/Site Management/SiteProject';
+import InventorySite from './Admin/Inventory/InventorySite';
+//import SiteSupervisor from './Admin/Site Management/SiteSupervisor';
 //import sideNavbar from './Admin/SideNavbar';
 function App() {
   return (
@@ -20,6 +25,11 @@ function App() {
         <Route path='/Nav' element={<Nav/>}/>
         <Route path='/adminPayroll' element={<AdminPayroll/>}/>
         <Route path='/manager' element={<HRManager/>}/>
+        <Route path='/employee' element={<Employee/>}/>
+        <Route path='/siteadmin' element={<SiteAdmin/>}/>
+        <Route path='/siteproject' element={<SiteProject/>}/>
+        <Route path='/inventorysite' element={<InventorySite/>}/>
+        {/* <Route path='/sitesupervisor' element={<SiteSupervisor/>}/> */}
         {/*<Route path='/sideNavbar' element={<sideNavbar/>}/> */}
       </Routes>
     </BrowserRouter>
