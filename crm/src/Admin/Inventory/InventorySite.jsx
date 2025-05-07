@@ -13,19 +13,18 @@ export default function InventorySite() {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Background Gradients */}
+    <div className="min-h-screen bg-black lg:ml-64">
+      
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-900/30 via-gray-900 to-black"></div>
-        <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-amber-600/10 to-transparent"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
+        <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
       </div>
 
       <div className="relative z-10 flex">
         <Nav />
 
-        {/* Main Content */}
         <div className="flex-1 p-8">
-          {/* Header */}
+         
           <div className="flex justify-between items-center mb-8">
             <div>
               <h2 className="text-2xl font-bold text-white">Site Supervisor Dashboard</h2>
@@ -36,11 +35,11 @@ export default function InventorySite() {
             </Button>
           </div>
 
-          {/* Stats Grid */}
+       
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            {/* Total Indents Card */}
+          
             <motion.div whileHover={{ scale: 1.05 }}>
-              <Card className="border border-amber-500/20 bg-black/80 backdrop-blur-sm">
+              <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium text-gray-300">
                     Total Indents
@@ -54,14 +53,14 @@ export default function InventorySite() {
               </Card>
             </motion.div>
 
-            {/* Pending Requests Card */}
+         
             <motion.div whileHover={{ scale: 1.05 }}>
-              <Card className="border border-amber-500/20 bg-black/80 backdrop-blur-sm">
+              <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium text-gray-300">
                     Pending Requests
                   </CardTitle>
-                  <Clock className="h-4 w-4 text-amber-400" />
+                  <Clock className="h-4 w-4 text-purple-600" />
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold text-white">8</div>
@@ -70,9 +69,9 @@ export default function InventorySite() {
               </Card>
             </motion.div>
 
-            {/* Completed Requests Card */}
+            
             <motion.div whileHover={{ scale: 1.05 }}>
-              <Card className="border border-amber-500/20 bg-black/80 backdrop-blur-sm">
+              <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium text-gray-300">
                     Completed
@@ -86,9 +85,9 @@ export default function InventorySite() {
               </Card>
             </motion.div>
 
-            {/* Materials Available Card */}
+           
             <motion.div whileHover={{ scale: 1.05 }}>
-              <Card className="border border-amber-500/20 bg-black/80 backdrop-blur-sm">
+              <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                   <CardTitle className="text-sm font-medium text-gray-300">
                     Materials Available
@@ -103,10 +102,9 @@ export default function InventorySite() {
             </motion.div>
           </div>
 
-          {/* Indent Management Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Create Indent Card */}
-            <Card className="border border-amber-500/20 bg-black/80 backdrop-blur-sm">
+            
+            <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-white">Raise New Indent</CardTitle>
               </CardHeader>
@@ -137,15 +135,15 @@ export default function InventorySite() {
                     <option value="mep">MEP</option>
                     <option value="finishing">Finishing</option>
                   </select>
-                  <Button className="w-full bg-amber-600 hover:bg-amber-700">
+                  <Button className="w-full bg-purple-600 hover:bg-amber-700">
                     <Truck className="w-4 h-4 mr-2" /> Create Indent Request
                   </Button>
                 </form>
               </CardContent>
             </Card>
 
-            {/* Indent Status Tracking Card */}
-            <Card className="border border-amber-500/20 bg-black/80 backdrop-blur-sm">
+            
+            <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-white">Indent Status Tracking</CardTitle>
               </CardHeader>
@@ -162,7 +160,7 @@ export default function InventorySite() {
                     </div>
                     <div className="flex items-center gap-2">
                       <span className={`text-xs font-medium ${
-                        request.status === 'pending' ? 'text-amber-400' :
+                        request.status === 'pending' ? 'text-purple-400' :
                         request.status === 'approved' ? 'text-blue-400' :
                         'text-green-400'
                       }`}>

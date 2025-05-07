@@ -24,8 +24,8 @@ export default function Employee() {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Background Gradients */}
+    <div className="min-h-screen bg-black lg:ml-64">
+     
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
@@ -34,9 +34,9 @@ export default function Employee() {
       <div className="relative z-10 flex">
         <Nav />
 
-        {/* Main Content */}
+      
         <div className="flex-1 p-8">
-          {/* Header */}
+        
           <div className="flex justify-between items-center mb-8">
             <div>
               <h2 className="text-2xl font-bold text-white">Employee Dashboard</h2>
@@ -47,11 +47,10 @@ export default function Employee() {
             </Button>
           </div>
 
-          {/* Main Grid */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Left Column */}
+           
             <div className="space-y-6">
-              {/* Profile Card */}
+             
               <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">
@@ -92,7 +91,7 @@ export default function Employee() {
                 </CardContent>
               </Card>
 
-              {/* Attendance Card */}
+             
               <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">
@@ -130,9 +129,9 @@ export default function Employee() {
               </Card>
             </div>
 
-            {/* Right Column */}
+            
             <div className="space-y-6">
-              {/* Leave Application Card */}
+       
               <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">
@@ -191,7 +190,7 @@ export default function Employee() {
                 </CardContent>
               </Card>
 
-              {/* Payslips Card */}
+              
               <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">

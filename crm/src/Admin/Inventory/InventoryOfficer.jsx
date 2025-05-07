@@ -5,7 +5,7 @@ import { Bell, Package, AlertCircle, ClipboardList, Warehouse, BarChart, ArrowDo
 import Nav from "../Nav";
 
 export default function InventoryOfficer() {
-  // Sample data
+  
   const approvedIndents = [
     { id: 1, item: "Steel Beams", quantity: 500, department: "Construction", date: "2024-03-15" },
     { id: 2, item: "Electrical Wiring", quantity: 2000, department: "MEP", date: "2024-03-14" }
@@ -17,8 +17,8 @@ export default function InventoryOfficer() {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Background Gradients */}
+    <div className="min-h-screen bg-black lg:ml-64">
+     
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
@@ -27,9 +27,8 @@ export default function InventoryOfficer() {
       <div className="relative z-10 flex">
         <Nav />
 
-        {/* Main Content */}
         <div className="flex-1 p-8">
-          {/* Header */}
+         
           <div className="flex justify-between items-center mb-8">
             <div>
               <h2 className="text-2xl font-bold text-white">Procurement Dashboard</h2>
@@ -40,9 +39,9 @@ export default function InventoryOfficer() {
             </Button>
           </div>
 
-          {/* Procurement Stats Grid */}
+         
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-            {/* Total Stock Value Card */}
+        
             <motion.div whileHover={{ scale: 1.05 }}>
               <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -58,7 +57,6 @@ export default function InventoryOfficer() {
               </Card>
             </motion.div>
 
-            {/* Pending Indents Card */}
             <motion.div whileHover={{ scale: 1.05 }}>
               <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -74,7 +72,7 @@ export default function InventoryOfficer() {
               </Card>
             </motion.div>
 
-            {/* Low Stock Alerts Card */}
+           
             <motion.div whileHover={{ scale: 1.05 }}>
               <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -90,7 +88,6 @@ export default function InventoryOfficer() {
               </Card>
             </motion.div>
 
-            {/* Recent Issues Card */}
             <motion.div whileHover={{ scale: 1.05 }}>
               <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -107,9 +104,9 @@ export default function InventoryOfficer() {
             </motion.div>
           </div>
 
-          {/* Main Content Section */}
+         
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            {/* Approved Indents Card */}
+            
             <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-white">Approved Indents</CardTitle>
@@ -135,7 +132,7 @@ export default function InventoryOfficer() {
               </CardContent>
             </Card>
 
-            {/* Inventory Management Card */}
+           
             <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-white">Inventory Management</CardTitle>
@@ -171,9 +168,8 @@ export default function InventoryOfficer() {
             </Card>
           </div>
 
-          {/* Reports & Alerts Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Low Stock Alerts Card */}
+          
             <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-white">Low Stock Alerts</CardTitle>
@@ -195,7 +191,7 @@ export default function InventoryOfficer() {
               </CardContent>
             </Card>
 
-            {/* Reports Generation Card */}
+            
             <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-white">Stock Reports</CardTitle>

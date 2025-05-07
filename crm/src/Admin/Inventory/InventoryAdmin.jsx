@@ -22,7 +22,7 @@ export default function Admin() {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-black lg:ml-64">
  
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
@@ -79,7 +79,7 @@ export default function Admin() {
               </CardContent>
             </Card>
 
-            {/* Warehouse Management */}
+           
             <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-white">Warehouse Management</CardTitle>
@@ -113,7 +113,7 @@ export default function Admin() {
             </Card>
           </div>
 
-          {/* Supplier Management Section */}
+      
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
               <CardHeader>
@@ -152,7 +152,7 @@ export default function Admin() {
               </CardContent>
             </Card>
 
-            {/* System Settings Card */}
+           
             <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-white">System Settings</CardTitle>

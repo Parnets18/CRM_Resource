@@ -17,8 +17,8 @@ export default function HRManager() {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Background Gradients */}
+    <div className="min-h-screen bg-black lg:ml-64">
+    
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
@@ -27,9 +27,8 @@ export default function HRManager() {
       <div className="relative z-10 flex">
         <Nav />
 
-        {/* Main Content */}
         <div className="flex-1 p-8">
-          {/* Header */}
+         
           <div className="flex justify-between items-center mb-8">
             <div>
               <h2 className="text-2xl font-bold text-white">HR Management Dashboard</h2>
@@ -40,7 +39,7 @@ export default function HRManager() {
             </Button>
           </div>
 
-          {/* HR Stats Grid */}
+         
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             {/* Total Employees Card */}
             {/* <motion.div whileHover={{ scale: 1.05 }}>
@@ -107,9 +106,9 @@ export default function HRManager() {
             </motion.div> */}
           </div>
 
-          {/* Employee Management Section */}
+         
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            {/* Employee Form Card */}
+            
             <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-white">Employee Management</CardTitle>
@@ -143,7 +142,7 @@ export default function HRManager() {
               </CardContent>
             </Card>
 
-            {/* Attendance Tracking Card */}
+           
             <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-white">Attendance Tracking</CardTitle>
@@ -169,7 +168,7 @@ export default function HRManager() {
             </Card>
           </div>
 
-          {/* Leave & Payroll Section */}
+        
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Leave Management Card */}
             <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">

@@ -5,7 +5,7 @@ import { Bell, ClipboardList, Upload, AlertTriangle, Users, ChevronDown } from "
 import Nav from "../Nav";
 
 export default function SiteProject() {
-  // Sample data
+
   const tasks = [
     { id: 1, name: "Foundation Pouring", status: "In Progress", assigned: "John Smith", deadline: "2024-04-25" },
     { id: 2, name: "Steel Framing", status: "Delayed", assigned: "Sarah Wilson", deadline: "2024-04-28" }
@@ -23,8 +23,8 @@ export default function SiteProject() {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Background Gradients */}
+    <div className="min-h-screen bg-black lg:ml-64">
+      
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
@@ -33,9 +33,9 @@ export default function SiteProject() {
       <div className="relative z-10 flex">
         <Nav />
 
-        {/* Main Content */}
+        
         <div className="flex-1 p-8">
-          {/* Header */}
+         
           <div className="flex justify-between items-center mb-8">
             <div>
               <h2 className="text-2xl font-bold text-white">Project Management Dashboard</h2>
@@ -46,11 +46,11 @@ export default function SiteProject() {
             </Button>
           </div>
 
-          {/* Main Grid */}
+          
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Left Column */}
+            
             <div className="space-y-6">
-              {/* Assign Tasks Card */}
+       
               <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">
@@ -99,7 +99,7 @@ export default function SiteProject() {
                 </CardContent>
               </Card>
 
-              {/* Manpower Allocation Card */}
+              
               <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">
@@ -127,9 +127,9 @@ export default function SiteProject() {
               </Card>
             </div>
 
-            {/* Right Column */}
+            
             <div className="space-y-6">
-              {/* Task Status Card */}
+             
               <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">
@@ -165,7 +165,7 @@ export default function SiteProject() {
                 </CardContent>
               </Card>
 
-              {/* Daily Reports Card */}
+              
               <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">
@@ -196,7 +196,7 @@ export default function SiteProject() {
                 </CardContent>
               </Card>
 
-              {/* Alerts Card */}
+              
               <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader>
                   <CardTitle className="text-white flex items-center gap-2">

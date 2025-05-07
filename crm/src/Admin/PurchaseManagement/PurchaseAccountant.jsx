@@ -5,7 +5,7 @@ import { Bell, FileText, DollarSign, Calendar, CheckCircle, Clock, AlertCircle }
 import Nav from "../Nav";
 
 export default function PurchaseAccountant() {
-  // Sample data
+ 
   const invoices = [
     { id: 1, vendor: "Steel Corp", amount: "$15,000", dueDate: "2024-04-15", status: "unpaid" },
     { id: 2, vendor: "Electrical Ltd", amount: "$8,500", dueDate: "2024-04-20", status: "scheduled" },
@@ -18,8 +18,8 @@ export default function PurchaseAccountant() {
   ];
 
   return (
-    <div className="min-h-screen bg-black">
-      {/* Background Gradients */}
+    <div className="min-h-screen bg-black lg:ml-64">
+    
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
@@ -28,9 +28,8 @@ export default function PurchaseAccountant() {
       <div className="relative z-10 flex">
         <Nav />
 
-        {/* Main Content */}
         <div className="flex-1 p-8">
-          {/* Header */}
+         
           <div className="flex justify-between items-center mb-8">
             <div>
               <h2 className="text-2xl font-bold text-white">Accounting Dashboard</h2>
@@ -43,9 +42,8 @@ export default function PurchaseAccountant() {
 
          
 
-          {/* Invoice Management Section */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            {/* Enter Invoice Card */}
+           
             <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-white">Enter Vendor Invoice</CardTitle>
@@ -80,7 +78,6 @@ export default function PurchaseAccountant() {
               </CardContent>
             </Card>
 
-            {/* Payment Tracking Card */}
             <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-white">Payment Tracking</CardTitle>
@@ -114,9 +111,9 @@ export default function PurchaseAccountant() {
             </Card>
           </div>
 
-          {/* Schedule Payments Section */}
+       
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {/* Due Payments Card */}
+         
             <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-white">Schedule Payments</CardTitle>

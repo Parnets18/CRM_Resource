@@ -16,8 +16,16 @@ import Inventorymanager from './Admin/Inventory/InventoryManager';
 import InventoryAdmin from "./Admin/Inventory/InventoryAdmin";
 import PurchaseOfficer from './Admin/PurchaseManagement/PurchaseOfficer';
 import PurchaseAccountant from './Admin/PurchaseManagement/PurchaseAccountant';
-//import SiteSupervisor from './Admin/Site Management/SiteSupervisor';
-//import sideNavbar from './Admin/SideNavbar';
+import PurchaseAdmin from './Admin/PurchaseManagement/PurchaseAdmin';
+import ExpenseSupervisor from './Admin/ExpenseManagement/ExpenseSupervisor';
+import ExpenseManager from './Admin/ExpenseManagement/ExpenseManager';
+import ExpenseAccountant from './Admin/ExpenseManagement/ExpenseAccountant';
+import ExpenseAdmin from './Admin/ExpenseManagement/ExpenseAdmin';
+import SiteSupervisor from './Admin/Site Management/SiteSupervisor';
+import SalesAdmin from './Admin/Sales Management/SalesAdmin';
+import SalesProject from './Admin/Sales Management/SalesProject';
+import SalesAccountant from './Admin/Sales Management/SalesAccountant';
+
 function App() {
   return (
     <BrowserRouter>
@@ -34,13 +42,22 @@ function App() {
         <Route path='/siteadmin' element={<SiteAdmin/>}/>
         <Route path='/siteproject' element={<SiteProject/>}/>
         <Route path='/inventorysite' element={<InventorySite/>}/>
-        {/* <Route path='/sitesupervisor' element={<SiteSupervisor/>}/> */}
+        <Route path='/sitesupervisor' element={<SiteSupervisor/>}/>
         <Route path='/inventoryofficer' element={<InventoryOfficer/>}/>
         <Route path='/inventorymanager' element={<Inventorymanager/>}/>
         <Route path='/inventoryadmin' element={<InventoryAdmin/>}/>
         <Route path='/purchaseofficer' element={<PurchaseOfficer/>}/>
         <Route path='/purchaseaccountant' element={<PurchaseAccountant/>}/>
-        {/*<Route path='/sideNavbar' element={<sideNavbar/>}/> */}
+        <Route path='/purchaseadmin' element={<PurchaseAdmin/>}/>
+        <Route path='/expensesupervisor' element={<ExpenseSupervisor/>}/>
+        <Route path='/expensemanager' element={<ExpenseManager/>}/>
+        <Route path='/expenseaccountant' element={<ExpenseAccountant/>}/>
+        <Route path='/expenseadmin' element={<ExpenseAdmin/>}/>
+        <Route path='/salesadmin' element={<SalesAdmin/>}/>
+        <Route path='/salesproject' element={<SalesProject/>}/>
+        <Route path='/salesaccountant' element={<SalesAccountant/>}/>
+
+       
       </Routes>
     </BrowserRouter>
   );
