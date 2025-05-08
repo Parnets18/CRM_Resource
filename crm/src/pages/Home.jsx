@@ -35,7 +35,7 @@ export default function Home() {
       description: "Create detailed company profiles with custom modules",
       color: "from-cyan-500 to-blue-600",
     },
-    {
+    {  
       title: "Resturant CRM",
       description: "Resturant CRM for  management",
       color: "from-amber-500 to-orange-600",
