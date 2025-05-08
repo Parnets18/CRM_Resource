@@ -5,7 +5,7 @@ import { Bell, ClipboardList, FileText, Truck, CheckCircle, Archive, ClipboardCh
 import Nav from "../Nav";
 
 export default function PurchaseOfficer() {
-  // Sample data
+
   const quotationRequests = [
     { id: 1, vendor: "Steel Corp", items: "Steel Beams", status: "draft" },
     { id: 2, vendor: "Builders Ltd", items: "Electrical Wiring", status: "sent" }
@@ -38,7 +38,7 @@ export default function PurchaseOfficer() {
         <Nav />
 
       
-        <div className="flex-1 p-8">
+        <div className="flex-1 p-8 mt-16 md:mt-0">
           
           <div className="flex justify-between items-center mb-8">
             <div>

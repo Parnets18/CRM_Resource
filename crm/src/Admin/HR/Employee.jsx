@@ -5,7 +5,7 @@ import { Bell, User, CalendarCheck, ClipboardList, Wallet, Download, Clock } fro
 import Nav from "../Nav";
 
 export default function Employee() {
-  // Sample data
+ 
   const attendanceRecords = [
     { date: "2024-03-15", status: "Present", time: "09:02 AM" },
     { date: "2024-03-14", status: "Late", time: "09:15 AM" },
@@ -35,7 +35,7 @@ export default function Employee() {
         <Nav />
 
       
-        <div className="flex-1 p-8">
+        <div className="flex-1 p-8 mt-16 md:mt-0">
         
           <div className="flex justify-between items-center mb-8">
             <div>

@@ -28,7 +28,7 @@ export default function PurchaseAccountant() {
       <div className="relative z-10 flex">
         <Nav />
 
-        <div className="flex-1 p-8">
+        <div className="flex-1 p-8 mt-16 md:mt-0">
          
           <div className="flex justify-between items-center mb-8">
             <div>
@@ -149,38 +149,7 @@ export default function PurchaseAccountant() {
               </CardContent>
             </Card>
 
-            {/* Payment Calendar Card */}
-            {/* <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="text-white">Payment Calendar</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="p-3 rounded-lg bg-gray-900/50">
-                  <div className="grid grid-cols-7 gap-2 text-center text-gray-400 text-sm mb-4">
-                    <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
-                  </div>
-                  <div className="grid grid-cols-7 gap-2">
-                    {[...Array(31)].map((_, i) => (
-                      <div key={i} className="aspect-square p-1 text-center text-sm rounded hover:bg-purple-600/20 cursor-pointer">
-                        <div className="text-gray-300">{i+1}</div>
-                        {i === 14 && <div className="h-1 w-1 mx-auto bg-red-400 rounded-full"></div>}
-                        {i === 19 && <div className="h-1 w-1 mx-auto bg-green-400 rounded-full"></div>}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-                <div className="mt-4 flex gap-2 text-xs">
-                  <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-red-400 rounded-full"></div>
-                    Due Date
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <div className="w-2 h-2 bg-green-400 rounded-full"></div>
-                    Payment Date
-                  </div>
-                </div>
-              </CardContent>
-            </Card> */}
+           
           </div>
         </div>
       </div>

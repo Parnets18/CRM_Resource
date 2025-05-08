@@ -17,7 +17,7 @@ export default function SiteSupervisor() {
         <Nav />
 
         
-        <div className="flex-1 p-8">
+        <div className="flex-1 p-8 mt-16 md:mt-0">
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-white">Site Supervisor Dashboard</h2>
             <p className="text-gray-400">Daily site operations and reporting</p>

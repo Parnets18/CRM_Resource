@@ -30,7 +30,7 @@ export default function PurchaseAdmin() {
         <Nav />
 
         
-        <div className="flex-1 p-8">
+        <div className="flex-1 p-8 mt-16 md:mt-0">
          
           <div className="flex justify-between items-center mb-8">
             <div>
@@ -42,72 +42,6 @@ export default function PurchaseAdmin() {
             </Button>
           </div>
 
-{/*          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-         
-            <motion.div whileHover={{ scale: 1.05 }}>
-              <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-gray-300">
-                    Total Vendors
-                  </CardTitle>
-                  <Factory className="h-4 w-4 text-purple-400" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-white">42</div>
-                  <p className="text-xs text-green-400">+3 this quarter</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-         
-            <motion.div whileHover={{ scale: 1.05 }}>
-              <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-gray-300">
-                    Pending Approvals
-                  </CardTitle>
-                  <Scale className="h-4 w-4 text-purple-400" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-white">8</div>
-                  <p className="text-xs text-red-400">₹5.8M total value</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-           
-            <motion.div whileHover={{ scale: 1.05 }}>
-              <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-gray-300">
-                    Monthly Spend
-                  </CardTitle>
-                  <Wallet className="h-4 w-4 text-purple-400" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-white">₹2.1M</div>
-                  <p className="text-xs text-green-400">12% under budget</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-          
-            <motion.div whileHover={{ scale: 1.05 }}>
-              <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
-                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                  <CardTitle className="text-sm font-medium text-gray-300">
-                    Avg Processing Time
-                  </CardTitle>
-                  <Clock className="h-4 w-4 text-purple-400" />
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-bold text-white">3.2 Days</div>
-                  <p className="text-xs text-green-400">-0.8 days from last month</p>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </div> */}
 
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
