@@ -101,22 +101,22 @@ export default function Nav() {
 
   return (
     <>
-      {/* Hamburger Menu Button */}
-      {isMobile && (
-        <button
-          onClick={() => setIsNavOpen(!isNavOpen)}
-          className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-white"
-        >
-          {isNavOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
-      )}
-
-      <motion.div 
-        initial={{ x: isMobile ? '-100%' : 0 }}
-        animate={{ x: (isMobile && !isNavOpen) ? '-100%' : 0 }}
-        transition={{ type: 'tween', duration: 0.3 }}
-        className="w-64 fixed top-0 left-0 h-screen border-r border-purple-500/20 bg-black backdrop-blur-sm p-4 overflow-y-auto z-40"
+    
+      {isMobile && !isNavOpen && (
+      <button
+        onClick={() => setIsNavOpen(true)}
+        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-white"
       >
+        <Menu className="w-6 h-6" />
+      </button>
+    )}
+
+    <motion.div 
+      initial={{ x: isMobile ? '-100%' : 0 }}
+      animate={{ x: (isMobile && !isNavOpen) ? '-100%' : 0 }}
+      transition={{ type: 'tween', duration: 0.3 }}
+      className="w-64 fixed top-0 left-0 h-screen border-r border-purple-500/20 bg-black backdrop-blur-sm p-4 overflow-y-auto z-40"
+    >
         <div className="flex items-center gap-2 mb-8">
           <motion.div
             animate={{ rotate: 360 }}

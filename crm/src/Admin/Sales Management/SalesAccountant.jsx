@@ -5,7 +5,7 @@ import { Bell, Receipt, Currency, PieChart, Wallet, Mail, BadgeCheck, User, Cloc
 import Nav from "../Nav";
 
 export default function SalesAccountant() {
-  // Sample data
+  
   const outstandingBalances = [
     { id: 1, client: "Acme Corp", amount: 45200, dueDate: "2024-04-15" },
     { id: 2, client: "Global Tech", amount: 28750, dueDate: "2024-04-20" }
@@ -28,7 +28,7 @@ export default function SalesAccountant() {
         <Nav />
 
         
-        <div className="flex-1 p-8">
+        <div className="flex-1 p-8 mt-16 md:mt-0">
         
           <div className="flex justify-between items-center mb-8">
             <div>

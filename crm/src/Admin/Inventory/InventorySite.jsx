@@ -5,7 +5,7 @@ import { Bell, Package, Truck, Clock, CheckCircle2, AlertCircle, ClipboardList }
 import Nav from "../Nav";
 
 export default function InventorySite() {
-  // Sample data
+
   const indentRequests = [
     { id: 1, material: "Cement", quantity: 100, status: "pending", requested: "2024-03-15" },
     { id: 2, material: "Steel Bars", quantity: 500, status: "approved", requested: "2024-03-14" },
@@ -23,7 +23,7 @@ export default function InventorySite() {
       <div className="relative z-10 flex">
         <Nav />
 
-        <div className="flex-1 p-8">
+        <div className="flex-1 p-8 mt-16 md:mt-0">
          
           <div className="flex justify-between items-center mb-8">
             <div>

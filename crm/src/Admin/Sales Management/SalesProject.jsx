@@ -29,7 +29,7 @@ export default function SalesProject() {
       <div className="relative z-10 flex">
         <Nav />
 
-        <div className="flex-1 p-8">
+        <div className="flex-1 p-8 mt-16 md:mt-0">
          
           <div className="flex justify-between items-center mb-8">
             <div>
