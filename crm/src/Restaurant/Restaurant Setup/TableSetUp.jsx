@@ -1,24 +1,34 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { motion } from "framer-motion";
 import { Plus, Trash2, Edit, X, Grid, List } from "lucide-react";
-// import { Chair } from 'lucide-react';
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import RestoNav from '../RestoNav';
 
 export default function TableManagement() {
-  // const[isPopupOpen ,setIsPopupOpen] = useState(false);
   // Sample table data
   const [tables, setTables] = useState([
-    { id: 1, number: "T1", capacity: 4, status: "Available", location: "Patio", type: "Square" },
-    { id: 2, number: "T2", capacity: 2, status: "Occupied", location: "Window", type: "Round" },
-    { id: 3, number: "T3", capacity: 6, status: "Reserved", location: "Center", type: "Rectangle" },
-    { id: 4, number: "T4", capacity: 8, status: "Available", location: "Private Room", type: "Oval" },
-    { id: 5, number: "T5", capacity: 4, status: "Maintenance", location: "Bar", type: "Square" },
+    { id: 1, number: "T1", capacity: 4, status: "Available", location: "Patio", type: "Square", restaurantId: 1 },
+    { id: 2, number: "T2", capacity: 2, status: "Occupied", location: "Window", type: "Round", restaurantId: 1 },
+    { id: 3, number: "T3", capacity: 6, status: "Reserved", location: "Center", type: "Rectangle", restaurantId: 1 },
+    { id: 4, number: "T4", capacity: 8, status: "Available", location: "Private Room", type: "Oval", restaurantId: 2 },
+    { id: 5, number: "T5", capacity: 4, status: "Maintenance", location: "Bar", type: "Square", restaurantId: 2 },
   ]);
+
+  // Sample restaurant data
+  const restaurants = [
+    { id: 1, name: "Urban Bites", location: "Downtown" },
+    { id: 2, name: "Coastal Kitchen", location: "Seaside" },
+    { id: 3, name: "Mountain Grill", location: "Highlands" }
+  ];
+
+  // State for selected restaurant
+  const [selectedRestaurant, setSelectedRestaurant] = useState(restaurants[0]); // Auto-select first restaurant
 
   const [viewMode, setViewMode] = useState("grid"); // 'grid' or 'list'
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -27,12 +37,20 @@ export default function TableManagement() {
     capacity: 4,
     status: 'Available',
     location: 'Main Dining',
-    type: 'Square'
+    type: 'Square',
+    minSpend: '',
+    notes: ''
   });
 
   const statusOptions = ['Available', 'Occupied', 'Reserved', 'Maintenance'];
   const locationOptions = ['Main Dining', 'Patio', 'Window', 'Center', 'Private Room', 'Bar'];
-  const tableTypes = ['Square', 'Round', 'Rectangle', 'Oval', 'Booth'];
+  const tableTypes = ['Standard', 'Booth', 'Bar', 'Round', 'Family', 'VIP'];
+
+  // Handle restaurant selection
+  const handleRestaurantChange = (value) => {
+    const restaurant = restaurants.find(r => r.id === parseInt(value));
+    setSelectedRestaurant(restaurant);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,7 +68,10 @@ export default function TableManagement() {
       capacity: parseInt(formData.capacity),
       status: formData.status,
       location: formData.location,
-      type: formData.type
+      type: formData.type,
+      minSpend: formData.minSpend,
+      notes: formData.notes,
+      restaurantId: selectedRestaurant.id
     };
 
     setTables([...tables, newTable]);
@@ -59,7 +80,9 @@ export default function TableManagement() {
       capacity: 4,
       status: 'Available',
       location: 'Main Dining',
-      type: 'Square'
+      type: 'Square',
+      minSpend: '',
+      notes: ''
     });
     setIsPopupOpen(false);
   };
@@ -73,6 +96,9 @@ export default function TableManagement() {
       default: return 'bg-gray-900/30 text-gray-400';
     }
   };
+
+  // Filter tables by selected restaurant
+  const filteredTables = tables.filter(table => table.restaurantId === selectedRestaurant.id);
 
   return (
     <div className="min-h-screen bg-black lg:ml-64">
@@ -88,7 +114,27 @@ export default function TableManagement() {
           <div className="flex justify-between items-center mb-8">
             <div>
               <h2 className="text-2xl font-bold text-white">Dine-In Table Management</h2>
-              <p className="text-gray-400">Configure your restaurant's table layout</p>
+              <div className="flex items-center gap-2 mt-1">
+                <Select
+                  value={selectedRestaurant.id.toString()}
+                  onValueChange={handleRestaurantChange}
+                >
+                  <SelectTrigger className="bg-gray-900/50 border-gray-700 text-white w-48">
+                    <SelectValue placeholder="Select Restaurant" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {restaurants.map((restaurant) => (
+                      <SelectItem key={restaurant.id} value={restaurant.id.toString()}>
+                        {restaurant.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <Badge variant="outline" className="border-green-500/50 text-green-400">
+                  {selectedRestaurant.name}
+                </Badge>
+                <span className="text-gray-400 text-sm">{selectedRestaurant.location}</span>
+              </div>
             </div>
             <div className="flex gap-3">
               <Button
@@ -114,184 +160,6 @@ export default function TableManagement() {
                 <Plus className="w-4 h-4 mr-2" />
                 Add Table
               </Button>
-
-
-
-              {isPopupOpen && (
-                <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    className="bg-gray-900 border border-purple-500/30 rounded-lg shadow-xl w-full max-w-md backdrop-blur-sm"
-                  >
-                    <div className="flex justify-between items-center border-b border-purple-500/20 p-4">
-                      <h3 className="text-lg font-semibold text-white">Add New Table</h3>
-                      <button
-                        onClick={() => setIsPopupOpen(false)}
-                        className="text-gray-400 hover:text-white"
-                      >
-                        <X className="w-5 h-5" />
-                      </button>
-                    </div>
-
-                    <form onSubmit={handleSubmit} className="p-4 space-y-4">
-                      {/* Table Number */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">
-                          Table Number *
-                        </label>
-                        <input
-                          type="text"
-                          name="number"
-                          value={formData.number}
-                          onChange={handleChange}
-                          className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
-                          placeholder="e.g., T1, A2, B3"
-                          required
-                        />
-                      </div>
-
-                      {/* Seating Configuration */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">
-                          Seating Capacity *
-                        </label>
-                        <div className="grid grid-cols-3 gap-2">
-                          {[2, 4, 6, 8, 10, 12].map(num => (
-                            <button
-                              key={num}
-                              type="button"
-                              onClick={() => setFormData({ ...formData, capacity: num })}
-                              className={`p-2 rounded-md border ${formData.capacity === num
-                                  ? 'bg-purple-600 border-purple-500 text-white'
-                                  : 'bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700'
-                                } flex items-center justify-center`}
-                            >
-                              {/* <Chair className="w-4 h-4 mr-1" /> */}
-                              {num} Seater
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Table Type */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">
-                          Table Type *
-                        </label>
-                        <div className="grid grid-cols-2 gap-2">
-                          {['Standard', 'Booth', 'Bar', 'Round', 'Family', 'VIP'].map(type => (
-                            <button
-                              key={type}
-                              type="button"
-                              onClick={() => setFormData({ ...formData, type })}
-                              className={`p-2 rounded-md border ${formData.type === type
-                                  ? 'bg-purple-600 border-purple-500 text-white'
-                                  : 'bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700'
-                                } text-sm`}
-                            >
-                              {type}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Important Data Fields */}
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-1">
-                            Location Zone *
-                          </label>
-                          <select
-                            name="location"
-                            value={formData.location}
-                            onChange={handleChange}
-                            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
-                            required
-                          >
-                            <option value="Main Hall">Main Hall</option>
-                            <option value="Terrace">Terrace</option>
-                            <option value="Private Room">Private Room</option>
-                            <option value="Bar Area">Bar Area</option>
-                            <option value="Garden">Garden</option>
-                          </select>
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium text-gray-300 mb-1">
-                            Status *
-                          </label>
-                          <select
-                            name="status"
-                            value={formData.status}
-                            onChange={handleChange}
-                            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
-                            required
-                          >
-                            <option value="Available">Available</option>
-                            <option value="Reserved">Reserved</option>
-                            <option value="Occupied">Occupied</option>
-                            <option value="Maintenance">Maintenance</option>
-                          </select>
-                        </div>
-                      </div>
-
-                      {/* Additional Important Fields */}
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">
-                          Minimum Spend (Optional)
-                        </label>
-                        <div className="relative">
-                          <span className="absolute left-3 top-2 text-gray-400">$</span>
-                          <input
-                            type="number"
-                            name="minSpend"
-                            value={formData.minSpend}
-                            onChange={handleChange}
-                            className="w-full pl-8 px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
-                            placeholder="0.00"
-                          />
-                        </div>
-                      </div>
-
-                      <div>
-                        <label className="block text-sm font-medium text-gray-300 mb-1">
-                          Special Notes
-                        </label>
-                        <textarea
-                          name="notes"
-                          value={formData.notes}
-                          onChange={handleChange}
-                          className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
-                          rows="2"
-                          placeholder="Wheelchair accessible, near outlet, etc."
-                        />
-                      </div>
-
-                      {/* Action Buttons */}
-                      <div className="flex justify-end space-x-3 pt-4">
-                        <button
-                          type="button"
-                          onClick={() => setIsPopupOpen(false)}
-                          className="px-4 py-2 border border-gray-700 rounded-md text-gray-300 hover:bg-gray-800"
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          type="submit"
-                          className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 flex items-center"
-                        >
-                          <Plus className="w-4 h-4 mr-2" />
-                          Add Table
-                        </button>
-                      </div>
-                    </form>
-                  </motion.div>
-                </div>
-              )}
-
-
-
             </div>
           </div>
 
@@ -301,86 +169,92 @@ export default function TableManagement() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-gray-900 border border-purple-500/30 rounded-lg shadow-xl w-full max-w-md backdrop-blur-sm"
+                className="bg-gray-900 border border-purple-500/30 rounded-lg shadow-xl w-full max-w-sm "
               >
-                <div className="flex justify-between items-center border-b border-purple-500/20 p-4">
-                  <h3 className="text-lg font-semibold text-white">Add New Table</h3>
+                <div className="flex justify-between items-center border-b border-purple-500/20 p-3">
+                  <h3 className="text-base font-semibold text-white">Add New Table</h3>
                   <button
                     onClick={() => setIsPopupOpen(false)}
                     className="text-gray-400 hover:text-white"
                   >
-                    <X className="w-5 h-5" />
+                    <X className="w-4 h-4" />
                   </button>
                 </div>
 
-                <form onSubmit={handleSubmit} className="p-4 space-y-4">
+                <form onSubmit={handleSubmit} className="p-3 space-y-3 ">
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">
-                      Table Number
-                    </label>
+                    <label className="block text-xs font-medium text-gray-300 mb-1">Restaurant</label>
+                    <input
+                      type="text"
+                      value={selectedRestaurant.name}
+                      readOnly
+                      className="w-full px-2 py-1 bg-gray-800/50 border border-gray-700 rounded-md text-gray-400 text-sm cursor-not-allowed"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-medium text-gray-300 mb-1">Table Number *</label>
                     <input
                       type="text"
                       name="number"
                       value={formData.number}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
+                      className="w-full px-2 py-1 bg-gray-800 border border-gray-700 rounded-md text-white text-sm"
                       placeholder="e.g., T1, A2, B3"
                       required
                     />
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-1">
-                        Capacity
-                      </label>
-                      <select
-                        name="capacity"
-                        value={formData.capacity}
-                        onChange={handleChange}
-                        className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
-                        required
-                      >
-                        {[2, 4, 6, 8, 10, 12].map(num => (
-                          <option key={num} value={num} className="bg-gray-800">
-                            {num} people
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-1">
-                        Table Type
-                      </label>
-                      <select
-                        name="type"
-                        value={formData.type}
-                        onChange={handleChange}
-                        className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
-                      >
-                        {tableTypes.map(type => (
-                          <option key={type} value={type} className="bg-gray-800">
-                            {type}
-                          </option>
-                        ))}
-                      </select>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-300 mb-1">Seating Capacity *</label>
+                    <div className="grid grid-cols-3 gap-1">
+                      {[2, 4, 6, 8, 10, 12].map((num) => (
+                        <button
+                          key={num}
+                          type="button"
+                          onClick={() => setFormData({ ...formData, capacity: num })}
+                          className={`p-1 rounded-md border text-xs ${formData.capacity === num
+                            ? 'bg-purple-600 border-purple-500 text-white'
+                            : 'bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700'
+                            }`}
+                        >
+                          {num} Seats
+                        </button>
+                      ))}
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-300 mb-1">Table Type *</label>
+                    <div className="grid grid-cols-2 gap-1">
+                      {tableTypes.map((type) => (
+                        <button
+                          key={type}
+                          type="button"
+                          onClick={() => setFormData({ ...formData, type })}
+                          className={`p-1 rounded-md border text-xs ${formData.type === type
+                            ? 'bg-purple-600 border-purple-500 text-white'
+                            : 'bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700'
+                            }`}
+                        >
+                          {type}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-1">
-                        Location
-                      </label>
+                      <label className="block text-xs font-medium text-gray-300 mb-1">Location Zone *</label>
                       <select
                         name="location"
                         value={formData.location}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
+                        className="w-full px-2 py-1 bg-gray-800 border border-gray-700 rounded-md text-white text-sm"
+                        required
                       >
-                        {locationOptions.map(loc => (
-                          <option key={loc} value={loc} className="bg-gray-800">
+                        {locationOptions.map((loc) => (
+                          <option key={loc} value={loc} className="bg-gray-800 text-sm">
                             {loc}
                           </option>
                         ))}
@@ -388,17 +262,16 @@ export default function TableManagement() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-1">
-                        Status
-                      </label>
+                      <label className="block text-xs font-medium text-gray-300 mb-1">Status *</label>
                       <select
                         name="status"
                         value={formData.status}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
+                        className="w-full px-2 py-1 bg-gray-800 border border-gray-700 rounded-md text-white text-sm"
+                        required
                       >
-                        {statusOptions.map(status => (
-                          <option key={status} value={status} className="bg-gray-800">
+                        {statusOptions.map((status) => (
+                          <option key={status} value={status} className="bg-gray-800 text-sm">
                             {status}
                           </option>
                         ))}
@@ -406,18 +279,46 @@ export default function TableManagement() {
                     </div>
                   </div>
 
-                  <div className="flex justify-end space-x-3 pt-4">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-300 mb-1">Minimum Spend (Optional)</label>
+                    <div className="relative">
+                      <span className="absolute left-2 top-1.5 text-gray-400 text-sm">$</span>
+                      <input
+                        type="number"
+                        name="minSpend"
+                        value={formData.minSpend}
+                        onChange={handleChange}
+                        className="w-full pl-6 px-2 py-1 bg-gray-800 border border-gray-700 rounded-md text-white text-sm"
+                        placeholder="0.00"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-medium text-gray-300 mb-1">Special Notes</label>
+                    <textarea
+                      name="notes"
+                      value={formData.notes}
+                      onChange={handleChange}
+                      className="w-full px-2 py-1 bg-gray-800 border border-gray-700 rounded-md text-white text-sm"
+                      rows="2"
+                      placeholder="Wheelchair accessible, near outlet, etc."
+                    />
+                  </div>
+
+                  <div className="flex justify-end space-x-2 pt-2">
                     <button
                       type="button"
                       onClick={() => setIsPopupOpen(false)}
-                      className="px-4 py-2 border border-gray-700 rounded-md text-gray-300 hover:bg-gray-800"
+                      className="px-3 py-1 border border-gray-700 rounded-md text-gray-300 hover:bg-gray-800 text-sm"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
-                      className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
+                      className="px-3 py-1 bg-purple-600 text-white rounded-md hover:bg-purple-700 flex items-center text-sm"
                     >
+                      <Plus className="w-3 h-3 mr-1" />
                       Add Table
                     </button>
                   </div>
@@ -425,19 +326,18 @@ export default function TableManagement() {
               </motion.div>
             </div>
           )}
-
           {/* Main Content */}
           <div>
             {viewMode === 'grid' ? (
               <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
-                {tables.map((table) => (
+                {filteredTables.map((table) => (
                   <motion.div
                     key={table.id}
                     whileHover={{ scale: 1.03 }}
                     className={`relative rounded-lg border p-4 ${table.status === 'Available' ? 'border-green-500/30' :
-                        table.status === 'Occupied' ? 'border-red-500/30' :
-                          table.status === 'Reserved' ? 'border-purple-500/30' :
-                            'border-yellow-500/30'
+                      table.status === 'Occupied' ? 'border-red-500/30' :
+                        table.status === 'Reserved' ? 'border-purple-500/30' :
+                          'border-yellow-500/30'
                       } bg-gray-900/50 backdrop-blur-sm`}
                   >
                     <div className="flex justify-between items-start">
@@ -451,7 +351,6 @@ export default function TableManagement() {
                     </div>
                     <div className="mt-4">
                       <div className="flex items-center text-sm text-gray-300 mb-1">
-                        {/* <Chair className="w-4 h-4 mr-2" /> */}
                         {table.capacity} seats
                       </div>
                       <div className="text-sm text-gray-400">
@@ -493,7 +392,7 @@ export default function TableManagement() {
                       </TableRow>
                     </TableHeader>
                     <TableBody>
-                      {tables.map((table) => (
+                      {filteredTables.map((table) => (
                         <motion.tr
                           key={table.id}
                           whileHover={{ backgroundColor: "rgba(107, 33, 168, 0.2)" }}
@@ -509,7 +408,6 @@ export default function TableManagement() {
                           </TableCell>
                           <TableCell className="text-gray-300">
                             <div className="flex items-center">
-                              <Chair className="w-4 h-4 mr-2" />
                               {table.capacity}
                             </div>
                           </TableCell>

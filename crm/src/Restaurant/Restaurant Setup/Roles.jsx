@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -6,6 +7,7 @@ import { motion } from "framer-motion";
 import { Plus, Trash2, Edit, User, X, Key } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import RestoNav from '../RestoNav';
 
 export default function UserManagement() {
@@ -18,6 +20,16 @@ export default function UserManagement() {
         { id: 5, name: "Store Manager", email: "manager@resto.com", role: "Store Manager", status: "Active" },
     ]);
 
+    // Sample restaurant data
+    const restaurants = [
+        { id: 1, name: "Urban Bites", location: "Downtown" },
+        { id: 2, name: "Coastal Kitchen", location: "Seaside" },
+        { id: 3, name: "Mountain Grill", location: "Highlands" }
+    ];
+
+    // State for selected restaurant
+    const [selectedRestaurant, setSelectedRestaurant] = useState(restaurants[0]); // Auto-select first restaurant
+
     // State for popup
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [formData, setFormData] = useState({
@@ -29,6 +41,12 @@ export default function UserManagement() {
 
     const roles = ['Admin', 'Cashier', 'Chef', 'Waiter', 'Store Manager', 'Delivery'];
     const statusOptions = ['Active', 'Inactive', 'Suspended'];
+
+    // Handle restaurant selection
+    const handleRestaurantChange = (value) => {
+        const restaurant = restaurants.find(r => r.id === parseInt(value));
+        setSelectedRestaurant(restaurant);
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -72,11 +90,31 @@ export default function UserManagement() {
             <div className="relative z-10">
                 <div className="flex-1 p-8">
                     {/* Header */}
-                    <RestoNav/>
+                    <RestoNav />
                     <div className="flex justify-between items-center mb-8">
                         <div>
                             <h2 className="text-2xl font-bold text-white">User Management</h2>
-                            <p className="text-gray-400">Manage staff roles and permissions</p>
+                            <div className="flex items-center gap-2 mt-1">
+                                <Select
+                                    value={selectedRestaurant.id.toString()}
+                                    onValueChange={handleRestaurantChange}
+                                >
+                                    <SelectTrigger className="bg-gray-900/50 border-gray-700 text-white w-48">
+                                        <SelectValue placeholder="Select Restaurant" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {restaurants.map((restaurant) => (
+                                            <SelectItem key={restaurant.id} value={restaurant.id.toString()}>
+                                                {restaurant.name}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                                <Badge variant="outline" className="border-green-500/50 text-green-400">
+                                    {selectedRestaurant.name}
+                                </Badge>
+                                <span className="text-gray-400 text-sm">{selectedRestaurant.location}</span>
+                            </div>
                         </div>
                         <Button 
                             onClick={() => setIsPopupOpen(true)}
@@ -106,6 +144,21 @@ export default function UserManagement() {
                                 </div>
                                 
                                 <form onSubmit={handleSubmit} className="p-4 space-y-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-300 mb-1">
+                                            Restaurant Name
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="name"
+                                            value={formData.name}
+                                            onChange={handleChange}
+                                            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
+                                            placeholder="Enter Restaurant name"
+                                            required
+                                        />
+                                    </div>
+
                                     <div>
                                         <label className="block text-sm font-medium text-gray-300 mb-1">
                                             Full Name
