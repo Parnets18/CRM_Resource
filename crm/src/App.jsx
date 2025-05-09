@@ -149,6 +149,7 @@ import RegisterPage from './pages/RegisterPage';
 import Dashboard from './Admin/Dashboard';
 import Nav from './Admin/Nav';
 import AdminPayroll from './Admin/HR/AdminPayroll';
+
 import HRManager from './Admin/HR/HRManager';
 import Employee from './Admin/HR/Employee';
 import SiteAdmin from './Admin/Site Management/SiteAdmin';
@@ -169,6 +170,11 @@ import SalesAdmin from './Admin/Sales Management/SalesAdmin';
 import SalesProject from './Admin/Sales Management/SalesProject';
 import SalesAccountant from './Admin/Sales Management/SalesAccountant';
 import CommonLayout from '../src/Common/CommonLayout';
+import CreateRole from './Admin/HR/Admin/CreateRole';
+import ConfigPage from './Admin/HR/Admin/Salary';
+import ReportsPage from './Admin/HR/Admin/Reports';
+// import EmployeeForm from './Admin/HR/HRManager/EmployeeForm';
+// import AttendanceTracker from './Admin/HR/HRManager/AttendanceTracker';
 // Common Components
 import Sidebar from "../src/Common/Sidebar"
 import Dashboardc from '../src/Common/Dashboardc';
@@ -189,8 +195,9 @@ function App() {
         {/* Admin Routes */}
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/nav" element={<Nav />} />
-        <Route path="/adminPayroll" element={<AdminPayroll />} />
+        
         <Route path="/manager" element={<HRManager />} />
+        <Route path="/adminPayroll" element={<AdminPayroll />} />
         <Route path="/employee" element={<Employee />} />
         <Route path="/siteadmin" element={<SiteAdmin />} />
         <Route path="/siteproject" element={<SiteProject />} />
@@ -209,6 +216,12 @@ function App() {
         <Route path="/salesadmin" element={<SalesAdmin />} />
         <Route path="/salesproject" element={<SalesProject />} />
         <Route path="/salesaccountant" element={<SalesAccountant />} />
+       
+        <Route path='/admin/create' element={<CreateRole/>}/>
+        <Route path='/admin/config' element={<ConfigPage/>}/>
+        <Route path='/admin/report' element={<ReportsPage/>}/>
+        {/* <Route path='/manager/employee' element={<EmployeeForm/>}/>
+        <Route path='/manager/attendence' element={<AttendanceTracker/>}/> */}
 
         <Route path="/common" element={<CommonLayout />}>
           <Route path="dashboardc" element={<Dashboardc />} />

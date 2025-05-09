@@ -6,7 +6,7 @@ import {
   ChevronDown, ChevronRight, UserPlus, FileSpreadsheet, Calendar,
   Building, Settings, Users2, ClipboardList, Package, BarChart3,
   CreditCard, Receipt, DollarSign, PieChart, Wallet, Calculator,
-  Menu, X
+  Menu, X, CalendarDays , Star, Gift , LockKeyhole   , User
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -26,11 +26,19 @@ function useIsMobile() {
   return isMobile;
 }
 
-
 export default function Nav() {
   const [expandedSection, setExpandedSection] = useState(null);
+  const [expandedSubtabs, setExpandedSubtabs] = useState([]);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const isMobile = useIsMobile();
+
+  const toggleSubtabExpansion = (subtabId) => {
+    setExpandedSubtabs(prev => 
+      prev.includes(subtabId) 
+        ? prev.filter(id => id !== subtabId) 
+        : [...prev, subtabId]
+    );
+  };
 
   const navItems = [
     {
@@ -38,9 +46,35 @@ export default function Nav() {
       icon: MapPin,
       id: "hr",
       subtabs: [
-        { title: "Admin", icon: UserPlus ,  path: "/adminPayroll"},
-        { title: "HR Manager", icon: FileSpreadsheet, path:"/manager" },
-        { title: "Employee", icon: Calendar, path:"/employee" }
+        { 
+          title: "Admin", 
+          icon: UserPlus,
+          subtabs: [
+            { title: "Create Role", icon: Users, path: "/admin/create" },
+            { title: "Config", icon: LockKeyhole, path: "/admin/config" },
+            { title: "Report", icon: ClipboardList, path: "/admin/report" }
+          ]
+        },
+        { 
+          title: "HR Manager", 
+          icon: FileSpreadsheet,
+          path:"/manager"
+          // subtabs: [
+          //   { title: "Employee Detail", icon: Users, path: "/manager/employee" },
+          //   { title: "Leave Management", icon: CalendarDays, path: "/leave" },
+          //   { title: "Performance Reviews", icon: Star, path: "/performance" }
+          // ]
+        },
+        { 
+          title: "Employee", 
+          icon: Calendar,
+          path:"/employee"
+          // subtabs: [
+          //   { title: "My Profile", icon: User, path: "/profile" },
+          //   { title: "Pay Slips", icon: Wallet, path: "/payslips" },
+          //   { title: "Benefits", icon: Gift, path: "/benefits" }
+          // ]
+        }
       ]
     },
     {
@@ -48,9 +82,9 @@ export default function Nav() {
       icon: Users,
       id: "site",
       subtabs: [
-        { title: "Admin", icon: Building, path:"/siteadmin" },
-        { title: "Project Manager", icon: Settings ,path:"/siteproject"},
-        { title: "Site Supervisor", icon: Users2 ,path:'/sitesupervisor'}
+        { title: "Admin", icon: Building, path: "/siteadmin" },
+        { title: "Project Manager", icon: Settings, path: "/siteproject" },
+        { title: "Site Supervisor", icon: Users2, path: "/sitesupervisor" }
       ]
     },
     {
@@ -58,11 +92,10 @@ export default function Nav() {
       icon: Warehouse,
       id: "inventory",
       subtabs: [
-        { title: "Site Supervisor", icon: ClipboardList,path:"/inventorysite"},
-        { title: "Procurement Office", icon: Package ,path:"/inventoryofficer"},
-        
-        { title: "Project Manager", icon: Users ,path:"/inventorymanager"},
-        { title: "Admin", icon: BarChart3 , path:"/inventoryadmin"}
+        { title: "Site Supervisor", icon: ClipboardList, path: "/inventorysite" },
+        { title: "Procurement Office", icon: Package, path: "/inventoryofficer" },
+        { title: "Project Manager", icon: Users, path: "/inventorymanager" },
+        { title: "Admin", icon: BarChart3, path: "/inventoryadmin" }
       ]
     },
     {
@@ -71,9 +104,8 @@ export default function Nav() {
       id: "purchase",
       subtabs: [
         { title: "Procurement Officer", icon: CreditCard, path: "/purchaseofficer" },
-        { title: "Accountant", icon: Users , path:"/purchaseaccountant"},
-        { title: "Admin", icon: Receipt ,path:'/purchaseadmin'},
-        
+        { title: "Accountant", icon: Users, path: "/purchaseaccountant" },
+        { title: "Admin", icon: Receipt, path: "/purchaseadmin" }
       ]
     },
     {
@@ -81,9 +113,9 @@ export default function Nav() {
       icon: Banknote,
       id: "sales",
       subtabs: [
-        { title: "Admin", icon: DollarSign ,path:'/salesadmin' },
-        { title: "Accountant", icon: PieChart, path:'/salesaccountant' },
-        { title: "Project Manager", icon: Users ,path:'/salesproject'}
+        { title: "Admin", icon: DollarSign, path: "/salesadmin" },
+        { title: "Accountant", icon: PieChart, path: "/salesaccountant" },
+        { title: "Project Manager", icon: Users, path: "/salesproject" }
       ]
     },
     {
@@ -91,32 +123,31 @@ export default function Nav() {
       icon: Scale,
       id: "expense",
       subtabs: [
-        { title: "Site Supervisor", icon: Wallet ,path:'/expensesupervisor'},
-        { title: "Project Manager", icon: Calculator ,path:'/expensemanager'},
-        { title: "Accountant", icon: BarChart3 ,path:'/expenseaccountant'},
-        { title: "Admin", icon: DollarSign ,path:'/expenseadmin'},
+        { title: "Site Supervisor", icon: Wallet, path: "/expensesupervisor" },
+        { title: "Project Manager", icon: Calculator, path: "/expensemanager" },
+        { title: "Accountant", icon: BarChart3, path: "/expenseaccountant" },
+        { title: "Admin", icon: DollarSign, path: "/expenseadmin" }
       ]
     }
   ];
 
   return (
     <>
-    
       {isMobile && !isNavOpen && (
-      <button
-        onClick={() => setIsNavOpen(true)}
-        className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-white"
-      >
-        <Menu className="w-6 h-6" />
-      </button>
-    )}
+        <button
+          onClick={() => setIsNavOpen(true)}
+          className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-white"
+        >
+          <Menu className="w-6 h-6" />
+        </button>
+      )}
 
-    <motion.div 
-      initial={{ x: isMobile ? '-100%' : 0 }}
-      animate={{ x: (isMobile && !isNavOpen) ? '-100%' : 0 }}
-      transition={{ type: 'tween', duration: 0.3 }}
-      className="w-64 fixed top-0 left-0 h-screen border-r border-purple-500/20 bg-black backdrop-blur-sm p-4 overflow-y-auto z-40"
-    >
+      <motion.div 
+        initial={{ x: isMobile ? '-100%' : 0 }}
+        animate={{ x: (isMobile && !isNavOpen) ? '-100%' : 0 }}
+        transition={{ type: 'tween', duration: 0.3 }}
+        className="w-64 fixed top-0 left-0 h-screen border-r border-purple-500/20 bg-black backdrop-blur-sm p-4 overflow-y-auto z-40"
+      >
         <div className="flex items-center gap-2 mb-8">
           <motion.div
             animate={{ rotate: 360 }}
@@ -160,22 +191,74 @@ export default function Nav() {
                     transition={{ duration: 0.2 }}
                     className="overflow-hidden"
                   >
-                    {item.subtabs.map((subtab, index) => (
-                      <Link 
-                        key={index}
-                        to={subtab.path}
-                        className="block no-underline"
-                        onClick={() => isMobile && setIsNavOpen(false)}
-                      >
-                        <Button
-                          variant="ghost"
-                          className="w-full justify-start text-gray-400 hover:bg-gray-900/50 hover:text-white pl-8"
-                        >
-                          <subtab.icon className="w-4 h-4 mr-2 text-purple-400" />
-                          {subtab.title}
-                        </Button>
-                      </Link>
-                    ))}
+                    {item.subtabs.map((subtab, index) => {
+                      const subtabId = `${item.id}-${subtab.title.toLowerCase().replace(/\s+/g, '-')}`;
+                      const hasSubtabs = subtab.subtabs && subtab.subtabs.length > 0;
+
+                      return (
+                        <div key={index}>
+                          {hasSubtabs ? (
+                            <>
+                              <Button
+                                variant="ghost"
+                                className="w-full justify-start text-gray-400 hover:bg-gray-900/50 hover:text-white pl-8"
+                                onClick={() => toggleSubtabExpansion(subtabId)}
+                              >
+                                <subtab.icon className="w-4 h-4 mr-2 text-purple-400" />
+                                {subtab.title}
+                                {expandedSubtabs.includes(subtabId) ? (
+                                  <ChevronDown className="w-4 h-4 ml-auto text-purple-400" />
+                                ) : (
+                                  <ChevronRight className="w-4 h-4 ml-auto text-purple-400" />
+                                )}
+                              </Button>
+                              <AnimatePresence>
+                                {expandedSubtabs.includes(subtabId) && (
+                                  <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: "auto", opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="overflow-hidden"
+                                  >
+                                    {subtab.subtabs.map((nestedSubtab, nestedIndex) => (
+                                      <Link
+                                        key={nestedIndex}
+                                        to={nestedSubtab.path}
+                                        className="block no-underline"
+                                        onClick={() => isMobile && setIsNavOpen(false)}
+                                      >
+                                        <Button
+                                          variant="ghost"
+                                          className="w-full justify-start text-gray-400 hover:bg-gray-900/50 hover:text-white pl-12"
+                                        >
+                                          <nestedSubtab.icon className="w-4 h-4 mr-2 text-purple-400" />
+                                          {nestedSubtab.title}
+                                        </Button>
+                                      </Link>
+                                    ))}
+                                  </motion.div>
+                                )}
+                              </AnimatePresence>
+                            </>
+                          ) : (
+                            <Link 
+                              to={subtab.path}
+                              className="block no-underline"
+                              onClick={() => isMobile && setIsNavOpen(false)}
+                            >
+                              <Button
+                                variant="ghost"
+                                className="w-full justify-start text-gray-400 hover:bg-gray-900/50 hover:text-white pl-8"
+                              >
+                                <subtab.icon className="w-4 h-4 mr-2 text-purple-400" />
+                                {subtab.title}
+                              </Button>
+                            </Link>
+                          )}
+                        </div>
+                      );
+                    })}
                   </motion.div>
                 )}
               </AnimatePresence>
