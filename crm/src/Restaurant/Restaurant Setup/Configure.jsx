@@ -141,7 +141,6 @@ export default function Configuration() {
                         </Card>
                     </motion.div>
 
-                    {selectedRestaurant && (
                         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
                             <TabsList className="grid grid-cols-3 bg-gray-900/50 border border-gray-700 mb-6">
                                 <TabsTrigger value="tax" className="flex items-center gap-2">
@@ -388,7 +387,7 @@ export default function Configuration() {
                                 </motion.div>
                             </TabsContent>
                         </Tabs>
-                    )}
+                   
 
                     {!selectedRestaurant && (
                         <motion.div

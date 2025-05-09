@@ -57,15 +57,15 @@ export default function RestoNav() {
       ]
     },
     {
-      title: "Indent & Inventory",
+      title: "Stock Management",
       icon: Warehouse,
       id: "inventory",
       subtabs: [
-        { title: "Site Supervisor", icon: ClipboardList,path:"/inventorysite"},
-        { title: "Procurement Office", icon: Package ,path:"/inventoryofficer"},
-        
-        { title: "Project Manager", icon: Users ,path:"/inventorymanager"},
-        { title: "Admin", icon: BarChart3 , path:"/inventoryadmin"}
+        { title: "Raw Material", icon: ClipboardList,path:"/RawMaterial"},
+        { title: "Store Location", icon: Package ,path:"/StoreLocation"},
+        { title: "Stock Level", icon: Users ,path:"/StockLevel"},
+        { title: "ManageStock", icon: BarChart3 , path:"/ManageStock"},
+        { title: "StockDeduction", icon: BarChart3 , path:"/StockDeduction"}
       ]
     },
     {
@@ -73,10 +73,11 @@ export default function RestoNav() {
       icon: ShoppingCart,
       id: "purchase",
       subtabs: [
-        { title: "Procurement Officer", icon: CreditCard, path: "/purchaseofficer" },
-        { title: "Accountant", icon: Users , path:"/purchaseaccountant"},
-        { title: "Admin", icon: Receipt ,path:'/purchaseadmin'},
-        
+        { title: "SuppliersVendors", icon: CreditCard, path: "/SuppliersVendors" },
+        { title: "PurchaseOrders", icon: CreditCard, path: "/PurchaseOrders" },
+        { title: "GoodsReceiptNotes", icon: Users , path:"/GoodsReceiptNotes"},
+        { title: "StockInwardApproval", icon: Receipt ,path:'/StockInwardApproval'},
+        { title: "PendingPOsPayment", icon: Receipt ,path:'/PendingPOsPayment'},
       ]
     },
     {

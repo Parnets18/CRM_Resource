@@ -184,6 +184,17 @@ import Dashboardc from '../src/Common/Dashboardc';
 import Layout from '../src/Common/Layout';
 import PurchaseManagement from '../src/Common/PurchaseManagement';
 import SalesManagement from "../src/Common/SalesManagement";
+import RawMaterialsManagement from './Restaurant/Stock Management/RawMaterial';
+import RawMaterial from './Restaurant/Stock Management/RawMaterial';
+import StoreLocation from './Restaurant/Stock Management/StoreLocation';
+import StockLevel from './Restaurant/Stock Management/StockLevel';
+import ManageStock from './Restaurant/Stock Management/ManageStock';
+import RecipeStockDeduction from './Restaurant/Stock Management/StockDeduction';
+import SuppliersVendors from './Restaurant/Purchase Management/SuppliersVendors';
+import PurchaseOrders from './Restaurant/Purchase Management/PurchaseOrder';
+import GoodsReceiptNotes from './Restaurant/Purchase Management/GoodsReceiptNotes';
+import StockInwardApproval from './Restaurant/Purchase Management/StockInwardApproval';
+import PendingPOsPayment from './Restaurant/Purchase Management/PaymentStatus';
 
 function App() {
   return (
@@ -229,7 +240,25 @@ function App() {
         <Route path='/Menu' element={<MenuItems />} />
         <Route path='/Category' element={<Category />} />
         <Route path='/Recipe' element={<Recipe />} />
-        <Route path='/Price'element={<Price />} />
+        <Route path='/Price' element={<Price />} />
+        <Route path='/RawMaterial' element={<RawMaterial />} />
+        <Route path='/StoreLocation' element={<StoreLocation />} />
+        <Route path='/StockLevel' element={<StockLevel />} />
+        <Route path='/ManageStock' element={<ManageStock />} />
+        <Route path='/StockDeduction' element={<RecipeStockDeduction />} />
+        <Route path='/SuppliersVendors' element={<SuppliersVendors />} />
+        <Route path='/PurchaseOrders' element={<PurchaseOrders />} />
+        <Route path='/GoodsReceiptNotes' element={<GoodsReceiptNotes />} />
+        <Route path='/StockInwardApproval' element={<StockInwardApproval />} />
+        <Route path='/PendingPOsPayment' element={<PendingPOsPayment />} />
+
+
+
+
+
+
+
+
         <Route path="/register" element={<RegisterPage />} />
 
         {/* Admin Routes */}
