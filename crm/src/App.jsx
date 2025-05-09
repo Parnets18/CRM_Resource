@@ -25,6 +25,15 @@ import SiteSupervisor from './Admin/Site Management/SiteSupervisor';
 import SalesAdmin from './Admin/Sales Management/SalesAdmin';
 import SalesProject from './Admin/Sales Management/SalesProject';
 import SalesAccountant from './Admin/Sales Management/SalesAccountant';
+import Restaurant from './Restaurant/Restaurant';
+import Profile from './Restaurant/Restaurant Setup/Profile';
+import Roles from './Restaurant/Restaurant Setup/Roles';
+import TableSetUp from './Restaurant/Restaurant Setup/TableSetUp';
+import Configure from './Restaurant/Restaurant Setup/Configure';
+import MenuItems from './Restaurant/Menu Management/Menu';
+import Category from './Restaurant/Menu Management/Category';
+import Recipe from './Restaurant/Menu Management/Recipe';
+import Price from './Restaurant/Menu Management/Price';
 
 function App() {
   return (
@@ -32,32 +41,43 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path='/register' element={<RegisterPage/>}/>
-        <Route path='/dashboard' element={<Dashboard/>}/>
-        <Route path='/siteManagement' element={<SiteManagement/>}/>
-        <Route path='/Nav' element={<Nav/>}/>
-        <Route path='/adminPayroll' element={<AdminPayroll/>}/>
-        <Route path='/manager' element={<HRManager/>}/>
-        <Route path='/employee' element={<Employee/>}/>
-        <Route path='/siteadmin' element={<SiteAdmin/>}/>
-        <Route path='/siteproject' element={<SiteProject/>}/>
-        <Route path='/inventorysite' element={<InventorySite/>}/>
-        <Route path='/sitesupervisor' element={<SiteSupervisor/>}/>
-        <Route path='/inventoryofficer' element={<InventoryOfficer/>}/>
-        <Route path='/inventorymanager' element={<Inventorymanager/>}/>
-        <Route path='/inventoryadmin' element={<InventoryAdmin/>}/>
-        <Route path='/purchaseofficer' element={<PurchaseOfficer/>}/>
-        <Route path='/purchaseaccountant' element={<PurchaseAccountant/>}/>
-        <Route path='/purchaseadmin' element={<PurchaseAdmin/>}/>
-        <Route path='/expensesupervisor' element={<ExpenseSupervisor/>}/>
-        <Route path='/expensemanager' element={<ExpenseManager/>}/>
-        <Route path='/expenseaccountant' element={<ExpenseAccountant/>}/>
-        <Route path='/expenseadmin' element={<ExpenseAdmin/>}/>
-        <Route path='/salesadmin' element={<SalesAdmin/>}/>
-        <Route path='/salesproject' element={<SalesProject/>}/>
-        <Route path='/salesaccountant' element={<SalesAccountant/>}/>
+        <Route path='/register' element={<RegisterPage />} />
+        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/siteManagement' element={<SiteManagement />} />
+        <Route path='/Nav' element={<Nav />} />
+        <Route path='/adminPayroll' element={<AdminPayroll />} />
+        <Route path='/manager' element={<HRManager />} />
+        <Route path='/employee' element={<Employee />} />
+        <Route path='/siteadmin' element={<SiteAdmin />} />
+        <Route path='/siteproject' element={<SiteProject />} />
+        <Route path='/inventorysite' element={<InventorySite />} />
+        <Route path='/sitesupervisor' element={<SiteSupervisor />} />
+        <Route path='/inventoryofficer' element={<InventoryOfficer />} />
+        <Route path='/inventorymanager' element={<Inventorymanager />} />
+        <Route path='/inventoryadmin' element={<InventoryAdmin />} />
+        <Route path='/purchaseofficer' element={<PurchaseOfficer />} />
+        <Route path='/purchaseaccountant' element={<PurchaseAccountant />} />
+        <Route path='/purchaseadmin' element={<PurchaseAdmin />} />
+        <Route path='/expensesupervisor' element={<ExpenseSupervisor />} />
+        <Route path='/expensemanager' element={<ExpenseManager />} />
+        <Route path='/expenseaccountant' element={<ExpenseAccountant />} />
+        <Route path='/expenseadmin' element={<ExpenseAdmin />} />
+        <Route path='/salesadmin' element={<SalesAdmin />} />
+        <Route path='/salesproject' element={<SalesProject />} />
+        <Route path='/salesaccountant' element={<SalesAccountant />} />
 
-       
+
+
+        {/* RESTAURANT */}
+        <Route path='/restaurantcrm' element={<Restaurant />} />
+        <Route path='/Profile' element={<Profile />} />
+        <Route path='/Role' element={<Roles />} />
+        <Route path='/TableSetup' element={<TableSetUp />} />
+        <Route path='/Configure' element={<Configure />} />
+        <Route path='/Menu' element={<MenuItems />} />
+        <Route path='/Category' element={<Category />} />
+        <Route path='/Recipe' element={<Recipe />} />
+        <Route path='/Price'element={<Price />} />
       </Routes>
     </BrowserRouter>
   );
