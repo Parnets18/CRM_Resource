@@ -108,12 +108,14 @@ export default function LoginPage() {
               </div>
             </CardContent>
             <CardFooter className="flex flex-col">
+              <Link to='/admin/create'>
               <Button
                 type="submit"
                 className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg shadow-purple-600/20 mt-4"
                  >
                 Login
               </Button>
+              </Link>
               <p className="mt-4 text-center text-sm text-gray-400">
                 Don&apos;t have an account?{" "}
                 <Link

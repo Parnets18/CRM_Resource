@@ -31,7 +31,7 @@ export default function Home() {
       color: "from-pink-500 to-purple-600",
     },
     {
-      title: "Cnstruction CRM",
+      title: "Construction CRM",
       description: "Create detailed company profiles with custom modules",
       color: "from-cyan-500 to-blue-600",
     },

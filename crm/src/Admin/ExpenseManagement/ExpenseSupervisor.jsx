@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Upload, Receipt, Clock, Wallet, AlertCircle, CheckCircle2 } from "lucide-react";
 import Nav from "../Nav";
 
+
 export default function ExpenseSupervisor() {
  
   const recentExpenses = [
