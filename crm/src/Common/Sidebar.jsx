@@ -18,9 +18,9 @@ import {
 } from "lucide-react";
 
 const menuItems = [
-  { name: "Dashboard", icon: Home, path: "/" },
-  { name: "Sales Management", icon: BarChart, path: "/sales" },
-  { name: "Purchase Management", icon: ShoppingCart, path: "/purchase" },
+  { name: "Dashboard", icon: Home, path: "dashboardc" },
+  { name: "Sales Management", icon: BarChart, path: "/common/sales" },
+  { name: "Purchase Management", icon: ShoppingCart, path: "/common/purchase" },
   { name: "Inventory Management", icon: Package, path: "/inventory" },
   { name: "Customer Management", icon: Users, path: "/customers" },
   { name: "HR Management", icon: Building2, path: "/hr" },

@@ -6,19 +6,19 @@ import Nav from "../Nav";
 
 export default function AdminPayroll() {
   return (
-    <div className="min-h-screen bg-black">
-      {/* Background Gradients */}
+    <div className="min-h-screen bg-black lg:ml-64">
+      
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/30 via-gray-900 to-black"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-blue-600/10 to-transparent"></div>
       </div>
 
       <div className="relative z-10 flex">
-        {/* Navigation would be here */}
+        
         <Nav/>
-        {/* Main Content */}
-        <div className="flex-1 p-8">
-          {/* Header */}
+       
+        <div className="flex-1 p-8 mt-16 md:mt-0">
+        
           <div className="flex justify-between items-center mb-8">
             <div>
               <h2 className="text-2xl font-bold text-white">HR & Payroll Administration</h2>
@@ -29,9 +29,9 @@ export default function AdminPayroll() {
             </Button>
           </div>
 
-          {/* HR Management Grid */}
+          
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-            {/* Create HR Manager Card */}
+        
             <motion.div whileHover={{ scale: 1.05 }}>
               <Card className="border border-blue-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -49,7 +49,7 @@ export default function AdminPayroll() {
               </Card>
             </motion.div>
 
-            {/* Salary Structure Card */}
+         
             <motion.div whileHover={{ scale: 1.05 }}>
               <Card className="border border-blue-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -74,7 +74,7 @@ export default function AdminPayroll() {
               </Card>
             </motion.div>
 
-            {/* Leave Policy Card */}
+         
             <motion.div whileHover={{ scale: 1.05 }}>
               <Card className="border border-blue-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -93,7 +93,7 @@ export default function AdminPayroll() {
               </Card>
             </motion.div>
 
-            {/* Attendance Tracking Card */}
+            
             <motion.div whileHover={{ scale: 1.05 }}>
               <Card className="border border-blue-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -112,7 +112,7 @@ export default function AdminPayroll() {
               </Card>
             </motion.div>
 
-            {/* Reports Card */}
+         
             <motion.div whileHover={{ scale: 1.05 }}>
               <Card className="border border-blue-500/20 bg-black/80 backdrop-blur-sm">
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -139,7 +139,7 @@ export default function AdminPayroll() {
             </motion.div>
           </div>
 
-          {/* System Alerts Section */}
+        
           <Card className="border border-blue-500/20 bg-black/80 backdrop-blur-sm">
             <CardHeader>
               <CardTitle className="text-white">System Alerts</CardTitle>
