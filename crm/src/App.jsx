@@ -175,7 +175,9 @@ import Dashboardc from '../src/Common/Dashboardc';
 import Layout from '../src/Common/Layout';
 import PurchaseManagement from '../src/Common/PurchaseManagement';
 import SalesManagement from "../src/Common/SalesManagement";
-
+import Inventory from '../src/Common/Inventory';
+import CRMManagement from '../src/Common/Crmmanagement';
+import CRMHRManagement from '../src/Common/CRMHRManagement';
 function App() {
   return (
     <BrowserRouter>
@@ -215,6 +217,9 @@ function App() {
           <Route path="layout" element={<Layout />} />
           <Route path="purchase" element={<PurchaseManagement />} />
           <Route path="sales" element={<SalesManagement />} />
+          <Route path="inventory" element={<Inventory/>} />
+          <Route path="customers" element={<CRMManagement/>} />
+          <Route path="hr" element={<CRMHRManagement/>} />
         </Route>
 
       </Routes>
