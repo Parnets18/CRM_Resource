@@ -8,7 +8,7 @@ const CommonLayout = () => {
     <div style={{ display: 'flex' }}>
       <Sidebar />
       <div style={{ flex: 1, padding: '20px' }}>
-        <Outlet /> {/* This is where nested routes will render */}
+        <Outlet />
       </div>
     </div>
   );
