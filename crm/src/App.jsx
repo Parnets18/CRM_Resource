@@ -58,6 +58,10 @@ import SalesManagement from "../src/Common/SalesManagement";
 import Inventory from '../src/Common/Inventory';
 import CRMManagement from '../src/Common/Crmmanagement';
 import CRMHRManagement from '../src/Common/CRMHRManagement';
+import Attend from './Common/Attendence';
+import Payroll from "../src/Common/Payroll";
+import AccountsFinance from '../src/Common/Account&Finance';
+
 import RawMaterialsManagement from './Restaurant/Stock Management/RawMaterial';
 import RawMaterial from './Restaurant/Stock Management/RawMaterial';
 import StoreLocation from './Restaurant/Stock Management/StoreLocation';
@@ -69,6 +73,7 @@ import PurchaseOrders from './Restaurant/Purchase Management/PurchaseOrder';
 import GoodsReceiptNotes from './Restaurant/Purchase Management/GoodsReceiptNotes';
 import StockInwardApproval from './Restaurant/Purchase Management/StockInwardApproval';
 import PendingPOsPayment from './Restaurant/Purchase Management/PaymentStatus';
+import ReportAnalytics from '../src/Common/ReportAnalytics';
 
 function App() {
   return (
@@ -174,6 +179,11 @@ function App() {
           <Route path="inventory" element={<Inventory/>} />
           <Route path="customers" element={<CRMManagement/>} />
           <Route path="hr" element={<CRMHRManagement/>} />
+          <Route path="attendance" element={<Attend/>} />
+          <Route path="payroll" element={<Payroll/>} />
+          <Route path="payroll" element={<Payroll/>} />
+          <Route path="finance" element={<AccountsFinance/>} />
+          <Route path="reports" element={<ReportAnalytics/>} />
         </Route>
 
       </Routes>
