@@ -10,7 +10,6 @@ import {
   Calendar,
   Mail,
   Phone,
-  ExternalLink,
   CreditCard,
   Truck,
   ShoppingCart,
@@ -28,6 +27,13 @@ import {
   FileSearch,
   AlertTriangle,
   RefreshCw,
+  MoreHorizontal,
+  Eye,
+  ChevronDown,
+  ArrowUpDown,
+  CheckCircle2,
+  XCircle,
+  Clock,
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -241,6 +247,15 @@ export default function PurchaseManagement() {
     notes: "",
     status: "New",
   })
+  const [sortConfig, setSortConfig] = useState({ key: "date", direction: "desc" })
+  const [actionMenuOpen, setActionMenuOpen] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
+  const [filterOptions, setFilterOptions] = useState({
+    status: "all",
+    category: "all",
+    dateRange: "all",
+  })
+  const [showFilterModal, setShowFilterModal] = useState(false)
 
   // Simulate loading
   useEffect(() => {
@@ -251,14 +266,67 @@ export default function PurchaseManagement() {
   // Get active stage data
   const activeStage = purchaseStages.find((stage) => stage.id === activeTab) || purchaseStages[0]
 
-  // Filter items based on search term
-  const filteredItems = activeStage.items.filter(
-    (item) =>
-      item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.contact.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.category.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+  // Sort and filter items
+  const getSortedAndFilteredItems = () => {
+    // First apply filters
+    const filtered = activeStage.items.filter((item) => {
+      // Apply search filter
+      const matchesSearch =
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.contact.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.category.toLowerCase().includes(searchTerm.toLowerCase())
+
+      // Apply status filter
+      const matchesStatus = filterOptions.status === "all" || item.status === filterOptions.status
+
+      // Apply category filter
+      const matchesCategory = filterOptions.category === "all" || item.category === filterOptions.category
+
+      // Apply date range filter (simplified for demo)
+      const matchesDateRange = filterOptions.dateRange === "all"
+
+      return matchesSearch && matchesStatus && matchesCategory && matchesDateRange
+    })
+
+    // Then sort
+    if (sortConfig.key) {
+      filtered.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === "asc" ? -1 : 1
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === "asc" ? 1 : -1
+        }
+        return 0
+      })
+    }
+
+    return filtered
+  }
+
+  const filteredItems = getSortedAndFilteredItems()
+
+  // Handle sort
+  const requestSort = (key) => {
+    let direction = "asc"
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc"
+    }
+    setSortConfig({ key, direction })
+  }
+
+  // Get sort direction icon
+  const getSortDirectionIcon = (key) => {
+    if (sortConfig.key !== key) {
+      return <ArrowUpDown size={14} className="opacity-50" />
+    }
+    return sortConfig.direction === "asc" ? (
+      <ChevronDown size={14} className="text-purple-400" />
+    ) : (
+      <ChevronDown size={14} className="text-purple-400 rotate-180" />
+    )
+  }
 
   // Get status color
   const getStatusColor = (status) => {
@@ -268,6 +336,14 @@ export default function PurchaseManagement() {
     return "bg-amber-500/20 text-amber-400"
   }
 
+  // Get status icon
+  const getStatusIcon = (status) => {
+    if (["Approved", "Complete", "Completed", "Confirmed"].includes(status)) return <CheckCircle2 size={14} />
+    if (["Pending", "New", "Scheduled", "Under Review"].includes(status)) return <Clock size={14} />
+    if (["Rejected", "Cancelled", "Overdue"].includes(status)) return <XCircle size={14} />
+    return <AlertTriangle size={14} />
+  }
+
   // Format currency
   const formatCurrency = (value) => {
     if (!value) return "$0"
@@ -275,6 +351,14 @@ export default function PurchaseManagement() {
     if (value.startsWith("$")) return value
     // Otherwise, add $ sign
     return `$${value}`
+  }
+
+  // Show success message
+  const showSuccess = (message) => {
+    setSuccessMessage(message)
+    setTimeout(() => {
+      setSuccessMessage(null)
+    }, 3000)
   }
 
   // Update stats after CRUD operations
@@ -374,6 +458,9 @@ export default function PurchaseManagement() {
     })
     setShowNewVendorForm(false)
 
+    // Show success message
+    showSuccess(`New vendor "${newVendor.name}" added successfully`)
+
     // Update stats
     setTimeout(() => updateStats(), 100)
   }
@@ -399,6 +486,7 @@ export default function PurchaseManagement() {
               value: formattedValue,
               category: formData.category,
               notes: formData.notes,
+              status: formData.status,
             }
           }
           return item
@@ -423,28 +511,36 @@ export default function PurchaseManagement() {
     setSelectedItem(null)
     setShowEditForm(false)
 
+    // Show success message
+    showSuccess(`Vendor "${formData.name}" updated successfully`)
+
     // Update stats
     setTimeout(() => updateStats(), 100)
   }
 
   // Handle edit button click
-  const handleEditClick = () => {
+  const handleEditClick = (item = null) => {
+    const itemToEdit = item || selectedItem
     setFormData({
-      name: selectedItem.name,
-      contact: selectedItem.contact,
-      email: selectedItem.email,
-      phone: selectedItem.phone,
-      value: selectedItem.value,
-      category: selectedItem.category || "Office Supplies",
-      notes: selectedItem.notes,
-      status: selectedItem.status,
+      name: itemToEdit.name,
+      contact: itemToEdit.contact,
+      email: itemToEdit.email,
+      phone: itemToEdit.phone,
+      value: itemToEdit.value,
+      category: itemToEdit.category || "Office Supplies",
+      notes: itemToEdit.notes,
+      status: itemToEdit.status,
     })
+    setSelectedItem(itemToEdit)
     setShowEditForm(true)
+    setActionMenuOpen(null)
   }
 
   // Handle delete confirmation
-  const handleDeleteClick = () => {
+  const handleDeleteClick = (item = null) => {
+    setSelectedItem(item || selectedItem)
     setShowDeleteConfirmation(true)
+    setActionMenuOpen(null)
   }
 
   // Handle delete
@@ -470,10 +566,16 @@ export default function PurchaseManagement() {
       return stage
     })
 
+    // Store the name for success message
+    const deletedName = selectedItem.name
+
     // Update state
     setPurchaseStages(updatedStages)
     setSelectedItem(null)
     setShowDeleteConfirmation(false)
+
+    // Show success message
+    showSuccess(`Vendor "${deletedName}" deleted successfully`)
 
     // Update stats
     setTimeout(() => updateStats(), 100)
@@ -546,16 +648,85 @@ export default function PurchaseManagement() {
       value: `$${targetValue.toLocaleString()}`,
     }
 
+    // Store name for success message
+    const itemName = item.name
+
     // Update state
     setPurchaseStages(updatedStages)
     setSelectedItem(null)
+
+    // Show success message
+    showSuccess(`"${itemName}" moved to ${targetStageData.name} successfully`)
 
     // Update stats
     setTimeout(() => updateStats(), 100)
   }
 
+  // Toggle action menu
+  const toggleActionMenu = (id) => {
+    setActionMenuOpen(actionMenuOpen === id ? null : id)
+  }
+
+  // Handle view details
+  const handleViewDetails = (item) => {
+    setSelectedItem(item)
+    setActionMenuOpen(null)
+  }
+
+  // Reset filters
+  const resetFilters = () => {
+    setFilterOptions({
+      status: "all",
+      category: "all",
+      dateRange: "all",
+    })
+    setShowFilterModal(false)
+  }
+
+  // Apply filters
+  const applyFilters = () => {
+    setShowFilterModal(false)
+  }
+
+  // Get unique categories for filter
+  const getUniqueCategories = () => {
+    const categories = new Set()
+    purchaseStages.forEach((stage) => {
+      stage.items.forEach((item) => {
+        if (item.category) categories.add(item.category)
+      })
+    })
+    return Array.from(categories)
+  }
+
+  // Get unique statuses for filter
+  const getUniqueStatuses = () => {
+    const statuses = new Set()
+    purchaseStages.forEach((stage) => {
+      stage.items.forEach((item) => {
+        if (item.status) statuses.add(item.status)
+      })
+    })
+    return Array.from(statuses)
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#0F0817] to-black text-white p-4 md:p-6">
+      {/* Success Message Toast */}
+      <AnimatePresence>
+        {successMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            className="fixed top-4 right-4 z-50 bg-green-500/90 text-white px-4 py-3 rounded-lg shadow-lg flex items-center"
+          >
+            <CheckCircle2 className="h-5 w-5 mr-2" />
+            <span>{successMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <div>
@@ -563,7 +734,7 @@ export default function PurchaseManagement() {
           <p className="text-gray-400">Manage your complete purchase lifecycle</p>
         </div>
         <button
-          className="px-4 py-2 bg-black/90 border border-purple-700/30 rounded-lg text-purple-300 hover:bg-purple-900/20 transition-colors flex items-center gap-2"
+          className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-white transition-colors flex items-center gap-2 shadow-lg"
           onClick={() => setShowNewVendorForm(true)}
         >
           <Plus className="h-4 w-4" /> New Vendor
@@ -573,10 +744,15 @@ export default function PurchaseManagement() {
       {/* Stats Cards */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         {purchaseStats.map((stat, index) => (
-          <div key={index} className="bg-black/90 border border-purple-700/30 rounded-lg p-4">
+          <div
+            key={index}
+            className="bg-black/90 border border-purple-700/30 rounded-lg p-4 shadow-md hover:shadow-purple-900/10 transition-all hover:translate-y-[-2px]"
+          >
             <div className="flex justify-between items-center mb-2">
               <h3 className="text-sm text-gray-400">{stat.title}</h3>
-              <stat.icon className="h-4 w-4 text-purple-400" />
+              <div className="p-2 bg-purple-900/20 rounded-full">
+                <stat.icon className="h-4 w-4 text-purple-400" />
+              </div>
             </div>
             <div className="text-xl font-bold">{stat.value}</div>
             <div className="text-xs text-green-400 mt-1">{stat.change} from last month</div>
@@ -585,7 +761,7 @@ export default function PurchaseManagement() {
       </div>
 
       {/* Purchase Workflow Summary Card */}
-      <div className="bg-black/90 border border-purple-700/30 rounded-lg overflow-hidden mb-6">
+      <div className="bg-black/90 border border-purple-700/30 rounded-lg overflow-hidden mb-6 shadow-md">
         <div className="p-4 border-b border-purple-700/30 flex justify-between items-center">
           <h2 className="font-bold">Purchase Workflow Summary</h2>
           <button
@@ -628,12 +804,14 @@ export default function PurchaseManagement() {
                 return (
                   <tr
                     key={stage.id}
-                    className="hover:bg-purple-900/10 cursor-pointer"
+                    className="hover:bg-purple-900/10 cursor-pointer transition-colors"
                     onClick={() => setActiveTab(stage.id)}
                   >
                     <td className="py-3 font-medium">
                       <div className="flex items-center">
-                        <stage.icon className="h-4 w-4 mr-2 text-purple-400" />
+                        <div className="p-1.5 bg-purple-900/20 rounded-full mr-2">
+                          <stage.icon className="h-4 w-4 text-purple-400" />
+                        </div>
                         {stage.name}
                       </div>
                     </td>
@@ -657,8 +835,10 @@ export default function PurchaseManagement() {
           <button
             key={stage.id}
             className={`px-4 py-2 whitespace-nowrap flex items-center ${
-              activeTab === stage.id ? "text-purple-400 border-b-2 border-purple-500" : "text-gray-400 hover:text-white"
-            }`}
+              activeTab === stage.id
+                ? "text-purple-400 border-b-2 border-purple-500"
+                : "text-gray-400 hover:text-white hover:bg-purple-900/10"
+            } transition-colors`}
             onClick={() => setActiveTab(stage.id)}
           >
             <stage.icon className="h-4 w-4 mr-2" />
@@ -674,18 +854,21 @@ export default function PurchaseManagement() {
           <input
             type="text"
             placeholder={`Search ${activeStage.name.toLowerCase()}...`}
-            className="w-full pl-10 pr-4 py-2.5 bg-black/90 border border-purple-700/30 rounded-lg focus:outline-none text-white"
+            className="w-full pl-10 pr-4 py-2.5 bg-black/90 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white shadow-sm"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <button className="px-4 py-2.5 bg-black/90 border border-purple-700/30 rounded-lg text-purple-300 hover:bg-purple-900/20 transition-colors flex items-center gap-2">
+        <button
+          className="px-4 py-2.5 bg-black/90 border border-purple-700/30 rounded-lg text-purple-300 hover:bg-purple-900/20 transition-colors flex items-center gap-2 shadow-sm"
+          onClick={() => setShowFilterModal(true)}
+        >
           <Filter className="h-4 w-4" /> Filter
         </button>
       </div>
 
       {/* Items List */}
-      <div className="bg-black/90 border border-purple-700/30 rounded-lg overflow-hidden">
+      <div className="bg-black/90 border border-purple-700/30 rounded-lg overflow-hidden shadow-md">
         {isLoading ? (
           <div className="p-8 flex justify-center">
             <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent"></div>
@@ -694,56 +877,134 @@ export default function PurchaseManagement() {
           <>
             {/* Table Header */}
             <div className="grid grid-cols-12 gap-4 p-4 border-b border-purple-700/30 bg-black/40 text-xs font-medium text-gray-400 uppercase">
-              <div className="col-span-5">Vendor</div>
-              <div className="col-span-2">Value</div>
-              <div className="col-span-2">Date</div>
-              <div className="col-span-3">Status</div>
+              <div
+                className="col-span-4 flex items-center cursor-pointer hover:text-white transition-colors"
+                onClick={() => requestSort("name")}
+              >
+                Vendor {getSortDirectionIcon("name")}
+              </div>
+              <div
+                className="col-span-2 flex items-center cursor-pointer hover:text-white transition-colors"
+                onClick={() => requestSort("value")}
+              >
+                Value {getSortDirectionIcon("value")}
+              </div>
+              <div
+                className="col-span-2 flex items-center cursor-pointer hover:text-white transition-colors"
+                onClick={() => requestSort("date")}
+              >
+                Date {getSortDirectionIcon("date")}
+              </div>
+              <div
+                className="col-span-2 flex items-center cursor-pointer hover:text-white transition-colors"
+                onClick={() => requestSort("status")}
+              >
+                Status {getSortDirectionIcon("status")}
+              </div>
+              <div className="col-span-2 text-right">Actions</div>
             </div>
 
             {/* Table Body */}
             <div className="divide-y divide-purple-700/10">
               {filteredItems.length > 0 ? (
                 filteredItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className="grid grid-cols-12 gap-4 p-4 hover:bg-purple-900/10 transition-colors cursor-pointer"
-                    onClick={() => setSelectedItem(item)}
-                  >
-                    <div className="col-span-5 font-medium">{item.name}</div>
+                  <div key={item.id} className="grid grid-cols-12 gap-4 p-4 hover:bg-purple-900/10 transition-colors">
+                    <div className="col-span-4 font-medium flex items-center">
+                      <div
+                        className="cursor-pointer hover:text-purple-300 transition-colors"
+                        onClick={() => handleViewDetails(item)}
+                      >
+                        {item.name}
+                      </div>
+                    </div>
                     <div className="col-span-2 text-gray-300">{item.value}</div>
                     <div className="col-span-2 text-gray-400 flex items-center">
                       <Calendar className="h-3 w-3 mr-1.5" />
                       {item.date}
                     </div>
-                    <div className="col-span-3 flex items-center justify-between">
-                      <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(item.status)}`}>
+                    <div className="col-span-2">
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs ${getStatusColor(
+                          item.status,
+                        )} flex items-center w-fit gap-1`}
+                      >
+                        {getStatusIcon(item.status)}
                         {item.status}
                       </span>
-                      <div className="flex space-x-1">
+                    </div>
+                    <div className="col-span-2 flex items-center justify-end space-x-2">
+                      <button
+                        className="p-1.5 rounded-lg hover:bg-purple-900/30 text-gray-400 hover:text-white transition-colors"
+                        onClick={() => handleViewDetails(item)}
+                        title="View Details"
+                      >
+                        <Eye size={16} />
+                      </button>
+                      <button
+                        className="p-1.5 rounded-lg hover:bg-purple-900/30 text-gray-400 hover:text-white transition-colors"
+                        onClick={() => handleEditClick(item)}
+                        title="Edit"
+                      >
+                        <Edit size={16} />
+                      </button>
+                      <button
+                        className="p-1.5 rounded-lg hover:bg-red-900/30 text-gray-400 hover:text-red-400 transition-colors"
+                        onClick={() => handleDeleteClick(item)}
+                        title="Delete"
+                      >
+                        <Trash size={16} />
+                      </button>
+                      <div className="relative">
                         <button
-                          className="p-1 rounded-lg hover:bg-purple-900/30 text-gray-400 hover:text-white transition-colors"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            window.location.href = `mailto:${item.email}`
-                          }}
+                          className="p-1.5 rounded-lg hover:bg-purple-900/30 text-gray-400 hover:text-white transition-colors"
+                          onClick={() => toggleActionMenu(item.id)}
+                          title="More Actions"
                         >
-                          <Mail size={14} />
+                          <MoreHorizontal size={16} />
                         </button>
-                        <button
-                          className="p-1 rounded-lg hover:bg-purple-900/30 text-gray-400 hover:text-white transition-colors"
-                          onClick={(e) => {
-                            e.stopPropagation()
-                            window.location.href = `tel:${item.phone}`
-                          }}
-                        >
-                          <Phone size={14} />
-                        </button>
-                        <button
-                          className="p-1 rounded-lg hover:bg-purple-900/30 text-gray-400 hover:text-white transition-colors"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <ExternalLink size={14} />
-                        </button>
+                        {actionMenuOpen === item.id && (
+                          <div className="absolute right-0 mt-2 w-48 bg-gray-900 border border-purple-700/30 rounded-lg shadow-lg z-10 py-1">
+                            <button
+                              className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-purple-900/20 hover:text-white transition-colors flex items-center"
+                              onClick={() => {
+                                setSelectedItem(item)
+                                setActionMenuOpen(null)
+                                if (activeTab === "quotations") {
+                                  handleStageAction("approve", "orders")
+                                } else if (activeTab === "orders") {
+                                  handleStageAction("confirm", "receipts")
+                                } else if (activeTab === "receipts") {
+                                  handleStageAction("complete", "invoices")
+                                } else if (activeTab === "invoices") {
+                                  handleStageAction("process", "payments")
+                                }
+                              }}
+                            >
+                              <ArrowUpDown size={14} className="mr-2" />
+                              Move to Next Stage
+                            </button>
+                            <button
+                              className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-purple-900/20 hover:text-white transition-colors flex items-center"
+                              onClick={() => {
+                                window.location.href = `mailto:${item.email}`
+                                setActionMenuOpen(null)
+                              }}
+                            >
+                              <Mail size={14} className="mr-2" />
+                              Send Email
+                            </button>
+                            <button
+                              className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-purple-900/20 hover:text-white transition-colors flex items-center"
+                              onClick={() => {
+                                window.location.href = `tel:${item.phone}`
+                                setActionMenuOpen(null)
+                              }}
+                            >
+                              <Phone size={14} className="mr-2" />
+                              Call Vendor
+                            </button>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -752,6 +1013,15 @@ export default function PurchaseManagement() {
                 <div className="p-8 text-center text-gray-400 flex flex-col items-center">
                   <AlertTriangle className="h-8 w-8 mb-2 text-amber-400" />
                   <p>No items found matching your search criteria.</p>
+                  <button
+                    className="mt-4 px-4 py-2 bg-purple-900/20 border border-purple-700/30 rounded-lg text-purple-300 hover:bg-purple-900/40 transition-colors"
+                    onClick={() => {
+                      setSearchTerm("")
+                      resetFilters()
+                    }}
+                  >
+                    Clear Filters
+                  </button>
                 </div>
               )}
             </div>
@@ -788,7 +1058,7 @@ export default function PurchaseManagement() {
             transition={{ duration: 0.3 }}
             className="fixed top-0 right-0 w-full sm:w-96 h-full bg-gray-900 border-l border-purple-700/30 shadow-xl z-50 overflow-y-auto"
           >
-            <div className="p-4 border-b border-purple-700/30 flex justify-between items-center">
+            <div className="p-4 border-b border-purple-700/30 flex justify-between items-center sticky top-0 bg-gray-900 z-10">
               <h2 className="font-bold text-lg">{selectedItem.name}</h2>
               <button
                 className="p-1 rounded-lg hover:bg-purple-900/30 text-gray-400 hover:text-white transition-colors"
@@ -800,7 +1070,12 @@ export default function PurchaseManagement() {
 
             <div className="p-4">
               <div className="flex justify-between items-center mb-4">
-                <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(selectedItem.status)}`}>
+                <span
+                  className={`px-2 py-1 rounded-full text-xs ${getStatusColor(
+                    selectedItem.status,
+                  )} flex items-center gap-1`}
+                >
+                  {getStatusIcon(selectedItem.status)}
                   {selectedItem.status}
                 </span>
                 <div className="text-xl font-bold">{selectedItem.value}</div>
@@ -957,14 +1232,16 @@ export default function PurchaseManagement() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50"
+            onClick={() => setShowNewVendorForm(false)}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-gray-900 border border-purple-700/30 rounded-lg w-full max-w-md"
+              className="bg-gray-900 border border-purple-700/30 rounded-lg w-full max-w-md shadow-xl"
+              onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-4 border-b border-purple-700/30 flex justify-between items-center">
+              <div className="p-4 border-b border-purple-700/30 flex justify-between items-center bg-black/30">
                 <h2 className="font-bold text-lg">Add New Vendor</h2>
                 <button
                   className="p-1 rounded-lg hover:bg-purple-900/30 text-gray-400 hover:text-white transition-colors"
@@ -1079,7 +1356,7 @@ export default function PurchaseManagement() {
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-purple-600 rounded-lg text-white hover:bg-purple-700 transition-colors"
+                    className="px-4 py-2 bg-purple-600 rounded-lg text-white hover:bg-purple-700 transition-colors shadow-md"
                   >
                     Add Vendor
                   </button>
@@ -1098,14 +1375,16 @@ export default function PurchaseManagement() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50"
+            onClick={() => setShowEditForm(false)}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-gray-900 border border-purple-700/30 rounded-lg w-full max-w-md"
+              className="bg-gray-900 border border-purple-700/30 rounded-lg w-full max-w-md shadow-xl"
+              onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-4 border-b border-purple-700/30 flex justify-between items-center">
+              <div className="p-4 border-b border-purple-700/30 flex justify-between items-center bg-black/30">
                 <h2 className="font-bold text-lg">Edit Vendor</h2>
                 <button
                   className="p-1 rounded-lg hover:bg-purple-900/30 text-gray-400 hover:text-white transition-colors"
@@ -1198,6 +1477,29 @@ export default function PurchaseManagement() {
                   </div>
 
                   <div>
+                    <label className="block text-sm text-gray-400 mb-1">Status</label>
+                    <select
+                      name="status"
+                      value={formData.status}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                    >
+                      <option value="New">New</option>
+                      <option value="Under Review">Under Review</option>
+                      <option value="Approved">Approved</option>
+                      <option value="Rejected">Rejected</option>
+                      <option value="Pending">Pending</option>
+                      <option value="Confirmed">Confirmed</option>
+                      <option value="Complete">Complete</option>
+                      <option value="Partial">Partial</option>
+                      <option value="Scheduled">Scheduled</option>
+                      <option value="Completed">Completed</option>
+                      <option value="Processing">Processing</option>
+                      <option value="Pending Approval">Pending Approval</option>
+                    </select>
+                  </div>
+
+                  <div>
                     <label className="block text-sm text-gray-400 mb-1">Notes</label>
                     <textarea
                       name="notes"
@@ -1219,7 +1521,7 @@ export default function PurchaseManagement() {
                   </button>
                   <button
                     type="submit"
-                    className="px-4 py-2 bg-purple-600 rounded-lg text-white hover:bg-purple-700 transition-colors"
+                    className="px-4 py-2 bg-purple-600 rounded-lg text-white hover:bg-purple-700 transition-colors shadow-md"
                   >
                     Save Changes
                   </button>
@@ -1238,14 +1540,19 @@ export default function PurchaseManagement() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50"
+            onClick={() => setShowDeleteConfirmation(false)}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-gray-900 border border-purple-700/30 rounded-lg w-full max-w-md p-6"
+              className="bg-gray-900 border border-purple-700/30 rounded-lg w-full max-w-md p-6 shadow-xl"
+              onClick={(e) => e.stopPropagation()}
             >
-              <h3 className="text-lg font-bold mb-4">Confirm Deletion</h3>
+              <div className="flex items-center mb-4 text-red-400">
+                <AlertTriangle className="h-6 w-6 mr-2" />
+                <h3 className="text-lg font-bold">Confirm Deletion</h3>
+              </div>
               <p className="text-gray-300 mb-6">
                 Are you sure you want to delete <span className="text-white font-medium">{selectedItem?.name}</span>?
                 This action cannot be undone.
@@ -1258,10 +1565,105 @@ export default function PurchaseManagement() {
                   Cancel
                 </button>
                 <button
-                  className="px-4 py-2 bg-red-600 rounded-lg text-white hover:bg-red-700 transition-colors"
+                  className="px-4 py-2 bg-red-600 rounded-lg text-white hover:bg-red-700 transition-colors shadow-md"
                   onClick={handleDelete}
                 >
                   Delete
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Filter Modal */}
+      <AnimatePresence>
+        {showFilterModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50"
+            onClick={() => setShowFilterModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-gray-900 border border-purple-700/30 rounded-lg w-full max-w-md shadow-xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-4 border-b border-purple-700/30 flex justify-between items-center bg-black/30">
+                <h2 className="font-bold text-lg">Filter Options</h2>
+                <button
+                  className="p-1 rounded-lg hover:bg-purple-900/30 text-gray-400 hover:text-white transition-colors"
+                  onClick={() => setShowFilterModal(false)}
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="p-4 space-y-4">
+                <div>
+                  <label className="block text-sm text-gray-400 mb-1">Status</label>
+                  <select
+                    value={filterOptions.status}
+                    onChange={(e) => setFilterOptions({ ...filterOptions, status: e.target.value })}
+                    className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                  >
+                    <option value="all">All Statuses</option>
+                    {getUniqueStatuses().map((status) => (
+                      <option key={status} value={status}>
+                        {status}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm text-gray-400 mb-1">Category</label>
+                  <select
+                    value={filterOptions.category}
+                    onChange={(e) => setFilterOptions({ ...filterOptions, category: e.target.value })}
+                    className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                  >
+                    <option value="all">All Categories</option>
+                    {getUniqueCategories().map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-sm text-gray-400 mb-1">Date Range</label>
+                  <select
+                    value={filterOptions.dateRange}
+                    onChange={(e) => setFilterOptions({ ...filterOptions, dateRange: e.target.value })}
+                    className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                  >
+                    <option value="all">All Dates</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="quarter">This Quarter</option>
+                  </select>
+                </div>
+              </div>
+
+              <div className="p-4 border-t border-purple-700/30 flex justify-end gap-3">
+                <button
+                  className="px-4 py-2 bg-black/50 border border-purple-700/30 rounded-lg text-gray-300 hover:bg-purple-900/20 transition-colors"
+                  onClick={resetFilters}
+                >
+                  Reset
+                </button>
+                <button
+                  className="px-4 py-2 bg-purple-600 rounded-lg text-white hover:bg-purple-700 transition-colors shadow-md"
+                  onClick={applyFilters}
+                >
+                  Apply Filters
                 </button>
               </div>
             </motion.div>

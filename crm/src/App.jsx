@@ -172,7 +172,7 @@ function App() {
         <Route path='/manager/attendence' element={<AttendanceTracker/>}/> */}
 
         <Route path="/common" element={<CommonLayout />}>
-          <Route path="dashboardc" element={<Dashboardc />} />
+          <Route index element={<Dashboardc />} />
           <Route path="layout" element={<Layout />} />
           <Route path="purchase" element={<PurchaseManagement />} />
           <Route path="sales" element={<SalesManagement />} />
