@@ -175,7 +175,7 @@ function App() {
           <Route index element={<Dashboardc />} />
           <Route path="layout" element={<Layout />} />
           <Route path="purchase" element={<PurchaseManagement />} />
-          <Route path="sales" element={<SalesManagement />} />
+          <Route path="sales" element={<SalesManagement />} />                             
           <Route path="inventory" element={<Inventory/>} />
           <Route path="customers" element={<CRMManagement/>} />
           <Route path="hr" element={<CRMHRManagement/>} />
@@ -191,4 +191,5 @@ function App() {
   );
 }
 
-export default App;
+export default App; 
+ 
