@@ -80,9 +80,6 @@ export default function RestoNav() {
         { title: "PendingPOsPayment", icon: Receipt ,path:'/PendingPOsPayment'},
       ]
     },
-<<<<<<< HEAD
-     
-=======
       {
       title: "Order&Billing",
       icon: ShoppingCart,
@@ -102,7 +99,6 @@ export default function RestoNav() {
       ]
     },
     
->>>>>>> 4aae34cdcd881affa2808881c23d250635765572
     {
       title: "Sales Management",
       icon: Banknote,

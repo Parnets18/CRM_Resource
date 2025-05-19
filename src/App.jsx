@@ -57,20 +57,6 @@ import Attend from "./Common/Attendence";
 import Payroll from "../src/Common/Payroll";
 import AccountsFinance from "../src/Common/Account&Finance";
 
-<<<<<<< HEAD
-import RawMaterialsManagement from "./Restaurant/Stock Management/RawMaterial";
-import RawMaterial from "./Restaurant/Stock Management/RawMaterial";
-import StoreLocation from "./Restaurant/Stock Management/StoreLocation";
-import StockLevel from "./Restaurant/Stock Management/StockLevel";
-import ManageStock from "./Restaurant/Stock Management/ManageStock";
-import RecipeStockDeduction from "./Restaurant/Stock Management/StockDeduction";
-import SuppliersVendors from "./Restaurant/Purchase Management/SuppliersVendors";
-import PurchaseOrders from "./Restaurant/Purchase Management/PurchaseOrder";
-import GoodsReceiptNotes from "./Restaurant/Purchase Management/GoodsReceiptNotes";
-import StockInwardApproval from "./Restaurant/Purchase Management/StockInwardApproval";
-import PendingPOsPayment from "./Restaurant/Purchase Management/PaymentStatus";
-import ReportAnalytics from "../src/Common/ReportAnalytics";
-=======
 
 //restaurant components
 import RawMaterialsManagement from './Restaurant/Stock Management/RawMaterial';
@@ -89,7 +75,6 @@ import Addtocart from '../src/Restaurant/Order&Billing/Addtocart'
 import CustomerProfile from './Restaurant/CustomerManagement/CustomerProfile';
 
 
->>>>>>> 4aae34cdcd881affa2808881c23d250635765572
 
 function App() {
   return (
@@ -124,27 +109,6 @@ function App() {
         <Route path='/salesaccountant' element={<SalesAccountant />} /> */}
 
         {/* RESTAURANT */}
-<<<<<<< HEAD
-        <Route path="/restaurantcrm" element={<Restaurant />} />
-        <Route path="/Profile" element={<Profile />} />
-        <Route path="/Role" element={<Roles />} />
-        <Route path="/TableSetup" element={<TableSetUp />} />
-        <Route path="/Configure" element={<Configure />} />
-        <Route path="/Menu" element={<MenuItems />} />
-        <Route path="/Category" element={<Category />} />
-        <Route path="/Recipe" element={<Recipe />} />
-        <Route path="/Price" element={<Price />} />
-        <Route path="/RawMaterial" element={<RawMaterial />} />
-        <Route path="/StoreLocation" element={<StoreLocation />} />
-        <Route path="/StockLevel" element={<StockLevel />} />
-        <Route path="/ManageStock" element={<ManageStock />} />
-        <Route path="/StockDeduction" element={<RecipeStockDeduction />} />
-        <Route path="/SuppliersVendors" element={<SuppliersVendors />} />
-        <Route path="/PurchaseOrders" element={<PurchaseOrders />} />
-        <Route path="/GoodsReceiptNotes" element={<GoodsReceiptNotes />} />
-        <Route path="/StockInwardApproval" element={<StockInwardApproval />} />
-        <Route path="/PendingPOsPayment" element={<PendingPOsPayment />} />
-=======
         <Route path='/restaurantcrm' element={<Restaurant />} />
         <Route path='/Profile' element={<Profile />} />
         <Route path='/Role' element={<Roles />} />
@@ -174,7 +138,6 @@ function App() {
 
 
 
->>>>>>> 4aae34cdcd881affa2808881c23d250635765572
 
         <Route path="/register" element={<RegisterPage />} />
 
