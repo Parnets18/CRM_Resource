@@ -2,7 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { Upload, Receipt, Clock, Wallet, AlertCircle, CheckCircle2 } from "lucide-react";
-import Nav from "../Nav";
+
+import RestoNav from "@/Restaurant/RestoNav";
 
 
 export default function ExpenseSupervisor() {
@@ -21,7 +22,7 @@ export default function ExpenseSupervisor() {
       </div>
 
       <div className="relative z-10 flex">
-        <Nav />
+        <RestoNav/>
 
      
         <div className="flex-1 p-8">

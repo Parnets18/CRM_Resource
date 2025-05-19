@@ -80,6 +80,25 @@ export default function RestoNav() {
         { title: "PendingPOsPayment", icon: Receipt ,path:'/PendingPOsPayment'},
       ]
     },
+      {
+      title: "Order&Billing",
+      icon: ShoppingCart,
+      id: "kop",
+      subtabs: [
+        { title: "Pos", icon: CreditCard, path: "/Addtocart" },
+       
+      ]
+    },
+     {
+      title: "Customer Managment",
+      icon: ShoppingCart,
+      id: "kop",
+      subtabs: [
+        { title: "CustomerProfiile", icon: CreditCard, path: "/Customermanagemnet" },
+       
+      ]
+    },
+    
     {
       title: "Sales Management",
       icon: Banknote,

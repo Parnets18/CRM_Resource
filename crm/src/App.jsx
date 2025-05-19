@@ -62,6 +62,8 @@ import Attend from './Common/Attendence';
 import Payroll from "../src/Common/Payroll";
 import AccountsFinance from '../src/Common/Account&Finance';
 
+
+//restaurant components
 import RawMaterialsManagement from './Restaurant/Stock Management/RawMaterial';
 import RawMaterial from './Restaurant/Stock Management/RawMaterial';
 import StoreLocation from './Restaurant/Stock Management/StoreLocation';
@@ -74,6 +76,10 @@ import GoodsReceiptNotes from './Restaurant/Purchase Management/GoodsReceiptNote
 import StockInwardApproval from './Restaurant/Purchase Management/StockInwardApproval';
 import PendingPOsPayment from './Restaurant/Purchase Management/PaymentStatus';
 import ReportAnalytics from '../src/Common/ReportAnalytics';
+import Addtocart from '../src/Restaurant/Order&Billing/Addtocart'
+import CustomerProfile from './Restaurant/CustomerManagement/CustomerProfile';
+
+
 
 function App() {
   return (
@@ -130,6 +136,9 @@ function App() {
         <Route path='/GoodsReceiptNotes' element={<GoodsReceiptNotes />} />
         <Route path='/StockInwardApproval' element={<StockInwardApproval />} />
         <Route path='/PendingPOsPayment' element={<PendingPOsPayment />} />
+        <Route path='/Addtocart' element={<Addtocart />} />
+        <Route path='/Customermanagemnet' element={<CustomerProfile />} />
+
 
 
 

@@ -24,11 +24,13 @@
 import React from 'react';
 import Sidebar from './Sidebar';
 import { Outlet } from 'react-router-dom';
+import RestoNav from '@/Restaurant/RestoNav';
 
 const CommonLayout = () => {
   return (
     <div style={{ display: 'flex', minHeight: '100vh' }}>
       <Sidebar />
+
       <main style={{ flex: 1, padding: '20px', backgroundColor: '#f9f9f9' }}>
         <Outlet /> {/* Nested route components will render here */}
       </main>

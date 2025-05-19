@@ -1,9 +1,9 @@
-
+"use client"
 
 import { useState } from "react"
 import {
-  BarChart3,
   Package,
+  BarChart3,
   Truck,
   ArrowLeftRight,
   Calendar,
@@ -17,201 +17,214 @@ import {
   Trash2,
   Edit,
   Eye,
-  ChevronDown,
   ArrowUpDown,
   Menu,
   X,
+  CheckCircle,
+  XCircle,
 } from "lucide-react"
-import * as Dialog from "@radix-ui/react-dialog"
-import * as Select from "@radix-ui/react-select"
-import { Label } from "@radix-ui/react-label"
-import { motion } from "framer-motion"
 
 // Mock data for demonstration
-const mockProducts = [
+const initialProducts = [
   {
     id: 1,
-    name: "Laptop",
-    sku: "LPT-001",
+    name: "Cement",
+    sku: "CEM-001",
     barcode: "8901234567890",
-    unit: "pcs",
-    hsn: "8471",
+    unit: "bags",
+    hsn: "2523",
     tax: 18,
     serialNumber: "SN12345",
-    stock: 25,
+    stock: 250,
     warehouse: "Main",
-    zone: "Electronics",
+    zone: "Construction",
     batchNumber: "B2023-01",
     expiryDate: "2025-12-31",
-    reorderLevel: 10,
+    reorderLevel: 50,
     valuationMethod: "FIFO",
     status: "Active",
     movement: "High",
+    category: "Construction",
+    price: 350,
   },
   {
     id: 2,
-    name: "Smartphone",
-    sku: "SPH-002",
+    name: "Steel Bars",
+    sku: "STL-002",
     barcode: "8901234567891",
-    unit: "pcs",
-    hsn: "8517",
+    unit: "tons",
+    hsn: "7214",
     tax: 18,
     serialNumber: "SN12346",
     stock: 42,
     warehouse: "Main",
-    zone: "Electronics",
+    zone: "Construction",
     batchNumber: "B2023-02",
     expiryDate: "2025-10-15",
     reorderLevel: 15,
     valuationMethod: "FIFO",
     status: "Active",
     movement: "High",
+    category: "Construction",
+    price: 55000,
   },
   {
     id: 3,
-    name: "Headphones",
-    sku: "HPH-003",
+    name: "Bricks",
+    sku: "BRK-003",
     barcode: "8901234567892",
     unit: "pcs",
-    hsn: "8518",
+    hsn: "6904",
     tax: 18,
     serialNumber: "SN12347",
-    stock: 78,
+    stock: 7800,
     warehouse: "Main",
-    zone: "Electronics",
+    zone: "Construction",
     batchNumber: "B2023-03",
     expiryDate: "2026-05-20",
-    reorderLevel: 20,
+    reorderLevel: 2000,
     valuationMethod: "FIFO",
     status: "Active",
     movement: "Medium",
+    category: "Construction",
+    price: 8,
   },
   {
     id: 4,
-    name: "Printer",
-    sku: "PRT-004",
+    name: "Rice",
+    sku: "RCE-004",
     barcode: "8901234567893",
-    unit: "pcs",
-    hsn: "8443",
-    tax: 18,
+    unit: "kg",
+    hsn: "1006",
+    tax: 5,
     serialNumber: "SN12348",
-    stock: 12,
-    warehouse: "Secondary",
-    zone: "Office",
+    stock: 120,
+    warehouse: "Restaurant",
+    zone: "Food",
     batchNumber: "B2023-04",
     expiryDate: "2025-08-10",
-    reorderLevel: 5,
-    valuationMethod: "LIFO",
+    reorderLevel: 50,
+    valuationMethod: "FIFO",
     status: "Active",
-    movement: "Low",
+    movement: "High",
+    category: "Restaurant",
+    price: 60,
   },
   {
     id: 5,
-    name: "Monitor",
-    sku: "MNT-005",
+    name: "Cooking Oil",
+    sku: "OIL-005",
     barcode: "8901234567894",
-    unit: "pcs",
-    hsn: "8528",
-    tax: 18,
+    unit: "ltr",
+    hsn: "1512",
+    tax: 5,
     serialNumber: "SN12349",
-    stock: 8,
-    warehouse: "Main",
-    zone: "Electronics",
+    stock: 80,
+    warehouse: "Restaurant",
+    zone: "Food",
     batchNumber: "B2023-05",
     expiryDate: "2026-02-28",
-    reorderLevel: 10,
+    reorderLevel: 30,
     valuationMethod: "FIFO",
-    status: "Low Stock",
+    status: "Active",
     movement: "Medium",
+    category: "Restaurant",
+    price: 120,
   },
   {
     id: 6,
-    name: "Keyboard",
-    sku: "KBD-006",
+    name: "Chicken",
+    sku: "CHK-006",
     barcode: "8901234567895",
-    unit: "pcs",
-    hsn: "8471",
-    tax: 18,
+    unit: "kg",
+    hsn: "0207",
+    tax: 5,
     serialNumber: "SN12350",
     stock: 35,
-    warehouse: "Main",
-    zone: "Electronics",
+    warehouse: "Restaurant",
+    zone: "Food",
     batchNumber: "B2023-06",
-    expiryDate: "2026-04-15",
+    expiryDate: "2023-06-20",
     reorderLevel: 15,
-    valuationMethod: "Weighted Average",
-    status: "Active",
-    movement: "Medium",
+    valuationMethod: "FIFO",
+    status: "Low Stock",
+    movement: "High",
+    category: "Restaurant",
+    price: 180,
   },
   {
     id: 7,
-    name: "Mouse",
-    sku: "MOU-007",
+    name: "Paint",
+    sku: "PNT-007",
     barcode: "8901234567896",
-    unit: "pcs",
-    hsn: "8471",
+    unit: "ltr",
+    hsn: "3208",
     tax: 18,
     serialNumber: "SN12351",
     stock: 50,
     warehouse: "Main",
-    zone: "Electronics",
+    zone: "Construction",
     batchNumber: "B2023-07",
     expiryDate: "2026-03-10",
     reorderLevel: 20,
     valuationMethod: "FIFO",
     status: "Active",
-    movement: "High",
+    movement: "Medium",
+    category: "Construction",
+    price: 250,
   },
   {
     id: 8,
-    name: "Tablet",
-    sku: "TBL-008",
+    name: "Vegetables",
+    sku: "VEG-008",
     barcode: "8901234567897",
-    unit: "pcs",
-    hsn: "8471",
-    tax: 18,
+    unit: "kg",
+    hsn: "0706",
+    tax: 0,
     serialNumber: "SN12352",
-    stock: 3,
-    warehouse: "Secondary",
-    zone: "Electronics",
+    stock: 25,
+    warehouse: "Restaurant",
+    zone: "Food",
     batchNumber: "B2023-08",
-    expiryDate: "2025-11-20",
-    reorderLevel: 5,
-    valuationMethod: "LIFO",
+    expiryDate: "2023-05-25",
+    reorderLevel: 20,
+    valuationMethod: "FIFO",
     status: "Low Stock",
-    movement: "Low",
+    movement: "High",
+    category: "Restaurant",
+    price: 40,
   },
 ]
 
-const mockWarehouses = [
-  { id: 1, name: "Main", location: "New Delhi", zones: ["Electronics", "Accessories", "Storage"] },
-  { id: 2, name: "Secondary", location: "Mumbai", zones: ["Office", "Electronics", "Peripherals"] },
-  { id: 3, name: "Warehouse 3", location: "Bangalore", zones: ["Components", "Accessories"] },
+const initialWarehouses = [
+  { id: 1, name: "Main", location: "New Delhi", zones: ["Construction", "Storage", "Equipment"] },
+  { id: 2, name: "Restaurant", location: "Mumbai", zones: ["Food", "Beverages", "Utensils"] },
+  { id: 3, name: "Warehouse 3", location: "Bangalore", zones: ["Construction", "Food", "Miscellaneous"] },
 ]
 
-const mockTransfers = [
+const initialTransfers = [
   {
     id: 1,
     date: "2023-05-15",
-    product: "Laptop",
-    quantity: 5,
+    product: "Cement",
+    quantity: 50,
     fromWarehouse: "Main",
-    toWarehouse: "Secondary",
+    toWarehouse: "Warehouse 3",
     status: "Completed",
   },
   {
     id: 2,
     date: "2023-06-20",
-    product: "Smartphone",
-    quantity: 10,
-    fromWarehouse: "Secondary",
+    product: "Rice",
+    quantity: 100,
+    fromWarehouse: "Restaurant",
     toWarehouse: "Main",
     status: "In Transit",
   },
   {
     id: 3,
     date: "2023-07-10",
-    product: "Headphones",
+    product: "Steel Bars",
     quantity: 15,
     fromWarehouse: "Main",
     toWarehouse: "Warehouse 3",
@@ -219,24 +232,34 @@ const mockTransfers = [
   },
 ]
 
-const mockStockMovements = [
-  { id: 1, date: "2023-05-10", product: "Laptop", type: "Purchase", quantity: 10, warehouse: "Main" },
-  { id: 2, date: "2023-05-15", product: "Laptop", type: "Sale", quantity: -2, warehouse: "Main" },
-  { id: 3, date: "2023-06-05", product: "Smartphone", type: "Purchase", quantity: 20, warehouse: "Main" },
-  { id: 4, date: "2023-06-10", product: "Smartphone", type: "Sale", quantity: -5, warehouse: "Main" },
-  { id: 5, date: "2023-06-15", product: "Headphones", type: "Purchase", quantity: 30, warehouse: "Main" },
-  { id: 6, date: "2023-06-20", product: "Headphones", type: "Sale", quantity: -8, warehouse: "Main" },
+const initialStockMovements = [
+  { id: 1, date: "2023-05-10", product: "Cement", type: "Purchase", quantity: 100, warehouse: "Main" },
+  { id: 2, date: "2023-05-15", product: "Cement", type: "Sale", quantity: -20, warehouse: "Main" },
+  { id: 3, date: "2023-06-05", product: "Rice", type: "Purchase", quantity: 200, warehouse: "Restaurant" },
+  { id: 4, date: "2023-06-10", product: "Rice", type: "Sale", quantity: -50, warehouse: "Restaurant" },
+  { id: 5, date: "2023-06-15", product: "Steel Bars", type: "Purchase", quantity: 30, warehouse: "Main" },
+  { id: 6, date: "2023-06-20", product: "Steel Bars", type: "Sale", quantity: -8, warehouse: "Main" },
 ]
 
-const InventoryManagement = () => {
+const Inventory = () => {
   const [activeTab, setActiveTab] = useState("products")
-  const [products, setProducts] = useState(mockProducts)
-  const [warehouses, setWarehouses] = useState(mockWarehouses)
-  const [transfers, setTransfers] = useState(mockTransfers)
-  const [stockMovements, setStockMovements] = useState(mockStockMovements)
+  const [products, setProducts] = useState(initialProducts)
+  const [warehouses, setWarehouses] = useState(initialWarehouses)
+  const [transfers, setTransfers] = useState(initialTransfers)
+  const [stockMovements, setStockMovements] = useState(initialStockMovements)
   const [searchTerm, setSearchTerm] = useState("")
   const [isAddProductOpen, setIsAddProductOpen] = useState(false)
+  const [isEditProductOpen, setIsEditProductOpen] = useState(false)
+  const [isAddWarehouseOpen, setIsAddWarehouseOpen] = useState(false)
+  const [isTransferDialogOpen, setIsTransferDialogOpen] = useState(false)
+  const [isStockAdjustmentOpen, setIsStockAdjustmentOpen] = useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [selectedProduct, setSelectedProduct] = useState(null)
+  const [selectedValuationMethod, setSelectedValuationMethod] = useState("FIFO")
+  const [filterCategory, setFilterCategory] = useState("All")
+  const [filterWarehouse, setFilterWarehouse] = useState("All")
+  const [filterStatus, setFilterStatus] = useState("All")
+
   const [newProduct, setNewProduct] = useState({
     name: "",
     sku: "",
@@ -247,32 +270,64 @@ const InventoryManagement = () => {
     serialNumber: "",
     stock: 0,
     warehouse: "Main",
-    zone: "Electronics",
+    zone: "Construction",
     batchNumber: "",
     expiryDate: "",
     reorderLevel: 10,
     valuationMethod: "FIFO",
+    category: "Construction",
+    price: 0,
   })
-  const [selectedValuationMethod, setSelectedValuationMethod] = useState("FIFO")
-  const [isTransferDialogOpen, setIsTransferDialogOpen] = useState(false)
+
+  const [newWarehouse, setNewWarehouse] = useState({
+    name: "",
+    location: "",
+    zones: [""],
+  })
+
   const [newTransfer, setNewTransfer] = useState({
     product: "",
     quantity: 1,
     fromWarehouse: "Main",
-    toWarehouse: "Secondary",
+    toWarehouse: "Restaurant",
     date: new Date().toISOString().split("T")[0],
   })
 
-  // Filter products based on search term
-  const filteredProducts = products.filter(
-    (product) =>
+  const [stockAdjustment, setStockAdjustment] = useState({
+    product: "",
+    quantity: 0,
+    type: "Addition",
+    reason: "",
+    warehouse: "Main",
+    date: new Date().toISOString().split("T")[0],
+  })
+
+  // Filter products based on search term and filters
+  const filteredProducts = products.filter((product) => {
+    const matchesSearch =
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       product.sku.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.barcode.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+      product.barcode.toLowerCase().includes(searchTerm.toLowerCase())
+
+    const matchesCategory = filterCategory === "All" || product.category === filterCategory
+    const matchesWarehouse = filterWarehouse === "All" || product.warehouse === filterWarehouse
+    const matchesStatus = filterStatus === "All" || product.status === filterStatus
+
+    return matchesSearch && matchesCategory && matchesWarehouse && matchesStatus
+  })
 
   // Products with low stock (below reorder level)
   const lowStockProducts = products.filter((product) => product.stock <= product.reorderLevel)
+
+  // Products expiring soon (within 30 days)
+  const expiringProducts = products.filter((product) => {
+    const expiryDate = new Date(product.expiryDate)
+    const today = new Date()
+    const thirtyDaysFromNow = new Date()
+    thirtyDaysFromNow.setDate(today.getDate() + 30)
+
+    return expiryDate <= thirtyDaysFromNow && expiryDate >= today
+  })
 
   // Handle adding a new product
   const handleAddProduct = () => {
@@ -299,11 +354,47 @@ const InventoryManagement = () => {
       serialNumber: "",
       stock: 0,
       warehouse: "Main",
-      zone: "Electronics",
+      zone: "Construction",
       batchNumber: "",
       expiryDate: "",
       reorderLevel: 10,
       valuationMethod: "FIFO",
+      category: "Construction",
+      price: 0,
+    })
+  }
+
+  // Handle editing a product
+  const handleEditProduct = () => {
+    const updatedProducts = products.map((product) => (product.id === selectedProduct.id ? selectedProduct : product))
+
+    setProducts(updatedProducts)
+    setIsEditProductOpen(false)
+    setSelectedProduct(null)
+  }
+
+  // Handle deleting a product
+  const handleDeleteProduct = (id) => {
+    if (window.confirm("Are you sure you want to delete this product?")) {
+      setProducts(products.filter((product) => product.id !== id))
+    }
+  }
+
+  // Handle adding a new warehouse
+  const handleAddWarehouse = () => {
+    const id = warehouses.length > 0 ? Math.max(...warehouses.map((w) => w.id)) + 1 : 1
+
+    const warehouseToAdd = {
+      ...newWarehouse,
+      id,
+    }
+
+    setWarehouses([...warehouses, warehouseToAdd])
+    setIsAddWarehouseOpen(false)
+    setNewWarehouse({
+      name: "",
+      location: "",
+      zones: [""],
     })
   }
 
@@ -317,13 +408,93 @@ const InventoryManagement = () => {
       status: "In Transit",
     }
 
+    // Update product stock in source and destination warehouses
+    const updatedProducts = products.map((product) => {
+      if (product.name === newTransfer.product) {
+        if (product.warehouse === newTransfer.fromWarehouse) {
+          return { ...product, stock: product.stock - newTransfer.quantity }
+        }
+        if (product.warehouse === newTransfer.toWarehouse) {
+          return { ...product, stock: product.stock + newTransfer.quantity }
+        }
+      }
+      return product
+    })
+
+    // Add stock movement records
+    const stockOutId = stockMovements.length > 0 ? Math.max(...stockMovements.map((m) => m.id)) + 1 : 1
+    const stockInId = stockOutId + 1
+
+    const newStockMovements = [
+      ...stockMovements,
+      {
+        id: stockOutId,
+        date: newTransfer.date,
+        product: newTransfer.product,
+        type: "Transfer Out",
+        quantity: -newTransfer.quantity,
+        warehouse: newTransfer.fromWarehouse,
+      },
+      {
+        id: stockInId,
+        date: newTransfer.date,
+        product: newTransfer.product,
+        type: "Transfer In",
+        quantity: newTransfer.quantity,
+        warehouse: newTransfer.toWarehouse,
+      },
+    ]
+
     setTransfers([...transfers, transferToAdd])
+    setProducts(updatedProducts)
+    setStockMovements(newStockMovements)
     setIsTransferDialogOpen(false)
     setNewTransfer({
       product: "",
       quantity: 1,
       fromWarehouse: "Main",
-      toWarehouse: "Secondary",
+      toWarehouse: "Restaurant",
+      date: new Date().toISOString().split("T")[0],
+    })
+  }
+
+  // Handle stock adjustment
+  const handleStockAdjustment = () => {
+    const adjustmentQuantity =
+      stockAdjustment.type === "Addition" ? stockAdjustment.quantity : -stockAdjustment.quantity
+
+    // Update product stock
+    const updatedProducts = products.map((product) => {
+      if (product.name === stockAdjustment.product && product.warehouse === stockAdjustment.warehouse) {
+        const newStock = product.stock + adjustmentQuantity
+        const status = newStock <= product.reorderLevel ? "Low Stock" : "Active"
+        return { ...product, stock: newStock, status }
+      }
+      return product
+    })
+
+    // Add stock movement record
+    const movementId = stockMovements.length > 0 ? Math.max(...stockMovements.map((m) => m.id)) + 1 : 1
+
+    const newStockMovement = {
+      id: movementId,
+      date: stockAdjustment.date,
+      product: stockAdjustment.product,
+      type: stockAdjustment.type === "Addition" ? "Stock Addition" : "Stock Reduction",
+      quantity: adjustmentQuantity,
+      warehouse: stockAdjustment.warehouse,
+      reason: stockAdjustment.reason,
+    }
+
+    setProducts(updatedProducts)
+    setStockMovements([...stockMovements, newStockMovement])
+    setIsStockAdjustmentOpen(false)
+    setStockAdjustment({
+      product: "",
+      quantity: 0,
+      type: "Addition",
+      reason: "",
+      warehouse: "Main",
       date: new Date().toISOString().split("T")[0],
     })
   }
@@ -339,6 +510,42 @@ const InventoryManagement = () => {
     { id: "valuation", label: "Inventory Valuation", icon: <DollarSign size={18} /> },
     { id: "analysis", label: "Stock Analysis", icon: <TrendingUp size={18} /> },
   ]
+
+  // Calculate total inventory value
+  const calculateTotalInventoryValue = () => {
+    return products.reduce((total, product) => {
+      return total + product.stock * product.price
+    }, 0)
+  }
+
+  // Add a zone to new warehouse
+  const addZoneToNewWarehouse = () => {
+    setNewWarehouse({
+      ...newWarehouse,
+      zones: [...newWarehouse.zones, ""],
+    })
+  }
+
+  // Update zone in new warehouse
+  const updateZoneInNewWarehouse = (index, value) => {
+    const updatedZones = [...newWarehouse.zones]
+    updatedZones[index] = value
+    setNewWarehouse({
+      ...newWarehouse,
+      zones: updatedZones,
+    })
+  }
+
+  // Remove zone from new warehouse
+  const removeZoneFromNewWarehouse = (index) => {
+    if (newWarehouse.zones.length > 1) {
+      const updatedZones = newWarehouse.zones.filter((_, i) => i !== index)
+      setNewWarehouse({
+        ...newWarehouse,
+        zones: updatedZones,
+      })
+    }
+  }
 
   return (
     <div className="flex flex-col h-screen bg-gray-950 text-white">
@@ -436,7 +643,7 @@ const InventoryManagement = () => {
       <div className="flex-1 overflow-y-auto container mx-auto px-4 py-6">
         {/* Product Master */}
         {activeTab === "products" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+          <div className="animate-fadeIn">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
               <div>
                 <h2 className="text-2xl font-semibold text-white">Product Master</h2>
@@ -463,6 +670,49 @@ const InventoryManagement = () => {
               </div>
             </div>
 
+            {/* Filters */}
+            <div className="bg-gray-900/50 p-4 rounded-lg mb-6 flex flex-wrap gap-4">
+              <div>
+                <label className="text-sm text-gray-300 block mb-1">Category</label>
+                <select
+                  className="px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                  value={filterCategory}
+                  onChange={(e) => setFilterCategory(e.target.value)}
+                >
+                  <option value="All">All Categories</option>
+                  <option value="Construction">Construction</option>
+                  <option value="Restaurant">Restaurant</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-sm text-gray-300 block mb-1">Warehouse</label>
+                <select
+                  className="px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                  value={filterWarehouse}
+                  onChange={(e) => setFilterWarehouse(e.target.value)}
+                >
+                  <option value="All">All Warehouses</option>
+                  {warehouses.map((warehouse) => (
+                    <option key={warehouse.id} value={warehouse.name}>
+                      {warehouse.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="text-sm text-gray-300 block mb-1">Status</label>
+                <select
+                  className="px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                  value={filterStatus}
+                  onChange={(e) => setFilterStatus(e.target.value)}
+                >
+                  <option value="All">All Statuses</option>
+                  <option value="Active">Active</option>
+                  <option value="Low Stock">Low Stock</option>
+                </select>
+              </div>
+            </div>
+
             <div className="bg-gray-900/50 rounded-lg overflow-hidden shadow-xl border border-purple-700/20">
               <div className="overflow-x-auto">
                 <table className="min-w-full divide-y divide-purple-700/30">
@@ -479,6 +729,9 @@ const InventoryManagement = () => {
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                         Warehouse
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                        Category
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                         Status
@@ -514,6 +767,9 @@ const InventoryManagement = () => {
                           <div className="text-xs text-gray-400">Zone: {product.zone}</div>
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap">
+                          <div className="text-sm text-white">{product.category}</div>
+                        </td>
+                        <td className="px-4 py-3 whitespace-nowrap">
                           <span
                             className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                               product.status === "Active"
@@ -531,10 +787,19 @@ const InventoryManagement = () => {
                             <button className="text-blue-400 hover:text-blue-300">
                               <Eye size={16} />
                             </button>
-                            <button className="text-yellow-400 hover:text-yellow-300">
+                            <button
+                              className="text-yellow-400 hover:text-yellow-300"
+                              onClick={() => {
+                                setSelectedProduct(product)
+                                setIsEditProductOpen(true)
+                              }}
+                            >
                               <Edit size={16} />
                             </button>
-                            <button className="text-red-400 hover:text-red-300">
+                            <button
+                              className="text-red-400 hover:text-red-300"
+                              onClick={() => handleDeleteProduct(product.id)}
+                            >
                               <Trash2 size={16} />
                             </button>
                           </div>
@@ -547,17 +812,21 @@ const InventoryManagement = () => {
             </div>
 
             {/* Add Product Dialog */}
-            <Dialog.Root open={isAddProductOpen} onOpenChange={setIsAddProductOpen}>
-              <Dialog.Portal>
-                <Dialog.Overlay className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
-                <Dialog.Content className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 border border-purple-700/30 rounded-lg p-6 w-full max-w-md max-h-[85vh] overflow-y-auto">
-                  <Dialog.Title className="text-lg font-semibold text-purple-300 mb-4">Add New Product</Dialog.Title>
+            {isAddProductOpen && (
+              <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+                <div className="bg-gray-900 border border-purple-700/30 rounded-lg p-6 w-full max-w-md max-h-[85vh] overflow-y-auto">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-semibold text-purple-300">Add New Product</h3>
+                    <button className="text-gray-400 hover:text-white" onClick={() => setIsAddProductOpen(false)}>
+                      <X size={20} />
+                    </button>
+                  </div>
 
                   <div className="space-y-4">
                     <div>
-                      <Label htmlFor="name" className="text-sm text-gray-300 block mb-1">
+                      <label htmlFor="name" className="text-sm text-gray-300 block mb-1">
                         Product Name
-                      </Label>
+                      </label>
                       <input
                         id="name"
                         type="text"
@@ -569,9 +838,9 @@ const InventoryManagement = () => {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="sku" className="text-sm text-gray-300 block mb-1">
+                        <label htmlFor="sku" className="text-sm text-gray-300 block mb-1">
                           SKU
-                        </Label>
+                        </label>
                         <input
                           id="sku"
                           type="text"
@@ -581,9 +850,9 @@ const InventoryManagement = () => {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="barcode" className="text-sm text-gray-300 block mb-1">
+                        <label htmlFor="barcode" className="text-sm text-gray-300 block mb-1">
                           Barcode
-                        </Label>
+                        </label>
                         <input
                           id="barcode"
                           type="text"
@@ -596,55 +865,27 @@ const InventoryManagement = () => {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="unit" className="text-sm text-gray-300 block mb-1">
+                        <label htmlFor="unit" className="text-sm text-gray-300 block mb-1">
                           Unit
-                        </Label>
-                        <Select.Root
+                        </label>
+                        <select
+                          id="unit"
+                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
                           value={newProduct.unit}
-                          onValueChange={(value) => setNewProduct({ ...newProduct, unit: value })}
+                          onChange={(e) => setNewProduct({ ...newProduct, unit: e.target.value })}
                         >
-                          <Select.Trigger className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500 flex justify-between items-center">
-                            <Select.Value />
-                            <Select.Icon>
-                              <ChevronDown size={16} />
-                            </Select.Icon>
-                          </Select.Trigger>
-                          <Select.Portal>
-                            <Select.Content className="bg-gray-800 border border-purple-700/30 rounded-md overflow-hidden">
-                              <Select.Viewport>
-                                <Select.Item
-                                  value="pcs"
-                                  className="px-3 py-2 text-white hover:bg-purple-700/30 cursor-pointer outline-none"
-                                >
-                                  <Select.ItemText>pcs</Select.ItemText>
-                                </Select.Item>
-                                <Select.Item
-                                  value="kg"
-                                  className="px-3 py-2 text-white hover:bg-purple-700/30 cursor-pointer outline-none"
-                                >
-                                  <Select.ItemText>kg</Select.ItemText>
-                                </Select.Item>
-                                <Select.Item
-                                  value="ltr"
-                                  className="px-3 py-2 text-white hover:bg-purple-700/30 cursor-pointer outline-none"
-                                >
-                                  <Select.ItemText>ltr</Select.ItemText>
-                                </Select.Item>
-                                <Select.Item
-                                  value="box"
-                                  className="px-3 py-2 text-white hover:bg-purple-700/30 cursor-pointer outline-none"
-                                >
-                                  <Select.ItemText>box</Select.ItemText>
-                                </Select.Item>
-                              </Select.Viewport>
-                            </Select.Content>
-                          </Select.Portal>
-                        </Select.Root>
+                          <option value="pcs">pcs</option>
+                          <option value="kg">kg</option>
+                          <option value="ltr">ltr</option>
+                          <option value="box">box</option>
+                          <option value="bags">bags</option>
+                          <option value="tons">tons</option>
+                        </select>
                       </div>
                       <div>
-                        <Label htmlFor="hsn" className="text-sm text-gray-300 block mb-1">
+                        <label htmlFor="hsn" className="text-sm text-gray-300 block mb-1">
                           HSN Code
-                        </Label>
+                        </label>
                         <input
                           id="hsn"
                           type="text"
@@ -657,21 +898,21 @@ const InventoryManagement = () => {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="tax" className="text-sm text-gray-300 block mb-1">
+                        <label htmlFor="tax" className="text-sm text-gray-300 block mb-1">
                           Tax (%)
-                        </Label>
+                        </label>
                         <input
                           id="tax"
                           type="number"
                           className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
                           value={newProduct.tax}
-                          onChange={(e) => setNewProduct({ ...newProduct, tax: Number.parseInt(e.target.value) || 0 })}
+                          onChange={(e) => setNewProduct({ ...newProduct, tax: Number(e.target.value) || 0 })}
                         />
                       </div>
                       <div>
-                        <Label htmlFor="serialNumber" className="text-sm text-gray-300 block mb-1">
+                        <label htmlFor="serialNumber" className="text-sm text-gray-300 block mb-1">
                           Serial Number
-                        </Label>
+                        </label>
                         <input
                           id="serialNumber"
                           type="text"
@@ -684,107 +925,75 @@ const InventoryManagement = () => {
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="stock" className="text-sm text-gray-300 block mb-1">
+                        <label htmlFor="stock" className="text-sm text-gray-300 block mb-1">
                           Initial Stock
-                        </Label>
+                        </label>
                         <input
                           id="stock"
                           type="number"
                           className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
                           value={newProduct.stock}
-                          onChange={(e) =>
-                            setNewProduct({ ...newProduct, stock: Number.parseInt(e.target.value) || 0 })
-                          }
+                          onChange={(e) => setNewProduct({ ...newProduct, stock: Number(e.target.value) || 0 })}
                         />
                       </div>
                       <div>
-                        <Label htmlFor="reorderLevel" className="text-sm text-gray-300 block mb-1">
+                        <label htmlFor="reorderLevel" className="text-sm text-gray-300 block mb-1">
                           Reorder Level
-                        </Label>
+                        </label>
                         <input
                           id="reorderLevel"
                           type="number"
                           className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
                           value={newProduct.reorderLevel}
-                          onChange={(e) =>
-                            setNewProduct({ ...newProduct, reorderLevel: Number.parseInt(e.target.value) || 0 })
-                          }
+                          onChange={(e) => setNewProduct({ ...newProduct, reorderLevel: Number(e.target.value) || 0 })}
                         />
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="warehouse" className="text-sm text-gray-300 block mb-1">
+                        <label htmlFor="warehouse" className="text-sm text-gray-300 block mb-1">
                           Warehouse
-                        </Label>
-                        <Select.Root
+                        </label>
+                        <select
+                          id="warehouse"
+                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
                           value={newProduct.warehouse}
-                          onValueChange={(value) => setNewProduct({ ...newProduct, warehouse: value })}
+                          onChange={(e) => setNewProduct({ ...newProduct, warehouse: e.target.value })}
                         >
-                          <Select.Trigger className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500 flex justify-between items-center">
-                            <Select.Value />
-                            <Select.Icon>
-                              <ChevronDown size={16} />
-                            </Select.Icon>
-                          </Select.Trigger>
-                          <Select.Portal>
-                            <Select.Content className="bg-gray-800 border border-purple-700/30 rounded-md overflow-hidden">
-                              <Select.Viewport>
-                                {warehouses.map((warehouse) => (
-                                  <Select.Item
-                                    key={warehouse.id}
-                                    value={warehouse.name}
-                                    className="px-3 py-2 text-white hover:bg-purple-700/30 cursor-pointer outline-none"
-                                  >
-                                    <Select.ItemText>{warehouse.name}</Select.ItemText>
-                                  </Select.Item>
-                                ))}
-                              </Select.Viewport>
-                            </Select.Content>
-                          </Select.Portal>
-                        </Select.Root>
+                          {warehouses.map((warehouse) => (
+                            <option key={warehouse.id} value={warehouse.name}>
+                              {warehouse.name}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                       <div>
-                        <Label htmlFor="zone" className="text-sm text-gray-300 block mb-1">
+                        <label htmlFor="zone" className="text-sm text-gray-300 block mb-1">
                           Zone
-                        </Label>
-                        <Select.Root
+                        </label>
+                        <select
+                          id="zone"
+                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
                           value={newProduct.zone}
-                          onValueChange={(value) => setNewProduct({ ...newProduct, zone: value })}
+                          onChange={(e) => setNewProduct({ ...newProduct, zone: e.target.value })}
                         >
-                          <Select.Trigger className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500 flex justify-between items-center">
-                            <Select.Value />
-                            <Select.Icon>
-                              <ChevronDown size={16} />
-                            </Select.Icon>
-                          </Select.Trigger>
-                          <Select.Portal>
-                            <Select.Content className="bg-gray-800 border border-purple-700/30 rounded-md overflow-hidden">
-                              <Select.Viewport>
-                                {warehouses
-                                  .find((w) => w.name === newProduct.warehouse)
-                                  ?.zones.map((zone, index) => (
-                                    <Select.Item
-                                      key={index}
-                                      value={zone}
-                                      className="px-3 py-2 text-white hover:bg-purple-700/30 cursor-pointer outline-none"
-                                    >
-                                      <Select.ItemText>{zone}</Select.ItemText>
-                                    </Select.Item>
-                                  ))}
-                              </Select.Viewport>
-                            </Select.Content>
-                          </Select.Portal>
-                        </Select.Root>
+                          {warehouses
+                            .find((w) => w.name === newProduct.warehouse)
+                            ?.zones.map((zone, index) => (
+                              <option key={index} value={zone}>
+                                {zone}
+                              </option>
+                            ))}
+                        </select>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="batchNumber" className="text-sm text-gray-300 block mb-1">
+                        <label htmlFor="batchNumber" className="text-sm text-gray-300 block mb-1">
                           Batch Number
-                        </Label>
+                        </label>
                         <input
                           id="batchNumber"
                           type="text"
@@ -794,9 +1003,9 @@ const InventoryManagement = () => {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="expiryDate" className="text-sm text-gray-300 block mb-1">
+                        <label htmlFor="expiryDate" className="text-sm text-gray-300 block mb-1">
                           Expiry Date
-                        </Label>
+                        </label>
                         <input
                           id="expiryDate"
                           type="date"
@@ -807,45 +1016,49 @@ const InventoryManagement = () => {
                       </div>
                     </div>
 
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label htmlFor="valuationMethod" className="text-sm text-gray-300 block mb-1">
+                          Valuation Method
+                        </label>
+                        <select
+                          id="valuationMethod"
+                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                          value={newProduct.valuationMethod}
+                          onChange={(e) => setNewProduct({ ...newProduct, valuationMethod: e.target.value })}
+                        >
+                          <option value="FIFO">FIFO</option>
+                          <option value="LIFO">LIFO</option>
+                          <option value="Weighted Average">Weighted Average</option>
+                        </select>
+                      </div>
+                      <div>
+                        <label htmlFor="category" className="text-sm text-gray-300 block mb-1">
+                          Category
+                        </label>
+                        <select
+                          id="category"
+                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                          value={newProduct.category}
+                          onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
+                        >
+                          <option value="Construction">Construction</option>
+                          <option value="Restaurant">Restaurant</option>
+                        </select>
+                      </div>
+                    </div>
+
                     <div>
-                      <Label htmlFor="valuationMethod" className="text-sm text-gray-300 block mb-1">
-                        Valuation Method
-                      </Label>
-                      <Select.Root
-                        value={newProduct.valuationMethod}
-                        onValueChange={(value) => setNewProduct({ ...newProduct, valuationMethod: value })}
-                      >
-                        <Select.Trigger className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500 flex justify-between items-center">
-                          <Select.Value />
-                          <Select.Icon>
-                            <ChevronDown size={16} />
-                          </Select.Icon>
-                        </Select.Trigger>
-                        <Select.Portal>
-                          <Select.Content className="bg-gray-800 border border-purple-700/30 rounded-md overflow-hidden">
-                            <Select.Viewport>
-                              <Select.Item
-                                value="FIFO"
-                                className="px-3 py-2 text-white hover:bg-purple-700/30 cursor-pointer outline-none"
-                              >
-                                <Select.ItemText>FIFO</Select.ItemText>
-                              </Select.Item>
-                              <Select.Item
-                                value="LIFO"
-                                className="px-3 py-2 text-white hover:bg-purple-700/30 cursor-pointer outline-none"
-                              >
-                                <Select.ItemText>LIFO</Select.ItemText>
-                              </Select.Item>
-                              <Select.Item
-                                value="Weighted Average"
-                                className="px-3 py-2 text-white hover:bg-purple-700/30 cursor-pointer outline-none"
-                              >
-                                <Select.ItemText>Weighted Average</Select.ItemText>
-                              </Select.Item>
-                            </Select.Viewport>
-                          </Select.Content>
-                        </Select.Portal>
-                      </Select.Root>
+                      <label htmlFor="price" className="text-sm text-gray-300 block mb-1">
+                        Unit Price
+                      </label>
+                      <input
+                        id="price"
+                        type="number"
+                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                        value={newProduct.price}
+                        onChange={(e) => setNewProduct({ ...newProduct, price: Number(e.target.value) || 0 })}
+                      />
                     </div>
                   </div>
 
@@ -863,26 +1076,246 @@ const InventoryManagement = () => {
                       Add Product
                     </button>
                   </div>
-                </Dialog.Content>
-              </Dialog.Portal>
-            </Dialog.Root>
-          </motion.div>
+                </div>
+              </div>
+            )}
+
+            {/* Edit Product Dialog */}
+            {isEditProductOpen && selectedProduct && (
+              <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+                <div className="bg-gray-900 border border-purple-700/30 rounded-lg p-6 w-full max-w-md max-h-[85vh] overflow-y-auto">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-semibold text-purple-300">Edit Product</h3>
+                    <button
+                      className="text-gray-400 hover:text-white"
+                      onClick={() => {
+                        setIsEditProductOpen(false)
+                        setSelectedProduct(null)
+                      }}
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label htmlFor="edit-name" className="text-sm text-gray-300 block mb-1">
+                        Product Name
+                      </label>
+                      <input
+                        id="edit-name"
+                        type="text"
+                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                        value={selectedProduct.name}
+                        onChange={(e) => setSelectedProduct({ ...selectedProduct, name: e.target.value })}
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label htmlFor="edit-sku" className="text-sm text-gray-300 block mb-1">
+                          SKU
+                        </label>
+                        <input
+                          id="edit-sku"
+                          type="text"
+                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                          value={selectedProduct.sku}
+                          onChange={(e) => setSelectedProduct({ ...selectedProduct, sku: e.target.value })}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="edit-barcode" className="text-sm text-gray-300 block mb-1">
+                          Barcode
+                        </label>
+                        <input
+                          id="edit-barcode"
+                          type="text"
+                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                          value={selectedProduct.barcode}
+                          onChange={(e) => setSelectedProduct({ ...selectedProduct, barcode: e.target.value })}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label htmlFor="edit-stock" className="text-sm text-gray-300 block mb-1">
+                          Stock
+                        </label>
+                        <input
+                          id="edit-stock"
+                          type="number"
+                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                          value={selectedProduct.stock}
+                          onChange={(e) => {
+                            const newStock = Number(e.target.value) || 0
+                            const status = newStock <= selectedProduct.reorderLevel ? "Low Stock" : "Active"
+                            setSelectedProduct({
+                              ...selectedProduct,
+                              stock: newStock,
+                              status,
+                            })
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="edit-reorderLevel" className="text-sm text-gray-300 block mb-1">
+                          Reorder Level
+                        </label>
+                        <input
+                          id="edit-reorderLevel"
+                          type="number"
+                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                          value={selectedProduct.reorderLevel}
+                          onChange={(e) => {
+                            const newReorderLevel = Number(e.target.value) || 0
+                            const status = selectedProduct.stock <= newReorderLevel ? "Low Stock" : "Active"
+                            setSelectedProduct({
+                              ...selectedProduct,
+                              reorderLevel: newReorderLevel,
+                              status,
+                            })
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label htmlFor="edit-warehouse" className="text-sm text-gray-300 block mb-1">
+                          Warehouse
+                        </label>
+                        <select
+                          id="edit-warehouse"
+                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                          value={selectedProduct.warehouse}
+                          onChange={(e) => setSelectedProduct({ ...selectedProduct, warehouse: e.target.value })}
+                        >
+                          {warehouses.map((warehouse) => (
+                            <option key={warehouse.id} value={warehouse.name}>
+                              {warehouse.name}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                      <div>
+                        <label htmlFor="edit-zone" className="text-sm text-gray-300 block mb-1">
+                          Zone
+                        </label>
+                        <select
+                          id="edit-zone"
+                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                          value={selectedProduct.zone}
+                          onChange={(e) => setSelectedProduct({ ...selectedProduct, zone: e.target.value })}
+                        >
+                          {warehouses
+                            .find((w) => w.name === selectedProduct.warehouse)
+                            ?.zones.map((zone, index) => (
+                              <option key={index} value={zone}>
+                                {zone}
+                              </option>
+                            ))}
+                        </select>
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                      <div>
+                        <label htmlFor="edit-batchNumber" className="text-sm text-gray-300 block mb-1">
+                          Batch Number
+                        </label>
+                        <input
+                          id="edit-batchNumber"
+                          type="text"
+                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                          value={selectedProduct.batchNumber}
+                          onChange={(e) => setSelectedProduct({ ...selectedProduct, batchNumber: e.target.value })}
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="edit-expiryDate" className="text-sm text-gray-300 block mb-1">
+                          Expiry Date
+                        </label>
+                        <input
+                          id="edit-expiryDate"
+                          type="date"
+                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                          value={selectedProduct.expiryDate}
+                          onChange={(e) => setSelectedProduct({ ...selectedProduct, expiryDate: e.target.value })}
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label htmlFor="edit-price" className="text-sm text-gray-300 block mb-1">
+                        Unit Price
+                      </label>
+                      <input
+                        id="edit-price"
+                        type="number"
+                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                        value={selectedProduct.price}
+                        onChange={(e) => setSelectedProduct({ ...selectedProduct, price: Number(e.target.value) || 0 })}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end space-x-2 mt-6">
+                    <button
+                      className="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600 text-white"
+                      onClick={() => {
+                        setIsEditProductOpen(false)
+                        setSelectedProduct(null)
+                      }}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="px-4 py-2 rounded-md bg-purple-700 hover:bg-purple-600 text-white"
+                      onClick={handleEditProduct}
+                    >
+                      Save Changes
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         )}
 
         {/* Stock In/Out */}
         {activeTab === "stock" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+          <div className="animate-fadeIn">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
               <div>
                 <h2 className="text-2xl font-semibold text-white">Stock Movements</h2>
                 <p className="text-gray-400 mt-1">Track stock movements from purchases, sales, and adjustments</p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-                <button className="flex items-center justify-center px-4 py-2 rounded-md bg-green-700 hover:bg-green-600 text-white">
+                <button
+                  className="flex items-center justify-center px-4 py-2 rounded-md bg-green-700 hover:bg-green-600 text-white"
+                  onClick={() => {
+                    setStockAdjustment({
+                      ...stockAdjustment,
+                      type: "Addition",
+                    })
+                    setIsStockAdjustmentOpen(true)
+                  }}
+                >
                   <Plus size={16} className="mr-2" />
                   Stock In
                 </button>
-                <button className="flex items-center justify-center px-4 py-2 rounded-md bg-red-700 hover:bg-red-600 text-white">
+                <button
+                  className="flex items-center justify-center px-4 py-2 rounded-md bg-red-700 hover:bg-red-600 text-white"
+                  onClick={() => {
+                    setStockAdjustment({
+                      ...stockAdjustment,
+                      type: "Reduction",
+                    })
+                    setIsStockAdjustmentOpen(true)
+                  }}
+                >
                   <ArrowUpDown size={16} className="mr-2" />
                   Stock Out
                 </button>
@@ -909,6 +1342,9 @@ const InventoryManagement = () => {
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                         Warehouse
                       </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                        Reason
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-purple-700/20">
@@ -919,9 +1355,13 @@ const InventoryManagement = () => {
                         <td className="px-4 py-3 whitespace-nowrap">
                           <span
                             className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                              movement.type === "Purchase"
+                              movement.type === "Purchase" ||
+                              movement.type === "Stock Addition" ||
+                              movement.type === "Transfer In"
                                 ? "bg-green-800/30 text-green-300"
-                                : movement.type === "Sale"
+                                : movement.type === "Sale" ||
+                                    movement.type === "Stock Reduction" ||
+                                    movement.type === "Transfer Out"
                                   ? "bg-red-800/30 text-red-300"
                                   : "bg-blue-800/30 text-blue-300"
                             }`}
@@ -931,24 +1371,144 @@ const InventoryManagement = () => {
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{movement.quantity}</td>
                         <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{movement.warehouse}</td>
+                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{movement.reason || "-"}</td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
             </div>
-          </motion.div>
+
+            {/* Stock Adjustment Dialog */}
+            {isStockAdjustmentOpen && (
+              <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+                <div className="bg-gray-900 border border-purple-700/30 rounded-lg p-6 w-full max-w-md">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-semibold text-purple-300">
+                      {stockAdjustment.type === "Addition" ? "Stock Addition" : "Stock Reduction"}
+                    </h3>
+                    <button className="text-gray-400 hover:text-white" onClick={() => setIsStockAdjustmentOpen(false)}>
+                      <X size={20} />
+                    </button>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label htmlFor="adjustment-product" className="text-sm text-gray-300 block mb-1">
+                        Product
+                      </label>
+                      <select
+                        id="adjustment-product"
+                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                        value={stockAdjustment.product}
+                        onChange={(e) => setStockAdjustment({ ...stockAdjustment, product: e.target.value })}
+                      >
+                        <option value="">Select a product</option>
+                        {products.map((product) => (
+                          <option key={product.id} value={product.name}>
+                            {product.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label htmlFor="adjustment-quantity" className="text-sm text-gray-300 block mb-1">
+                        Quantity
+                      </label>
+                      <input
+                        id="adjustment-quantity"
+                        type="number"
+                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                        value={stockAdjustment.quantity}
+                        onChange={(e) =>
+                          setStockAdjustment({ ...stockAdjustment, quantity: Number(e.target.value) || 0 })
+                        }
+                        min="0"
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="adjustment-warehouse" className="text-sm text-gray-300 block mb-1">
+                        Warehouse
+                      </label>
+                      <select
+                        id="adjustment-warehouse"
+                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                        value={stockAdjustment.warehouse}
+                        onChange={(e) => setStockAdjustment({ ...stockAdjustment, warehouse: e.target.value })}
+                      >
+                        {warehouses.map((warehouse) => (
+                          <option key={warehouse.id} value={warehouse.name}>
+                            {warehouse.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    <div>
+                      <label htmlFor="adjustment-reason" className="text-sm text-gray-300 block mb-1">
+                        Reason
+                      </label>
+                      <textarea
+                        id="adjustment-reason"
+                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                        value={stockAdjustment.reason}
+                        onChange={(e) => setStockAdjustment({ ...stockAdjustment, reason: e.target.value })}
+                        rows="3"
+                      ></textarea>
+                    </div>
+
+                    <div>
+                      <label htmlFor="adjustment-date" className="text-sm text-gray-300 block mb-1">
+                        Date
+                      </label>
+                      <input
+                        id="adjustment-date"
+                        type="date"
+                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                        value={stockAdjustment.date}
+                        onChange={(e) => setStockAdjustment({ ...stockAdjustment, date: e.target.value })}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end space-x-2 mt-6">
+                    <button
+                      className="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600 text-white"
+                      onClick={() => setIsStockAdjustmentOpen(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className={`px-4 py-2 rounded-md ${
+                        stockAdjustment.type === "Addition"
+                          ? "bg-green-700 hover:bg-green-600"
+                          : "bg-red-700 hover:bg-red-600"
+                      } text-white`}
+                      onClick={handleStockAdjustment}
+                    >
+                      {stockAdjustment.type === "Addition" ? "Add Stock" : "Reduce Stock"}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         )}
 
         {/* Warehouses */}
         {activeTab === "warehouses" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+          <div className="animate-fadeIn">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
               <div>
                 <h2 className="text-2xl font-semibold text-white">Warehouses & Zones</h2>
                 <p className="text-gray-400 mt-1">Manage warehouse locations and storage zones</p>
               </div>
-              <button className="flex items-center justify-center px-4 py-2 rounded-md bg-purple-700 hover:bg-purple-600 text-white">
+              <button
+                className="flex items-center justify-center px-4 py-2 rounded-md bg-purple-700 hover:bg-purple-600 text-white"
+                onClick={() => setIsAddWarehouseOpen(true)}
+              >
                 <Plus size={16} className="mr-2" />
                 Add Warehouse
               </button>
@@ -980,15 +1540,115 @@ const InventoryManagement = () => {
                       ))}
                     </div>
                   </div>
+
+                  <div className="mt-3">
+                    <h4 className="text-xs font-medium text-gray-300 uppercase tracking-wider mb-2">Inventory</h4>
+                    <div className="text-sm text-white">
+                      {products.filter((p) => p.warehouse === warehouse.name).length} Products
+                    </div>
+                    <div className="text-xs text-gray-400">
+                      {products.filter((p) => p.warehouse === warehouse.name && p.status === "Low Stock").length} Low
+                      Stock Items
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
-          </motion.div>
+
+            {/* Add Warehouse Dialog */}
+            {isAddWarehouseOpen && (
+              <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+                <div className="bg-gray-900 border border-purple-700/30 rounded-lg p-6 w-full max-w-md">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-semibold text-purple-300">Add New Warehouse</h3>
+                    <button className="text-gray-400 hover:text-white" onClick={() => setIsAddWarehouseOpen(false)}>
+                      <X size={20} />
+                    </button>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div>
+                      <label htmlFor="warehouse-name" className="text-sm text-gray-300 block mb-1">
+                        Warehouse Name
+                      </label>
+                      <input
+                        id="warehouse-name"
+                        type="text"
+                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                        value={newWarehouse.name}
+                        onChange={(e) => setNewWarehouse({ ...newWarehouse, name: e.target.value })}
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="warehouse-location" className="text-sm text-gray-300 block mb-1">
+                        Location
+                      </label>
+                      <input
+                        id="warehouse-location"
+                        type="text"
+                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                        value={newWarehouse.location}
+                        onChange={(e) => setNewWarehouse({ ...newWarehouse, location: e.target.value })}
+                      />
+                    </div>
+
+                    <div>
+                      <div className="flex justify-between items-center mb-1">
+                        <label className="text-sm text-gray-300">Zones</label>
+                        <button
+                          className="text-xs text-purple-400 hover:text-purple-300"
+                          onClick={addZoneToNewWarehouse}
+                        >
+                          + Add Zone
+                        </button>
+                      </div>
+
+                      {newWarehouse.zones.map((zone, index) => (
+                        <div key={index} className="flex items-center gap-2 mb-2">
+                          <input
+                            type="text"
+                            className="flex-1 px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                            value={zone}
+                            onChange={(e) => updateZoneInNewWarehouse(index, e.target.value)}
+                            placeholder="Zone name"
+                          />
+                          {newWarehouse.zones.length > 1 && (
+                            <button
+                              className="text-red-400 hover:text-red-300"
+                              onClick={() => removeZoneFromNewWarehouse(index)}
+                            >
+                              <X size={16} />
+                            </button>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end space-x-2 mt-6">
+                    <button
+                      className="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600 text-white"
+                      onClick={() => setIsAddWarehouseOpen(false)}
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      className="px-4 py-2 rounded-md bg-purple-700 hover:bg-purple-600 text-white"
+                      onClick={handleAddWarehouse}
+                    >
+                      Add Warehouse
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
         )}
 
         {/* Transfers */}
         {activeTab === "transfers" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+          <div className="animate-fadeIn">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
               <div>
                 <h2 className="text-2xl font-semibold text-white">Stock Transfers</h2>
@@ -1026,6 +1686,9 @@ const InventoryManagement = () => {
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                         Status
                       </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-purple-700/20">
@@ -1049,6 +1712,26 @@ const InventoryManagement = () => {
                             {transfer.status}
                           </span>
                         </td>
+                        <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-300">
+                          <div className="flex space-x-2">
+                            {transfer.status === "In Transit" && (
+                              <button
+                                className="text-green-400 hover:text-green-300"
+                                onClick={() => {
+                                  const updatedTransfers = transfers.map((t) =>
+                                    t.id === transfer.id ? { ...t, status: "Completed" } : t,
+                                  )
+                                  setTransfers(updatedTransfers)
+                                }}
+                              >
+                                <CheckCircle size={16} />
+                              </button>
+                            )}
+                            <button className="text-red-400 hover:text-red-300">
+                              <XCircle size={16} />
+                            </button>
+                          </div>
+                        </td>
                       </tr>
                     ))}
                   </tbody>
@@ -1057,135 +1740,94 @@ const InventoryManagement = () => {
             </div>
 
             {/* Transfer Dialog */}
-            <Dialog.Root open={isTransferDialogOpen} onOpenChange={setIsTransferDialogOpen}>
-              <Dialog.Portal>
-                <Dialog.Overlay className="fixed inset-0 bg-black/60 backdrop-blur-sm" />
-                <Dialog.Content className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 border border-purple-700/30 rounded-lg p-6 w-full max-w-md">
-                  <Dialog.Title className="text-lg font-semibold text-purple-300 mb-4">
-                    Create Stock Transfer
-                  </Dialog.Title>
+            {isTransferDialogOpen && (
+              <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+                <div className="bg-gray-900 border border-purple-700/30 rounded-lg p-6 w-full max-w-md">
+                  <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg font-semibold text-purple-300">Create Stock Transfer</h3>
+                    <button className="text-gray-400 hover:text-white" onClick={() => setIsTransferDialogOpen(false)}>
+                      <X size={20} />
+                    </button>
+                  </div>
 
                   <div className="space-y-4">
                     <div>
-                      <Label htmlFor="product" className="text-sm text-gray-300 block mb-1">
+                      <label htmlFor="transfer-product" className="text-sm text-gray-300 block mb-1">
                         Product
-                      </Label>
-                      <Select.Root
+                      </label>
+                      <select
+                        id="transfer-product"
+                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
                         value={newTransfer.product}
-                        onValueChange={(value) => setNewTransfer({ ...newTransfer, product: value })}
+                        onChange={(e) => setNewTransfer({ ...newTransfer, product: e.target.value })}
                       >
-                        <Select.Trigger className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500 flex justify-between items-center">
-                          <Select.Value placeholder="Select a product" />
-                          <Select.Icon>
-                            <ChevronDown size={16} />
-                          </Select.Icon>
-                        </Select.Trigger>
-                        <Select.Portal>
-                          <Select.Content className="bg-gray-800 border border-purple-700/30 rounded-md overflow-hidden">
-                            <Select.Viewport>
-                              {products.map((product) => (
-                                <Select.Item
-                                  key={product.id}
-                                  value={product.name}
-                                  className="px-3 py-2 text-white hover:bg-purple-700/30 cursor-pointer outline-none"
-                                >
-                                  <Select.ItemText>{product.name}</Select.ItemText>
-                                </Select.Item>
-                              ))}
-                            </Select.Viewport>
-                          </Select.Content>
-                        </Select.Portal>
-                      </Select.Root>
+                        <option value="">Select a product</option>
+                        {products.map((product) => (
+                          <option key={product.id} value={product.name}>
+                            {product.name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
 
                     <div>
-                      <Label htmlFor="quantity" className="text-sm text-gray-300 block mb-1">
+                      <label htmlFor="transfer-quantity" className="text-sm text-gray-300 block mb-1">
                         Quantity
-                      </Label>
+                      </label>
                       <input
-                        id="quantity"
+                        id="transfer-quantity"
                         type="number"
                         className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
                         value={newTransfer.quantity}
-                        onChange={(e) =>
-                          setNewTransfer({ ...newTransfer, quantity: Number.parseInt(e.target.value) || 1 })
-                        }
+                        onChange={(e) => setNewTransfer({ ...newTransfer, quantity: Number(e.target.value) || 1 })}
                         min="1"
                       />
                     </div>
 
                     <div>
-                      <Label htmlFor="fromWarehouse" className="text-sm text-gray-300 block mb-1">
+                      <label htmlFor="transfer-from" className="text-sm text-gray-300 block mb-1">
                         From Warehouse
-                      </Label>
-                      <Select.Root
+                      </label>
+                      <select
+                        id="transfer-from"
+                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
                         value={newTransfer.fromWarehouse}
-                        onValueChange={(value) => setNewTransfer({ ...newTransfer, fromWarehouse: value })}
+                        onChange={(e) => setNewTransfer({ ...newTransfer, fromWarehouse: e.target.value })}
                       >
-                        <Select.Trigger className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500 flex justify-between items-center">
-                          <Select.Value />
-                          <Select.Icon>
-                            <ChevronDown size={16} />
-                          </Select.Icon>
-                        </Select.Trigger>
-                        <Select.Portal>
-                          <Select.Content className="bg-gray-800 border border-purple-700/30 rounded-md overflow-hidden">
-                            <Select.Viewport>
-                              {warehouses.map((warehouse) => (
-                                <Select.Item
-                                  key={warehouse.id}
-                                  value={warehouse.name}
-                                  className="px-3 py-2 text-white hover:bg-purple-700/30 cursor-pointer outline-none"
-                                >
-                                  <Select.ItemText>{warehouse.name}</Select.ItemText>
-                                </Select.Item>
-                              ))}
-                            </Select.Viewport>
-                          </Select.Content>
-                        </Select.Portal>
-                      </Select.Root>
+                        {warehouses.map((warehouse) => (
+                          <option key={warehouse.id} value={warehouse.name}>
+                            {warehouse.name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
 
                     <div>
-                      <Label htmlFor="toWarehouse" className="text-sm text-gray-300 block mb-1">
+                      <label htmlFor="transfer-to" className="text-sm text-gray-300 block mb-1">
                         To Warehouse
-                      </Label>
-                      <Select.Root
+                      </label>
+                      <select
+                        id="transfer-to"
+                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
                         value={newTransfer.toWarehouse}
-                        onValueChange={(value) => setNewTransfer({ ...newTransfer, toWarehouse: value })}
+                        onChange={(e) => setNewTransfer({ ...newTransfer, toWarehouse: e.target.value })}
                       >
-                        <Select.Trigger className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500 flex justify-between items-center">
-                          <Select.Value />
-                          <Select.Icon>
-                            <ChevronDown size={16} />
-                          </Select.Icon>
-                        </Select.Trigger>
-                        <Select.Portal>
-                          <Select.Content className="bg-gray-800 border border-purple-700/30 rounded-md overflow-hidden">
-                            <Select.Viewport>
-                              {warehouses
-                                .filter((w) => w.name !== newTransfer.fromWarehouse)
-                                .map((warehouse) => (
-                                  <Select.Item
-                                    key={warehouse.id}
-                                    value={warehouse.name}
-                                    className="px-3 py-2 text-white hover:bg-purple-700/30 cursor-pointer outline-none"
-                                  >
-                                    <Select.ItemText>{warehouse.name}</Select.ItemText>
-                                  </Select.Item>
-                                ))}
-                            </Select.Viewport>
-                          </Select.Content>
-                        </Select.Portal>
-                      </Select.Root>
+                        {warehouses
+                          .filter((w) => w.name !== newTransfer.fromWarehouse)
+                          .map((warehouse) => (
+                            <option key={warehouse.id} value={warehouse.name}>
+                              {warehouse.name}
+                            </option>
+                          ))}
+                      </select>
                     </div>
 
                     <div>
-                      <Label htmlFor="date" className="text-sm text-gray-300 block mb-1">
+                      <label htmlFor="transfer-date" className="text-sm text-gray-300 block mb-1">
                         Transfer Date
-                      </Label>
+                      </label>
                       <input
-                        id="date"
+                        id="transfer-date"
                         type="date"
                         className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
                         value={newTransfer.date}
@@ -1208,15 +1850,15 @@ const InventoryManagement = () => {
                       Create Transfer
                     </button>
                   </div>
-                </Dialog.Content>
-              </Dialog.Portal>
-            </Dialog.Root>
-          </motion.div>
+                </div>
+              </div>
+            )}
+          </div>
         )}
 
         {/* Batches & Expiry */}
         {activeTab === "batches" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+          <div className="animate-fadeIn">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
               <div>
                 <h2 className="text-2xl font-semibold text-white">Batches & Expiry Dates</h2>
@@ -1231,6 +1873,30 @@ const InventoryManagement = () => {
                   <Download size={16} className="mr-2" />
                   Export
                 </button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
+                <h3 className="text-md font-semibold text-white mb-2">Expiring Soon</h3>
+                <div className="text-3xl font-bold text-yellow-400">{expiringProducts.length}</div>
+                <p className="text-sm text-gray-400 mt-1">Products expiring in 30 days</p>
+              </div>
+
+              <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
+                <h3 className="text-md font-semibold text-white mb-2">Expired Products</h3>
+                <div className="text-3xl font-bold text-red-400">
+                  {products.filter((p) => new Date(p.expiryDate) < new Date()).length}
+                </div>
+                <p className="text-sm text-gray-400 mt-1">Products past expiry date</p>
+              </div>
+
+              <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
+                <h3 className="text-md font-semibold text-white mb-2">Total Batches</h3>
+                <div className="text-3xl font-bold text-purple-400">
+                  {new Set(products.map((p) => p.batchNumber).filter(Boolean)).size}
+                </div>
+                <p className="text-sm text-gray-400 mt-1">Active batch numbers</p>
               </div>
             </div>
 
@@ -1252,48 +1918,65 @@ const InventoryManagement = () => {
                         Stock
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                        Warehouse
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                         Status
                       </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-purple-700/20">
-                    {products.map((product) => (
-                      <tr key={product.id} className="hover:bg-purple-900/10">
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{product.name}</td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{product.batchNumber}</td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{product.expiryDate}</td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
-                          {product.stock} {product.unit}
-                        </td>
-                        <td className="px-4 py-3 whitespace-nowrap">
-                          <span
-                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                              new Date(product.expiryDate) > new Date(new Date().setMonth(new Date().getMonth() + 6))
-                                ? "bg-green-800/30 text-green-300"
-                                : new Date(product.expiryDate) > new Date()
-                                  ? "bg-yellow-800/30 text-yellow-300"
-                                  : "bg-red-800/30 text-red-300"
-                            }`}
-                          >
-                            {new Date(product.expiryDate) > new Date(new Date().setMonth(new Date().getMonth() + 6))
-                              ? "Valid"
-                              : new Date(product.expiryDate) > new Date()
-                                ? "Expiring Soon"
-                                : "Expired"}
-                          </span>
-                        </td>
-                      </tr>
-                    ))}
+                    {products
+                      .filter((p) => p.batchNumber && p.expiryDate)
+                      .sort((a, b) => new Date(a.expiryDate) - new Date(b.expiryDate))
+                      .map((product) => {
+                        const today = new Date()
+                        const expiryDate = new Date(product.expiryDate)
+                        const thirtyDaysFromNow = new Date()
+                        thirtyDaysFromNow.setDate(today.getDate() + 30)
+
+                        let status = "Valid"
+                        if (expiryDate < today) {
+                          status = "Expired"
+                        } else if (expiryDate <= thirtyDaysFromNow) {
+                          status = "Expiring Soon"
+                        }
+
+                        return (
+                          <tr key={product.id} className="hover:bg-purple-900/10">
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{product.name}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{product.batchNumber}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{product.expiryDate}</td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
+                              {product.stock} {product.unit}
+                            </td>
+                            <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{product.warehouse}</td>
+                            <td className="px-4 py-3 whitespace-nowrap">
+                              <span
+                                className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                                  status === "Valid"
+                                    ? "bg-green-800/30 text-green-300"
+                                    : status === "Expiring Soon"
+                                      ? "bg-yellow-800/30 text-yellow-300"
+                                      : "bg-red-800/30 text-red-300"
+                                }`}
+                              >
+                                {status}
+                              </span>
+                            </td>
+                          </tr>
+                        )
+                      })}
                   </tbody>
                 </table>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
 
         {/* Reorder Levels */}
         {activeTab === "reorder" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+          <div className="animate-fadeIn">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
               <div>
                 <h2 className="text-2xl font-semibold text-white">Reorder Levels</h2>
@@ -1342,6 +2025,9 @@ const InventoryManagement = () => {
                         Reorder Level
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                        Warehouse
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                         Status
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
@@ -1366,6 +2052,7 @@ const InventoryManagement = () => {
                         <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
                           {product.reorderLevel} {product.unit}
                         </td>
+                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{product.warehouse}</td>
                         <td className="px-4 py-3 whitespace-nowrap">
                           <span
                             className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
@@ -1388,50 +2075,27 @@ const InventoryManagement = () => {
                 </table>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
 
         {/* Inventory Valuation */}
         {activeTab === "valuation" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+          <div className="animate-fadeIn">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
               <div>
                 <h2 className="text-2xl font-semibold text-white">Inventory Valuation</h2>
                 <p className="text-gray-400 mt-1">Support FIFO, LIFO, and Weighted Average methods</p>
               </div>
               <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-                <Select.Root value={selectedValuationMethod} onValueChange={setSelectedValuationMethod}>
-                  <Select.Trigger className="px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500 flex justify-between items-center">
-                    <Select.Value />
-                    <Select.Icon>
-                      <ChevronDown size={16} />
-                    </Select.Icon>
-                  </Select.Trigger>
-                  <Select.Portal>
-                    <Select.Content className="bg-gray-800 border border-purple-700/30 rounded-md overflow-hidden">
-                      <Select.Viewport>
-                        <Select.Item
-                          value="FIFO"
-                          className="px-3 py-2 text-white hover:bg-purple-700/30 cursor-pointer outline-none"
-                        >
-                          <Select.ItemText>FIFO</Select.ItemText>
-                        </Select.Item>
-                        <Select.Item
-                          value="LIFO"
-                          className="px-3 py-2 text-white hover:bg-purple-700/30 cursor-pointer outline-none"
-                        >
-                          <Select.ItemText>LIFO</Select.ItemText>
-                        </Select.Item>
-                        <Select.Item
-                          value="Weighted Average"
-                          className="px-3 py-2 text-white hover:bg-purple-700/30 cursor-pointer outline-none"
-                        >
-                          <Select.ItemText>Weighted Average</Select.ItemText>
-                        </Select.Item>
-                      </Select.Viewport>
-                    </Select.Content>
-                  </Select.Portal>
-                </Select.Root>
+                <select
+                  className="px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                  value={selectedValuationMethod}
+                  onChange={(e) => setSelectedValuationMethod(e.target.value)}
+                >
+                  <option value="FIFO">FIFO</option>
+                  <option value="LIFO">LIFO</option>
+                  <option value="Weighted Average">Weighted Average</option>
+                </select>
                 <button className="flex items-center justify-center px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600 text-white">
                   <Download size={16} className="mr-2" />
                   Export
@@ -1442,7 +2106,9 @@ const InventoryManagement = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
                 <h3 className="text-md font-semibold text-white mb-2">Total Inventory Value</h3>
-                <div className="text-3xl font-bold text-purple-400">₹ 1,245,750</div>
+                <div className="text-3xl font-bold text-purple-400">
+                  ₹ {calculateTotalInventoryValue().toLocaleString()}
+                </div>
                 <p className="text-sm text-gray-400 mt-1">Based on {selectedValuationMethod} method</p>
               </div>
 
@@ -1454,7 +2120,12 @@ const InventoryManagement = () => {
 
               <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
                 <h3 className="text-md font-semibold text-white mb-2">Average Item Value</h3>
-                <div className="text-3xl font-bold text-green-400">₹ 4,950</div>
+                <div className="text-3xl font-bold text-green-400">
+                  ₹{" "}
+                  {Math.round(
+                    calculateTotalInventoryValue() / products.reduce((sum, p) => sum + p.stock, 0),
+                  ).toLocaleString()}
+                </div>
                 <p className="text-sm text-gray-400 mt-1">Per unit average</p>
               </div>
             </div>
@@ -1479,12 +2150,14 @@ const InventoryManagement = () => {
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                         Method
                       </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                        Warehouse
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-purple-700/20">
                     {products.map((product) => {
-                      const unitCost = Math.floor(Math.random() * 10000) + 1000
-                      const totalValue = unitCost * product.stock
+                      const totalValue = product.price * product.stock
 
                       return (
                         <tr key={product.id} className="hover:bg-purple-900/10">
@@ -1500,12 +2173,13 @@ const InventoryManagement = () => {
                             {product.stock} {product.unit}
                           </td>
                           <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
-                            ₹ {unitCost.toLocaleString()}
+                            ₹ {product.price.toLocaleString()}
                           </td>
                           <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
                             ₹ {totalValue.toLocaleString()}
                           </td>
                           <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{product.valuationMethod}</td>
+                          <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{product.warehouse}</td>
                         </tr>
                       )
                     })}
@@ -1513,12 +2187,12 @@ const InventoryManagement = () => {
                 </table>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
 
         {/* Stock Analysis */}
         {activeTab === "analysis" && (
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
+          <div className="animate-fadeIn">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
               <div>
                 <h2 className="text-2xl font-semibold text-white">Stock Analysis</h2>
@@ -1539,19 +2213,25 @@ const InventoryManagement = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
                 <h3 className="text-md font-semibold text-white mb-2">Fast Moving Items</h3>
-                <div className="text-3xl font-bold text-green-400">3</div>
+                <div className="text-3xl font-bold text-green-400">
+                  {products.filter((p) => p.movement === "High").length}
+                </div>
                 <p className="text-sm text-gray-400 mt-1">High turnover products</p>
               </div>
 
               <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
                 <h3 className="text-md font-semibold text-white mb-2">Medium Moving Items</h3>
-                <div className="text-3xl font-bold text-yellow-400">3</div>
+                <div className="text-3xl font-bold text-yellow-400">
+                  {products.filter((p) => p.movement === "Medium").length}
+                </div>
                 <p className="text-sm text-gray-400 mt-1">Average turnover products</p>
               </div>
 
               <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
                 <h3 className="text-md font-semibold text-white mb-2">Slow/Dead Stock</h3>
-                <div className="text-3xl font-bold text-red-400">2</div>
+                <div className="text-3xl font-bold text-red-400">
+                  {products.filter((p) => p.movement === "Low").length}
+                </div>
                 <p className="text-sm text-gray-400 mt-1">Low turnover products</p>
               </div>
             </div>
@@ -1575,6 +2255,9 @@ const InventoryManagement = () => {
                       </th>
                       <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
                         Movement
+                      </th>
+                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                        Category
                       </th>
                     </tr>
                   </thead>
@@ -1619,6 +2302,7 @@ const InventoryManagement = () => {
                               {product.movement}
                             </span>
                           </td>
+                          <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{product.category}</td>
                         </tr>
                       )
                     })}
@@ -1626,13 +2310,11 @@ const InventoryManagement = () => {
                 </table>
               </div>
             </div>
-          </motion.div>
+          </div>
         )}
       </div>
-
-     
     </div>
   )
 }
 
-export default InventoryManagement
+export default Inventory

@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { CheckCircle2, Clock, XCircle, Building, Wallet, AlertCircle, Landmark } from "lucide-react";
 import Nav from "../Nav";
+import RestoNav from "@/Restaurant/RestoNav";
 
 export default function ExpenseManager() {
   
@@ -25,7 +26,7 @@ export default function ExpenseManager() {
       </div>
 
       <div className="relative z-10 flex">
-        <Nav />
+        <RestoNav/>
 
         
         <div className="flex-1 p-8">

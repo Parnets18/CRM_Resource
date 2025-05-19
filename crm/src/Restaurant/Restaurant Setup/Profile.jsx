@@ -1,13 +1,104 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { motion } from "framer-motion";
-import { Utensils, Clock, MapPin, Star, Users, Phone, Globe, Menu, Calendar, FileText, IndianRupee, CreditCard } from "lucide-react";
-import RestoNav from "../RestoNav";
+
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Utensils, MapPin, Phone, Menu, FileText, IndianRupee, CreditCard, Save, Trash2 } from "lucide-react"
+import RestoNav from "../RestoNav"
+import { useState, useEffect } from "react"
 
 export default function Profile() {
+  // Initial state with empty values for all form fields
+  const initialFormState = {
+    // Business Information
+    legalName: "",
+    tradeName: "",
+    gstin: "",
+    pan: "",
+    fssai: "",
+    ownerAadhaar: "",
+    businessType: "",
+
+    // Restaurant Details
+    name: "",
+    cuisine: "",
+    description: "",
+    rating: "",
+
+    // Contact Information
+    phone: "",
+    email: "",
+    website: "",
+
+    // Location
+    address: "",
+    city: "",
+    zip: "",
+    country: "",
+
+    // Financial Information
+    bankName: "",
+    accountNumber: "",
+    ifsc: "",
+    upiId: "",
+  }
+
+  // State to store form data
+  const [formData, setFormData] = useState(initialFormState)
+
+  // Function to handle input changes
+  const handleInputChange = (e) => {
+    const { id, value } = e.target
+    setFormData((prevData) => ({
+      ...prevData,
+      [id]: value,
+    }))
+
+    // Log the change to console
+    console.log(`Field "${id}" updated to: ${value}`)
+  }
+
+  // Function to save data
+  const handleSave = () => {
+    // Save to localStorage
+    localStorage.setItem("restaurantProfileData", JSON.stringify(formData))
+
+    // Log to console
+    console.log("Data saved successfully:", formData)
+
+    // You could also implement API calls here
+    alert("Profile data saved successfully!")
+  }
+
+  // Function to delete data
+  const handleDelete = () => {
+    // Clear from localStorage
+    localStorage.removeItem("restaurantProfileData")
+
+    // Reset form
+    setFormData(initialFormState)
+
+    // Log to console
+    console.log("Data deleted successfully")
+
+    alert("Profile data deleted successfully!")
+  }
+
+  // Load saved data on component mount
+  useEffect(() => {
+    const savedData = localStorage.getItem("restaurantProfileData")
+    if (savedData) {
+      try {
+        const parsedData = JSON.parse(savedData)
+        setFormData(parsedData)
+        console.log("Loaded saved data:", parsedData)
+      } catch (error) {
+        console.error("Error loading saved data:", error)
+      }
+    }
+  }, [])
+
   return (
     <div className="min-h-screen bg-black lg:ml-64">
       <div className="absolute inset-0 z-0">
@@ -16,8 +107,8 @@ export default function Profile() {
       </div>
 
       <div className="relative z-10 flex">
-        <RestoNav/>
-        
+        <RestoNav />
+
         <div className="flex-1 p-8">
           <div className="flex justify-between items-center mb-8">
             <div>
@@ -48,6 +139,8 @@ export default function Profile() {
                       id="legalName"
                       placeholder="Enter legal name"
                       className="bg-gray-900/50 border-gray-700 text-white"
+                      value={formData.legalName}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="space-y-2">
@@ -58,6 +151,8 @@ export default function Profile() {
                       id="tradeName"
                       placeholder="Name displayed to customers"
                       className="bg-gray-900/50 border-gray-700 text-white"
+                      value={formData.tradeName}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
@@ -71,6 +166,8 @@ export default function Profile() {
                       id="gstin"
                       placeholder="22AAAAA0000A1Z5"
                       className="bg-gray-900/50 border-gray-700 text-white"
+                      value={formData.gstin}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="space-y-2">
@@ -81,6 +178,8 @@ export default function Profile() {
                       id="pan"
                       placeholder="AAAAA0000A"
                       className="bg-gray-900/50 border-gray-700 text-white"
+                      value={formData.pan}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="space-y-2">
@@ -91,6 +190,8 @@ export default function Profile() {
                       id="fssai"
                       placeholder="12345678901234"
                       className="bg-gray-900/50 border-gray-700 text-white"
+                      value={formData.fssai}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
@@ -104,6 +205,8 @@ export default function Profile() {
                       id="ownerAadhaar"
                       placeholder="1234 5678 9012"
                       className="bg-gray-900/50 border-gray-700 text-white"
+                      value={formData.ownerAadhaar}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="space-y-2">
@@ -113,6 +216,8 @@ export default function Profile() {
                     <select
                       id="businessType"
                       className="flex h-10 w-full bg-gray-900/50 border border-gray-700 rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      value={formData.businessType}
+                      onChange={handleInputChange}
                     >
                       <option value="">Select business type</option>
                       <option value="proprietorship">Proprietorship</option>
@@ -145,6 +250,8 @@ export default function Profile() {
                       id="name"
                       placeholder="Enter restaurant name"
                       className="bg-gray-900/50 border-gray-700 text-white"
+                      value={formData.name}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="space-y-2">
@@ -155,6 +262,8 @@ export default function Profile() {
                       id="cuisine"
                       placeholder="e.g. Italian, Mexican"
                       className="bg-gray-900/50 border-gray-700 text-white"
+                      value={formData.cuisine}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="space-y-2">
@@ -165,6 +274,8 @@ export default function Profile() {
                       id="description"
                       placeholder="Brief description of your restaurant"
                       className="bg-gray-900/50 border-gray-700 text-white h-24"
+                      value={formData.description}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="space-y-2">
@@ -179,6 +290,8 @@ export default function Profile() {
                       step="0.1"
                       placeholder="4.5"
                       className="bg-gray-900/50 border-gray-700 text-white"
+                      value={formData.rating}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </div>
@@ -205,6 +318,8 @@ export default function Profile() {
                       id="phone"
                       placeholder="(123) 456-7890"
                       className="bg-gray-900/50 border-gray-700 text-white"
+                      value={formData.phone}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="space-y-2">
@@ -216,6 +331,8 @@ export default function Profile() {
                       type="email"
                       placeholder="contact@restaurant.com"
                       className="bg-gray-900/50 border-gray-700 text-white"
+                      value={formData.email}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="space-y-2">
@@ -226,6 +343,8 @@ export default function Profile() {
                       id="website"
                       placeholder="https://yourrestaurant.com"
                       className="bg-gray-900/50 border-gray-700 text-white"
+                      value={formData.website}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </form>
@@ -249,6 +368,8 @@ export default function Profile() {
                       id="address"
                       placeholder="123 Main Street"
                       className="bg-gray-900/50 border-gray-700 text-white"
+                      value={formData.address}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
@@ -260,6 +381,8 @@ export default function Profile() {
                         id="city"
                         placeholder="New York"
                         className="bg-gray-900/50 border-gray-700 text-white"
+                        value={formData.city}
+                        onChange={handleInputChange}
                       />
                     </div>
                     <div className="space-y-2">
@@ -270,6 +393,8 @@ export default function Profile() {
                         id="zip"
                         placeholder="10001"
                         className="bg-gray-900/50 border-gray-700 text-white"
+                        value={formData.zip}
+                        onChange={handleInputChange}
                       />
                     </div>
                   </div>
@@ -281,6 +406,8 @@ export default function Profile() {
                       id="country"
                       placeholder="United States"
                       className="bg-gray-900/50 border-gray-700 text-white"
+                      value={formData.country}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </form>
@@ -307,6 +434,8 @@ export default function Profile() {
                       id="bankName"
                       placeholder="State Bank of India"
                       className="bg-gray-900/50 border-gray-700 text-white"
+                      value={formData.bankName}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="space-y-2">
@@ -317,6 +446,8 @@ export default function Profile() {
                       id="accountNumber"
                       placeholder="1234567890"
                       className="bg-gray-900/50 border-gray-700 text-white"
+                      value={formData.accountNumber}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="space-y-2">
@@ -327,6 +458,8 @@ export default function Profile() {
                       id="ifsc"
                       placeholder="SBIN0001234"
                       className="bg-gray-900/50 border-gray-700 text-white"
+                      value={formData.ifsc}
+                      onChange={handleInputChange}
                     />
                   </div>
                   <div className="space-y-2">
@@ -337,13 +470,13 @@ export default function Profile() {
                       id="upiId"
                       placeholder="restaurant@upi"
                       className="bg-gray-900/50 border-gray-700 text-white"
+                      value={formData.upiId}
+                      onChange={handleInputChange}
                     />
                   </div>
                 </form>
               </CardContent>
             </Card>
-
-            
           </div>
 
           {/* Document Upload Section */}
@@ -359,55 +492,37 @@ export default function Profile() {
                 <div className="space-y-2">
                   <Label className="text-gray-300">GST Certificate</Label>
                   <div className="flex items-center gap-2">
-                    <Input
-                      type="file"
-                      className="bg-gray-900/50 border-gray-700 text-white"
-                    />
+                    <Input type="file" className="bg-gray-900/50 border-gray-700 text-white" />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <Label className="text-gray-300">PAN Card</Label>
                   <div className="flex items-center gap-2">
-                    <Input
-                      type="file"
-                      className="bg-gray-900/50 border-gray-700 text-white"
-                    />
+                    <Input type="file" className="bg-gray-900/50 border-gray-700 text-white" />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <Label className="text-gray-300">FSSAI License</Label>
                   <div className="flex items-center gap-2">
-                    <Input
-                      type="file"
-                      className="bg-gray-900/50 border-gray-700 text-white"
-                    />
+                    <Input type="file" className="bg-gray-900/50 border-gray-700 text-white" />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <Label className="text-gray-300">Owner Aadhaar</Label>
                   <div className="flex items-center gap-2">
-                    <Input
-                      type="file"
-                      className="bg-gray-900/50 border-gray-700 text-white"
-                    />
+                    <Input type="file" className="bg-gray-900/50 border-gray-700 text-white" />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <Label className="text-gray-300">Cancelled Cheque</Label>
                   <div className="flex items-center gap-2">
-                    <Input
-                      type="file"
-                      className="bg-gray-900/50 border-gray-700 text-white"
-                    />
+                    <Input type="file" className="bg-gray-900/50 border-gray-700 text-white" />
                   </div>
                 </div>
                 <div className="space-y-2">
                   <Label className="text-gray-300">Rental Agreement</Label>
                   <div className="flex items-center gap-2">
-                    <Input
-                      type="file"
-                      className="bg-gray-900/50 border-gray-700 text-white"
-                    />
+                    <Input type="file" className="bg-gray-900/50 border-gray-700 text-white" />
                   </div>
                 </div>
               </div>
@@ -415,15 +530,21 @@ export default function Profile() {
           </Card>
 
           <div className="flex justify-end gap-4 mt-8">
-            <Button variant="outline" className="text-gray-300 border-gray-700">
-              Cancel
+            <Button
+              variant="outline"
+              className="text-gray-300 border-gray-700 flex items-center gap-2"
+              onClick={handleDelete}
+            >
+              <Trash2 className="w-4 h-4" />
+              Delete Data
             </Button>
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+            <Button className="bg-blue-600 hover:bg-blue-700 text-white flex items-center gap-2" onClick={handleSave}>
+              <Save className="w-4 h-4" />
               Save Changes
             </Button>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
