@@ -27,7 +27,7 @@ export default function PurchaseOfficer() {
   ];
 
   return (
-    <div className="min-h-screen bg-black lg:ml-64">
+    <div className="min-h-screen bg-white lg:ml-64">
      
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
@@ -42,8 +42,8 @@ export default function PurchaseOfficer() {
           
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-white">Procurement Dashboard</h2>
-              <p className="text-gray-400">Material procurement management</p>
+              <h2 className="text-2xl font-bold text-black">Procurement Dashboard</h2>
+              <p className="text-black">Material procurement management</p>
             </div>
             <Button variant="ghost" size="icon" className="text-gray-300 hover:bg-gray-900/50">
               <Bell className="w-5 h-5" />
@@ -54,19 +54,19 @@ export default function PurchaseOfficer() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             
-            <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+            <Card className="    backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="text-white">Quotation Requests</CardTitle>
+                <CardTitle className="text-black">Quotation Requests</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {quotationRequests.map((request) => (
                   <motion.div 
                     key={request.id}
                     whileHover={{ x: 5 }}
-                    className="flex items-center justify-between p-3 rounded-lg bg-gray-900/50"
+                    className="flex items-center justify-between p-3 rounded-lg bg-gray-100"
                   >
                     <div>
-                      <p className="text-sm font-medium text-gray-300">{request.vendor}</p>
+                      <p className="text-sm font-medium text-black">{request.vendor}</p>
                       <p className="text-xs text-gray-500">{request.items}</p>
                     </div>
                     <div className="flex gap-2">
@@ -87,20 +87,20 @@ export default function PurchaseOfficer() {
             </Card>
 
           
-            <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+            <Card className="  backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="text-white">Purchase Orders</CardTitle>
+                <CardTitle className="text-black">Purchase Orders</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {purchaseOrders.map((order) => (
                   <motion.div 
                     key={order.id}
                     whileHover={{ x: 5 }}
-                    className="flex items-center justify-between p-3 rounded-lg bg-gray-900/50"
+                    className="flex items-center justify-between p-3 bg-gray-100 rounded-lg"
                   >
                     <div>
-                      <p className="text-sm font-medium text-gray-300">{order.poNumber}</p>
-                      <p className="text-xs text-gray-500">{order.vendor} - {order.amount}</p>
+                      <p className="text-sm font-medium ">{order.poNumber}</p>
+                      <p className="text-xs text-black">{order.vendor} - {order.amount}</p>
                     </div>
                     <div className="flex gap-2">
                       <Button size="sm" className="bg-green-600 hover:bg-green-700">
@@ -116,20 +116,20 @@ export default function PurchaseOfficer() {
 
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+            <Card className="border border-purple-500/20  backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="text-white">Goods Received Notes</CardTitle>
+                <CardTitle className="text-black">Goods Received Notes</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {goodsReceived.map((grn) => (
                   <motion.div 
                     key={grn.id}
                     whileHover={{ x: 5 }}
-                    className="flex items-center justify-between p-3 rounded-lg bg-gray-900/50"
+                    className="flex items-center justify-between p-3 rounded-lg bg-gray-100"
                   >
                     <div>
-                      <p className="text-sm font-medium text-gray-300">{grn.grnNumber}</p>
-                      <p className="text-xs text-gray-500">{grn.items}</p>
+                      <p className="text-sm font-medium text-black">{grn.grnNumber}</p>
+                      <p className="text-xs text-black">{grn.items}</p>
                     </div>
                     <div className="flex items-center gap-2">
                       {grn.qualityStatus === 'approved' ? (
@@ -147,20 +147,20 @@ export default function PurchaseOfficer() {
             </Card>
 
             
-            <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+            <Card className="border   backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="text-white">Purchase Register</CardTitle>
+                <CardTitle className="text-black">Purchase Register</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {purchaseRegister.map((entry) => (
                   <motion.div 
                     key={entry.id}
                     whileHover={{ x: 5 }}
-                    className="flex items-center justify-between p-3 rounded-lg bg-gray-900/50"
+                    className="flex items-center justify-between p-3 rounded-lg bg-gray-100"
                   >
                     <div>
-                      <p className="text-sm font-medium text-gray-300">{entry.orderNumber}</p>
-                      <p className="text-xs text-gray-500">{entry.vendor} - {entry.amount}</p>
+                      <p className="text-sm font-medium text-black">{entry.orderNumber}</p>
+                      <p className="text-xs text-black">{entry.vendor} - {entry.amount}</p>
                     </div>
                     <div className="flex gap-2">
                       <Button size="sm" variant="outline">Update</Button>

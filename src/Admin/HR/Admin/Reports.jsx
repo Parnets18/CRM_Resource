@@ -8,10 +8,10 @@ import Nav from "../../Nav";
 
 export default function ReportsPage() {
   return (
-    <div className="min-h-screen bg-black lg:ml-64">
+    <div className="min-h-screen bg-white lg:ml-64">
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
-        <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-200/30 via-gray-100 to-white"></div>
+        <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-300/10 to-transparent"></div>
       </div>
 
       <div className="relative z-10 flex">
@@ -24,16 +24,16 @@ export default function ReportsPage() {
             transition={{ duration: 0.3 }}
             className="max-w-6xl mx-auto"
           >
-            <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+            <Card className="border border-purple-500/20 bg-white/80 backdrop-blur-sm">
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-white">System Reports</CardTitle>
+                  <CardTitle className="text-black">System Reports</CardTitle>
                   <div className="flex items-center gap-4">
                     <Select>
-                      <SelectTrigger className="bg-gray-900/50 border-gray-700 text-white w-40">
+                      <SelectTrigger className="bg-gray-100/50 border-gray-300 text-black w-40">
                         <SelectValue placeholder="Filter by type" />
                       </SelectTrigger>
-                      <SelectContent className="bg-gray-900 border-gray-700 text-white">
+                      <SelectContent className="bg-white border-gray-300 text-black">
                         <SelectItem value="all">All Reports</SelectItem>
                         <SelectItem value="financial">Financial</SelectItem>
                         <SelectItem value="attendance">Attendance</SelectItem>
@@ -42,7 +42,7 @@ export default function ReportsPage() {
                       </SelectContent>
                     </Select>
                     <Input 
-                      className="bg-gray-900/50 border-gray-700 text-white w-64" 
+                      className="bg-gray-100/50 border-gray-300 text-black w-64" 
                       placeholder="Search reports..." 
                     />
                   </div>
@@ -52,19 +52,19 @@ export default function ReportsPage() {
                 <div className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                     <div className="space-y-2">
-                      <Label className="text-gray-300">Date Range</Label>
+                      <Label className="text-gray-700">Date Range</Label>
                       <div className="flex gap-2">
-                        <Input type="date" className="bg-gray-900/50 border-gray-700 text-white" />
-                        <Input type="date" className="bg-gray-900/50 border-gray-700 text-white" />
+                        <Input type="date" className="bg-gray-100/50 border-gray-300 text-black" />
+                        <Input type="date" className="bg-gray-100/50 border-gray-300 text-black" />
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <Label className="text-gray-300">Report Status</Label>
+                      <Label className="text-gray-700">Report Status</Label>
                       <Select>
-                        <SelectTrigger className="bg-gray-900/50 border-gray-700 text-white">
+                        <SelectTrigger className="bg-gray-100/50 border-gray-300 text-black">
                           <SelectValue placeholder="All Statuses" />
                         </SelectTrigger>
-                        <SelectContent className="bg-gray-900 border-gray-700 text-white">
+                        <SelectContent className="bg-white border-gray-300 text-black">
                           <SelectItem value="all">All Statuses</SelectItem>
                           <SelectItem value="complete">Complete</SelectItem>
                           <SelectItem value="pending">Pending</SelectItem>
@@ -72,37 +72,35 @@ export default function ReportsPage() {
                         </SelectContent>
                       </Select>
                     </div>
-+                   </div>  
+                  </div>  
 
-                  
-
-                  <div className="border border-gray-800 rounded-lg overflow-hidden">
+                  <div className="border border-gray-200 rounded-lg overflow-hidden">
                     <table className="w-full">
-                      <thead className="bg-gray-900/50">
+                      <thead className="bg-gray-100/50">
                         <tr>
-                          <th className="px-6 py-3 text-left text-gray-300 font-medium">Report Name</th>
-                          <th className="px-6 py-3 text-left text-gray-300 font-medium">Type</th>
-                          <th className="px-6 py-3 text-left text-gray-300 font-medium">Period</th>
-                          <th className="px-6 py-3 text-left text-gray-300 font-medium">Generated By</th>
-                          <th className="px-6 py-3 text-left text-gray-300 font-medium">Status</th>
-                          <th className="px-6 py-3 text-right text-gray-300 font-medium">Actions</th>
+                          <th className="px-6 py-3 text-left text-gray-700 font-medium">Report Name</th>
+                          <th className="px-6 py-3 text-left text-gray-700 font-medium">Type</th>
+                          <th className="px-6 py-3 text-left text-gray-700 font-medium">Period</th>
+                          <th className="px-6 py-3 text-left text-gray-700 font-medium">Generated By</th>
+                          <th className="px-6 py-3 text-left text-gray-700 font-medium">Status</th>
+                          <th className="px-6 py-3 text-right text-gray-700 font-medium">Actions</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-gray-800">
+                      <tbody className="divide-y divide-gray-200">
                         {[1, 2, 3, 4, 5].map((item) => (
-                          <tr key={item} className="hover:bg-gray-900/30 transition-colors">
-                            <td className="px-6 py-4 text-gray-300">Q{item} 2024 Financial Report</td>
+                          <tr key={item} className="hover:bg-purple-100/30 transition-colors">
+                            <td className="px-6 py-4 text-gray-700">Q{item} 2024 Financial Report</td>
                             <td className="px-6 py-4">
-                              <span className="inline-block px-2 py-1 text-xs bg-purple-500/20 text-purple-300 rounded">
+                              <span className="inline-block px-2 py-1 text-xs bg-purple-500/10 text-purple-700 rounded">
                                 {['Financial', 'Attendance', 'HR', 'System'][item % 4]}
                               </span>
                             </td>
-                            <td className="px-6 py-4 text-gray-400">Jan 2024 - Mar 2024</td>
-                            <td className="px-6 py-4 text-gray-400">admin@company.com</td>
+                            <td className="px-6 py-4 text-gray-500">Jan 2024 - Mar 2024</td>
+                            <td className="px-6 py-4 text-gray-500">admin@company.com</td>
                             <td className="px-6 py-4">
                               <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                                item % 3 === 0 ? 'bg-green-500/20 text-green-400' : 
-                                item % 3 === 1 ? 'bg-yellow-500/20 text-yellow-400' : 'bg-red-500/20 text-red-400'
+                                item % 3 === 0 ? 'bg-green-500/10 text-green-700' : 
+                                item % 3 === 1 ? 'bg-yellow-500/10 text-yellow-700' : 'bg-red-500/10 text-red-700'
                               }`}>
                                 {['Complete', 'Pending', 'Failed'][item % 3]}
                               </span>
@@ -110,7 +108,7 @@ export default function ReportsPage() {
                             <td className="px-6 py-4 text-right">
                               <Button 
                                 variant="ghost" 
-                                className="text-purple-400 hover:bg-purple-500/10"
+                                className="text-purple-700 hover:bg-purple-500/10"
                                 disabled={item % 3 !== 0}
                               >
                                 Download
@@ -123,20 +121,20 @@ export default function ReportsPage() {
                   </div>
 
                   <div className="flex items-center justify-between">
-                    <div className="text-gray-400 text-sm">
+                    <div className="text-gray-500 text-sm">
                       Showing 1 to 10 of 45 results
                     </div>
                     <div className="flex gap-2">
-                      <Button variant="outline" className="text-gray-300 border-gray-700">
+                      <Button variant="outline" className="text-gray-700 border-gray-300">
                         Previous
                       </Button>
-                      <Button variant="outline" className="text-gray-300 border-gray-700">
+                      <Button variant="outline" className="text-gray-700 border-gray-300">
                         Next
                       </Button>
                     </div>
                   </div>
 
-                  <div className="border-t border-gray-800 pt-6">
+                  <div className="border-t border-gray-200 pt-6">
                     <Button 
                       className="bg-purple-600 hover:bg-purple-700 w-full md:w-auto"
                     >
@@ -150,6 +148,5 @@ export default function ReportsPage() {
         </div>
       </div>
     </div>
-    
   );
 }

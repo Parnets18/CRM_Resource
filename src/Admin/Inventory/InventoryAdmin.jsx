@@ -22,53 +22,49 @@ export default function Admin() {
   ];
 
   return (
-    <div className="min-h-screen bg-black lg:ml-64">
+    <div className="min-h-screen bg-white lg:ml-64">
  
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
-        <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-200/30 via-gray-100 to-white"></div>
+        <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-300/10 to-transparent"></div>
       </div>
 
       <div className="relative z-10 flex">
         <Nav />
 
-        
         <div className="flex-1 p-8 mt-16 md:mt-0">
           
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-white">Administration Dashboard</h2>
-              <p className="text-gray-400">System configuration and management</p>
+              <h2 className="text-2xl font-bold text-black">Inventory Administration</h2>
+              <p className="text-gray-600">Manage warehouses, suppliers, and stock</p>
             </div>
-            <Button variant="ghost" size="icon" className="text-gray-300 hover:bg-gray-900/50">
+            <Button variant="ghost" size="icon" className="text-gray-700 hover:bg-gray-100/50">
               <Bell className="w-5 h-5" />
             </Button>
           </div>
 
-     
-        
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            
-            <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+            <Card className="border border-purple-500/20 bg-white/80 backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="text-white">Inventory Reorder Levels</CardTitle>
+                <CardTitle className="text-black">Inventory Reorder Levels</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {inventoryItems.map((item) => (
                   <motion.div 
                     key={item.id}
                     whileHover={{ x: 5 }}
-                    className="flex items-center justify-between p-3 rounded-lg bg-gray-900/50"
+                    className="flex items-center justify-between p-3 rounded-lg bg-gray-100/50"
                   >
                     <div>
-                      <p className="text-sm font-medium text-gray-300">{item.name}</p>
+                      <p className="text-sm font-medium text-gray-700">{item.name}</p>
                       <p className="text-xs text-gray-500">Current Stock: {item.currentStock}</p>
                     </div>
                     <div className="flex items-center gap-2">
                       <input
                         type="number"
                         defaultValue={item.reorderLevel}
-                        className="w-20 p-1 rounded bg-gray-800 border border-gray-700 text-white text-center"
+                        className="w-20 p-1 rounded bg-gray-200 border border-gray-300 text-black text-center"
                       />
                       <Button size="sm" className="bg-purple-600 hover:bg-purple-700">
                         Save
@@ -79,10 +75,9 @@ export default function Admin() {
               </CardContent>
             </Card>
 
-           
-            <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+            <Card className="border border-purple-500/20 bg-white/80 backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="text-white">Warehouse Management</CardTitle>
+                <CardTitle className="text-black">Warehouse Management</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-4">
@@ -90,7 +85,7 @@ export default function Admin() {
                     <input
                       type="text"
                       placeholder="Warehouse Name"
-                      className="flex-1 p-2 rounded bg-gray-900/50 border border-gray-700 text-white"
+                      className="flex-1 p-2 rounded bg-gray-100/50 border border-gray-300 text-black"
                     />
                     <Button className="bg-purple-600 hover:bg-purple-700">
                       <Plus className="w-4 h-4 mr-2" /> Add
@@ -98,9 +93,9 @@ export default function Admin() {
                   </form>
                   
                   {warehouses.map((warehouse) => (
-                    <div key={warehouse.id} className="flex items-center justify-between p-3 rounded-lg bg-gray-900/50">
+                    <div key={warehouse.id} className="flex items-center justify-between p-3 rounded-lg bg-gray-100/50">
                       <div>
-                        <p className="text-sm font-medium text-gray-300">{warehouse.name}</p>
+                        <p className="text-sm font-medium text-gray-700">{warehouse.name}</p>
                         <p className="text-xs text-gray-500">{warehouse.location} | {warehouse.capacity}</p>
                       </div>
                       <Button size="sm" variant="destructive">
@@ -113,23 +108,22 @@ export default function Admin() {
             </Card>
           </div>
 
-      
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+            <Card className="border border-purple-500/20 bg-white/80 backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="text-white">Supplier Management</CardTitle>
+                <CardTitle className="text-black">Supplier Management</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <form className="flex flex-col gap-3">
                   <input
                     type="text"
                     placeholder="Supplier Name"
-                    className="w-full p-2 rounded bg-gray-900/50 border border-gray-700 text-white"
+                    className="w-full p-2 rounded bg-gray-100/50 border border-gray-300 text-black"
                   />
                   <input
                     type="email"
                     placeholder="Contact Email"
-                    className="w-full p-2 rounded bg-gray-900/50 border border-gray-700 text-white"
+                    className="w-full p-2 rounded bg-gray-100/50 border border-gray-300 text-black"
                   />
                   <Button className="bg-purple-600 hover:bg-purple-700">
                     <Plus className="w-4 h-4 mr-2" /> Add Supplier
@@ -138,9 +132,9 @@ export default function Admin() {
 
                 <div className="space-y-3">
                   {suppliers.map((supplier) => (
-                    <div key={supplier.id} className="flex items-center justify-between p-3 rounded-lg bg-gray-900/50">
+                    <div key={supplier.id} className="flex items-center justify-between p-3 rounded-lg bg-gray-100/50">
                       <div>
-                        <p className="text-sm font-medium text-gray-300">{supplier.name}</p>
+                        <p className="text-sm font-medium text-gray-700">{supplier.name}</p>
                         <p className="text-xs text-gray-500">{supplier.contact}</p>
                       </div>
                       <Button size="sm" variant="destructive">
@@ -152,10 +146,9 @@ export default function Admin() {
               </CardContent>
             </Card>
 
-           
-            <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+            <Card className="border border-purple-500/20 bg-white/80 backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="text-white">System Settings</CardTitle>
+                <CardTitle className="text-black">System Settings</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <Button className="w-full bg-purple-600 hover:bg-purple-700">

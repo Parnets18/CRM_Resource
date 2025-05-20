@@ -23,52 +23,50 @@ export default function SiteProject() {
   ];
 
   return (
-    <div className="min-h-screen bg-black lg:ml-64">
+    <div className="min-h-screen bg-white lg:ml-64">
       
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
-        <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-200/30 via-gray-100 to-white"></div>
+        <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-300/10 to-transparent"></div>
       </div>
 
       <div className="relative z-10 flex">
         <Nav />
 
-        
         <div className="flex-1 p-8 mt-16 md:mt-0">
          
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-white">Project Management Dashboard</h2>
-              <p className="text-gray-400">Site: Downtown Tower Construction</p>
+              <h2 className="text-2xl font-bold text-black">Project Management Dashboard</h2>
+              <p className="text-gray-600">Site: Downtown Tower Construction</p>
             </div>
-            <Button variant="ghost" size="icon" className="text-gray-300 hover:bg-gray-900/50">
+            <Button variant="ghost" size="icon" className="text-gray-700 hover:bg-gray-100/50">
               <Bell className="w-5 h-5" />
             </Button>
           </div>
 
-          
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             
             <div className="space-y-6">
-       
-              <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+              {/* Assign Tasks */}
+              <Card className="border border-purple-500/20 bg-white/80 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
+                  <CardTitle className="text-black flex items-center gap-2">
                     <ClipboardList className="w-5 h-5" /> Assign Tasks
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <form className="space-y-4">
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-300">Task Name</label>
+                      <label className="text-sm font-medium text-gray-700">Task Name</label>
                       <input 
                         type="text" 
-                        className="w-full p-2 rounded bg-gray-900/50 border border-gray-700 text-white"
+                        className="w-full p-2 rounded bg-gray-100/50 border border-gray-300 text-black"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-medium text-gray-300">Assign To</label>
-                      <select className="w-full p-2 rounded bg-gray-900/50 border border-gray-700 text-white">
+                      <label className="text-sm font-medium text-gray-700">Assign To</label>
+                      <select className="w-full p-2 rounded bg-gray-100/50 border border-gray-300 text-black">
                         <option value="">Select Team Member</option>
                         <option>Supervisor: John Smith</option>
                         <option>Worker: Mike Johnson</option>
@@ -77,15 +75,15 @@ export default function SiteProject() {
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-300">Deadline</label>
+                        <label className="text-sm font-medium text-gray-700">Deadline</label>
                         <input 
                           type="date" 
-                          className="w-full p-2 rounded bg-gray-900/50 border border-gray-700 text-white"
+                          className="w-full p-2 rounded bg-gray-100/50 border border-gray-300 text-black"
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-sm font-medium text-gray-300">Priority</label>
-                        <select className="w-full p-2 rounded bg-gray-900/50 border border-gray-700 text-white">
+                        <label className="text-sm font-medium text-gray-700">Priority</label>
+                        <select className="w-full p-2 rounded bg-gray-100/50 border border-gray-300 text-black">
                           <option>Normal</option>
                           <option>High</option>
                           <option>Urgent</option>
@@ -99,22 +97,22 @@ export default function SiteProject() {
                 </CardContent>
               </Card>
 
-              
-              <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+              {/* Manpower Allocation */}
+              <Card className="border border-purple-500/20 bg-white/80 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
+                  <CardTitle className="text-black flex items-center gap-2">
                     <Users className="w-5 h-5" /> Manpower Allocation
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
                     {manpower.map((group, index) => (
-                      <div key={index} className="p-3 rounded-lg bg-gray-900/50">
+                      <div key={index} className="p-3 rounded-lg bg-gray-100/50">
                         <div className="flex justify-between items-center mb-2">
-                          <span className="text-gray-300">{group.trade}</span>
-                          <span className="text-purple-400">{group.allocated}/{group.total}</span>
+                          <span className="text-gray-700">{group.trade}</span>
+                          <span className="text-purple-700">{group.allocated}/{group.total}</span>
                         </div>
-                        <div className="w-full bg-gray-800 rounded-full h-2">
+                        <div className="w-full bg-gray-200 rounded-full h-2">
                           <div 
                             className="bg-purple-500 h-2 rounded-full" 
                             style={{ width: `${(group.allocated/group.total)*100}%` }}
@@ -127,12 +125,11 @@ export default function SiteProject() {
               </Card>
             </div>
 
-            
             <div className="space-y-6">
-             
-              <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+              {/* Task Status */}
+              <Card className="border border-purple-500/20 bg-white/80 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
+                  <CardTitle className="text-black flex items-center gap-2">
                     <ClipboardList className="w-5 h-5" /> Task Status
                   </CardTitle>
                 </CardHeader>
@@ -142,17 +139,17 @@ export default function SiteProject() {
                       <motion.div 
                         key={task.id}
                         whileHover={{ scale: 1.02 }}
-                        className="p-3 rounded-lg bg-gray-900/50"
+                        className="p-3 rounded-lg bg-gray-100/50"
                       >
                         <div className="flex items-center justify-between">
                           <div>
-                            <h3 className="font-medium text-white">{task.name}</h3>
-                            <p className="text-sm text-gray-400">{task.assigned}</p>
+                            <h3 className="font-medium text-black">{task.name}</h3>
+                            <p className="text-sm text-gray-600">{task.assigned}</p>
                           </div>
                           <div className="flex items-center gap-3">
                             <span className={`px-2 py-1 rounded-full text-sm ${
-                              task.status === "In Progress" ? "bg-yellow-500/20 text-yellow-400" :
-                              task.status === "Delayed" ? "bg-red-500/20 text-red-400" : "bg-green-500/20 text-green-400"
+                              task.status === "In Progress" ? "bg-yellow-500/20 text-yellow-700" :
+                              task.status === "Delayed" ? "bg-red-500/20 text-red-700" : "bg-green-500/20 text-green-700"
                             }`}>
                               {task.status}
                             </span>
@@ -165,10 +162,10 @@ export default function SiteProject() {
                 </CardContent>
               </Card>
 
-              
-              <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+              {/* Daily Reports */}
+              <Card className="border border-purple-500/20 bg-white/80 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
+                  <CardTitle className="text-black flex items-center gap-2">
                     <Upload className="w-5 h-5" /> Daily Reports
                   </CardTitle>
                 </CardHeader>
@@ -178,28 +175,28 @@ export default function SiteProject() {
                       <input type="file" className="hidden" id="file-upload" multiple />
                       <label 
                         htmlFor="file-upload" 
-                        className="cursor-pointer text-purple-400 hover:text-purple-300"
+                        className="cursor-pointer text-purple-700 hover:text-purple-500"
                       >
                         <Upload className="w-8 h-8 mx-auto mb-2" />
                         <p>Drag & drop photos/videos or click to upload</p>
-                        <p className="text-xs text-gray-400 mt-1">Max file size: 2GB</p>
+                        <p className="text-xs text-gray-500 mt-1">Max file size: 2GB</p>
                       </label>
                     </div>
                     <div className="space-y-2">
-                      <h4 className="text-sm font-medium text-gray-300">Recent Uploads</h4>
+                      <h4 className="text-sm font-medium text-gray-700">Recent Uploads</h4>
                       <div className="flex flex-wrap gap-2">
-                        <div className="p-2 rounded bg-gray-900/50 text-sm">report_0424.pdf</div>
-                        <div className="p-2 rounded bg-gray-900/50 text-sm">site_photo1.jpg</div>
+                        <div className="p-2 rounded bg-gray-100 text-sm">report_0424.pdf</div>
+                        <div className="p-2 rounded bg-gray-100 text-sm">site_photo1.jpg</div>
                       </div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-              
-              <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+              {/* Site Alerts */}
+              <Card className="border border-purple-500/20 bg-white/80 backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-white flex items-center gap-2">
+                  <CardTitle className="text-black flex items-center gap-2">
                     <AlertTriangle className="w-5 h-5" /> Site Alerts
                   </CardTitle>
                 </CardHeader>
@@ -214,8 +211,8 @@ export default function SiteProject() {
                         className="p-3 rounded-lg bg-red-500/10 border border-red-500/30"
                       >
                         <div className="flex items-center gap-2">
-                          <AlertTriangle className="w-4 h-4 text-red-400" />
-                          <span className="text-sm text-white">{alert.message}</span>
+                          <AlertTriangle className="w-4 h-4 text-red-500" />
+                          <span className="text-sm text-black">{alert.message}</span>
                         </div>
                       </div>
                     ))}

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -89,11 +88,11 @@ export default function TableManagement() {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'Available': return 'bg-green-900/30 text-green-400';
-      case 'Occupied': return 'bg-red-900/30 text-red-400';
-      case 'Reserved': return 'bg-purple-900/30 text-purple-400';
-      case 'Maintenance': return 'bg-yellow-900/30 text-yellow-400';
-      default: return 'bg-gray-900/30 text-gray-400';
+      case 'Available': return 'bg-green-100 text-green-700';
+      case 'Occupied': return 'bg-red-100 text-red-700';
+      case 'Reserved': return 'bg-purple-100 text-purple-700';
+      case 'Maintenance': return 'bg-yellow-100 text-yellow-700';
+      default: return 'bg-gray-100 text-gray-500';
     }
   };
 
@@ -101,9 +100,9 @@ export default function TableManagement() {
   const filteredTables = tables.filter(table => table.restaurantId === selectedRestaurant.id);
 
   return (
-    <div className="min-h-screen bg-black lg:ml-64">
+    <div className="min-h-screen bg-white lg:ml-64">
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-gray-100 to-white"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
       </div>
 
@@ -113,16 +112,16 @@ export default function TableManagement() {
           <RestoNav />
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-white">Dine-In Table Management</h2>
+              <h2 className="text-2xl font-bold text-black">Dine-In Table Management</h2>
               <div className="flex items-center gap-2 mt-1">
                 <Select
                   value={selectedRestaurant.id.toString()}
                   onValueChange={handleRestaurantChange}
                 >
-                  <SelectTrigger className="bg-gray-900/50 border-gray-700 text-white w-48">
+                  <SelectTrigger className="bg-gray-100 border-gray-300 text-black w-48">
                     <SelectValue placeholder="Select Restaurant" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="bg-white border-gray-300 text-black">
                     {restaurants.map((restaurant) => (
                       <SelectItem key={restaurant.id} value={restaurant.id.toString()}>
                         {restaurant.name}
@@ -130,17 +129,17 @@ export default function TableManagement() {
                     ))}
                   </SelectContent>
                 </Select>
-                <Badge variant="outline" className="border-green-500/50 text-green-400">
+                <Badge variant="outline" className="border-green-500/50 text-green-700 bg-green-50">
                   {selectedRestaurant.name}
                 </Badge>
-                <span className="text-gray-400 text-sm">{selectedRestaurant.location}</span>
+                <span className="text-gray-500 text-sm">{selectedRestaurant.location}</span>
               </div>
             </div>
             <div className="flex gap-3">
               <Button
                 variant={viewMode === 'grid' ? 'default' : 'outline'}
                 onClick={() => setViewMode('grid')}
-                className="text-white"
+                className="text-purple-700"
               >
                 <Grid className="w-4 h-4 mr-2" />
                 Grid View
@@ -148,7 +147,7 @@ export default function TableManagement() {
               <Button
                 variant={viewMode === 'list' ? 'default' : 'outline'}
                 onClick={() => setViewMode('list')}
-                className="text-white"
+                className="text-purple-700"
               >
                 <List className="w-4 h-4 mr-2" />
                 List View
@@ -165,17 +164,17 @@ export default function TableManagement() {
 
           {/* Add Table Popup */}
           {isPopupOpen && (
-            <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+            <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center p-4 z-50">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-gray-900 border border-purple-500/30 rounded-lg shadow-xl w-full max-w-sm "
+                className="bg-white border border-purple-500/30 rounded-lg shadow-xl w-full max-w-sm "
               >
                 <div className="flex justify-between items-center border-b border-purple-500/20 p-3">
-                  <h3 className="text-base font-semibold text-white">Add New Table</h3>
+                  <h3 className="text-base font-semibold text-black">Add New Table</h3>
                   <button
                     onClick={() => setIsPopupOpen(false)}
-                    className="text-gray-400 hover:text-white"
+                    className="text-gray-500 hover:text-black"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -183,30 +182,30 @@ export default function TableManagement() {
 
                 <form onSubmit={handleSubmit} className="p-3 space-y-3 ">
                   <div>
-                    <label className="block text-xs font-medium text-gray-300 mb-1">Restaurant</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Restaurant</label>
                     <input
                       type="text"
                       value={selectedRestaurant.name}
                       readOnly
-                      className="w-full px-2 py-1 bg-gray-800/50 border border-gray-700 rounded-md text-gray-400 text-sm cursor-not-allowed"
+                      className="w-full px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-gray-500 text-sm cursor-not-allowed"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-medium text-gray-300 mb-1">Table Number *</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Table Number *</label>
                     <input
                       type="text"
                       name="number"
                       value={formData.number}
                       onChange={handleChange}
-                      className="w-full px-2 py-1 bg-gray-800 border border-gray-700 rounded-md text-white text-sm"
+                      className="w-full px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-black text-sm"
                       placeholder="e.g., T1, A2, B3"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-medium text-gray-300 mb-1">Seating Capacity *</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Seating Capacity *</label>
                     <div className="grid grid-cols-3 gap-1">
                       {[2, 4, 6, 8, 10, 12].map((num) => (
                         <button
@@ -215,7 +214,7 @@ export default function TableManagement() {
                           onClick={() => setFormData({ ...formData, capacity: num })}
                           className={`p-1 rounded-md border text-xs ${formData.capacity === num
                             ? 'bg-purple-600 border-purple-500 text-white'
-                            : 'bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700'
+                            : 'bg-gray-100 border-gray-300 text-gray-700 hover:bg-gray-200'
                             }`}
                         >
                           {num} Seats
@@ -225,7 +224,7 @@ export default function TableManagement() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-medium text-gray-300 mb-1">Table Type *</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Table Type *</label>
                     <div className="grid grid-cols-2 gap-1">
                       {tableTypes.map((type) => (
                         <button
@@ -234,7 +233,7 @@ export default function TableManagement() {
                           onClick={() => setFormData({ ...formData, type })}
                           className={`p-1 rounded-md border text-xs ${formData.type === type
                             ? 'bg-purple-600 border-purple-500 text-white'
-                            : 'bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700'
+                            : 'bg-gray-100 border-gray-300 text-gray-700 hover:bg-gray-200'
                             }`}
                         >
                           {type}
@@ -245,16 +244,16 @@ export default function TableManagement() {
 
                   <div className="grid grid-cols-2 gap-2">
                     <div>
-                      <label className="block text-xs font-medium text-gray-300 mb-1">Location Zone *</label>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Location Zone *</label>
                       <select
                         name="location"
                         value={formData.location}
                         onChange={handleChange}
-                        className="w-full px-2 py-1 bg-gray-800 border border-gray-700 rounded-md text-white text-sm"
+                        className="w-full px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-black text-sm"
                         required
                       >
                         {locationOptions.map((loc) => (
-                          <option key={loc} value={loc} className="bg-gray-800 text-sm">
+                          <option key={loc} value={loc} className="bg-gray-100 text-sm">
                             {loc}
                           </option>
                         ))}
@@ -262,16 +261,16 @@ export default function TableManagement() {
                     </div>
 
                     <div>
-                      <label className="block text-xs font-medium text-gray-300 mb-1">Status *</label>
+                      <label className="block text-xs font-medium text-gray-700 mb-1">Status *</label>
                       <select
                         name="status"
                         value={formData.status}
                         onChange={handleChange}
-                        className="w-full px-2 py-1 bg-gray-800 border border-gray-700 rounded-md text-white text-sm"
+                        className="w-full px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-black text-sm"
                         required
                       >
                         {statusOptions.map((status) => (
-                          <option key={status} value={status} className="bg-gray-800 text-sm">
+                          <option key={status} value={status} className="bg-gray-100 text-sm">
                             {status}
                           </option>
                         ))}
@@ -280,7 +279,7 @@ export default function TableManagement() {
                   </div>
 
                   <div>
-                    <label className="block text-xs font-medium text-gray-300 mb-1">Minimum Spend (Optional)</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Minimum Spend (Optional)</label>
                     <div className="relative">
                       <span className="absolute left-2 top-1.5 text-gray-400 text-sm">$</span>
                       <input
@@ -288,19 +287,19 @@ export default function TableManagement() {
                         name="minSpend"
                         value={formData.minSpend}
                         onChange={handleChange}
-                        className="w-full pl-6 px-2 py-1 bg-gray-800 border border-gray-700 rounded-md text-white text-sm"
+                        className="w-full pl-6 px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-black text-sm"
                         placeholder="0.00"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs font-medium text-gray-300 mb-1">Special Notes</label>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">Special Notes</label>
                     <textarea
                       name="notes"
                       value={formData.notes}
                       onChange={handleChange}
-                      className="w-full px-2 py-1 bg-gray-800 border border-gray-700 rounded-md text-white text-sm"
+                      className="w-full px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-black text-sm"
                       rows="2"
                       placeholder="Wheelchair accessible, near outlet, etc."
                     />
@@ -310,7 +309,7 @@ export default function TableManagement() {
                     <button
                       type="button"
                       onClick={() => setIsPopupOpen(false)}
-                      className="px-3 py-1 border border-gray-700 rounded-md text-gray-300 hover:bg-gray-800 text-sm"
+                      className="px-3 py-1 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 text-sm"
                     >
                       Cancel
                     </button>
@@ -338,30 +337,30 @@ export default function TableManagement() {
                       table.status === 'Occupied' ? 'border-red-500/30' :
                         table.status === 'Reserved' ? 'border-purple-500/30' :
                           'border-yellow-500/30'
-                      } bg-gray-900/50 backdrop-blur-sm`}
+                      } bg-white backdrop-blur-sm`}
                   >
                     <div className="flex justify-between items-start">
                       <div>
-                        <h3 className="text-xl font-bold text-white">{table.number}</h3>
-                        <p className="text-gray-400">{table.type} Table</p>
+                        <h3 className="text-xl font-bold text-black">{table.number}</h3>
+                        <p className="text-gray-500">{table.type} Table</p>
                       </div>
                       <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(table.status)}`}>
                         {table.status}
                       </span>
                     </div>
                     <div className="mt-4">
-                      <div className="flex items-center text-sm text-gray-300 mb-1">
+                      <div className="flex items-center text-sm text-gray-700 mb-1">
                         {table.capacity} seats
                       </div>
-                      <div className="text-sm text-gray-400">
+                      <div className="text-sm text-gray-500">
                         {table.location}
                       </div>
                     </div>
                     <div className="absolute bottom-3 right-3 flex gap-2">
-                      <Button variant="ghost" size="icon" className="text-purple-400 hover:bg-purple-900/20 h-8 w-8">
+                      <Button variant="ghost" size="icon" className="text-purple-600 hover:bg-purple-100 h-8 w-8">
                         <Edit className="w-3 h-3" />
                       </Button>
-                      <Button variant="ghost" size="icon" className="text-red-400 hover:bg-red-900/20 h-8 w-8">
+                      <Button variant="ghost" size="icon" className="text-red-600 hover:bg-red-100 h-8 w-8">
                         <Trash2 className="w-3 h-3" />
                       </Button>
                     </div>
@@ -369,13 +368,13 @@ export default function TableManagement() {
                 ))}
               </div>
             ) : (
-              <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+              <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
                 <CardHeader>
                   <div className="flex justify-between items-center">
-                    <CardTitle className="text-white">All Tables</CardTitle>
+                    <CardTitle className="text-black">All Tables</CardTitle>
                     <Input
                       placeholder="Search tables..."
-                      className="bg-gray-900/50 border-gray-700 text-white w-64"
+                      className="bg-gray-100 border-gray-300 text-black w-64"
                     />
                   </div>
                 </CardHeader>
@@ -383,35 +382,35 @@ export default function TableManagement() {
                   <Table>
                     <TableHeader>
                       <TableRow className="hover:bg-transparent">
-                        <TableHead className="text-gray-300">Table</TableHead>
-                        <TableHead className="text-gray-300">Type</TableHead>
-                        <TableHead className="text-gray-300">Capacity</TableHead>
-                        <TableHead className="text-gray-300">Location</TableHead>
-                        <TableHead className="text-gray-300">Status</TableHead>
-                        <TableHead className="text-right text-gray-300">Actions</TableHead>
+                        <TableHead className="text-gray-700">Table</TableHead>
+                        <TableHead className="text-gray-700">Type</TableHead>
+                        <TableHead className="text-gray-700">Capacity</TableHead>
+                        <TableHead className="text-gray-700">Location</TableHead>
+                        <TableHead className="text-gray-700">Status</TableHead>
+                        <TableHead className="text-right text-gray-700">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {filteredTables.map((table) => (
                         <motion.tr
                           key={table.id}
-                          whileHover={{ backgroundColor: "rgba(107, 33, 168, 0.2)" }}
-                          className="border-b border-gray-800"
+                          whileHover={{ backgroundColor: "rgba(168, 85, 247, 0.08)" }}
+                          className="border-b border-gray-200"
                         >
-                          <TableCell className="font-medium text-white">
+                          <TableCell className="font-medium text-black">
                             {table.number}
                           </TableCell>
                           <TableCell>
-                            <Badge variant="outline" className="border-purple-500/50 text-purple-400">
+                            <Badge variant="outline" className="border-purple-500/50 text-purple-700 bg-purple-50">
                               {table.type}
                             </Badge>
                           </TableCell>
-                          <TableCell className="text-gray-300">
+                          <TableCell className="text-gray-700">
                             <div className="flex items-center">
                               {table.capacity}
                             </div>
                           </TableCell>
-                          <TableCell className="text-gray-400">{table.location}</TableCell>
+                          <TableCell className="text-gray-500">{table.location}</TableCell>
                           <TableCell>
                             <span className={`px-2 py-1 rounded-full text-xs ${getStatusColor(table.status)}`}>
                               {table.status}
@@ -419,10 +418,10 @@ export default function TableManagement() {
                           </TableCell>
                           <TableCell className="text-right">
                             <div className="flex justify-end gap-2">
-                              <Button variant="ghost" size="icon" className="text-purple-400 hover:bg-purple-900/20">
+                              <Button variant="ghost" size="icon" className="text-purple-600 hover:bg-purple-100">
                                 <Edit className="w-4 h-4" />
                               </Button>
-                              <Button variant="ghost" size="icon" className="text-red-400 hover:bg-red-900/20">
+                              <Button variant="ghost" size="icon" className="text-red-600 hover:bg-red-100">
                                 <Trash2 className="w-4 h-4" />
                               </Button>
                             </div>

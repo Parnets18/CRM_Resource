@@ -47,11 +47,12 @@ export default function RawMaterials() {
     setIsEditDialogOpen(true);
   };
 
+ // ...existing code...
   return (
-    <div className="min-h-screen bg-black lg:ml-64">
+    <div className="min-h-screen bg-white lg:ml-64">
       {/* Background Gradients */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-gray-100 to-white"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
       </div>
 
@@ -61,28 +62,28 @@ export default function RawMaterials() {
           {/* Header */}
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-white">Raw Materials</h2>
-              <p className="text-gray-400">Manage your inventory items</p>
+              <h2 className="text-2xl font-bold text-black">Raw Materials</h2>
+              <p className="text-gray-700">Manage your inventory items</p>
             </div>
-            <Button onClick={() => setIsAddDialogOpen(true)} className="bg-purple-600 hover:bg-purple-700">
+            <Button onClick={() => setIsAddDialogOpen(true)} className="bg-purple-600 hover:bg-purple-700 text-white">
               <Plus className="w-4 h-4 mr-2" /> Add Material
             </Button>
           </div>
 
           {/* Filter Bar */}
-          <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm mb-6">
+          <Card className="border border-purple-500/20 bg-white backdrop-blur-sm mb-6">
             <CardContent className="p-4">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="relative flex-1">
-                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                  <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
                   <Input
                     type="search"
                     placeholder="Search materials..."
-                    className="w-full bg-gray-900/50 border-gray-700 pl-8"
+                    className="w-full bg-gray-100 border-gray-300 text-black pl-8"
                   />
                 </div>
                 <Select>
-                  <SelectTrigger className="w-full md:w-[180px] bg-gray-900/50 border-gray-700">
+                  <SelectTrigger className="w-full md:w-[180px] bg-gray-100 border-gray-300 text-black">
                     <SelectValue placeholder="Category" />
                   </SelectTrigger>
                   <SelectContent>
@@ -94,7 +95,7 @@ export default function RawMaterials() {
                     <SelectItem value="herbs">Herbs</SelectItem>
                   </SelectContent>
                 </Select>
-                <Button variant="outline" className="border-gray-700 text-gray-300">
+                <Button variant="outline" className="border-gray-300 text-gray-700">
                   <Filter className="w-4 h-4 mr-2" /> Filter
                 </Button>
               </div>
@@ -102,22 +103,22 @@ export default function RawMaterials() {
           </Card>
 
           {/* Materials Table */}
-          <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+          <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
             <CardHeader>
-              <CardTitle className="text-white">Materials List</CardTitle>
+              <CardTitle className="text-black">Materials List</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-gray-800">
-                      <th className="text-left py-3 px-4 text-gray-400 font-medium">Name</th>
-                      <th className="text-left py-3 px-4 text-gray-400 font-medium">Category</th>
-                      <th className="text-left py-3 px-4 text-gray-400 font-medium">Unit</th>
-                      <th className="text-left py-3 px-4 text-gray-400 font-medium">Min Level</th>
-                      <th className="text-left py-3 px-4 text-gray-400 font-medium">Current Stock</th>
-                      <th className="text-left py-3 px-4 text-gray-400 font-medium">Status</th>
-                      <th className="text-right py-3 px-4 text-gray-400 font-medium">Actions</th>
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left py-3 px-4 text-gray-700 font-medium">Name</th>
+                      <th className="text-left py-3 px-4 text-gray-700 font-medium">Category</th>
+                      <th className="text-left py-3 px-4 text-gray-700 font-medium">Unit</th>
+                      <th className="text-left py-3 px-4 text-gray-700 font-medium">Min Level</th>
+                      <th className="text-left py-3 px-4 text-gray-700 font-medium">Current Stock</th>
+                      <th className="text-left py-3 px-4 text-gray-700 font-medium">Status</th>
+                      <th className="text-right py-3 px-4 text-gray-700 font-medium">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -125,18 +126,18 @@ export default function RawMaterials() {
                       <motion.tr
                         key={material.id}
                         whileHover={{ backgroundColor: "rgba(139, 92, 246, 0.05)" }}
-                        className="border-b border-gray-800"
+                        className="border-b border-gray-200"
                       >
-                        <td className="py-3 px-4 text-white">{material.name}</td>
-                        <td className="py-3 px-4 text-gray-300">{material.category}</td>
-                        <td className="py-3 px-4 text-gray-300">{material.unit}</td>
-                        <td className="py-3 px-4 text-gray-300">{material.minLevel}</td>
-                        <td className="py-3 px-4 text-gray-300">{material.currentStock}</td>
+                        <td className="py-3 px-4 text-black">{material.name}</td>
+                        <td className="py-3 px-4 text-gray-700">{material.category}</td>
+                        <td className="py-3 px-4 text-gray-700">{material.unit}</td>
+                        <td className="py-3 px-4 text-gray-700">{material.minLevel}</td>
+                        <td className="py-3 px-4 text-gray-700">{material.currentStock}</td>
                         <td className="py-3 px-4">
                           {material.currentStock < material.minLevel ? (
-                            <span className="px-2 py-1 rounded-full text-xs bg-red-900/30 text-red-400">Low Stock</span>
+                            <span className="px-2 py-1 rounded-full text-xs bg-red-100 text-red-700">Low Stock</span>
                           ) : (
-                            <span className="px-2 py-1 rounded-full text-xs bg-green-900/30 text-green-400">In Stock</span>
+                            <span className="px-2 py-1 rounded-full text-xs bg-green-100 text-green-700">In Stock</span>
                           )}
                         </td>
                         <td className="py-3 px-4 text-right">
@@ -144,12 +145,12 @@ export default function RawMaterials() {
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-8 w-8 text-gray-400 hover:text-white"
+                              className="h-8 w-8 text-gray-700 hover:text-purple-700"
                               onClick={() => handleEdit(material)}
                             >
                               <Edit className="h-4 w-4" />
                             </Button>
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-400 hover:text-white">
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-700 hover:text-red-700">
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           </div>
@@ -167,20 +168,20 @@ export default function RawMaterials() {
       {/* Dialogs */}
       {/* Add Material Dialog */}
       <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-        <DialogContent className="bg-gray-900 border border-purple-500/20 text-white">
+        <DialogContent className="bg-white border border-purple-500/20 text-black">
           <DialogHeader>
             <DialogTitle>Add New Material</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
               <Label htmlFor="name">Material Name</Label>
-              <Input id="name" className="bg-gray-800 border-gray-700" />
+              <Input id="name" className="bg-gray-100 border-gray-300 text-black" />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="category">Category</Label>
                 <Select>
-                  <SelectTrigger className="bg-gray-800 border-gray-700">
+                  <SelectTrigger className="bg-gray-100 border-gray-300 text-black">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent>
@@ -195,7 +196,7 @@ export default function RawMaterials() {
               <div className="grid gap-2">
                 <Label htmlFor="unit">Unit</Label>
                 <Select>
-                  <SelectTrigger className="bg-gray-800 border-gray-700">
+                  <SelectTrigger className="bg-gray-100 border-gray-300 text-black">
                     <SelectValue placeholder="Select" />
                   </SelectTrigger>
                   <SelectContent>
@@ -212,37 +213,37 @@ export default function RawMaterials() {
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="minLevel">Minimum Stock Level</Label>
-                <Input id="minLevel" type="number" className="bg-gray-800 border-gray-700" />
+                <Input id="minLevel" type="number" className="bg-gray-100 border-gray-300 text-black" />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="currentStock">Current Stock</Label>
-                <Input id="currentStock" type="number" className="bg-gray-800 border-gray-700" />
+                <Input id="currentStock" type="number" className="bg-gray-100 border-gray-300 text-black" />
               </div>
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" className="border-gray-700" onClick={() => setIsAddDialogOpen(false)}>Cancel</Button>
-            <Button className="bg-purple-600 hover:bg-purple-700">Save Material</Button>
+            <Button variant="outline" className="border-gray-300 text-gray-700" onClick={() => setIsAddDialogOpen(false)}>Cancel</Button>
+            <Button className="bg-purple-600 hover:bg-purple-700 text-white">Save Material</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
 
-      {/* Edit Dialog is identical to Add, but with defaultValue pre-filled */}
+      {/* Edit Dialog */}
       <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-        <DialogContent className="bg-gray-900 border border-purple-500/20 text-white">
+        <DialogContent className="bg-white border border-purple-500/20 text-black">
           <DialogHeader>
             <DialogTitle>Edit Material</DialogTitle>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
               <Label htmlFor="edit-name">Material Name</Label>
-              <Input id="edit-name" className="bg-gray-800 border-gray-700" defaultValue={selectedMaterial?.name} />
+              <Input id="edit-name" className="bg-gray-100 border-gray-300 text-black" defaultValue={selectedMaterial?.name} />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="edit-category">Category</Label>
                 <Select defaultValue={selectedMaterial?.category?.toLowerCase()}>
-                  <SelectTrigger className="bg-gray-800 border-gray-700">
+                  <SelectTrigger className="bg-gray-100 border-gray-300 text-black">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -257,7 +258,7 @@ export default function RawMaterials() {
               <div className="grid gap-2">
                 <Label htmlFor="edit-unit">Unit</Label>
                 <Select defaultValue={selectedMaterial?.unit}>
-                  <SelectTrigger className="bg-gray-800 border-gray-700">
+                  <SelectTrigger className="bg-gray-100 border-gray-300 text-black">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -274,20 +275,21 @@ export default function RawMaterials() {
             <div className="grid grid-cols-2 gap-4">
               <div className="grid gap-2">
                 <Label htmlFor="edit-minLevel">Minimum Stock Level</Label>
-                <Input id="edit-minLevel" type="number" className="bg-gray-800 border-gray-700" defaultValue={selectedMaterial?.minLevel} />
+                <Input id="edit-minLevel" type="number" className="bg-gray-100 border-gray-300 text-black" defaultValue={selectedMaterial?.minLevel} />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="edit-currentStock">Current Stock</Label>
-                <Input id="edit-currentStock" type="number" className="bg-gray-800 border-gray-700" defaultValue={selectedMaterial?.currentStock} />
+                <Input id="edit-currentStock" type="number" className="bg-gray-100 border-gray-300 text-black" defaultValue={selectedMaterial?.currentStock} />
               </div>
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" className="border-gray-700" onClick={() => setIsEditDialogOpen(false)}>Cancel</Button>
-            <Button className="bg-purple-600 hover:bg-purple-700">Update Material</Button>
+            <Button variant="outline" className="border-gray-300 text-gray-700" onClick={() => setIsEditDialogOpen(false)}>Cancel</Button>
+            <Button className="bg-purple-600 hover:bg-purple-700 text-white">Update Material</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
   );
+// ...existing code...
 }

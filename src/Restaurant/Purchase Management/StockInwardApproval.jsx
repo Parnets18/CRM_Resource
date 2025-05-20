@@ -113,29 +113,30 @@ Generated on: ${new Date().toLocaleString()}
     URL.revokeObjectURL(url)
   }
 
+  // ...existing code...
   return (
-    <div className="min-h-screen bg-black lg:ml-64">
+    <div className="min-h-screen bg-white lg:ml-64">
       <div className="absolute inset-0 z-0">
         <RestoNav />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-gray-100 to-white"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
       </div>
 
       <div className="relative z-10 p-8">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h2 className="text-3xl font-bold text-white flex items-center">
+            <h2 className="text-3xl font-bold text-black flex items-center">
               <Package className="w-8 h-8 mr-3 text-purple-400" />
               Stock Inward Approval
             </h2>
-            <p className="text-gray-400 mt-2">Approve or reject incoming stock for inventory</p>
+            <p className="text-gray-700 mt-2">Approve or reject incoming stock for inventory</p>
           </div>
         </div>
 
         <div className="grid grid-cols-1 gap-6">
-          <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+          <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
             <CardHeader>
-              <CardTitle className="text-white text-2xl">Stock Inward Management</CardTitle>
+              <CardTitle className="text-black text-2xl">Stock Inward Management</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -144,13 +145,13 @@ Generated on: ${new Date().toLocaleString()}
                   <Input
                     type="search"
                     placeholder="Search by GRN Number or Supplier..."
-                    className="w-full bg-gray-900/50 border-gray-700 pl-10 text-white rounded-lg"
+                    className="w-full bg-gray-100 border-gray-300 pl-10 text-black rounded-lg"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                   />
                 </div>
                 <Select value={statusFilter} onValueChange={setStatusFilter}>
-                  <SelectTrigger className="bg-gray-900/50 border-gray-700 text-white w-full sm:w-48 rounded-lg">
+                  <SelectTrigger className="bg-gray-100 border-gray-300 text-black w-full sm:w-48 rounded-lg">
                     <SelectValue placeholder="Filter by Status" />
                   </SelectTrigger>
                   <SelectContent>
@@ -164,38 +165,38 @@ Generated on: ${new Date().toLocaleString()}
 
               <Table>
                 <TableHeader>
-                  <TableRow className="hover:bg-transparent border-b border-gray-800">
-                    <TableHead className="text-gray-300">GRN Number</TableHead>
-                    <TableHead className="text-gray-300">PO Number</TableHead>
-                    <TableHead className="text-gray-300">Supplier</TableHead>
-                    <TableHead className="text-gray-300">Receipt Date</TableHead>
-                    <TableHead className="text-gray-300">Items</TableHead>
-                    <TableHead className="text-gray-300">Quantity</TableHead>
-                    <TableHead className="text-gray-300">Status</TableHead>
-                    <TableHead className="text-right text-gray-300">Actions</TableHead>
+                  <TableRow className="hover:bg-transparent border-b border-gray-200">
+                    <TableHead className="text-gray-700">GRN Number</TableHead>
+                    <TableHead className="text-gray-700">PO Number</TableHead>
+                    <TableHead className="text-gray-700">Supplier</TableHead>
+                    <TableHead className="text-gray-700">Receipt Date</TableHead>
+                    <TableHead className="text-gray-700">Items</TableHead>
+                    <TableHead className="text-gray-700">Quantity</TableHead>
+                    <TableHead className="text-gray-700">Status</TableHead>
+                    <TableHead className="text-right text-gray-700">Actions</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
                   {filteredStock.map((stock) => (
                     <motion.tr
                       key={stock.id}
-                      whileHover={{ backgroundColor: "rgba(107, 33, 168, 0.2)" }}
-                      className="border-t border-gray-800"
+                      whileHover={{ backgroundColor: "rgba(139, 92, 246, 0.05)" }}
+                      className="border-t border-gray-200"
                       onClick={() => setSelectedStock(stock)}
                     >
-                      <TableCell className="text-white font-medium">{stock.grnNumber}</TableCell>
-                      <TableCell className="text-white">{stock.poNumber}</TableCell>
-                      <TableCell className="text-white">{stock.supplier}</TableCell>
-                      <TableCell className="text-white">{stock.receiptDate}</TableCell>
-                      <TableCell className="text-white">{stock.items}</TableCell>
-                      <TableCell className="text-white">{stock.quantity}</TableCell>
+                      <TableCell className="text-black font-medium">{stock.grnNumber}</TableCell>
+                      <TableCell className="text-black">{stock.poNumber}</TableCell>
+                      <TableCell className="text-black">{stock.supplier}</TableCell>
+                      <TableCell className="text-black">{stock.receiptDate}</TableCell>
+                      <TableCell className="text-black">{stock.items}</TableCell>
+                      <TableCell className="text-black">{stock.quantity}</TableCell>
                       <TableCell>
                         <Badge
                           variant="outline"
                           className={
-                            stock.status === "Approved" ? "border-green-500/50 text-green-400" :
-                            stock.status === "Rejected" ? "border-red-500/50 text-red-400" :
-                            "border-yellow-500/50 text-yellow-400"
+                            stock.status === "Approved" ? "border-green-500/50 text-green-700" :
+                            stock.status === "Rejected" ? "border-red-500/50 text-red-700" :
+                            "border-yellow-500/50 text-yellow-700"
                           }
                         >
                           {stock.status}
@@ -208,7 +209,7 @@ Generated on: ${new Date().toLocaleString()}
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="text-green-400 hover:bg-green-900/20"
+                                className="text-green-700 hover:bg-green-100"
                                 onClick={() => {
                                   setSelectedStock(stock)
                                   setIsApproveDialogOpen(true)
@@ -219,7 +220,7 @@ Generated on: ${new Date().toLocaleString()}
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="text-red-400 hover:bg-red-900/20"
+                                className="text-red-700 hover:bg-red-100"
                                 onClick={() => {
                                   setSelectedStock(stock)
                                   setIsRejectDialogOpen(true)
@@ -232,7 +233,7 @@ Generated on: ${new Date().toLocaleString()}
                           <Button
                             variant="ghost"
                             size="icon"
-                            className="text-purple-400 hover:bg-purple-900/20"
+                            className="text-purple-700 hover:bg-purple-100"
                             onClick={() => handleDownloadStockReport(stock)}
                           >
                             <Download className="w-4 h-4" />
@@ -247,45 +248,45 @@ Generated on: ${new Date().toLocaleString()}
           </Card>
 
           {selectedStock && (
-            <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm mt-6">
+            <Card className="border border-purple-500/20 bg-white backdrop-blur-sm mt-6">
               <CardHeader>
-                <CardTitle className="text-white text-xl">Stock Inward Details</CardTitle>
+                <CardTitle className="text-black text-xl">Stock Inward Details</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
-                      <Label className="text-gray-400">GRN Number</Label>
-                      <p className="text-white font-medium">{selectedStock.grnNumber}</p>
+                      <Label className="text-gray-700">GRN Number</Label>
+                      <p className="text-black font-medium">{selectedStock.grnNumber}</p>
                     </div>
                     <div>
-                      <Label className="text-gray-400">PO Number</Label>
-                      <p className="text-white font-medium">{selectedStock.poNumber}</p>
+                      <Label className="text-gray-700">PO Number</Label>
+                      <p className="text-black font-medium">{selectedStock.poNumber}</p>
                     </div>
                     <div>
-                      <Label className="text-gray-400">Supplier</Label>
-                      <p className="text-white font-medium">{selectedStock.supplier}</p>
+                      <Label className="text-gray-700">Supplier</Label>
+                      <p className="text-black font-medium">{selectedStock.supplier}</p>
                     </div>
                     <div>
-                      <Label className="text-gray-400">Receipt Date</Label>
-                      <p className="text-white font-medium">{selectedStock.receiptDate}</p>
+                      <Label className="text-gray-700">Receipt Date</Label>
+                      <p className="text-black font-medium">{selectedStock.receiptDate}</p>
                     </div>
                     <div>
-                      <Label className="text-gray-400">Items</Label>
-                      <p className="text-white font-medium">{selectedStock.items}</p>
+                      <Label className="text-gray-700">Items</Label>
+                      <p className="text-black font-medium">{selectedStock.items}</p>
                     </div>
                     <div>
-                      <Label className="text-gray-400">Quantity</Label>
-                      <p className="text-white font-medium">{selectedStock.quantity}</p>
+                      <Label className="text-gray-700">Quantity</Label>
+                      <p className="text-black font-medium">{selectedStock.quantity}</p>
                     </div>
                     <div>
-                      <Label className="text-gray-400">Status</Label>
+                      <Label className="text-gray-700">Status</Label>
                       <Badge
                         variant="outline"
                         className={
-                          selectedStock.status === "Approved" ? "border-green-500/50 text-green-400" :
-                          selectedStock.status === "Rejected" ? "border-red-500/50 text-red-400" :
-                          "border-yellow-500/50 text-yellow-400"
+                          selectedStock.status === "Approved" ? "border-green-500/50 text-green-700" :
+                          selectedStock.status === "Rejected" ? "border-red-500/50 text-red-700" :
+                          "border-yellow-500/50 text-yellow-700"
                         }
                       >
                         {selectedStock.status}
@@ -293,8 +294,8 @@ Generated on: ${new Date().toLocaleString()}
                     </div>
                   </div>
                   <div>
-                    <Label className="text-gray-400">Notes</Label>
-                    <p className="text-white font-medium">{selectedStock.notes || "No additional notes"}</p>
+                    <Label className="text-gray-700">Notes</Label>
+                    <p className="text-black font-medium">{selectedStock.notes || "No additional notes"}</p>
                   </div>
                 </div>
               </CardContent>
@@ -304,7 +305,7 @@ Generated on: ${new Date().toLocaleString()}
 
         {/* Approve Stock Dialog */}
         <Dialog open={isApproveDialogOpen} onOpenChange={setIsApproveDialogOpen}>
-          <DialogContent className="bg-gray-900 border border-purple-500/20 text-white rounded-xl">
+          <DialogContent className="bg-white border border-purple-500/20 text-black rounded-xl">
             <DialogHeader>
               <DialogTitle className="text-xl flex items-center">
                 <CheckCircle className="w-5 h-5 text-green-500 mr-2" />
@@ -312,19 +313,19 @@ Generated on: ${new Date().toLocaleString()}
               </DialogTitle>
             </DialogHeader>
             <div className="py-4">
-              <p className="text-gray-300">
+              <p className="text-gray-700">
                 Are you sure you want to approve the stock inward for{" "}
-                <span className="font-medium text-white">{selectedStock?.grnNumber}</span>?
+                <span className="font-medium text-black">{selectedStock?.grnNumber}</span>?
               </p>
-              <p className="text-gray-400 text-sm mt-2">
+              <p className="text-gray-500 text-sm mt-2">
                 This will update the inventory with the received items.
               </p>
             </div>
             <DialogFooter>
-              <Button variant="outline" className="border-gray-700 rounded-lg" onClick={() => setIsApproveDialogOpen(false)}>
+              <Button variant="outline" className="border-gray-300 rounded-lg text-gray-700" onClick={() => setIsApproveDialogOpen(false)}>
                 Cancel
               </Button>
-              <Button className="bg-green-600 hover:bg-green-700 rounded-lg" onClick={handleApproveStock}>
+              <Button className="bg-green-600 hover:bg-green-700 rounded-lg text-white" onClick={handleApproveStock}>
                 Approve Stock
               </Button>
             </DialogFooter>
@@ -333,7 +334,7 @@ Generated on: ${new Date().toLocaleString()}
 
         {/* Reject Stock Dialog */}
         <Dialog open={isRejectDialogOpen} onOpenChange={setIsRejectDialogOpen}>
-          <DialogContent className="bg-gray-900 border border-purple-500/20 text-white rounded-xl">
+          <DialogContent className="bg-white border border-purple-500/20 text-black rounded-xl">
             <DialogHeader>
               <DialogTitle className="text-xl flex items-center">
                 <XCircle className="w-5 h-5 text-red-500 mr-2" />
@@ -341,15 +342,15 @@ Generated on: ${new Date().toLocaleString()}
               </DialogTitle>
             </DialogHeader>
             <div className="py-4 space-y-4">
-              <p className="text-gray-300">
+              <p className="text-gray-700">
                 Are you sure you want to reject the stock inward for{" "}
-                <span className="font-medium text-white">{selectedStock?.grnNumber}</span>?
+                <span className="font-medium text-black">{selectedStock?.grnNumber}</span>?
               </p>
               <div className="space-y-2">
                 <Label htmlFor="rejectionReason">Reason for Rejection</Label>
                 <Input
                   id="rejectionReason"
-                  className="bg-gray-900/50 border-gray-700 text-white rounded-lg"
+                  className="bg-gray-100 border-gray-300 text-black rounded-lg"
                   value={rejectionReason}
                   onChange={(e) => setRejectionReason(e.target.value)}
                   placeholder="Enter reason for rejection"
@@ -357,10 +358,10 @@ Generated on: ${new Date().toLocaleString()}
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" className="border-gray-700 rounded-lg" onClick={() => setIsRejectDialogOpen(false)}>
+              <Button variant="outline" className="border-gray-300 rounded-lg text-gray-700" onClick={() => setIsRejectDialogOpen(false)}>
                 Cancel
               </Button>
-              <Button className="bg-red-600 hover:bg-red-700 rounded-lg" onClick={handleRejectStock} disabled={!rejectionReason}>
+              <Button className="bg-red-600 hover:bg-red-700 rounded-lg text-white" onClick={handleRejectStock} disabled={!rejectionReason}>
                 Reject Stock
               </Button>
             </DialogFooter>
@@ -369,7 +370,7 @@ Generated on: ${new Date().toLocaleString()}
 
         {/* Success Dialog */}
         <Dialog open={isSuccessDialogOpen} onOpenChange={setIsSuccessDialogOpen}>
-          <DialogContent className="bg-gray-900 border border-purple-500/20 text-white rounded-xl">
+          <DialogContent className="bg-white border border-purple-500/20 text-black rounded-xl">
             <DialogHeader>
               <DialogTitle className="text-xl flex items-center">
                 <Check className="w-5 h-5 text-green-500 mr-2" />
@@ -377,7 +378,7 @@ Generated on: ${new Date().toLocaleString()}
               </DialogTitle>
             </DialogHeader>
             <div className="py-4">
-              <p className="text-gray-300">
+              <p className="text-gray-700">
                 Stock inward operation completed successfully.
               </p>
             </div>
@@ -386,4 +387,5 @@ Generated on: ${new Date().toLocaleString()}
       </div>
     </div>
   )
+// ...existing code...
 }

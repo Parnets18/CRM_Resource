@@ -1,12 +1,37 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { 
-  Banknote, MapPin, Scale, ShoppingCart, Warehouse, Users,
-  ChevronDown, ChevronRight, UserPlus, FileSpreadsheet, Calendar,
-  Building, Settings, Users2, ClipboardList, Package, BarChart3,
-  CreditCard, Receipt, DollarSign, PieChart, Wallet, Calculator,
-  Menu, X, CalendarDays , Star, Gift , LockKeyhole   , User
+import {
+  Banknote,
+  MapPin,
+  Scale,
+  ShoppingCart,
+  Warehouse,
+  Users,
+  ChevronDown,
+  ChevronRight,
+  UserPlus,
+  FileSpreadsheet,
+  Calendar,
+  Building,
+  Settings,
+  Users2,
+  ClipboardList,
+  Package,
+  BarChart3,
+  CreditCard,
+  Receipt,
+  DollarSign,
+  PieChart,
+  Wallet,
+  Calculator,
+  Menu,
+  X,
+  CalendarDays,
+  Star,
+  Gift,
+  LockKeyhole,
+  User,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -19,8 +44,8 @@ function useIsMobile() {
     };
 
     checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
   return isMobile;
@@ -33,9 +58,9 @@ export default function Nav() {
   const isMobile = useIsMobile();
 
   const toggleSubtabExpansion = (subtabId) => {
-    setExpandedSubtabs(prev => 
-      prev.includes(subtabId) 
-        ? prev.filter(id => id !== subtabId) 
+    setExpandedSubtabs((prev) =>
+      prev.includes(subtabId)
+        ? prev.filter((id) => id !== subtabId)
         : [...prev, subtabId]
     );
   };
@@ -46,36 +71,36 @@ export default function Nav() {
       icon: MapPin,
       id: "hr",
       subtabs: [
-        { 
-          title: "Admin", 
+        {
+          title: "Admin",
           icon: UserPlus,
           subtabs: [
             { title: "Create Role", icon: Users, path: "/admin/create" },
             { title: "Config", icon: LockKeyhole, path: "/admin/config" },
-            { title: "Report", icon: ClipboardList, path: "/admin/report" }
-          ]
+            { title: "Report", icon: ClipboardList, path: "/admin/report" },
+          ],
         },
-        { 
-          title: "HR Manager", 
+        {
+          title: "HR Manager",
           icon: FileSpreadsheet,
-          path:"/manager"
+          path: "/manager",
           // subtabs: [
           //   { title: "Employee Detail", icon: Users, path: "/manager/employee" },
           //   { title: "Leave Management", icon: CalendarDays, path: "/leave" },
           //   { title: "Performance Reviews", icon: Star, path: "/performance" }
           // ]
         },
-        { 
-          title: "Employee", 
+        {
+          title: "Employee",
           icon: Calendar,
-          path:"/employee"
+          path: "/employee",
           // subtabs: [
           //   { title: "My Profile", icon: User, path: "/profile" },
           //   { title: "Pay Slips", icon: Wallet, path: "/payslips" },
           //   { title: "Benefits", icon: Gift, path: "/benefits" }
           // ]
-        }
-      ]
+        },
+      ],
     },
     {
       title: "Site Management",
@@ -84,29 +109,41 @@ export default function Nav() {
       subtabs: [
         { title: "Admin", icon: Building, path: "/siteadmin" },
         { title: "Project Manager", icon: Settings, path: "/siteproject" },
-        { title: "Site Supervisor", icon: Users2, path: "/sitesupervisor" }
-      ]
+        { title: "Site Supervisor", icon: Users2, path: "/sitesupervisor" },
+      ],
     },
     {
       title: "Indent & Inventory",
       icon: Warehouse,
       id: "inventory",
       subtabs: [
-        { title: "Site Supervisor", icon: ClipboardList, path: "/inventorysite" },
-        { title: "Procurement Office", icon: Package, path: "/inventoryofficer" },
+        {
+          title: "Site Supervisor",
+          icon: ClipboardList,
+          path: "/inventorysite",
+        },
+        {
+          title: "Procurement Office",
+          icon: Package,
+          path: "/inventoryofficer",
+        },
         { title: "Project Manager", icon: Users, path: "/inventorymanager" },
-        { title: "Admin", icon: BarChart3, path: "/inventoryadmin" }
-      ]
+        { title: "Admin", icon: BarChart3, path: "/inventoryadmin" },
+      ],
     },
     {
       title: "Purchase Management",
       icon: ShoppingCart,
       id: "purchase",
       subtabs: [
-        { title: "Procurement Officer", icon: CreditCard, path: "/purchaseofficer" },
+        {
+          title: "Procurement Officer",
+          icon: CreditCard,
+          path: "/purchaseofficer",
+        },
         { title: "Accountant", icon: Users, path: "/purchaseaccountant" },
-        { title: "Admin", icon: Receipt, path: "/purchaseadmin" }
-      ]
+        { title: "Admin", icon: Receipt, path: "/purchaseadmin" },
+      ],
     },
     {
       title: "Sales Management",
@@ -115,8 +152,8 @@ export default function Nav() {
       subtabs: [
         { title: "Admin", icon: DollarSign, path: "/salesadmin" },
         { title: "Accountant", icon: PieChart, path: "/salesaccountant" },
-        { title: "Project Manager", icon: Users, path: "/salesproject" }
-      ]
+        { title: "Project Manager", icon: Users, path: "/salesproject" },
+      ],
     },
     {
       title: "Expense Management",
@@ -126,9 +163,9 @@ export default function Nav() {
         { title: "Site Supervisor", icon: Wallet, path: "/expensesupervisor" },
         { title: "Project Manager", icon: Calculator, path: "/expensemanager" },
         { title: "Accountant", icon: BarChart3, path: "/expenseaccountant" },
-        { title: "Admin", icon: DollarSign, path: "/expenseadmin" }
-      ]
-    }
+        { title: "Admin", icon: DollarSign, path: "/expenseadmin" },
+      ],
+    },
   ];
 
   return (
@@ -136,22 +173,26 @@ export default function Nav() {
       {isMobile && !isNavOpen && (
         <button
           onClick={() => setIsNavOpen(true)}
-          className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-white"
+          className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white hover:bg-gray-100 text-purple-700 border border-purple-200"
         >
           <Menu className="w-6 h-6" />
         </button>
       )}
 
-      <motion.div 
-        initial={{ x: isMobile ? '-100%' : 0 }}
-        animate={{ x: (isMobile && !isNavOpen) ? '-100%' : 0 }}
-        transition={{ type: 'tween', duration: 0.3 }}
-        className="w-64 fixed top-0 left-0 h-screen border-r border-purple-500/20 bg-black backdrop-blur-sm p-4 overflow-y-auto z-40"
+      <motion.div
+        initial={{ x: isMobile ? "-100%" : 0 }}
+        animate={{ x: isMobile && !isNavOpen ? "-100%" : 0 }}
+        transition={{ type: "tween", duration: 0.3 }}
+        className="w-64 fixed top-0 left-0 h-screen border-r border-purple-500/20 bg-white backdrop-blur-sm p-4 overflow-y-auto z-40"
       >
         <div className="flex items-center gap-2 mb-8">
           <motion.div
             animate={{ rotate: 360 }}
-            transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+            transition={{
+              duration: 2,
+              repeat: Number.POSITIVE_INFINITY,
+              ease: "linear",
+            }}
             className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center"
           >
             <span className="text-white font-bold text-sm">N</span>
@@ -171,10 +212,14 @@ export default function Nav() {
             <div key={item.id}>
               <Button
                 variant="ghost"
-                className="w-full justify-start text-gray-300 hover:bg-gray-900/50 hover:text-white"
-                onClick={() => setExpandedSection(expandedSection === item.id ? null : item.id)}
+                className="w-full justify-start text-gray-700 hover:bg-gray-100 hover:text-purple-700"
+                onClick={() =>
+                  setExpandedSection(
+                    expandedSection === item.id ? null : item.id
+                  )
+                }
               >
-                <item.icon className="w-4 h-4 mr-2 text-purple-400" />
+                <item.icon className="w-4 h-4 mr-2 text-purple-500" />
                 <span className="flex-1">{item.title}</span>
                 {expandedSection === item.id ? (
                   <ChevronDown className="w-4 h-4 text-purple-400" />
@@ -192,8 +237,11 @@ export default function Nav() {
                     className="overflow-hidden"
                   >
                     {item.subtabs.map((subtab, index) => {
-                      const subtabId = `${item.id}-${subtab.title.toLowerCase().replace(/\s+/g, '-')}`;
-                      const hasSubtabs = subtab.subtabs && subtab.subtabs.length > 0;
+                      const subtabId = `${item.id}-${subtab.title
+                        .toLowerCase()
+                        .replace(/\s+/g, "-")}`;
+                      const hasSubtabs =
+                        subtab.subtabs && subtab.subtabs.length > 0;
 
                       return (
                         <div key={index}>
@@ -201,7 +249,7 @@ export default function Nav() {
                             <>
                               <Button
                                 variant="ghost"
-                                className="w-full justify-start text-gray-400 hover:bg-gray-900/50 hover:text-white pl-8"
+                                className="w-full justify-start text-gray-500 hover:bg-gray-100 hover:text-purple-700 pl-8"
                                 onClick={() => toggleSubtabExpansion(subtabId)}
                               >
                                 <subtab.icon className="w-4 h-4 mr-2 text-purple-400" />
@@ -221,35 +269,39 @@ export default function Nav() {
                                     transition={{ duration: 0.2 }}
                                     className="overflow-hidden"
                                   >
-                                    {subtab.subtabs.map((nestedSubtab, nestedIndex) => (
-                                      <Link
-                                        key={nestedIndex}
-                                        to={nestedSubtab.path}
-                                        className="block no-underline"
-                                        onClick={() => isMobile && setIsNavOpen(false)}
-                                      >
-                                        <Button
-                                          variant="ghost"
-                                          className="w-full justify-start text-gray-400 hover:bg-gray-900/50 hover:text-white pl-12"
+                                    {subtab.subtabs.map(
+                                      (nestedSubtab, nestedIndex) => (
+                                        <Link
+                                          key={nestedIndex}
+                                          to={nestedSubtab.path}
+                                          className="block no-underline"
+                                          onClick={() =>
+                                            isMobile && setIsNavOpen(false)
+                                          }
                                         >
-                                          <nestedSubtab.icon className="w-4 h-4 mr-2 text-purple-400" />
-                                          {nestedSubtab.title}
-                                        </Button>
-                                      </Link>
-                                    ))}
+                                          <Button
+                                            variant="ghost"
+                                            className="w-full justify-start text-gray-500 hover:bg-gray-100 hover:text-purple-700 pl-12"
+                                          >
+                                            <nestedSubtab.icon className="w-4 h-4 mr-2 text-purple-400" />
+                                            {nestedSubtab.title}
+                                          </Button>
+                                        </Link>
+                                      )
+                                    )}
                                   </motion.div>
                                 )}
                               </AnimatePresence>
                             </>
                           ) : (
-                            <Link 
+                            <Link
                               to={subtab.path}
                               className="block no-underline"
                               onClick={() => isMobile && setIsNavOpen(false)}
                             >
                               <Button
                                 variant="ghost"
-                                className="w-full justify-start text-gray-400 hover:bg-gray-900/50 hover:text-white pl-8"
+                                className="w-full justify-start text-gray-500 hover:bg-gray-100 hover:text-purple-700 pl-8"
                               >
                                 <subtab.icon className="w-4 h-4 mr-2 text-purple-400" />
                                 {subtab.title}

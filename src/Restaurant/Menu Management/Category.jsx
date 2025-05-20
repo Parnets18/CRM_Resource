@@ -132,9 +132,9 @@ export default function MenuManagement() {
     : menuItems;
 
   return (
-    <div className="min-h-screen bg-black lg:ml-64">
+    <div className="min-h-screen bg-white lg:ml-64">
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-gray-100 to-white"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
       </div>
 
@@ -144,15 +144,15 @@ export default function MenuManagement() {
           <RestoNav />
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-white">Menu Management</h2>
+              <h2 className="text-2xl font-bold text-black">Menu Management</h2>
               <div className="flex items-center gap-2 mt-1">
                 <Badge
                   variant="outline"
-                  className="border-green-500/50 text-green-400"
+                  className="border-green-500/50 text-green-700 bg-green-50"
                 >
                   {selectedRestaurant.name}
                 </Badge>
-                <span className="text-gray-400 text-sm">
+                <span className="text-gray-500 text-sm">
                   {selectedRestaurant.location}
                 </span>
               </div>
@@ -167,7 +167,7 @@ export default function MenuManagement() {
           <div className="flex gap-3 mb-6 flex-wrap">
             <Button
               variant={!activeFilter ? "default" : "outline"}
-              className={!activeFilter ? "bg-purple-600" : "border-gray-700"}
+              className={!activeFilter ? "bg-purple-600 text-white" : "border-gray-300 text-gray-700"}
               onClick={() => setActiveFilter(null)}
             >
               All Items
@@ -175,7 +175,9 @@ export default function MenuManagement() {
             <Button
               variant={activeFilter === "Veg" ? "default" : "outline"}
               className={
-                activeFilter === "Veg" ? "bg-green-600" : "border-gray-700"
+                activeFilter === "Veg"
+                  ? "bg-green-600 text-white"
+                  : "border-gray-300 text-gray-700"
               }
               onClick={() => setActiveFilter("Veg")}
             >
@@ -185,7 +187,9 @@ export default function MenuManagement() {
             <Button
               variant={activeFilter === "Non-Veg" ? "default" : "outline"}
               className={
-                activeFilter === "Non-Veg" ? "bg-red-600" : "border-gray-700"
+                activeFilter === "Non-Veg"
+                  ? "bg-red-600 text-white"
+                  : "border-gray-300 text-gray-700"
               }
               onClick={() => setActiveFilter("Non-Veg")}
             >
@@ -195,7 +199,9 @@ export default function MenuManagement() {
             <Button
               variant={activeFilter === "Hot" ? "default" : "outline"}
               className={
-                activeFilter === "Hot" ? "bg-orange-600" : "border-gray-700"
+                activeFilter === "Hot"
+                  ? "bg-orange-600 text-white"
+                  : "border-gray-300 text-gray-700"
               }
               onClick={() => setActiveFilter("Hot")}
             >
@@ -204,7 +210,9 @@ export default function MenuManagement() {
             <Button
               variant={activeFilter === "Cold" ? "default" : "outline"}
               className={
-                activeFilter === "Cold" ? "bg-blue-600" : "border-gray-700"
+                activeFilter === "Cold"
+                  ? "bg-blue-600 text-white"
+                  : "border-gray-300 text-gray-700"
               }
               onClick={() => setActiveFilter("Cold")}
             >
@@ -223,18 +231,18 @@ export default function MenuManagement() {
               return (
                 <Card
                   key={category.name}
-                  className="border border-purple-500/20 bg-black/80 backdrop-blur-sm"
+                  className="border border-purple-500/20 bg-white backdrop-blur-sm"
                 >
                   <CardHeader
                     className="p-4 cursor-pointer"
                     onClick={() => toggleCategory(category.name)}
                   >
                     <div className="flex justify-between items-center">
-                      <CardTitle className="text-white flex items-center gap-3">
+                      <CardTitle className="text-black flex items-center gap-3">
                         {category.name}
                         <Badge
                           variant="secondary"
-                          className="bg-purple-900/30 text-purple-300"
+                          className="bg-purple-100 text-purple-700"
                         >
                           {itemsInCategory.length} items
                         </Badge>
@@ -252,19 +260,19 @@ export default function MenuManagement() {
                       <Table>
                         <TableHeader>
                           <TableRow className="hover:bg-transparent">
-                            <TableHead className="text-gray-300 w-[40%]">
+                            <TableHead className="text-gray-700 w-[40%]">
                               Item
                             </TableHead>
-                            <TableHead className="text-gray-300">
+                            <TableHead className="text-gray-700">
                               Type
                             </TableHead>
-                            <TableHead className="text-gray-300">
+                            <TableHead className="text-gray-700">
                               Price
                             </TableHead>
-                            <TableHead className="text-gray-300">
+                            <TableHead className="text-gray-700">
                               Status
                             </TableHead>
-                            <TableHead className="text-right text-gray-300">
+                            <TableHead className="text-right text-gray-700">
                               Actions
                             </TableHead>
                           </TableRow>
@@ -274,12 +282,12 @@ export default function MenuManagement() {
                             <motion.tr
                               key={item.id}
                               whileHover={{
-                                backgroundColor: "rgba(107, 33, 168, 0.2)",
+                                backgroundColor: "rgba(168, 85, 247, 0.08)",
                               }}
-                              className="border-t border-gray-800"
+                              className="border-t border-gray-200"
                             >
                               <TableCell>
-                                <div className="font-medium text-white">
+                                <div className="font-medium text-black">
                                   {item.name}
                                 </div>
                                 <div className="text-xs text-gray-500">
@@ -290,7 +298,7 @@ export default function MenuManagement() {
                                 {item.subcategory === "Veg" ? (
                                   <Badge
                                     variant="outline"
-                                    className="border-green-500/50 text-green-400"
+                                    className="border-green-500/50 text-green-700 bg-green-50"
                                   >
                                     <Leaf className="w-3 h-3 mr-1" />
                                     Veg
@@ -298,7 +306,7 @@ export default function MenuManagement() {
                                 ) : item.subcategory === "Non-Veg" ? (
                                   <Badge
                                     variant="outline"
-                                    className="border-red-500/50 text-red-400"
+                                    className="border-red-500/50 text-red-700 bg-red-50"
                                   >
                                     <Beef className="w-3 h-3 mr-1" />
                                     Non-Veg
@@ -306,13 +314,13 @@ export default function MenuManagement() {
                                 ) : (
                                   <Badge
                                     variant="outline"
-                                    className="border-purple-500/50 text-purple-400"
+                                    className="border-purple-500/50 text-purple-700 bg-purple-50"
                                   >
                                     {item.subcategory}
                                   </Badge>
                                 )}
                               </TableCell>
-                              <TableCell className="text-white">
+                              <TableCell className="text-black">
                                 ${item.price.toFixed(2)}
                               </TableCell>
                               <TableCell>
@@ -320,8 +328,8 @@ export default function MenuManagement() {
                                   variant="outline"
                                   className={
                                     item.status === "Available"
-                                      ? "border-green-500/50 text-green-400"
-                                      : "border-yellow-500/50 text-yellow-400"
+                                      ? "border-green-500/50 text-green-700 bg-green-50"
+                                      : "border-yellow-500/50 text-yellow-700 bg-yellow-50"
                                   }
                                 >
                                   {item.status}
@@ -332,14 +340,14 @@ export default function MenuManagement() {
                                   <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="text-purple-400 hover:bg-purple-900/20"
+                                    className="text-purple-700 hover:bg-purple-100"
                                   >
                                     <Edit className="w-4 h-4" />
                                   </Button>
                                   <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="text-red-400 hover:bg-red-900/20"
+                                    className="text-red-700 hover:bg-red-100"
                                   >
                                     <Trash2 className="w-4 h-4" />
                                   </Button>
