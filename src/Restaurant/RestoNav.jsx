@@ -34,6 +34,8 @@ export default function RestoNav() {
   const isMobile = useIsMobile();
 
   const navItems = [
+   
+  
     {
       title: "Restaurant Setup",
       icon: Utensils,
@@ -95,6 +97,15 @@ export default function RestoNav() {
       id: "kop",
       subtabs: [
         { title: "CustomerProfiile", icon: CreditCard, path: "/Customermanagemnet" },
+       
+      ]
+    },
+      {
+      title: "Reservations Management",
+      icon: ShoppingCart,
+      id: "kop",
+      subtabs: [
+        { title: "Table Mangagemnet", icon: CreditCard, path: "/Tablemangement" },
        
       ]
     },

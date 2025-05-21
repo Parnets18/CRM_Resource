@@ -59,6 +59,7 @@ import AccountsFinance from "../src/Common/Account&Finance";
 
 
 //restaurant components
+import RestoDashboard from '../src/Restaurant/RestoDashboard'
 import RawMaterialsManagement from './Restaurant/Stock Management/RawMaterial';
 import RawMaterial from './Restaurant/Stock Management/RawMaterial';
 import StoreLocation from './Restaurant/Stock Management/StoreLocation';
@@ -73,6 +74,7 @@ import PendingPOsPayment from './Restaurant/Purchase Management/PaymentStatus';
 import ReportAnalytics from '../src/Common/ReportAnalytics';
 import Addtocart from '../src/Restaurant/Order&Billing/Addtocart'
 import CustomerProfile from './Restaurant/CustomerManagement/CustomerProfile';
+import TableManagement from "./Restaurant/Reservations & Table Management/TableManagement";
 
 
 
@@ -109,7 +111,8 @@ function App() {
         <Route path='/salesaccountant' element={<SalesAccountant />} /> */}
 
         {/* RESTAURANT */}
-        <Route path='/restaurantcrm' element={<Restaurant />} />
+        <Route path='/RestaurantCrmDashboard' element={<RestoDashboard />} />
+      
         <Route path='/Profile' element={<Profile />} />
         <Route path='/Role' element={<Roles />} />
         <Route path='/TableSetup' element={<TableSetUp />} />
@@ -130,6 +133,7 @@ function App() {
         <Route path='/PendingPOsPayment' element={<PendingPOsPayment />} />
         <Route path='/Addtocart' element={<Addtocart />} />
         <Route path='/Customermanagemnet' element={<CustomerProfile />} />
+        <Route path='/Tablemangement' element={<TableManagement />} />
 
 
 
