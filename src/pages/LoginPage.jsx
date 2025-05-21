@@ -36,16 +36,16 @@ export default function LoginPage() {
         <Card className="   backdrop-blur-sm shadow-xl shadow-purple-500/10">
           <CardHeader className="space-y-1">
             <div className="flex justify-center mb-2">
-              <motion.div
+              {/* <motion.div
                 initial={{ rotate: 0 }}
                 animate={{ rotate: 360 }}
                 transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
                 className="h-12 w-12 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center"
               >
                 <span className="text-white font-bold text-xl">N</span>
-              </motion.div>
+              </motion.div> */}
             </div>
-            <CardTitle className="text-2xl font-bold text-center text-white">Login to NexusCRM</CardTitle>
+            <CardTitle className="text-2xl font-bold text-center text-white">Login to CRM</CardTitle>
             <CardDescription className="text-center text-gray-400">
               Enter your credentials to access your account
             </CardDescription>

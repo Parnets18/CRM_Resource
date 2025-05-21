@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion , AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
   Banknote,
@@ -147,6 +147,15 @@ export default function RestoNav() {
        
       ]
     },
+      {
+      title: "Kitchen Management",
+      icon: ShoppingCart,
+      id: "kop",
+      subtabs: [
+        { title: "Kitchen Mangemnet", icon: CreditCard, path: "/Kitchebnmanagement" },
+       
+      ]
+    },
     
     {
       title: "Sales Management",
@@ -197,7 +206,7 @@ export default function RestoNav() {
           className="w-64 fixed top-0 left-0 h-screen border-r border-purple-500/20 bg-white backdrop-blur-sm p-4 overflow-y-auto z-40"
         >
           <div className="flex items-center gap-2 mb-8">
-            <motion.div
+            {/* <motion.div
               animate={{ rotate: 360 }}
               transition={{
                 duration: 2,
@@ -207,9 +216,9 @@ export default function RestoNav() {
               className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center"
             >
               <span className="text-white font-bold text-sm">N</span>
-            </motion.div>
-            <h1 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-              NexusCRM
+            </motion.div> */}
+            <h1 className="text-xl font-bold text- text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+              CRM
             </h1>
             {isMobile && (
               <button onClick={() => setIsNavOpen(false)} className="ml-auto">

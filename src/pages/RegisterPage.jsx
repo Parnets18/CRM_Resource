@@ -135,7 +135,7 @@ export default function RegisterPage() {
       <div className="max-w-6xl mx-auto space-y-8">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-black">
-            Get Started with NexusCRM
+            Get Started with CRM
           </h1>
           <p className="text-gray-400 mt-2">
             {step === 1 && "Enter your company details"}

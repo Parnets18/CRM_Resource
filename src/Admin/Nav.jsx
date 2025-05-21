@@ -186,7 +186,7 @@ export default function Nav() {
         className="w-64 fixed top-0 left-0 h-screen border-r border-purple-500/20 bg-white backdrop-blur-sm p-4 overflow-y-auto z-40"
       >
         <div className="flex items-center gap-2 mb-8">
-          <motion.div
+          {/* <motion.div
             animate={{ rotate: 360 }}
             transition={{
               duration: 2,
@@ -196,9 +196,9 @@ export default function Nav() {
             className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center"
           >
             <span className="text-white font-bold text-sm">N</span>
-          </motion.div>
+          </motion.div> */}
           <h1 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-            NexusCRM
+            CRM
           </h1>
           {isMobile && (
             <button onClick={() => setIsNavOpen(false)} className="ml-auto">

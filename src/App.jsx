@@ -75,6 +75,7 @@ import ReportAnalytics from '../src/Common/ReportAnalytics';
 import Addtocart from '../src/Restaurant/Order&Billing/Addtocart'
 import CustomerProfile from './Restaurant/CustomerManagement/CustomerProfile';
 import TableManagement from "./Restaurant/Reservations & Table Management/TableManagement";
+import KitchenManagement from "./Restaurant/KitchenManagement.jsx/Kitchen";
 
 
 
@@ -134,6 +135,7 @@ function App() {
         <Route path='/Addtocart' element={<Addtocart />} />
         <Route path='/Customermanagemnet' element={<CustomerProfile />} />
         <Route path='/Tablemangement' element={<TableManagement />} />
+        <Route path='/Kitchebnmanagement' element={<KitchenManagement />} />
 
 
 

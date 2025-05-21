@@ -94,7 +94,7 @@ export default function Sidebar({ collapsed, setCollapsed }) {
           <div className="flex items-center justify-center h-10 w-10 rounded-full bg-purple-600 text-white font-bold text-xl">
             N
           </div>
-          {!collapsed && <span className="ml-3 text-xl font-bold">NexusCRM</span>}
+          {!collapsed && <span className="ml-3 text-xl font-bold">CRM</span>}
         </Link>
       </div>
 
