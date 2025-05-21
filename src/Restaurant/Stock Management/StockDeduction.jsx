@@ -95,40 +95,40 @@ export default function RecipeStockDeduction() {
       setQuantity(1)
     }, 2000)
   }
-
+// ...existing code...
   return (
-    <div className="p-6 bg-black min-h-screen">
+    <div className="p-6 bg-white min-h-screen">
       <div className="absolute inset-0 z-0">
-      <RestoNav />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
+        <RestoNav />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-gray-100 to-white"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
       </div>
 
       <div className="relative z-10 max-w-5xl mx-auto ml-[16rem]">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h2 className="text-2xl font-bold text-white">Recipe Stock Deduction</h2>
-            <p className="text-gray-400">Automatically deduct stock based on recipes used</p>
+            <h2 className="text-2xl font-bold text-black">Recipe Stock Deduction</h2>
+            <p className="text-gray-700">Automatically deduct stock based on recipes used</p>
           </div>
-          <Button className="bg-purple-600 hover:bg-purple-700">
+          <Button className="bg-purple-600 hover:bg-purple-700 text-white">
             <ShoppingCart className="w-4 h-4 mr-2" /> View Sales
           </Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="md:col-span-1">
-            <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm h-full">
+            <Card className="border border-purple-500/20 bg-white backdrop-blur-sm h-full">
               <CardHeader>
-                <CardTitle className="text-white">Select Recipe</CardTitle>
+                <CardTitle className="text-black">Select Recipe</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="relative">
-                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+                    <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
                     <Input
                       type="search"
                       placeholder="Search recipes..."
-                      className="w-full bg-gray-900/50 border-gray-700 pl-8 text-white"
+                      className="w-full bg-gray-100 border-gray-300 pl-8 text-black"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                     />
@@ -137,7 +137,7 @@ export default function RecipeStockDeduction() {
                   <div className="space-y-2 mt-4">
                     <Label>Category Filter</Label>
                     <Select>
-                      <SelectTrigger className="bg-gray-900/50 border-gray-700 text-white">
+                      <SelectTrigger className="bg-gray-100 border-gray-300 text-black">
                         <SelectValue placeholder="All Categories" />
                       </SelectTrigger>
                       <SelectContent>
@@ -157,8 +157,8 @@ export default function RecipeStockDeduction() {
                           key={recipe.id}
                           className={`p-3 rounded-lg cursor-pointer transition-colors ${
                             selectedRecipe?.id === recipe.id
-                              ? "bg-purple-900/50 text-white"
-                              : "bg-gray-900/50 text-gray-300 hover:bg-gray-800/50"
+                              ? "bg-purple-100 text-purple-700"
+                              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                           }`}
                           onClick={() => handleRecipeSelect(recipe)}
                         >
@@ -179,19 +179,19 @@ export default function RecipeStockDeduction() {
           </div>
 
           <div className="md:col-span-2">
-            <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+            <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
               <CardHeader>
-                <CardTitle className="text-white">Recipe Details & Stock Deduction</CardTitle>
+                <CardTitle className="text-black">Recipe Details & Stock Deduction</CardTitle>
               </CardHeader>
               <CardContent>
                 {selectedRecipe ? (
                   <div className="space-y-6">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-xl font-medium text-white flex items-center">
+                      <h3 className="text-xl font-medium text-black flex items-center">
                         <Utensils className="w-5 h-5 mr-2 text-purple-400" />
                         {selectedRecipe.name}
                       </h3>
-                      <div className="text-sm text-gray-400">Category: {selectedRecipe.category}</div>
+                      <div className="text-sm text-gray-700">Category: {selectedRecipe.category}</div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
@@ -201,7 +201,7 @@ export default function RecipeStockDeduction() {
                           id="quantity"
                           type="number"
                           min="1"
-                          className="bg-gray-900/50 border-gray-700 text-white"
+                          className="bg-gray-100 border-gray-300 text-black"
                           value={quantity}
                           onChange={(e) => setQuantity(Number.parseInt(e.target.value) || 1)}
                         />
@@ -209,7 +209,7 @@ export default function RecipeStockDeduction() {
                       <div className="space-y-2">
                         <Label htmlFor="storeLocation">From Store Location</Label>
                         <Select>
-                          <SelectTrigger id="storeLocation" className="bg-gray-900/50 border-gray-700 text-white">
+                          <SelectTrigger id="storeLocation" className="bg-gray-100 border-gray-300 text-black">
                             <SelectValue placeholder="Select location" />
                           </SelectTrigger>
                           <SelectContent>
@@ -220,10 +220,10 @@ export default function RecipeStockDeduction() {
                       </div>
                     </div>
 
-                    <div className="border border-gray-800 rounded-lg p-4">
-                      <h4 className="text-white font-medium mb-3">Required Ingredients</h4>
+                    <div className="border border-gray-200 rounded-lg p-4">
+                      <h4 className="text-black font-medium mb-3">Required Ingredients</h4>
                       <div className="space-y-2">
-                        <div className="grid grid-cols-5 gap-2 text-sm text-gray-500 pb-2 border-b border-gray-800">
+                        <div className="grid grid-cols-5 gap-2 text-sm text-gray-700 pb-2 border-b border-gray-200">
                           <div>Material</div>
                           <div>Required</div>
                           <div>In Stock</div>
@@ -236,24 +236,24 @@ export default function RecipeStockDeduction() {
                           const isLowStock = remainingAmount < ingredient.minLevel
 
                           return (
-                            <div key={idx} className="grid grid-cols-5 gap-2 py-2 border-b border-gray-800">
-                              <div className="text-white">{ingredient.material}</div>
-                              <div className="text-gray-300">
+                            <div key={idx} className="grid grid-cols-5 gap-2 py-2 border-b border-gray-200">
+                              <div className="text-black">{ingredient.material}</div>
+                              <div className="text-gray-700">
                                 {requiredAmount} {ingredient.unit}
                               </div>
-                              <div className="text-gray-300">
+                              <div className="text-gray-700">
                                 {ingredient.inStock} {ingredient.unit}
                               </div>
-                              <div className="text-gray-300">
+                              <div className="text-gray-700">
                                 {remainingAmount} {ingredient.unit}
                               </div>
                               <div>
                                 {isLowStock ? (
-                                  <span className="px-2 py-1 rounded-full text-xs bg-red-900/30 text-red-400 flex items-center w-fit">
+                                  <span className="px-2 py-1 rounded-full text-xs bg-red-100 text-red-700 flex items-center w-fit">
                                     <AlertTriangle className="w-3 h-3 mr-1" /> Low
                                   </span>
                                 ) : (
-                                  <span className="px-2 py-1 rounded-full text-xs bg-green-900/30 text-green-400 flex items-center w-fit">
+                                  <span className="px-2 py-1 rounded-full text-xs bg-green-100 text-green-700 flex items-center w-fit">
                                     <Check className="w-3 h-3 mr-1" /> OK
                                   </span>
                                 )}
@@ -265,15 +265,15 @@ export default function RecipeStockDeduction() {
                     </div>
 
                     <div className="flex justify-end">
-                      <Button className="bg-purple-600 hover:bg-purple-700" onClick={handleDeductStock}>
+                      <Button className="bg-purple-600 hover:bg-purple-700 text-white" onClick={handleDeductStock}>
                         <ArrowDownCircle className="w-4 h-4 mr-2" /> Deduct Stock
                       </Button>
                     </div>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center py-12 text-center">
-                    <Utensils className="w-12 h-12 text-gray-700 mb-4" />
-                    <h3 className="text-lg font-medium text-gray-400">No Recipe Selected</h3>
+                    <Utensils className="w-12 h-12 text-gray-400 mb-4" />
+                    <h3 className="text-lg font-medium text-gray-500">No Recipe Selected</h3>
                     <p className="text-gray-500 mt-2 max-w-md">
                       Select a recipe from the list to view details and deduct stock based on ingredients used.
                     </p>
@@ -287,27 +287,27 @@ export default function RecipeStockDeduction() {
 
       {/* Confirmation Dialog */}
       <Dialog open={isConfirmDialogOpen} onOpenChange={setIsConfirmDialogOpen}>
-        <DialogContent className="bg-gray-900 border border-purple-500/20 text-white">
+        <DialogContent className="bg-white border border-purple-500/20 text-black">
           <DialogHeader>
             <DialogTitle>Confirm Stock Deduction</DialogTitle>
           </DialogHeader>
           <div className="py-4">
-            <p className="text-gray-300">
+            <p className="text-gray-700">
               Are you sure you want to deduct stock for{" "}
-              <span className="font-medium text-white">
+              <span className="font-medium text-black">
                 {quantity}x {selectedRecipe?.name}
               </span>
               ?
             </p>
-            <p className="text-gray-400 text-sm mt-2">
+            <p className="text-gray-500 text-sm mt-2">
               This will reduce the inventory levels for all ingredients used in this recipe.
             </p>
           </div>
           <DialogFooter>
-            <Button variant="outline" className="border-gray-700" onClick={() => setIsConfirmDialogOpen(false)}>
+            <Button variant="outline" className="border-gray-300 text-gray-700" onClick={() => setIsConfirmDialogOpen(false)}>
               Cancel
             </Button>
-            <Button className="bg-purple-600 hover:bg-purple-700" onClick={confirmDeduction}>
+            <Button className="bg-purple-600 hover:bg-purple-700 text-white" onClick={confirmDeduction}>
               Confirm Deduction
             </Button>
           </DialogFooter>
@@ -316,7 +316,7 @@ export default function RecipeStockDeduction() {
 
       {/* Low Stock Warning Dialog */}
       <Dialog open={isLowStockDialogOpen} onOpenChange={setIsLowStockDialogOpen}>
-        <DialogContent className="bg-gray-900 border border-purple-500/20 text-white">
+        <DialogContent className="bg-white border border-purple-500/20 text-black">
           <DialogHeader>
             <DialogTitle className="flex items-center">
               <AlertTriangle className="w-5 h-5 text-yellow-500 mr-2" />
@@ -324,9 +324,9 @@ export default function RecipeStockDeduction() {
             </DialogTitle>
           </DialogHeader>
           <div className="py-4">
-            <p className="text-gray-300">
+            <p className="text-gray-700">
               Deducting stock for{" "}
-              <span className="font-medium text-white">
+              <span className="font-medium text-black">
                 {quantity}x {selectedRecipe?.name}
               </span>{" "}
               will cause some ingredients to fall below minimum stock levels:
@@ -335,22 +335,22 @@ export default function RecipeStockDeduction() {
               {selectedRecipe?.ingredients
                 .filter((ingredient) => ingredient.inStock - ingredient.quantity * quantity < ingredient.minLevel)
                 .map((ingredient, idx) => (
-                  <div key={idx} className="bg-gray-800/50 p-2 rounded flex justify-between">
+                  <div key={idx} className="bg-yellow-100 p-2 rounded flex justify-between">
                     <span>{ingredient.material}</span>
-                    <span className="text-yellow-400">
+                    <span className="text-yellow-700">
                       Will fall to {ingredient.inStock - ingredient.quantity * quantity} {ingredient.unit}
                     </span>
                   </div>
                 ))}
             </div>
-            <p className="text-gray-400 text-sm mt-4">Do you want to proceed with the deduction anyway?</p>
+            <p className="text-gray-500 text-sm mt-4">Do you want to proceed with the deduction anyway?</p>
           </div>
           <DialogFooter>
-            <Button variant="outline" className="border-gray-700" onClick={() => setIsLowStockDialogOpen(false)}>
+            <Button variant="outline" className="border-gray-300 text-gray-700" onClick={() => setIsLowStockDialogOpen(false)}>
               Cancel
             </Button>
             <Button
-              className="bg-yellow-600 hover:bg-yellow-700"
+              className="bg-yellow-600 hover:bg-yellow-700 text-white"
               onClick={() => {
                 setIsLowStockDialogOpen(false)
                 setIsConfirmDialogOpen(true)
@@ -364,7 +364,7 @@ export default function RecipeStockDeduction() {
 
       {/* Success Dialog */}
       <Dialog open={isSuccessDialogOpen} onOpenChange={setIsSuccessDialogOpen}>
-        <DialogContent className="bg-gray-900 border border-purple-500/20 text-white">
+        <DialogContent className="bg-white border border-purple-500/20 text-black">
           <DialogHeader>
             <DialogTitle className="flex items-center">
               <Check className="w-5 h-5 text-green-500 mr-2" />
@@ -372,7 +372,7 @@ export default function RecipeStockDeduction() {
             </DialogTitle>
           </DialogHeader>
           <div className="py-4">
-            <p className="text-gray-300">
+            <p className="text-gray-700">
               Stock has been successfully deducted for {quantity}x {selectedRecipe?.name}.
             </p>
           </div>
@@ -380,4 +380,5 @@ export default function RecipeStockDeduction() {
       </Dialog>
     </div>
   )
+// ...existing code...
 }

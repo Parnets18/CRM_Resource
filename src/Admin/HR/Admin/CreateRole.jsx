@@ -9,7 +9,7 @@ import Nav from "../../Nav";
 
 export default function CreateRole() {
   return (
-    <div className="min-h-screen bg-black lg:ml-64">
+    <div className="min-h-screen  lg:ml-64">
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
@@ -24,7 +24,7 @@ export default function CreateRole() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm max-w-2xl mx-auto">
+            <Card className=" bg-white backdrop-blur-sm max-w-2xl mx-auto">
               <CardHeader>
                 <CardTitle className="text-white">Create New Role</CardTitle>
               </CardHeader>
@@ -32,20 +32,19 @@ export default function CreateRole() {
                 <form className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label className="text-gray-300">Role Name</Label>
+                      <Label className="text-black">Role Name</Label>
                       <Input 
-                        className="bg-gray-900/50 border-gray-700 text-white"
-                        placeholder="Enter role name"
+                         placeholder="Enter role name"
                       />
                     </div>
                     
                     <div className="space-y-2">
-                      <Label className="text-gray-300">Department</Label>
+                      <Label className="text-black">Department</Label>
                       <Select>
-                        <SelectTrigger className="bg-gray-900/50 border-gray-700 text-white">
+                        <SelectTrigger className="    text-black">
                           <SelectValue placeholder="Select department" />
                         </SelectTrigger>
-                        <SelectContent className="bg-gray-900 border-gray-700 text-white">
+                        <SelectContent className="    text-black">
                           <SelectItem value="engineering">Engineering</SelectItem>
                           <SelectItem value="product">Product</SelectItem>
                           <SelectItem value="marketing">Marketing</SelectItem>
@@ -56,41 +55,41 @@ export default function CreateRole() {
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Role Description</Label>
+                    <Label className="text-black">Role Description</Label>
                     <Textarea 
-                      className="bg-gray-900/50 border-gray-700 text-white h-32"
+                      className="  border-gray-700 text-black "
                       placeholder="Describe the role responsibilities and expectations..."
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Required Skills</Label>
+                    <Label className="text-black">Required Skills</Label>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                       {['Technical Leadership', 'Project Management', 'Team Collaboration'].map((skill, index) => (
-                        <div key={index} className="flex items-center space-x-2 bg-gray-900/50 p-3 rounded-lg">
+                        <div key={index} className="flex items-center space-x-2 bg-gray-100 p-3 rounded-lg ">
                           <input 
                             type="checkbox" 
-                            className="form-checkbox text-purple-500 bg-gray-700 border-gray-600 rounded"
+                            className="form-checkbox text-purple-500      cursor-pointer"
                           />
-                          <span className="text-gray-300">{skill}</span>
+                          <span className="text-black">{skill}</span>
                         </div>
                       ))}
                     </div>
                   </div>
 
                   <div className="space-y-2">
-                    <Label className="text-gray-300">Key Responsibilities</Label>
+                    <Label className="text-black">Key Responsibilities</Label>
                     <div className="space-y-3">
                       {[1, 2, 3].map((item) => (
                         <Input
                           key={item}
-                          className="bg-gray-900/50 border-gray-700 text-white"
+                          className="   text-black"
                           placeholder={`Responsibility ${item}`}
                         />
                       ))}
                       <Button 
                         variant="outline" 
-                        className="text-purple-400 border-purple-500/30 hover:bg-purple-500/10"
+                        className="text-purple-500 border-purple-500/50 hover:bg-purple-500/10"
                       >
                         + Add Responsibility
                       </Button>
@@ -99,12 +98,12 @@ export default function CreateRole() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
-                      <Label className="text-gray-300">Experience Level</Label>
+                      <Label className="text-black">Experience Level</Label>
                       <Select>
-                        <SelectTrigger className="bg-gray-900/50 border-gray-700 text-white">
+                        <SelectTrigger className="  text-black cursor-pointer">
                           <SelectValue placeholder="Select experience level" />
                         </SelectTrigger>
-                        <SelectContent className="bg-gray-900 border-gray-700 text-white">
+                        <SelectContent className="bg-white border-gray-700 text-black ">
                           <SelectItem value="entry">Entry Level</SelectItem>
                           <SelectItem value="mid">Mid Level</SelectItem>
                           <SelectItem value="senior">Senior Level</SelectItem>
@@ -113,17 +112,17 @@ export default function CreateRole() {
                     </div>
 
                     <div className="space-y-2">
-                      <Label className="text-gray-300">Budget Range</Label>
+                      <Label className="text-black">Budget Range</Label>
                       <div className="flex items-center space-x-2">
                         <Input
                           type="number"
-                          className="bg-gray-900/50 border-gray-700 text-white"
+                          className="  text-black"
                           placeholder="Min"
                         />
                         <span className="text-gray-400">-</span>
                         <Input
                           type="number"
-                          className="bg-gray-900/50 border-gray-700 text-white"
+                          className="  text-black"
                           placeholder="Max"
                         />
                       </div>

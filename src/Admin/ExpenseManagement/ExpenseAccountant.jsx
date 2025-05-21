@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import {  Banknote, Landmark, FileText, Calendar, Clock, Download, ArrowUpDown , CheckCircle2} from "lucide-react";
+import { Banknote, Landmark, FileText, Calendar, Clock, Download, ArrowUpDown, CheckCircle2 } from "lucide-react";
 import Nav from "../Nav";
 import RestoNav from "@/Restaurant/RestoNav";
 import CommonLayout from "@/Common/CommonLayout";
@@ -19,43 +19,40 @@ export default function ExpenseAccountant() {
   ];
 
   return (
-    <div className="min-h-screen bg-black lg:ml-64 ">
+    <div className="min-h-screen bg-white lg:ml-64">
    
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-gray-100 to-white"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
       </div>
 
       <div className="relative z-10 flex">
         <RestoNav/>
 
-       
         <div className="flex-1 p-8">
         
           <div className="flex justify-between items-center mb-8 ">
             <div>
-              <h2 className="text-2xl font-bold text-white">Expense Management</h2>
-              <p className="text-gray-400">Accountant Portal</p>
+              <h2 className="text-2xl font-bold text-black">Expense Management</h2>
+              <p className="text-gray-700">Accountant Portal</p>
             </div>
-            <Button variant="ghost" size="icon" className="text-gray-300 hover:bg-gray-900/50">
+            <Button variant="ghost" size="icon" className="text-gray-700 hover:bg-gray-200">
               <Calendar className="w-5 h-5" />
             </Button>
           </div>
 
-
-          
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
        
             <div className="space-y-6">
-              <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+              <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-white">Record Major Expenses</CardTitle>
+                  <CardTitle className="text-black">Record Major Expenses</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <form className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <select 
-                        className="w-full p-2 rounded bg-gray-900/50 border border-gray-700 text-white"
+                        className="w-full p-2 rounded bg-gray-100 border border-gray-300 text-black"
                       >
                         <option value="">Expense Type</option>
                         <option>Fuel</option>
@@ -66,25 +63,25 @@ export default function ExpenseAccountant() {
                       <input 
                         type="number" 
                         placeholder="Amount" 
-                        className="w-full p-2 rounded bg-gray-900/50 border border-gray-700 text-white"
+                        className="w-full p-2 rounded bg-gray-100 border border-gray-300 text-black"
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <input 
                         type="date" 
-                        className="w-full p-2 rounded bg-gray-900/50 border border-gray-700 text-white"
+                        className="w-full p-2 rounded bg-gray-100 border border-gray-300 text-black"
                       />
                       <input 
                         type="text" 
                         placeholder="Vendor" 
-                        className="w-full p-2 rounded bg-gray-900/50 border border-gray-700 text-white"
+                        className="w-full p-2 rounded bg-gray-100 border border-gray-300 text-black"
                       />
                     </div>
 
                     <div className="grid grid-cols-2 gap-4">
                       <select 
-                        className="w-full p-2 rounded bg-gray-900/50 border border-gray-700 text-white"
+                        className="w-full p-2 rounded bg-gray-100 border border-gray-300 text-black"
                       >
                         <option value="">Payment Method</option>
                         <option>Bank Transfer</option>
@@ -94,39 +91,38 @@ export default function ExpenseAccountant() {
                       <input 
                         type="text" 
                         placeholder="Reference Number" 
-                        className="w-full p-2 rounded bg-gray-900/50 border border-gray-700 text-white"
+                        className="w-full p-2 rounded bg-gray-100 border border-gray-300 text-black"
                       />
                     </div>
 
-                    <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                    <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
                       Record Expense
                     </Button>
                   </form>
                 </CardContent>
               </Card>
 
-            
-              <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+              <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-white">Recent Payments</CardTitle>
+                  <CardTitle className="text-black">Recent Payments</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {recentPayments.map((payment) => (
                     <motion.div 
                       key={payment.id}
                       whileHover={{ x: 5 }}
-                      className="flex items-center justify-between p-3 rounded-lg bg-gray-900/50"
+                      className="flex items-center justify-between p-3 rounded-lg bg-gray-100"
                     >
                       <div>
-                        <p className="text-sm font-medium text-gray-300">${payment.amount.toLocaleString()}</p>
+                        <p className="text-sm font-medium text-black">₹{payment.amount.toLocaleString()}</p>
                         <p className="text-xs text-gray-500">{payment.method} - {payment.recipient}</p>
                         <p className="text-xs text-gray-500 mt-1">{payment.date}</p>
                       </div>
                       <div className="flex items-center gap-2">
                         {payment.status === 'processed' ? (
-                          <CheckCircle2 className="text-green-400 w-5 h-5" />
+                          <CheckCircle2 className="text-green-600 w-5 h-5" />
                         ) : (
-                          <Clock className="text-yellow-400 w-5 h-5" />
+                          <Clock className="text-yellow-500 w-5 h-5" />
                         )}
                       </div>
                     </motion.div>
@@ -135,17 +131,16 @@ export default function ExpenseAccountant() {
               </Card>
             </div>
 
-          
             <div className="space-y-6">
-              <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+              <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-white">Financial Reports</CardTitle>
+                  <CardTitle className="text-black">Financial Reports</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <select 
-                        className="w-full p-2 rounded bg-gray-900/50 border border-gray-700 text-white"
+                        className="w-full p-2 rounded bg-gray-100 border border-gray-300 text-black"
                       >
                         <option value="">Select Month</option>
                         <option>March 2024</option>
@@ -153,7 +148,7 @@ export default function ExpenseAccountant() {
                         <option>January 2024</option>
                       </select>
                       <select 
-                        className="w-full p-2 rounded bg-gray-900/50 border border-gray-700 text-white"
+                        className="w-full p-2 rounded bg-gray-100 border border-gray-300 text-black"
                       >
                         <option value="">Report Type</option>
                         <option>Expense Summary</option>
@@ -161,53 +156,51 @@ export default function ExpenseAccountant() {
                         <option>Tax Summary</option>
                       </select>
                     </div>
-                    <Button className="w-full bg-purple-600 hover:bg-purple-700">
+                    <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white">
                       <FileText className="w-4 h-4 mr-2" /> Generate Report
                     </Button>
                   </div>
 
-                
-                  <div className="border border-dashed border-gray-700 rounded-lg p-4">
+                  <div className="border border-dashed border-gray-300 rounded-lg p-4">
                     <div className="text-center text-gray-400 mb-4">
                       <Download className="w-8 h-8 mx-auto" />
                       <p className="mt-2">Report preview will appear here</p>
                     </div>
                     <div className="grid grid-cols-2 gap-4 text-sm">
-                      <div className="p-3 rounded-lg bg-gray-900/50">
+                      <div className="p-3 rounded-lg bg-gray-100">
                         <p className="text-gray-500">Total Expenses</p>
-                        <p className="text-white">$245,000</p>
+                        <p className="text-black">₹245,000</p>
                       </div>
-                      <div className="p-3 rounded-lg bg-gray-900/50">
+                      <div className="p-3 rounded-lg bg-gray-100">
                         <p className="text-gray-500">Tax Liability</p>
-                        <p className="text-white">$78,400</p>
+                        <p className="text-black">₹78,400</p>
                       </div>
                     </div>
                   </div>
                 </CardContent>
               </Card>
 
-           
-              <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+              <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
                 <CardHeader>
-                  <CardTitle className="text-white">Recent Major Expenses</CardTitle>
+                  <CardTitle className="text-black">Recent Major Expenses</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   {recentExpenses.map((expense) => (
                     <motion.div 
                       key={expense.id}
                       whileHover={{ x: 5 }}
-                      className="flex items-center justify-between p-3 rounded-lg bg-gray-900/50"
+                      className="flex items-center justify-between p-3 rounded-lg bg-gray-100"
                     >
                       <div>
-                        <p className="text-sm font-medium text-gray-300">${expense.amount.toLocaleString()}</p>
+                        <p className="text-sm font-medium text-black">₹{expense.amount.toLocaleString()}</p>
                         <p className="text-xs text-gray-500">{expense.type} - {expense.vendor}</p>
                         <p className="text-xs text-gray-500 mt-1">{expense.date}</p>
                       </div>
                       <div className="flex items-center gap-2">
                         {expense.paymentMethod === 'Bank' ? (
-                          <Landmark className="text-purple-400 w-5 h-5" />
+                          <Landmark className="text-purple-600 w-5 h-5" />
                         ) : (
-                          <Banknote className="text-green-400 w-5 h-5" />
+                          <Banknote className="text-green-600 w-5 h-5" />
                         )}
                       </div>
                     </motion.div>

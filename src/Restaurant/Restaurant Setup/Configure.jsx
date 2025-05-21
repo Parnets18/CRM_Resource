@@ -90,9 +90,9 @@ export default function Configuration() {
     };
 
     return (
-        <div className="min-h-screen bg-black lg:ml-64">
+        <div className="min-h-screen bg-white lg:ml-64">
             <div className="absolute inset-0 z-0">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/30 via-gray-900 to-black"></div>
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-gray-100 to-white"></div>
                 <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-blue-600/10 to-transparent"></div>
             </div>
 
@@ -100,8 +100,8 @@ export default function Configuration() {
                 <div className="flex-1 p-8">
                     <div className="flex justify-between items-center mb-8">
                         <div>
-                            <h2 className="text-2xl font-bold text-white">Restaurant Configuration</h2>
-                            <p className="text-gray-400">Manage system settings and preferences</p>
+                            <h2 className="text-2xl font-bold text-black">Restaurant Configuration</h2>
+                            <p className="text-gray-700">Manage system settings and preferences</p>
                         </div>
                         <RestoNav />
                     </div>
@@ -112,23 +112,23 @@ export default function Configuration() {
                         animate={{ opacity: 1, y: 0 }}
                         className="mb-8"
                     >
-                        <Card className="border border-blue-500/20 bg-black/80 backdrop-blur-sm">
+                        <Card className="border border-blue-500/20 bg-white backdrop-blur-sm">
                             <CardHeader>
-                                <CardTitle className="text-white">Select Restaurant</CardTitle>
+                                <CardTitle className="text-black">Select Restaurant</CardTitle>
                             </CardHeader>
                             <CardContent>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                     <div className="space-y-2">
                                         <Select onValueChange={handleRestaurantChange} value={selectedRestaurant}>
-                                            <SelectTrigger className="bg-gray-900/50 border-gray-700 text-white">
+                                            <SelectTrigger className="bg-gray-100 border-gray-300 text-black">
                                                 <SelectValue placeholder="Select a restaurant" />
                                             </SelectTrigger>
-                                            <SelectContent className="bg-gray-900 border-gray-700 text-white">
+                                            <SelectContent className="bg-white border-gray-300 text-black">
                                                 {restaurants.map((restaurant) => (
                                                     <SelectItem
                                                         key={restaurant.id}
                                                         value={restaurant.id}
-                                                        className="hover:bg-gray-800"
+                                                        className="hover:bg-gray-100"
                                                     >
                                                         {restaurant.name}
                                                     </SelectItem>
@@ -142,14 +142,14 @@ export default function Configuration() {
                     </motion.div>
 
                         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                            <TabsList className="grid grid-cols-3 bg-gray-900/50 border border-gray-700 mb-6">
-                                <TabsTrigger value="tax" className="flex items-center gap-2">
+                            <TabsList className="grid grid-cols-3 bg-gray-100 border border-gray-300 mb-6">
+                                <TabsTrigger value="tax" className="flex items-center gap-2 text-black">
                                     <Percent className="h-4 w-4" /> Tax Slabs
                                 </TabsTrigger>
-                                <TabsTrigger value="units" className="flex items-center gap-2">
+                                <TabsTrigger value="units" className="flex items-center gap-2 text-black">
                                     <Gauge className="h-4 w-4" /> Units
                                 </TabsTrigger>
-                                <TabsTrigger value="printers" className="flex items-center gap-2">
+                                <TabsTrigger value="printers" className="flex items-center gap-2 text-black">
                                     <Printer className="h-4 w-4" /> Kitchen Printers
                                 </TabsTrigger>
                             </TabsList>
@@ -160,10 +160,10 @@ export default function Configuration() {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                 >
-                                    <Card className="border border-blue-500/20 bg-black/80 backdrop-blur-sm mb-6">
+                                    <Card className="border border-blue-500/20 bg-white backdrop-blur-sm mb-6">
                                         <CardHeader className="flex flex-row justify-between items-center">
-                                            <CardTitle className="text-white">Tax Configuration</CardTitle>
-                                            <Button onClick={addNewTax} className="bg-blue-600 hover:bg-blue-700">
+                                            <CardTitle className="text-black">Tax Configuration</CardTitle>
+                                            <Button onClick={addNewTax} className="bg-blue-600 hover:bg-blue-700 text-white">
                                                 <Plus className="w-4 h-4 mr-2" /> Add Tax
                                             </Button>
                                         </CardHeader>
@@ -171,22 +171,22 @@ export default function Configuration() {
                                             <Table>
                                                 <TableHeader>
                                                     <TableRow className="hover:bg-transparent">
-                                                        <TableHead className="text-gray-300">Tax Name</TableHead>
-                                                        <TableHead className="text-gray-300">Rate (%)</TableHead>
-                                                        <TableHead className="text-gray-300">Status</TableHead>
-                                                        <TableHead className="text-right text-gray-300">Actions</TableHead>
+                                                        <TableHead className="text-gray-700">Tax Name</TableHead>
+                                                        <TableHead className="text-gray-700">Rate (%)</TableHead>
+                                                        <TableHead className="text-gray-700">Status</TableHead>
+                                                        <TableHead className="text-right text-gray-700">Actions</TableHead>
                                                     </TableRow>
                                                 </TableHeader>
                                                 <TableBody>
                                                     {taxSlabs.map((tax) => (
-                                                        <TableRow key={tax.id} className="border-b border-gray-800">
-                                                            <TableCell className="font-medium text-white">
+                                                        <TableRow key={tax.id} className="border-b border-gray-200">
+                                                            <TableCell className="font-medium text-black">
                                                                 <Input
                                                                     value={tax.name}
                                                                     onChange={(e) => setTaxSlabs(taxSlabs.map(t =>
                                                                         t.id === tax.id ? { ...t, name: e.target.value } : t
                                                                     ))}
-                                                                    className="bg-gray-900/50 border-gray-700 text-white w-full md:w-64"
+                                                                    className="bg-gray-100 border-gray-300 text-black w-full md:w-64"
                                                                 />
 
                                                             </TableCell>
@@ -197,7 +197,7 @@ export default function Configuration() {
                                                                     onChange={(e) => setTaxSlabs(taxSlabs.map(t =>
                                                                         t.id === tax.id ? { ...t, rate: parseFloat(e.target.value) } : t
                                                                     ))}
-                                                                    className="bg-gray-900/50 border-gray-700 text-white w-24"
+                                                                    className="bg-gray-100 border-gray-300 text-black w-24"
                                                                 />
                                                             </TableCell>
                                                             <TableCell>
@@ -207,7 +207,7 @@ export default function Configuration() {
                                                                 />
                                                             </TableCell>
                                                             <TableCell className="text-right">
-                                                                <Button variant="ghost" size="icon" className="text-red-400 hover:bg-red-900/20">
+                                                                <Button variant="ghost" size="icon" className="text-red-600 hover:bg-red-100">
                                                                     <Trash2 className="w-4 h-4" />
                                                                 </Button>
                                                             </TableCell>
@@ -226,10 +226,10 @@ export default function Configuration() {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                 >
-                                    <Card className="border border-blue-500/20 bg-black/80 backdrop-blur-sm mb-6">
+                                    <Card className="border border-blue-500/20 bg-white backdrop-blur-sm mb-6">
                                         <CardHeader className="flex flex-row justify-between items-center">
-                                            <CardTitle className="text-white">Units of Measurement</CardTitle>
-                                            <Button onClick={addNewUnit} className="bg-blue-600 hover:bg-blue-700">
+                                            <CardTitle className="text-black">Units of Measurement</CardTitle>
+                                            <Button onClick={addNewUnit} className="bg-blue-600 hover:bg-blue-700 text-white">
                                                 <Plus className="w-4 h-4 mr-2" /> Add Unit
                                             </Button>
                                         </CardHeader>
@@ -237,22 +237,22 @@ export default function Configuration() {
                                             <Table>
                                                 <TableHeader>
                                                     <TableRow className="hover:bg-transparent">
-                                                        <TableHead className="text-gray-300">Unit Name</TableHead>
-                                                        <TableHead className="text-gray-300">Symbol</TableHead>
-                                                        <TableHead className="text-gray-300">Base Unit</TableHead>
-                                                        <TableHead className="text-right text-gray-300">Actions</TableHead>
+                                                        <TableHead className="text-gray-700">Unit Name</TableHead>
+                                                        <TableHead className="text-gray-700">Symbol</TableHead>
+                                                        <TableHead className="text-gray-700">Base Unit</TableHead>
+                                                        <TableHead className="text-right text-gray-700">Actions</TableHead>
                                                     </TableRow>
                                                 </TableHeader>
                                                 <TableBody>
                                                     {units.map((unit) => (
-                                                        <TableRow key={unit.id} className="border-b border-gray-800">
-                                                            <TableCell className="font-medium text-white">
+                                                        <TableRow key={unit.id} className="border-b border-gray-200">
+                                                            <TableCell className="font-medium text-black">
                                                                 <Input
                                                                     value={unit.name}
                                                                     onChange={(e) => setUnits(units.map(u =>
                                                                         u.id === unit.id ? { ...u, name: e.target.value } : u
                                                                     ))}
-                                                                    className="bg-gray-900/50 border-gray-700 text-white w-full md:w-64"
+                                                                    className="bg-gray-100 border-gray-300 text-black w-full md:w-64"
                                                                 />
                                                             </TableCell>
                                                             <TableCell>
@@ -263,7 +263,7 @@ export default function Configuration() {
                                                                             u.id === unit.id ? { ...u, symbol: e.target.value } : u
                                                                         ))
                                                                     }
-                                                                    className="bg-gray-900/50 border-gray-700 text-white w-24"
+                                                                    className="bg-gray-100 border-gray-300 text-black w-24"
                                                                 />
                                                             </TableCell>
                                                             <TableCell>
@@ -278,7 +278,7 @@ export default function Configuration() {
                                                             </TableCell>
 
                                                             <TableCell className="text-right">
-                                                                <Button variant="ghost" size="icon" className="text-red-400 hover:bg-red-900/20">
+                                                                <Button variant="ghost" size="icon" className="text-red-600 hover:bg-red-100">
                                                                     <Trash2 className="w-4 h-4" />
                                                                 </Button>
                                                             </TableCell>
@@ -297,25 +297,25 @@ export default function Configuration() {
                                     initial={{ opacity: 0, y: 20 }}
                                     animate={{ opacity: 1, y: 0 }}
                                 >
-                                    <Card className="border border-blue-500/20 bg-black/80 backdrop-blur-sm mb-6">
+                                    <Card className="border border-blue-500/20 bg-white backdrop-blur-sm mb-6">
                                         <CardHeader className="flex flex-row justify-between items-center">
-                                            <CardTitle className="text-white">Kitchen Printers</CardTitle>
-                                            <Button onClick={addNewPrinter} className="bg-blue-600 hover:bg-blue-700">
+                                            <CardTitle className="text-black">Kitchen Printers</CardTitle>
+                                            <Button onClick={addNewPrinter} className="bg-blue-600 hover:bg-blue-700 text-white">
                                                 <Plus className="w-4 h-4 mr-2" /> Add Printer
                                             </Button>
                                         </CardHeader>
                                         <CardContent>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                                                 <div className="space-y-2">
-                                                    <Label className="text-gray-300">Default Printer Settings</Label>
-                                                    <div className="flex items-center space-x-4 p-4 bg-gray-900/50 rounded-lg">
+                                                    <Label className="text-gray-700">Default Printer Settings</Label>
+                                                    <div className="flex items-center space-x-4 p-4 bg-gray-100 rounded-lg">
                                                         <div>
-                                                            <Label className="text-gray-300">Print Order Copies</Label>
+                                                            <Label className="text-gray-700">Print Order Copies</Label>
                                                             <Select defaultValue="1">
-                                                                <SelectTrigger className="bg-gray-800 border-gray-700 text-white w-24">
+                                                                <SelectTrigger className="bg-gray-100 border-gray-300 text-black w-24">
                                                                     <SelectValue placeholder="Copies" />
                                                                 </SelectTrigger>
-                                                                <SelectContent className="bg-gray-900 border-gray-700 text-white">
+                                                                <SelectContent className="bg-white border-gray-300 text-black">
                                                                     <SelectItem value="1">1</SelectItem>
                                                                     <SelectItem value="2">2</SelectItem>
                                                                     <SelectItem value="3">3</SelectItem>
@@ -323,7 +323,7 @@ export default function Configuration() {
                                                             </Select>
                                                         </div>
                                                         <div>
-                                                            <Label className="text-gray-300">Print Test Page</Label>
+                                                            <Label className="text-gray-700">Print Test Page</Label>
                                                             <Button variant="outline" className="bg-blue-600 hover:bg-blue-700 text-white">
                                                                 Print Test
                                                             </Button>
@@ -335,22 +335,22 @@ export default function Configuration() {
                                             <Table>
                                                 <TableHeader>
                                                     <TableRow className="hover:bg-transparent">
-                                                        <TableHead className="text-gray-300">Printer Name</TableHead>
-                                                        <TableHead className="text-gray-300">IP Address</TableHead>
-                                                        <TableHead className="text-gray-300">Status</TableHead>
-                                                        <TableHead className="text-right text-gray-300">Actions</TableHead>
+                                                        <TableHead className="text-gray-700">Printer Name</TableHead>
+                                                        <TableHead className="text-gray-700">IP Address</TableHead>
+                                                        <TableHead className="text-gray-700">Status</TableHead>
+                                                        <TableHead className="text-right text-gray-700">Actions</TableHead>
                                                     </TableRow>
                                                 </TableHeader>
                                                 <TableBody>
                                                     {printers.map((printer) => (
-                                                        <TableRow key={printer.id} className="border-b border-gray-800">
-                                                            <TableCell className="font-medium text-white">
+                                                        <TableRow key={printer.id} className="border-b border-gray-200">
+                                                            <TableCell className="font-medium text-black">
                                                                 <Input
                                                                     value={printer.name}
                                                                     onChange={(e) => setPrinters(printers.map(p =>
                                                                         p.id === printer.id ? { ...p, name: e.target.value } : p
                                                                     ))}
-                                                                    className="bg-gray-900/50 border-gray-700 text-white w-full md:w-64"
+                                                                    className="bg-gray-100 border-gray-300 text-black w-full md:w-64"
                                                                 />
                                                             </TableCell>
                                                             <TableCell>
@@ -359,7 +359,7 @@ export default function Configuration() {
                                                                     onChange={(e) => setPrinters(printers.map(p =>
                                                                         p.id === printer.id ? { ...p, ip: e.target.value } : p
                                                                     ))}
-                                                                    className="bg-gray-900/50 border-gray-700 text-white w-36"
+                                                                    className="bg-gray-100 border-gray-300 text-black w-36"
                                                                 />
                                                             </TableCell>
                                                             <TableCell>
@@ -370,10 +370,10 @@ export default function Configuration() {
                                                             </TableCell>
                                                             <TableCell className="text-right">
                                                                 <div className="flex justify-end gap-2">
-                                                                    <Button variant="ghost" size="icon" className="text-blue-400 hover:bg-blue-900/20">
+                                                                    <Button variant="ghost" size="icon" className="text-blue-600 hover:bg-blue-100">
                                                                         <Printer className="w-4 h-4" />
                                                                     </Button>
-                                                                    <Button variant="ghost" size="icon" className="text-red-400 hover:bg-red-900/20">
+                                                                    <Button variant="ghost" size="icon" className="text-red-600 hover:bg-red-100">
                                                                         <Trash2 className="w-4 h-4" />
                                                                     </Button>
                                                                 </div>
@@ -396,8 +396,8 @@ export default function Configuration() {
                             className="flex flex-col items-center justify-center py-16 text-center"
                         >
                             <Printer className="w-12 h-12 text-blue-400 mb-4" />
-                            <h3 className="text-xl font-medium text-white mb-2">Select a Restaurant</h3>
-                            <p className="text-gray-400 max-w-md">
+                            <h3 className="text-xl font-medium text-black mb-2">Select a Restaurant</h3>
+                            <p className="text-gray-700 max-w-md">
                                 Please select a restaurant from the dropdown above to configure its settings.
                             </p>
                         </motion.div>
