@@ -185,7 +185,7 @@ export default function UserManagement() {
   }
 
   return (
-    <div className="min-h-screen bg-black lg:ml-64">
+    <div className="min-h-screen   lg:ml-64">
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
@@ -197,10 +197,10 @@ export default function UserManagement() {
           <RestoNav />
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-white">User Management</h2>
+              <h2 className="text-2xl font-bold text-black">User Management</h2>
               <div className="flex items-center gap-2 mt-1">
                 <Select value={selectedRestaurant.id.toString()} onValueChange={handleRestaurantChange}>
-                  <SelectTrigger className="bg-gray-900/50 border-gray-700 text-white w-48">
+                  <SelectTrigger className=" border-gray-700 text-black w-48">
                     <SelectValue placeholder="Select Restaurant" />
                   </SelectTrigger>
                   <SelectContent>
@@ -231,55 +231,55 @@ export default function UserManagement() {
 
           {/* Add User Modal */}
           {isAddModalOpen && (
-            <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+            <div className="fixed inset-0 bg-white bg-opacity-70 flex items-center justify-center p-4 z-50">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-gray-900 border border-purple-500/30 rounded-lg shadow-xl w-full max-w-md backdrop-blur-sm"
+                className="     rounded-lg shadow-xl w-full max-w-md backdrop-blur-sm"
               >
                 <div className="flex justify-between items-center border-b border-purple-500/20 p-4">
                   <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                     <User className="h-5 w-5 text-purple-400" />
                     Add New User
                   </h3>
-                  <button onClick={() => setIsAddModalOpen(false)} className="text-gray-400 hover:text-white">
+                  <button onClick={() => setIsAddModalOpen(false)} className="text-black">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
 
                 <form onSubmit={handleAddUser} className="p-4 space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Restaurant</label>
+                    <label className="block text-sm font-medium text-black mb-1">Restaurant</label>
                     <input
                       type="text"
                       name="restaurant"
                       value={formData.restaurant}
                       disabled
-                      className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white opacity-70"
+                      className="w-full px-3 py-2  border border-gray-700 rounded-md text-black opacity-70"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Full Name</label>
+                    <label className="block text-sm font-medium text-black mb-1">Full Name</label>
                     <input
                       type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
+                      className="w-full px-3 py-2   border border-gray-700 rounded-md text-black"
                       placeholder="Enter full name"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                    <label className="block text-sm font-medium text-black mb-1">Email</label>
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
+                      className="w-full px-3 py-2   border border-gray-700 rounded-md text-black"
                       placeholder="Enter email address"
                       required
                     />
@@ -287,16 +287,16 @@ export default function UserManagement() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-1">Role</label>
+                      <label className="block text-sm font-medium text-black mb-1">Role</label>
                       <select
                         name="role"
                         value={formData.role}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
+                        className="w-full px-3 py-2  border border-gray-700 rounded-md text-black"
                         required
                       >
                         {roles.map((role) => (
-                          <option key={role} value={role} className="bg-gray-800">
+                          <option key={role} value={role} className="">
                             {role}
                           </option>
                         ))}
@@ -304,15 +304,15 @@ export default function UserManagement() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-1">Status</label>
+                      <label className="block text-sm font-medium text-black mb-1">Status</label>
                       <select
                         name="status"
                         value={formData.status}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
+                        className="w-full px-3 py-2  border border-gray-700 rounded-md text-black"
                       >
                         {statusOptions.map((status) => (
-                          <option key={status} value={status} className="bg-gray-800">
+                          <option key={status} value={status} className="">
                             {status}
                           </option>
                         ))}
@@ -324,7 +324,7 @@ export default function UserManagement() {
                     <button
                       type="button"
                       onClick={() => setIsAddModalOpen(false)}
-                      className="px-4 py-2 border border-gray-700 rounded-md text-gray-300 hover:bg-gray-800"
+                      className="px-4 py-2 border border-gray-700 rounded-md text-black"
                     >
                       Cancel
                     </button>
@@ -339,55 +339,55 @@ export default function UserManagement() {
 
           {/* Edit User Modal */}
           {isEditModalOpen && (
-            <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+            <div className="fixed inset-0 bg-white bg-opacity-70 flex items-center justify-center p-4 z-50">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-gray-900 border border-purple-500/30 rounded-lg shadow-xl w-full max-w-md backdrop-blur-sm"
+                className="  rounded-lg shadow-xl w-full max-w-md backdrop-blur-sm"
               >
                 <div className="flex justify-between items-center border-b border-purple-500/20 p-4">
                   <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                     <Edit className="h-5 w-5 text-purple-400" />
                     Edit User
                   </h3>
-                  <button onClick={() => setIsEditModalOpen(false)} className="text-gray-400 hover:text-white">
+                  <button onClick={() => setIsEditModalOpen(false)} className="text-black">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
 
                 <form onSubmit={handleEditUser} className="p-4 space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Restaurant</label>
+                    <label className="block text-sm font-medium text-black mb-1">Restaurant</label>
                     <input
                       type="text"
                       name="restaurant"
                       value={formData.restaurant}
                       disabled
-                      className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white opacity-70"
+                      className="w-full px-3 py-2  border border-gray-700 rounded-md text-black opacity-70"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Full Name</label>
+                    <label className="block text-sm font-medium text-black mb-1">Full Name</label>
                     <input
                       type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
+                      className="w-full px-3 py-2 border border-gray-700 rounded-md text-black"
                       placeholder="Enter full name"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                    <label className="block text-sm font-medium  mb-1">Email</label>
                     <input
                       type="email"
                       name="email"
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
+                      className="w-full px-3 py-2  border border-gray-700 rounded-md text-black"
                       placeholder="Enter email address"
                       required
                     />
@@ -395,16 +395,16 @@ export default function UserManagement() {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-1">Role</label>
+                      <label className="block text-sm font-medium  mb-1">Role</label>
                       <select
                         name="role"
                         value={formData.role}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
+                        className="w-full px-3 py-2  border border-gray-700 rounded-md text-black"
                         required
                       >
                         {roles.map((role) => (
-                          <option key={role} value={role} className="bg-gray-800">
+                          <option key={role} value={role} className="">
                             {role}
                           </option>
                         ))}
@@ -412,15 +412,15 @@ export default function UserManagement() {
                     </div>
 
                     <div>
-                      <label className="block text-sm font-medium text-gray-300 mb-1">Status</label>
+                      <label className="block text-sm font-medium  mb-1">Status</label>
                       <select
                         name="status"
                         value={formData.status}
                         onChange={handleChange}
-                        className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
+                        className="w-full px-3 py-2  border border-gray-700 rounded-md "
                       >
                         {statusOptions.map((status) => (
-                          <option key={status} value={status} className="bg-gray-800">
+                          <option key={status} value={status} className="">
                             {status}
                           </option>
                         ))}
@@ -432,7 +432,7 @@ export default function UserManagement() {
                     <button
                       type="button"
                       onClick={() => setIsEditModalOpen(false)}
-                      className="px-4 py-2 border border-gray-700 rounded-md text-gray-300 hover:bg-gray-800"
+                      className="px-4 py-2 border border-gray-700 rounded-md "
                     >
                       Cancel
                     </button>
@@ -447,32 +447,32 @@ export default function UserManagement() {
 
           {/* Delete Confirmation Modal */}
           {isDeleteModalOpen && (
-            <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+            <div className="fixed inset-0 bg-white bg-opacity-70 flex items-center justify-center p-4 z-50">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-gray-900 border border-purple-500/30 rounded-lg shadow-xl w-full max-w-md backdrop-blur-sm"
+                className="bg-white border border-purple-500/30 rounded-lg shadow-xl w-full max-w-md backdrop-blur-sm"
               >
                 <div className="flex justify-between items-center border-b border-purple-500/20 p-4">
                   <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                     <AlertCircle className="h-5 w-5 text-red-400" />
                     Delete User
                   </h3>
-                  <button onClick={() => setIsDeleteModalOpen(false)} className="text-gray-400 hover:text-white">
+                  <button onClick={() => setIsDeleteModalOpen(false)} className="text-black">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
 
                 <div className="p-4">
-                  <p className="text-gray-300 mb-6">
+                  <p className="text-black mb-6">
                     Are you sure you want to delete{" "}
-                    <span className="text-white font-semibold">{currentUser?.name}</span>? This action cannot be undone.
+                    <span className=" font-semibold">{currentUser?.name}</span>? This action cannot be undone.
                   </p>
 
                   <div className="flex justify-end space-x-3">
                     <button
                       onClick={() => setIsDeleteModalOpen(false)}
-                      className="px-4 py-2 border border-gray-700 rounded-md text-gray-300 hover:bg-gray-800"
+                      className="px-4 py-2 border border-gray-700 rounded-md  "
                     >
                       Cancel
                     </button>
@@ -490,28 +490,28 @@ export default function UserManagement() {
 
           {/* Reset Password Modal */}
           {isResetPasswordModalOpen && (
-            <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+            <div className="fixed inset-0 bg-white bg-opacity-70 flex items-center justify-center p-4 z-50">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-gray-900 border border-purple-500/30 rounded-lg shadow-xl w-full max-w-md backdrop-blur-sm"
+                className=" border border-purple-500/30 rounded-lg shadow-xl w-full max-w-md backdrop-blur-sm"
               >
                 <div className="flex justify-between items-center border-b border-purple-500/20 p-4">
                   <h3 className="text-lg font-semibold text-white flex items-center gap-2">
                     <Key className="h-5 w-5 text-purple-400" />
                     Reset Password
                   </h3>
-                  <button onClick={() => setIsResetPasswordModalOpen(false)} className="text-gray-400 hover:text-white">
+                  <button onClick={() => setIsResetPasswordModalOpen(false)} className="text-black">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
 
                 <form onSubmit={handleResetPassword} className="p-4 space-y-4">
                   <div>
-                    <p className="text-gray-300 mb-2">
-                      Reset password for <span className="text-white font-semibold">{currentUser?.name}</span>
+                    <p className="text-black mb-2">
+                      Reset password for <span className="text-black font-semibold">{currentUser?.name}</span>
                     </p>
-                    <p className="text-gray-400 text-sm mb-4">
+                    <p className="text-sm mb-4">
                       A password reset link will be sent to {currentUser?.email}
                     </p>
                   </div>
@@ -520,7 +520,7 @@ export default function UserManagement() {
                     <button
                       type="button"
                       onClick={() => setIsResetPasswordModalOpen(false)}
-                      className="px-4 py-2 border border-gray-700 rounded-md text-gray-300 hover:bg-gray-800"
+                      className="px-4 py-2 border border-gray-700 rounded-md "
                     >
                       Cancel
                     </button>
@@ -535,15 +535,15 @@ export default function UserManagement() {
 
           {/* Main Content */}
           <div>
-            <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+            <Card className="border border-purple-500/20  backdrop-blur-sm">
               <CardHeader>
                 <div className="flex justify-between items-center">
-                  <CardTitle className="text-white">Staff Members</CardTitle>
+                  <CardTitle className="text-black">Staff Members</CardTitle>
                   <div className="relative w-64">
-                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
+                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-black" />
                     <Input
                       placeholder="Search users..."
-                      className="bg-gray-900/50 border-gray-700 text-white pl-8"
+                      className="border-gray-700 text-white pl-8"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -554,11 +554,11 @@ export default function UserManagement() {
                 <Table>
                   <TableHeader>
                     <TableRow className="hover:bg-transparent">
-                      <TableHead className="text-gray-300">User</TableHead>
-                      <TableHead className="text-gray-300">Email</TableHead>
-                      <TableHead className="text-gray-300">Role</TableHead>
-                      <TableHead className="text-gray-300">Status</TableHead>
-                      <TableHead className="text-right text-gray-300">Actions</TableHead>
+                      <TableHead className="text-black">User</TableHead>
+                      <TableHead className="text-black">Email</TableHead>
+                      <TableHead className="text-black">Role</TableHead>
+                      <TableHead className="text-black">Status</TableHead>
+                      <TableHead className="text-right text-black">Actions</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -574,10 +574,10 @@ export default function UserManagement() {
                               <div className="bg-purple-600/20 p-2 rounded-full mr-3">
                                 <User className="w-5 h-5 text-purple-400" />
                               </div>
-                              <div className="font-medium text-white">{user.name}</div>
+                              <div className="font-medium text-black">{user.name}</div>
                             </div>
                           </TableCell>
-                          <TableCell className="text-gray-400">{user.email}</TableCell>
+                          <TableCell className="text-black">{user.email}</TableCell>
                           <TableCell>
                             <Badge
                               variant="outline"
@@ -600,10 +600,10 @@ export default function UserManagement() {
                             <span
                               className={`px-2 py-1 rounded-full text-xs ${
                                 user.status === "Active"
-                                  ? "bg-green-900/30 text-green-400"
+                                  ? "bg-white text-green-400"
                                   : user.status === "Suspended"
-                                    ? "bg-red-900/30 text-red-400"
-                                    : "bg-yellow-900/30 text-yellow-400"
+                                    ? "bg-white text-red-400"
+                                    : "bg-white text-yellow-400"
                               }`}
                             >
                               {user.status}
