@@ -253,7 +253,7 @@ export default function MenuManagement() {
   const MenuItemForm = ({ onSubmit, submitText }) => (
     <form onSubmit={onSubmit} className="space-y-4">
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-1">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
           Item Name
         </label>
         <input
@@ -261,7 +261,7 @@ export default function MenuManagement() {
           name="name"
           value={formData.name}
           onChange={handleChange}
-          className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
+          className="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-black"
           placeholder="e.g., Pizza, Sandwich, Pasta"
           required
         />
@@ -269,17 +269,17 @@ export default function MenuManagement() {
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Category
           </label>
           <select
             name="category"
             value={formData.category}
             onChange={handleChange}
-            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
+            className="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-black"
           >
             {categories.map((cat) => (
-              <option key={cat} value={cat} className="bg-gray-800">
+              <option key={cat} value={cat} className="bg-gray-100 text-black">
                 {cat}
               </option>
             ))}
@@ -287,17 +287,17 @@ export default function MenuManagement() {
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Type
           </label>
           <select
             name="type"
             value={formData.type}
             onChange={handleChange}
-            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
+            className="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-black"
           >
             {foodTypes.map((type) => (
-              <option key={type} value={type} className="bg-gray-800">
+              <option key={type} value={type} className="bg-gray-100 text-black">
                 {type.charAt(0).toUpperCase() + type.slice(1)}
               </option>
             ))}
@@ -307,45 +307,45 @@ export default function MenuManagement() {
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Serving Unit
           </label>
           <select
             name="unit"
             value={formData.unit}
             onChange={handleChange}
-            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
+            className="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-black"
           >
-            <option value="plate" className="bg-gray-800">
+            <option value="plate" className="bg-gray-100 text-black">
               Plate
             </option>
-            <option value="bowl" className="bg-gray-800">
+            <option value="bowl" className="bg-gray-100 text-black">
               Bowl
             </option>
-            <option value="glass" className="bg-gray-800">
+            <option value="glass" className="bg-gray-100 text-black">
               Glass
             </option>
-            <option value="litre" className="bg-gray-800">
+            <option value="litre" className="bg-gray-100 text-black">
               Litre
             </option>
-            <option value="piece" className="bg-gray-800">
+            <option value="piece" className="bg-gray-100 text-black">
               Piece
             </option>
           </select>
         </div>
 
         <div>
-          <label className="block text-sm font-medium text-gray-300 mb-1">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
             Status
           </label>
           <select
             name="status"
             value={formData.status}
             onChange={handleChange}
-            className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
+            className="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-black"
           >
             {statusOptions.map((status) => (
-              <option key={status} value={status} className="bg-gray-800">
+              <option key={status} value={status} className="bg-gray-100 text-black">
                 {status}
               </option>
             ))}
@@ -354,45 +354,45 @@ export default function MenuManagement() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-1">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
           Prices
         </label>
         <div className="space-y-2">
           {formData.category !== "Beverage" ? (
             <>
               <div className="flex items-center">
-                <span className="w-20 text-gray-400">Small:</span>
+                <span className="w-20 text-gray-500">Small:</span>
                 <input
                   type="number"
                   name="small"
                   value={formData.sizes.small}
                   onChange={handleChange}
-                  className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white ml-2"
+                  className="flex-1 px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-black ml-2"
                   placeholder="Price"
                   step="0.01"
                 />
               </div>
               <div className="flex items-center">
-                <span className="w-20 text-gray-400">Medium:</span>
+                <span className="w-20 text-gray-500">Medium:</span>
                 <input
                   type="number"
                   name="medium"
                   value={formData.sizes.medium}
                   onChange={handleChange}
-                  className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white ml-2"
+                  className="flex-1 px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-black ml-2"
                   placeholder="Price"
                   required
                   step="0.01"
                 />
               </div>
               <div className="flex items-center">
-                <span className="w-20 text-gray-400">Large:</span>
+                <span className="w-20 text-gray-500">Large:</span>
                 <input
                   type="number"
                   name="large"
                   value={formData.sizes.large}
                   onChange={handleChange}
-                  className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white ml-2"
+                  className="flex-1 px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-black ml-2"
                   placeholder="Price"
                   step="0.01"
                 />
@@ -400,13 +400,13 @@ export default function MenuManagement() {
             </>
           ) : (
             <div className="flex items-center">
-              <span className="w-20 text-gray-400">Price:</span>
+              <span className="w-20 text-gray-500">Price:</span>
               <input
                 type="number"
                 name="medium"
                 value={formData.sizes.medium}
                 onChange={handleChange}
-                className="flex-1 px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white ml-2"
+                className="flex-1 px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-black ml-2"
                 placeholder="Price"
                 required
                 step="0.01"
@@ -417,14 +417,14 @@ export default function MenuManagement() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-300 mb-1">
+        <label className="block text-sm font-medium text-gray-700 mb-1">
           Description (Ingredients)
         </label>
         <textarea
           name="description"
           value={formData.description}
           onChange={handleChange}
-          className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-md text-white"
+          className="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-md text-black"
           rows="3"
           placeholder="Enter item ingredients..."
         />
@@ -437,7 +437,7 @@ export default function MenuManagement() {
             if (onSubmit === handleAddItem) setIsAddModalOpen(false);
             else setIsEditModalOpen(false);
           }}
-          className="px-4 py-2 border border-gray-700 rounded-md text-gray-300 hover:bg-gray-800"
+          className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100"
         >
           Cancel
         </button>
@@ -452,9 +452,9 @@ export default function MenuManagement() {
   );
 
   return (
-    <div className="min-h-screen bg-black lg:ml-64">
+    <div className="min-h-screen bg-white lg:ml-64">
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-gray-100 to-white"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
       </div>
 
@@ -464,8 +464,8 @@ export default function MenuManagement() {
           <RestoNav />
           <div className="flex justify-between items-center mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-white">Menu Items</h2>
-              <p className="text-gray-400">
+              <h2 className="text-2xl font-bold text-black">Menu Items</h2>
+              <p className="text-gray-700">
                 Manage your restaurant's menu items
               </p>
             </div>
@@ -483,27 +483,27 @@ export default function MenuManagement() {
 
           {/* Add Item Modal */}
           {isAddModalOpen && (
-            <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+            <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-gray-900 border border-purple-500/30 rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto backdrop-blur-sm"
+                className="bg-white border border-purple-500/30 rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto backdrop-blur-sm"
               >
                 <div className="flex justify-between items-center border-b border-purple-500/20 px-4 py-3">
-                  <h3 className="text-base font-medium text-white flex items-center gap-2">
+                  <h3 className="text-base font-medium text-black flex items-center gap-2">
                     <Utensils className="h-5 w-5 text-purple-400" />
                     Add Menu Item
                   </h3>
                   <button
                     onClick={() => setIsAddModalOpen(false)}
-                    className="text-gray-400 hover:text-white"
+                    className="text-gray-500 hover:text-black"
                   >
                     <X className="w-5 h-5" />
                   </button>
                 </div>
 
                 <div className="px-4 py-4">
-                  <p className="text-gray-400 text-sm mb-4">
+                  <p className="text-gray-700 text-sm mb-4">
                     Fill the form below to add a new item.
                   </p>
                   <MenuItemForm
@@ -517,27 +517,27 @@ export default function MenuManagement() {
 
           {/* Edit Item Modal */}
           {isEditModalOpen && (
-            <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+            <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
               <motion.div
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-gray-900 border border-purple-500/30 rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto backdrop-blur-sm"
+                className="bg-white border border-purple-500/30 rounded-lg shadow-xl w-full max-w-lg max-h-[90vh] overflow-y-auto backdrop-blur-sm"
               >
                 <div className="flex justify-between items-center border-b border-purple-500/20 px-4 py-3">
-                  <h3 className="text-base font-medium text-white flex items-center gap-2">
+                  <h3 className="text-base font-medium text-black flex items-center gap-2">
                     <Edit className="h-5 w-5 text-purple-400" />
                     Edit Menu Item
                   </h3>
                   <button
                     onClick={() => setIsEditModalOpen(false)}
-                    className="text-gray-400 hover:text-white"
+                    className="text-gray-500 hover:text-black"
                   >
                     <X className="w-5 h-5" />
                   </button>
                 </div>
 
                 <div className="px-4 py-4">
-                  <p className="text-gray-400 text-sm mb-4">
+                  <p className="text-gray-700 text-sm mb-4">
                     Update the details of this menu item.
                   </p>
                   <MenuItemForm
@@ -551,33 +551,33 @@ export default function MenuManagement() {
 
           {/* Delete Confirmation Modal */}
           {isDeleteModalOpen && (
-            <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50">
+            <div className="fixed inset-0 bg-black/30 flex items-center justify-center p-4 z-50">
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-gray-900 border border-purple-500/30 rounded-lg shadow-xl w-full max-w-md backdrop-blur-sm"
+                className="bg-white border border-purple-500/30 rounded-lg shadow-xl w-full max-w-md backdrop-blur-sm"
               >
                 <div className="flex justify-between items-center border-b border-purple-500/20 p-4">
-                  <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                  <h3 className="text-lg font-semibold text-black flex items-center gap-2">
                     <Trash2 className="h-5 w-5 text-red-400" />
                     Delete Menu Item
                   </h3>
                   <button
                     onClick={() => setIsDeleteModalOpen(false)}
-                    className="text-gray-400 hover:text-white"
+                    className="text-gray-500 hover:text-black"
                   >
                     <X className="w-5 h-5" />
                   </button>
                 </div>
                 <div className="p-4">
-                  <p className="text-gray-400 mb-6">
+                  <p className="text-gray-700 mb-6">
                     Are you sure you want to delete "{currentItem?.name}"? This
                     action cannot be undone.
                   </p>
                   <div className="flex justify-end space-x-3">
                     <button
                       onClick={() => setIsDeleteModalOpen(false)}
-                      className="px-4 py-2 border border-gray-700 rounded-md text-gray-300 hover:bg-gray-800"
+                      className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100"
                     >
                       Cancel
                     </button>
@@ -595,15 +595,15 @@ export default function MenuManagement() {
 
           {/* Main Content */}
           <div>
-            <Card className="border border-purple-500/20 bg-black/80 backdrop-blur-sm">
+            <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
               <CardHeader>
                 <div className="flex justify-between items-center">
-                  <CardTitle className="text-white">All Menu Items</CardTitle>
+                  <CardTitle className="text-black">All Menu Items</CardTitle>
                   <div className="relative w-64">
                     <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
                     <Input
                       placeholder="Search items..."
-                      className="bg-gray-900/50 border-gray-700 text-white pl-8"
+                      className="bg-gray-100 border-gray-300 text-black pl-8"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -614,11 +614,11 @@ export default function MenuManagement() {
                 <Table>
                   <TableHeader>
                     <TableRow className="hover:bg-transparent">
-                      <TableHead className="text-gray-300">Item</TableHead>
-                      <TableHead className="text-gray-300">Category</TableHead>
-                      <TableHead className="text-gray-300">Price</TableHead>
-                      <TableHead className="text-gray-300">Status</TableHead>
-                      <TableHead className="text-right text-gray-300">
+                      <TableHead className="text-gray-700">Item</TableHead>
+                      <TableHead className="text-gray-700">Category</TableHead>
+                      <TableHead className="text-gray-700">Price</TableHead>
+                      <TableHead className="text-gray-700">Status</TableHead>
+                      <TableHead className="text-right text-gray-700">
                         Actions
                       </TableHead>
                     </TableRow>
@@ -629,12 +629,12 @@ export default function MenuManagement() {
                         <motion.tr
                           key={item.id}
                           whileHover={{
-                            backgroundColor: "rgba(107, 33, 168, 0.2)",
+                            backgroundColor: "rgba(139, 92, 246, 0.08)",
                           }}
-                          className="border-b border-gray-800"
+                          className="border-b border-gray-200"
                         >
                           <TableCell>
-                            <div className="font-medium text-white">
+                            <div className="font-medium text-black">
                               {item.name}
                             </div>
                             <div className="text-xs text-gray-500">
@@ -644,7 +644,7 @@ export default function MenuManagement() {
                           <TableCell>
                             <Badge
                               variant="outline"
-                              className="border-purple-500/50 text-purple-400"
+                              className="border-purple-500/50 text-purple-700"
                             >
                               {item.category}
                             </Badge>
@@ -653,25 +653,25 @@ export default function MenuManagement() {
                                 variant="outline"
                                 className={`ml-2 ${
                                   item.type === "veg"
-                                    ? "border-green-500/50 text-green-400"
-                                    : "border-red-500/50 text-red-400"
+                                    ? "border-green-500/50 text-green-700"
+                                    : "border-red-500/50 text-red-700"
                                 }`}
                               >
                                 {item.type === "veg" ? "Veg" : "Non-Veg"}
                               </Badge>
                             )}
                           </TableCell>
-                          <TableCell className="text-white">
+                          <TableCell className="text-black">
                             ${item.price.toFixed(2)}
                           </TableCell>
                           <TableCell>
                             <span
                               className={`px-2 py-1 rounded-full text-xs ${
                                 item.status === "Available"
-                                  ? "bg-green-900/30 text-green-400"
+                                  ? "bg-green-100 text-green-700"
                                   : item.status === "Out of Stock"
-                                  ? "bg-red-900/30 text-red-400"
-                                  : "bg-yellow-900/30 text-yellow-400"
+                                  ? "bg-red-100 text-red-700"
+                                  : "bg-yellow-100 text-yellow-700"
                               }`}
                             >
                               {item.status}
@@ -682,7 +682,7 @@ export default function MenuManagement() {
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="text-purple-400 "
+                                className="text-purple-700 "
                                 onClick={() => handleEditClick(item)}
                               >
                                 <Edit className="w-4 h-4" />
@@ -690,7 +690,7 @@ export default function MenuManagement() {
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="text-red-400 "
+                                className="text-red-700 "
                                 onClick={() => handleDeleteClick(item)}
                               >
                                 <Trash2 className="w-4 h-4" />
@@ -703,7 +703,7 @@ export default function MenuManagement() {
                       <TableRow>
                         <TableCell
                           colSpan={5}
-                          className="text-center py-8 text-gray-400"
+                          className="text-center py-8 text-gray-500"
                         >
                           No menu items found. Try a different search or add a
                           new item.
