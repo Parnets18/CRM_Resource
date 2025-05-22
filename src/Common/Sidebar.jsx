@@ -40,19 +40,19 @@ export default function Sidebar() {
     <motion.div
       initial={{ x: -100 }}
       animate={{ x: 0 }}
-      className="w-64 min-h-screen bg-black/90 border-r border-purple-700/30 backdrop-blur-md p-5"
+      className="w-64 min-h-screen p-5"
     >
       {/* Logo Header */}
       <div className="flex items-center gap-3 mb-8">
-        <motion.div
+        {/* <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
           className="h-10 w-10 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center"
         >
           <span className="text-white font-extrabold text-lg">N</span>
-        </motion.div>
+        </motion.div> */}
         <h1 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-          NexusCRM
+          CRM
         </h1>
       </div>
 
