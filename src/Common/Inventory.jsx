@@ -1,28 +1,30 @@
-"use client"
-
-import { useState } from "react"
-import {
-  Package,
+import React, { useState, useEffect } from "react"
+import { 
+  Search, 
+  Menu, 
+  X, 
+  Plus, 
+  Eye, 
+  Edit, 
+  Trash2, 
+  Filter, 
+  Download, 
+  RefreshCw,
+  ArrowUpDown,
+  ChevronDown,
   BarChart3,
+  Package,
   Truck,
   ArrowLeftRight,
   Calendar,
   AlertTriangle,
   DollarSign,
-  TrendingUp,
-  Plus,
-  Search,
-  Filter,
-  Download,
-  Trash2,
-  Edit,
-  Eye,
-  ArrowUpDown,
-  Menu,
-  X,
-  CheckCircle,
-  XCircle,
+  TrendingUp
 } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { motion } from "framer-motion"
 
 // Mock data for demonstration
 const initialProducts = [
@@ -241,7 +243,7 @@ const initialStockMovements = [
   { id: 6, date: "2023-06-20", product: "Steel Bars", type: "Sale", quantity: -8, warehouse: "Main" },
 ]
 
-const Inventory = () => {
+export default function Inventory() {
   const [activeTab, setActiveTab] = useState("products")
   const [products, setProducts] = useState(initialProducts)
   const [warehouses, setWarehouses] = useState(initialWarehouses)
@@ -259,6 +261,7 @@ const Inventory = () => {
   const [filterCategory, setFilterCategory] = useState("All")
   const [filterWarehouse, setFilterWarehouse] = useState("All")
   const [filterStatus, setFilterStatus] = useState("All")
+  const [isFilterOpen, setIsFilterOpen] = useState(false)
 
   const [newProduct, setNewProduct] = useState({
     name: "",
@@ -547,20 +550,64 @@ const Inventory = () => {
     }
   }
 
+  const handleExportProducts = () => {
+    // Create CSV content
+    const headers = ["Name", "SKU", "Barcode", "Stock", "Unit", "Warehouse", "Zone", "Category", "Status", "Reorder Level"];
+    
+    const csvContent = [
+      headers.join(","),
+      ...products.map(product => [
+        product.name,
+        product.sku,
+        product.barcode,
+        product.stock,
+        product.unit,
+        product.warehouse,
+        product.zone,
+        product.category,
+        product.status,
+        product.reorderLevel
+      ].join(","))
+    ].join("\n");
+    
+    // Create a blob and download link
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "inventory_products.csv");
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const resetFilters = () => {
+    setFilterCategory("All");
+    setFilterWarehouse("All");
+    setFilterStatus("All");
+    setSearchTerm("");
+  };
+
+  const applyFilters = () => {
+    // This function can be empty as the filtering is already handled by the filteredProducts variable
+    setIsFilterOpen(false);
+  };
+
   return (
-    <div className="flex flex-col h-screen bg-gray-950 text-white">
+    <div className="flex flex-col h-screen bg-background text-foreground">
       {/* Header with horizontal navigation */}
-      <header className="bg-gray-900 border-b border-purple-700/30">
+      <header className="bg-card border-b border-border">
         <div className="container mx-auto px-4">
           {/* Top header with logo and user controls */}
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
-              <h1 className="text-xl font-bold text-purple-400">Inventory & Stock Management</h1>
+              <h1 className="text-xl font-bold text-primary">Inventory & Stock Management</h1>
             </div>
 
             {/* Mobile menu button */}
             <button
-              className="md:hidden p-2 rounded-md text-gray-300 hover:text-white hover:bg-gray-800"
+              className="md:hidden p-2 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -569,239 +616,292 @@ const Inventory = () => {
             {/* User controls - can be expanded */}
             <div className="hidden md:flex items-center space-x-4">
               <div className="relative">
-                <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
+                <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={16} />
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="pl-8 pr-4 py-1 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                  className="pl-8 pr-4 py-1 rounded-md bg-input border border-border text-foreground focus:outline-none focus:ring-1 focus:ring-primary"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
-              <div className="h-8 w-8 rounded-full bg-purple-700 flex items-center justify-center">
-                <span className="font-semibold">A</span>
+              <div className="h-8 w-8 rounded-full bg-primary flex items-center justify-center">
+                <span className="font-semibold text-primary-foreground">A</span>
               </div>
             </div>
           </div>
 
-          {/* Horizontal navigation */}
-          <nav className="hidden md:flex overflow-x-auto">
+          {/* Navigation tabs */}
+          <div className="flex space-x-1 overflow-x-auto pb-2">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
-                className={`flex items-center px-4 py-3 transition-colors border-b-2 ${
+                className={`px-4 py-2 text-sm font-medium rounded-md whitespace-nowrap transition-colors ${
                   activeTab === tab.id
-                    ? "border-purple-500 text-purple-300"
-                    : "border-transparent hover:border-purple-700/50 text-gray-300 hover:text-white"
+                    ? "bg-primary text-primary-foreground"
+                    : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
                 }`}
                 onClick={() => setActiveTab(tab.id)}
               >
-                <span className="mr-2">{tab.icon}</span>
-                {tab.label}
+                {tab.name}
               </button>
             ))}
-          </nav>
-
-          {/* Mobile navigation */}
-          {mobileMenuOpen && (
-            <div className="md:hidden py-2 border-t border-purple-700/30">
-              <div className="grid grid-cols-2 gap-1">
-                {tabs.map((tab) => (
-                  <button
-                    key={tab.id}
-                    className={`flex items-center px-3 py-2 rounded-md transition-colors ${
-                      activeTab === tab.id ? "bg-purple-700/30 text-purple-300" : "hover:bg-purple-700/10 text-gray-300"
-                    }`}
-                    onClick={() => {
-                      setActiveTab(tab.id)
-                      setMobileMenuOpen(false)
-                    }}
-                  >
-                    <span className="mr-2">{tab.icon}</span>
-                    {tab.label}
-                  </button>
-                ))}
-              </div>
-              <div className="mt-2 pt-2 border-t border-purple-700/30">
-                <div className="relative">
-                  <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    className="w-full pl-8 pr-4 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-              </div>
-            </div>
-          )}
+          </div>
         </div>
       </header>
 
       {/* Main content */}
-      <div className="flex-1 overflow-y-auto container mx-auto px-4 py-6">
-        {/* Product Master */}
+      <div className="flex-1 overflow-auto p-4 md:p-6">
+        {activeTab === "dashboard" && (
+          <div className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Total Products</CardTitle>
+                    <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{products.length}</div>
+                    <p className="text-xs text-muted-foreground">
+                      {products.filter((p) => p.status === "Active").length} active
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Low Stock Items</CardTitle>
+                    <Badge variant="destructive">{lowStockProducts.length}</Badge>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{lowStockProducts.length}</div>
+                    <p className="text-xs text-muted-foreground">
+                      {Math.round((lowStockProducts.length / products.length) * 100)}% of inventory
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Inventory Value</CardTitle>
+                    <Badge variant="outline">₹</Badge>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">₹ {calculateTotalInventoryValue().toLocaleString()}</div>
+                    <p className="text-xs text-muted-foreground">
+                      Across {products.reduce((acc, p) => acc + p.stock, 0)} items
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+
+              <motion.div whileHover={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
+                <Card>
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">Warehouses</CardTitle>
+                    <Badge variant="secondary">{warehouses.length}</Badge>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-2xl font-bold">{warehouses.length}</div>
+                    <p className="text-xs text-muted-foreground">
+                      {warehouses.reduce((acc, w) => acc + w.capacity, 0).toLocaleString()} total capacity
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            </div>
+
+            {/* Dashboard content... */}
+          </div>
+        )}
+
         {activeTab === "products" && (
-          <div className="animate-fadeIn">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-              <div>
-                <h2 className="text-2xl font-semibold text-white">Product Master</h2>
-                <p className="text-gray-400 mt-1">Manage your product catalog and inventory</p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-                <div className="relative flex-grow">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={16} />
-                  <input
-                    type="text"
-                    placeholder="Search products..."
-                    className="w-full pl-10 pr-4 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                  />
-                </div>
-                <button
-                  className="flex items-center justify-center px-4 py-2 rounded-md bg-purple-700 hover:bg-purple-600 text-white"
-                  onClick={() => setIsAddProductOpen(true)}
-                >
-                  <Plus size={16} className="mr-2" />
+          <div className="space-y-4">
+            <div className="flex flex-col sm:flex-row justify-between gap-4">
+              <h2 className="text-2xl font-bold">Product Inventory</h2>
+              <div className="flex gap-2">
+                <Button variant="outline" size="sm" onClick={() => setIsFilterOpen(!isFilterOpen)}>
+                  <Filter className="h-4 w-4 mr-2" />
+                  Filter
+                </Button>
+                <Button variant="outline" size="sm" onClick={handleExportProducts}>
+                  <Download className="h-4 w-4 mr-2" />
+                  Export
+                </Button>
+                <Button variant="default" size="sm" onClick={() => setIsAddProductOpen(true)}>
+                  <Plus className="h-4 w-4 mr-2" />
                   Add Product
-                </button>
+                </Button>
               </div>
             </div>
 
-            {/* Filters */}
-            <div className="bg-gray-900/50 p-4 rounded-lg mb-6 flex flex-wrap gap-4">
-              <div>
-                <label className="text-sm text-gray-300 block mb-1">Category</label>
-                <select
-                  className="px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                  value={filterCategory}
-                  onChange={(e) => setFilterCategory(e.target.value)}
-                >
-                  <option value="All">All Categories</option>
-                  <option value="Construction">Construction</option>
-                  <option value="Restaurant">Restaurant</option>
-                </select>
+            {isFilterOpen && (
+              <div className="bg-card border border-border rounded-lg p-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">Category</label>
+                  <select
+                    className="w-full p-2 rounded-md border border-input bg-background"
+                    value={filterCategory}
+                    onChange={(e) => setFilterCategory(e.target.value)}
+                  >
+                    <option value="">All Categories</option>
+                    {categories.map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Status</label>
+                  <select
+                    className="w-full p-2 rounded-md border border-input bg-background"
+                    value={filterStatus}
+                    onChange={(e) => setFilterStatus(e.target.value)}
+                  >
+                    <option value="">All Statuses</option>
+                    <option value="Active">Active</option>
+                    <option value="Low Stock">Low Stock</option>
+                    <option value="Out of Stock">Out of Stock</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Warehouse</label>
+                  <select
+                    className="w-full p-2 rounded-md border border-input bg-background"
+                    value={filterWarehouse}
+                    onChange={(e) => setFilterWarehouse(e.target.value)}
+                  >
+                    <option value="">All Warehouses</option>
+                    {warehouses.map((warehouse) => (
+                      <option key={warehouse.id} value={warehouse.name}>
+                        {warehouse.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="md:col-span-3 flex justify-end gap-2">
+                  <Button variant="outline" size="sm" onClick={resetFilters}>
+                    Reset
+                  </Button>
+                  <Button variant="default" size="sm" onClick={applyFilters}>
+                    Apply Filters
+                  </Button>
+                </div>
               </div>
-              <div>
-                <label className="text-sm text-gray-300 block mb-1">Warehouse</label>
-                <select
-                  className="px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                  value={filterWarehouse}
-                  onChange={(e) => setFilterWarehouse(e.target.value)}
-                >
-                  <option value="All">All Warehouses</option>
-                  {warehouses.map((warehouse) => (
-                    <option key={warehouse.id} value={warehouse.name}>
-                      {warehouse.name}
-                    </option>
-                  ))}
-                </select>
+            )}
+
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <Search className="h-4 w-4 text-muted-foreground" />
               </div>
-              <div>
-                <label className="text-sm text-gray-300 block mb-1">Status</label>
-                <select
-                  className="px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                  value={filterStatus}
-                  onChange={(e) => setFilterStatus(e.target.value)}
-                >
-                  <option value="All">All Statuses</option>
-                  <option value="Active">Active</option>
-                  <option value="Low Stock">Low Stock</option>
-                </select>
-              </div>
+              <input
+                type="text"
+                className="block w-full p-2 pl-10 text-sm border border-input rounded-lg bg-background"
+                placeholder="Search products by name, SKU, or serial number..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
 
-            <div className="bg-gray-900/50 rounded-lg overflow-hidden shadow-xl border border-purple-700/20">
+            <div className="bg-card border border-border rounded-lg overflow-hidden">
               <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-purple-700/30">
-                  <thead className="bg-gray-800/50">
+                <table className="min-w-full divide-y divide-border">
+                  <thead className="bg-muted">
                     <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                         Product
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                         SKU/Barcode
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                         Stock
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                         Warehouse
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                         Category
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                         Status
                       </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
+                      <th className="px-4 py-3 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
                         Actions
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-purple-700/20">
+                  <tbody className="divide-y divide-border">
                     {filteredProducts.map((product) => (
-                      <tr key={product.id} className="hover:bg-purple-900/10">
+                      <tr key={product.id} className="hover:bg-accent/50">
                         <td className="px-4 py-3 whitespace-nowrap">
                           <div className="flex items-center">
                             <div className="ml-2">
-                              <div className="text-sm font-medium text-white">{product.name}</div>
-                              <div className="text-xs text-gray-400">SN: {product.serialNumber}</div>
+                              <div className="text-sm font-medium">{product.name}</div>
+                              <div className="text-xs text-muted-foreground">SN: {product.serialNumber}</div>
                             </div>
                           </div>
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap">
-                          <div className="text-sm text-white">{product.sku}</div>
-                          <div className="text-xs text-gray-400">{product.barcode}</div>
+                          <div className="text-sm">{product.sku}</div>
+                          <div className="text-xs text-muted-foreground">{product.barcode}</div>
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap">
-                          <div className="text-sm text-white">
+                          <div className="text-sm">
                             {product.stock} {product.unit}
                           </div>
-                          <div className="text-xs text-gray-400">Reorder: {product.reorderLevel}</div>
+                          <div className="text-xs text-muted-foreground">Reorder: {product.reorderLevel}</div>
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap">
-                          <div className="text-sm text-white">{product.warehouse}</div>
-                          <div className="text-xs text-gray-400">Zone: {product.zone}</div>
+                          <div className="text-sm">{product.warehouse}</div>
+                          <div className="text-xs text-muted-foreground">Zone: {product.zone}</div>
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap">
-                          <div className="text-sm text-white">{product.category}</div>
+                          <div className="text-sm">{product.category}</div>
                         </td>
                         <td className="px-4 py-3 whitespace-nowrap">
-                          <span
-                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                          <Badge
+                            variant={
                               product.status === "Active"
-                                ? "bg-green-800/30 text-green-300"
+                                ? "default"
                                 : product.status === "Low Stock"
-                                  ? "bg-yellow-800/30 text-yellow-300"
-                                  : "bg-red-800/30 text-red-300"
-                            }`}
+                                ? "secondary"
+                                : "destructive"
+                            }
                           >
                             {product.status}
-                          </span>
+                          </Badge>
                         </td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-300">
+                        <td className="px-4 py-3 whitespace-nowrap">
                           <div className="flex space-x-2">
-                            <button className="text-blue-400 hover:text-blue-300">
-                              <Eye size={16} />
-                            </button>
-                            <button
-                              className="text-yellow-400 hover:text-yellow-300"
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-blue-500">
+                              <Eye className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 text-amber-500"
                               onClick={() => {
                                 setSelectedProduct(product)
                                 setIsEditProductOpen(true)
                               }}
                             >
-                              <Edit size={16} />
-                            </button>
-                            <button
-                              className="text-red-400 hover:text-red-300"
+                              <Edit className="h-4 w-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="h-8 w-8 text-red-500"
                               onClick={() => handleDeleteProduct(product.id)}
                             >
-                              <Trash2 size={16} />
-                            </button>
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
                           </div>
                         </td>
                       </tr>
@@ -814,267 +914,114 @@ const Inventory = () => {
             {/* Add Product Dialog */}
             {isAddProductOpen && (
               <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-                <div className="bg-gray-900 border border-purple-700/30 rounded-lg p-6 w-full max-w-md max-h-[85vh] overflow-y-auto">
+                <div className="bg-card border border-border rounded-lg p-6 shadow-lg max-w-2xl w-full">
                   <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-semibold text-purple-300">Add New Product</h3>
-                    <button className="text-gray-400 hover:text-white" onClick={() => setIsAddProductOpen(false)}>
-                      <X size={20} />
-                    </button>
+                    <h3 className="text-lg font-bold">Add New Product</h3>
+                    <Button variant="ghost" size="icon" onClick={() => setIsAddProductOpen(false)}>
+                      <X className="h-5 w-5" />
+                    </Button>
                   </div>
-
-                  <div className="space-y-4">
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="name" className="text-sm text-gray-300 block mb-1">
-                        Product Name
-                      </label>
+                      <label className="block text-sm font-medium mb-1">Product Name</label>
                       <input
-                        id="name"
                         type="text"
-                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                        className="w-full p-2 rounded-md border border-input bg-background"
+                        placeholder="Enter product name"
                         value={newProduct.name}
                         onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })}
                       />
                     </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="sku" className="text-sm text-gray-300 block mb-1">
-                          SKU
-                        </label>
-                        <input
-                          id="sku"
-                          type="text"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={newProduct.sku}
-                          onChange={(e) => setNewProduct({ ...newProduct, sku: e.target.value })}
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="barcode" className="text-sm text-gray-300 block mb-1">
-                          Barcode
-                        </label>
-                        <input
-                          id="barcode"
-                          type="text"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={newProduct.barcode}
-                          onChange={(e) => setNewProduct({ ...newProduct, barcode: e.target.value })}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="unit" className="text-sm text-gray-300 block mb-1">
-                          Unit
-                        </label>
-                        <select
-                          id="unit"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={newProduct.unit}
-                          onChange={(e) => setNewProduct({ ...newProduct, unit: e.target.value })}
-                        >
-                          <option value="pcs">pcs</option>
-                          <option value="kg">kg</option>
-                          <option value="ltr">ltr</option>
-                          <option value="box">box</option>
-                          <option value="bags">bags</option>
-                          <option value="tons">tons</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label htmlFor="hsn" className="text-sm text-gray-300 block mb-1">
-                          HSN Code
-                        </label>
-                        <input
-                          id="hsn"
-                          type="text"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={newProduct.hsn}
-                          onChange={(e) => setNewProduct({ ...newProduct, hsn: e.target.value })}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="tax" className="text-sm text-gray-300 block mb-1">
-                          Tax (%)
-                        </label>
-                        <input
-                          id="tax"
-                          type="number"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={newProduct.tax}
-                          onChange={(e) => setNewProduct({ ...newProduct, tax: Number(e.target.value) || 0 })}
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="serialNumber" className="text-sm text-gray-300 block mb-1">
-                          Serial Number
-                        </label>
-                        <input
-                          id="serialNumber"
-                          type="text"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={newProduct.serialNumber}
-                          onChange={(e) => setNewProduct({ ...newProduct, serialNumber: e.target.value })}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="stock" className="text-sm text-gray-300 block mb-1">
-                          Initial Stock
-                        </label>
-                        <input
-                          id="stock"
-                          type="number"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={newProduct.stock}
-                          onChange={(e) => setNewProduct({ ...newProduct, stock: Number(e.target.value) || 0 })}
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="reorderLevel" className="text-sm text-gray-300 block mb-1">
-                          Reorder Level
-                        </label>
-                        <input
-                          id="reorderLevel"
-                          type="number"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={newProduct.reorderLevel}
-                          onChange={(e) => setNewProduct({ ...newProduct, reorderLevel: Number(e.target.value) || 0 })}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="warehouse" className="text-sm text-gray-300 block mb-1">
-                          Warehouse
-                        </label>
-                        <select
-                          id="warehouse"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={newProduct.warehouse}
-                          onChange={(e) => setNewProduct({ ...newProduct, warehouse: e.target.value })}
-                        >
-                          {warehouses.map((warehouse) => (
-                            <option key={warehouse.id} value={warehouse.name}>
-                              {warehouse.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div>
-                        <label htmlFor="zone" className="text-sm text-gray-300 block mb-1">
-                          Zone
-                        </label>
-                        <select
-                          id="zone"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={newProduct.zone}
-                          onChange={(e) => setNewProduct({ ...newProduct, zone: e.target.value })}
-                        >
-                          {warehouses
-                            .find((w) => w.name === newProduct.warehouse)
-                            ?.zones.map((zone, index) => (
-                              <option key={index} value={zone}>
-                                {zone}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="batchNumber" className="text-sm text-gray-300 block mb-1">
-                          Batch Number
-                        </label>
-                        <input
-                          id="batchNumber"
-                          type="text"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={newProduct.batchNumber}
-                          onChange={(e) => setNewProduct({ ...newProduct, batchNumber: e.target.value })}
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="expiryDate" className="text-sm text-gray-300 block mb-1">
-                          Expiry Date
-                        </label>
-                        <input
-                          id="expiryDate"
-                          type="date"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={newProduct.expiryDate}
-                          onChange={(e) => setNewProduct({ ...newProduct, expiryDate: e.target.value })}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="valuationMethod" className="text-sm text-gray-300 block mb-1">
-                          Valuation Method
-                        </label>
-                        <select
-                          id="valuationMethod"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={newProduct.valuationMethod}
-                          onChange={(e) => setNewProduct({ ...newProduct, valuationMethod: e.target.value })}
-                        >
-                          <option value="FIFO">FIFO</option>
-                          <option value="LIFO">LIFO</option>
-                          <option value="Weighted Average">Weighted Average</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label htmlFor="category" className="text-sm text-gray-300 block mb-1">
-                          Category
-                        </label>
-                        <select
-                          id="category"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={newProduct.category}
-                          onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
-                        >
-                          <option value="Construction">Construction</option>
-                          <option value="Restaurant">Restaurant</option>
-                        </select>
-                      </div>
-                    </div>
-
                     <div>
-                      <label htmlFor="price" className="text-sm text-gray-300 block mb-1">
-                        Unit Price
-                      </label>
+                      <label className="block text-sm font-medium mb-1">SKU</label>
                       <input
-                        id="price"
+                        type="text"
+                        className="w-full p-2 rounded-md border border-input bg-background"
+                        placeholder="Enter SKU"
+                        value={newProduct.sku}
+                        onChange={(e) => setNewProduct({ ...newProduct, sku: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Category</label>
+                      <select
+                        className="w-full p-2 rounded-md border border-input bg-background"
+                        value={newProduct.category}
+                        onChange={(e) => setNewProduct({ ...newProduct, category: e.target.value })}
+                      >
+                        <option value="">Select Category</option>
+                        {categories.map((category) => (
+                          <option key={category} value={category}>
+                            {category}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Warehouse</label>
+                      <select
+                        className="w-full p-2 rounded-md border border-input bg-background"
+                        value={newProduct.warehouse}
+                        onChange={(e) => setNewProduct({ ...newProduct, warehouse: e.target.value })}
+                      >
+                        <option value="">Select Warehouse</option>
+                        {warehouses.map((warehouse) => (
+                          <option key={warehouse.id} value={warehouse.name}>
+                            {warehouse.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Initial Stock</label>
+                      <input
                         type="number"
-                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                        value={newProduct.price}
-                        onChange={(e) => setNewProduct({ ...newProduct, price: Number(e.target.value) || 0 })}
+                        className="w-full p-2 rounded-md border border-input bg-background"
+                        placeholder="Enter initial stock"
+                        value={newProduct.stock}
+                        onChange={(e) => setNewProduct({ ...newProduct, stock: parseInt(e.target.value) })}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Reorder Level</label>
+                      <input
+                        type="number"
+                        className="w-full p-2 rounded-md border border-input bg-background"
+                        placeholder="Enter reorder level"
+                        value={newProduct.reorderLevel}
+                        onChange={(e) => setNewProduct({ ...newProduct, reorderLevel: parseInt(e.target.value) })}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Unit</label>
+                      <input
+                        type="text"
+                        className="w-full p-2 rounded-md border border-input bg-background"
+                        placeholder="e.g. pcs, kg, liters"
+                        value={newProduct.unit}
+                        onChange={(e) => setNewProduct({ ...newProduct, unit: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Zone</label>
+                      <input
+                        type="text"
+                        className="w-full p-2 rounded-md border border-input bg-background"
+                        placeholder="e.g. A1, B2, C3"
+                        value={newProduct.zone}
+                        onChange={(e) => setNewProduct({ ...newProduct, zone: e.target.value })}
                       />
                     </div>
                   </div>
-
-                  <div className="flex justify-end space-x-2 mt-6">
-                    <button
-                      className="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600 text-white"
-                      onClick={() => setIsAddProductOpen(false)}
-                    >
+                  
+                  <div className="flex justify-end gap-2 mt-6">
+                    <Button variant="outline" onClick={() => setIsAddProductOpen(false)}>
                       Cancel
-                    </button>
-                    <button
-                      className="px-4 py-2 rounded-md bg-purple-700 hover:bg-purple-600 text-white"
-                      onClick={handleAddProduct}
-                    >
+                    </Button>
+                    <Button variant="default" onClick={handleAddProduct}>
                       Add Product
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -1083,1238 +1030,95 @@ const Inventory = () => {
             {/* Edit Product Dialog */}
             {isEditProductOpen && selectedProduct && (
               <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-                <div className="bg-gray-900 border border-purple-700/30 rounded-lg p-6 w-full max-w-md max-h-[85vh] overflow-y-auto">
+                <div className="bg-card border border-border rounded-lg p-6 shadow-lg max-w-2xl w-full">
                   <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-semibold text-purple-300">Edit Product</h3>
-                    <button
-                      className="text-gray-400 hover:text-white"
-                      onClick={() => {
-                        setIsEditProductOpen(false)
-                        setSelectedProduct(null)
-                      }}
-                    >
-                      <X size={20} />
-                    </button>
+                    <h3 className="text-lg font-bold">Edit Product</h3>
+                    <Button variant="ghost" size="icon" onClick={() => setIsEditProductOpen(false)}>
+                      <X className="h-5 w-5" />
+                    </Button>
                   </div>
-
-                  <div className="space-y-4">
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <label htmlFor="edit-name" className="text-sm text-gray-300 block mb-1">
-                        Product Name
-                      </label>
+                      <label className="block text-sm font-medium mb-1">Product Name</label>
                       <input
-                        id="edit-name"
                         type="text"
-                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
+                        className="w-full p-2 rounded-md border border-input bg-background"
                         value={selectedProduct.name}
                         onChange={(e) => setSelectedProduct({ ...selectedProduct, name: e.target.value })}
                       />
                     </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="edit-sku" className="text-sm text-gray-300 block mb-1">
-                          SKU
-                        </label>
-                        <input
-                          id="edit-sku"
-                          type="text"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={selectedProduct.sku}
-                          onChange={(e) => setSelectedProduct({ ...selectedProduct, sku: e.target.value })}
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="edit-barcode" className="text-sm text-gray-300 block mb-1">
-                          Barcode
-                        </label>
-                        <input
-                          id="edit-barcode"
-                          type="text"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={selectedProduct.barcode}
-                          onChange={(e) => setSelectedProduct({ ...selectedProduct, barcode: e.target.value })}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="edit-stock" className="text-sm text-gray-300 block mb-1">
-                          Stock
-                        </label>
-                        <input
-                          id="edit-stock"
-                          type="number"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={selectedProduct.stock}
-                          onChange={(e) => {
-                            const newStock = Number(e.target.value) || 0
-                            const status = newStock <= selectedProduct.reorderLevel ? "Low Stock" : "Active"
-                            setSelectedProduct({
-                              ...selectedProduct,
-                              stock: newStock,
-                              status,
-                            })
-                          }}
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="edit-reorderLevel" className="text-sm text-gray-300 block mb-1">
-                          Reorder Level
-                        </label>
-                        <input
-                          id="edit-reorderLevel"
-                          type="number"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={selectedProduct.reorderLevel}
-                          onChange={(e) => {
-                            const newReorderLevel = Number(e.target.value) || 0
-                            const status = selectedProduct.stock <= newReorderLevel ? "Low Stock" : "Active"
-                            setSelectedProduct({
-                              ...selectedProduct,
-                              reorderLevel: newReorderLevel,
-                              status,
-                            })
-                          }}
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="edit-warehouse" className="text-sm text-gray-300 block mb-1">
-                          Warehouse
-                        </label>
-                        <select
-                          id="edit-warehouse"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={selectedProduct.warehouse}
-                          onChange={(e) => setSelectedProduct({ ...selectedProduct, warehouse: e.target.value })}
-                        >
-                          {warehouses.map((warehouse) => (
-                            <option key={warehouse.id} value={warehouse.name}>
-                              {warehouse.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div>
-                        <label htmlFor="edit-zone" className="text-sm text-gray-300 block mb-1">
-                          Zone
-                        </label>
-                        <select
-                          id="edit-zone"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={selectedProduct.zone}
-                          onChange={(e) => setSelectedProduct({ ...selectedProduct, zone: e.target.value })}
-                        >
-                          {warehouses
-                            .find((w) => w.name === selectedProduct.warehouse)
-                            ?.zones.map((zone, index) => (
-                              <option key={index} value={zone}>
-                                {zone}
-                              </option>
-                            ))}
-                        </select>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <label htmlFor="edit-batchNumber" className="text-sm text-gray-300 block mb-1">
-                          Batch Number
-                        </label>
-                        <input
-                          id="edit-batchNumber"
-                          type="text"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={selectedProduct.batchNumber}
-                          onChange={(e) => setSelectedProduct({ ...selectedProduct, batchNumber: e.target.value })}
-                        />
-                      </div>
-                      <div>
-                        <label htmlFor="edit-expiryDate" className="text-sm text-gray-300 block mb-1">
-                          Expiry Date
-                        </label>
-                        <input
-                          id="edit-expiryDate"
-                          type="date"
-                          className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                          value={selectedProduct.expiryDate}
-                          onChange={(e) => setSelectedProduct({ ...selectedProduct, expiryDate: e.target.value })}
-                        />
-                      </div>
-                    </div>
-
                     <div>
-                      <label htmlFor="edit-price" className="text-sm text-gray-300 block mb-1">
-                        Unit Price
-                      </label>
+                      <label className="block text-sm font-medium mb-1">SKU</label>
                       <input
-                        id="edit-price"
+                        type="text"
+                        className="w-full p-2 rounded-md border border-input bg-background"
+                        value={selectedProduct.sku}
+                        onChange={(e) => setSelectedProduct({ ...selectedProduct, sku: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Category</label>
+                      <select
+                        className="w-full p-2 rounded-md border border-input bg-background"
+                        value={selectedProduct.category}
+                        onChange={(e) => setSelectedProduct({ ...selectedProduct, category: e.target.value })}
+                      >
+                        {categories.map((category) => (
+                          <option key={category} value={category}>
+                            {category}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Warehouse</label>
+                      <select
+                        className="w-full p-2 rounded-md border border-input bg-background"
+                        value={selectedProduct.warehouse}
+                        onChange={(e) => setSelectedProduct({ ...selectedProduct, warehouse: e.target.value })}
+                      >
+                        {warehouses.map((warehouse) => (
+                          <option key={warehouse.id} value={warehouse.name}>
+                            {warehouse.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Stock</label>
+                      <input
                         type="number"
-                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                        value={selectedProduct.price}
-                        onChange={(e) => setSelectedProduct({ ...selectedProduct, price: Number(e.target.value) || 0 })}
+                        className="w-full p-2 rounded-md border border-input bg-background"
+                        value={selectedProduct.stock}
+                        onChange={(e) => setSelectedProduct({ ...selectedProduct, stock: parseInt(e.target.value) })}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium mb-1">Reorder Level</label>
+                      <input
+                        type="number"
+                        className="w-full p-2 rounded-md border border-input bg-background"
+                        value={selectedProduct.reorderLevel}
+                        onChange={(e) => setSelectedProduct({ ...selectedProduct, reorderLevel: parseInt(e.target.value) })}
                       />
                     </div>
                   </div>
-
-                  <div className="flex justify-end space-x-2 mt-6">
-                    <button
-                      className="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600 text-white"
-                      onClick={() => {
-                        setIsEditProductOpen(false)
-                        setSelectedProduct(null)
-                      }}
-                    >
+                  
+                  <div className="flex justify-end gap-2 mt-6">
+                    <Button variant="outline" onClick={() => setIsEditProductOpen(false)}>
                       Cancel
-                    </button>
-                    <button
-                      className="px-4 py-2 rounded-md bg-purple-700 hover:bg-purple-600 text-white"
-                      onClick={handleEditProduct}
-                    >
+                    </Button>
+                    <Button variant="default" onClick={handleEditProduct}>
                       Save Changes
-                    </button>
+                    </Button>
                   </div>
                 </div>
               </div>
             )}
-          </div>
-        )}
-
-        {/* Stock In/Out */}
-        {activeTab === "stock" && (
-          <div className="animate-fadeIn">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-              <div>
-                <h2 className="text-2xl font-semibold text-white">Stock Movements</h2>
-                <p className="text-gray-400 mt-1">Track stock movements from purchases, sales, and adjustments</p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-                <button
-                  className="flex items-center justify-center px-4 py-2 rounded-md bg-green-700 hover:bg-green-600 text-white"
-                  onClick={() => {
-                    setStockAdjustment({
-                      ...stockAdjustment,
-                      type: "Addition",
-                    })
-                    setIsStockAdjustmentOpen(true)
-                  }}
-                >
-                  <Plus size={16} className="mr-2" />
-                  Stock In
-                </button>
-                <button
-                  className="flex items-center justify-center px-4 py-2 rounded-md bg-red-700 hover:bg-red-600 text-white"
-                  onClick={() => {
-                    setStockAdjustment({
-                      ...stockAdjustment,
-                      type: "Reduction",
-                    })
-                    setIsStockAdjustmentOpen(true)
-                  }}
-                >
-                  <ArrowUpDown size={16} className="mr-2" />
-                  Stock Out
-                </button>
-              </div>
-            </div>
-
-            <div className="bg-gray-900/50 rounded-lg overflow-hidden shadow-xl border border-purple-700/20">
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-purple-700/30">
-                  <thead className="bg-gray-800/50">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Date
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Product
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Type
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Quantity
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Warehouse
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Reason
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-purple-700/20">
-                    {stockMovements.map((movement) => (
-                      <tr key={movement.id} className="hover:bg-purple-900/10">
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{movement.date}</td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{movement.product}</td>
-                        <td className="px-4 py-3 whitespace-nowrap">
-                          <span
-                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                              movement.type === "Purchase" ||
-                              movement.type === "Stock Addition" ||
-                              movement.type === "Transfer In"
-                                ? "bg-green-800/30 text-green-300"
-                                : movement.type === "Sale" ||
-                                    movement.type === "Stock Reduction" ||
-                                    movement.type === "Transfer Out"
-                                  ? "bg-red-800/30 text-red-300"
-                                  : "bg-blue-800/30 text-blue-300"
-                            }`}
-                          >
-                            {movement.type}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{movement.quantity}</td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{movement.warehouse}</td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{movement.reason || "-"}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Stock Adjustment Dialog */}
-            {isStockAdjustmentOpen && (
-              <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-                <div className="bg-gray-900 border border-purple-700/30 rounded-lg p-6 w-full max-w-md">
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-semibold text-purple-300">
-                      {stockAdjustment.type === "Addition" ? "Stock Addition" : "Stock Reduction"}
-                    </h3>
-                    <button className="text-gray-400 hover:text-white" onClick={() => setIsStockAdjustmentOpen(false)}>
-                      <X size={20} />
-                    </button>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div>
-                      <label htmlFor="adjustment-product" className="text-sm text-gray-300 block mb-1">
-                        Product
-                      </label>
-                      <select
-                        id="adjustment-product"
-                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                        value={stockAdjustment.product}
-                        onChange={(e) => setStockAdjustment({ ...stockAdjustment, product: e.target.value })}
-                      >
-                        <option value="">Select a product</option>
-                        {products.map((product) => (
-                          <option key={product.id} value={product.name}>
-                            {product.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label htmlFor="adjustment-quantity" className="text-sm text-gray-300 block mb-1">
-                        Quantity
-                      </label>
-                      <input
-                        id="adjustment-quantity"
-                        type="number"
-                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                        value={stockAdjustment.quantity}
-                        onChange={(e) =>
-                          setStockAdjustment({ ...stockAdjustment, quantity: Number(e.target.value) || 0 })
-                        }
-                        min="0"
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="adjustment-warehouse" className="text-sm text-gray-300 block mb-1">
-                        Warehouse
-                      </label>
-                      <select
-                        id="adjustment-warehouse"
-                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                        value={stockAdjustment.warehouse}
-                        onChange={(e) => setStockAdjustment({ ...stockAdjustment, warehouse: e.target.value })}
-                      >
-                        {warehouses.map((warehouse) => (
-                          <option key={warehouse.id} value={warehouse.name}>
-                            {warehouse.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label htmlFor="adjustment-reason" className="text-sm text-gray-300 block mb-1">
-                        Reason
-                      </label>
-                      <textarea
-                        id="adjustment-reason"
-                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                        value={stockAdjustment.reason}
-                        onChange={(e) => setStockAdjustment({ ...stockAdjustment, reason: e.target.value })}
-                        rows="3"
-                      ></textarea>
-                    </div>
-
-                    <div>
-                      <label htmlFor="adjustment-date" className="text-sm text-gray-300 block mb-1">
-                        Date
-                      </label>
-                      <input
-                        id="adjustment-date"
-                        type="date"
-                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                        value={stockAdjustment.date}
-                        onChange={(e) => setStockAdjustment({ ...stockAdjustment, date: e.target.value })}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end space-x-2 mt-6">
-                    <button
-                      className="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600 text-white"
-                      onClick={() => setIsStockAdjustmentOpen(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className={`px-4 py-2 rounded-md ${
-                        stockAdjustment.type === "Addition"
-                          ? "bg-green-700 hover:bg-green-600"
-                          : "bg-red-700 hover:bg-red-600"
-                      } text-white`}
-                      onClick={handleStockAdjustment}
-                    >
-                      {stockAdjustment.type === "Addition" ? "Add Stock" : "Reduce Stock"}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Warehouses */}
-        {activeTab === "warehouses" && (
-          <div className="animate-fadeIn">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-              <div>
-                <h2 className="text-2xl font-semibold text-white">Warehouses & Zones</h2>
-                <p className="text-gray-400 mt-1">Manage warehouse locations and storage zones</p>
-              </div>
-              <button
-                className="flex items-center justify-center px-4 py-2 rounded-md bg-purple-700 hover:bg-purple-600 text-white"
-                onClick={() => setIsAddWarehouseOpen(true)}
-              >
-                <Plus size={16} className="mr-2" />
-                Add Warehouse
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {warehouses.map((warehouse) => (
-                <div key={warehouse.id} className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
-                  <div className="flex justify-between items-start">
-                    <h3 className="text-md font-semibold text-white">{warehouse.name}</h3>
-                    <div className="flex space-x-1">
-                      <button className="text-yellow-400 hover:text-yellow-300">
-                        <Edit size={14} />
-                      </button>
-                      <button className="text-red-400 hover:text-red-300">
-                        <Trash2 size={14} />
-                      </button>
-                    </div>
-                  </div>
-                  <p className="text-sm text-gray-400 mt-1">{warehouse.location}</p>
-
-                  <div className="mt-3">
-                    <h4 className="text-xs font-medium text-gray-300 uppercase tracking-wider mb-2">Zones</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {warehouse.zones.map((zone, index) => (
-                        <span key={index} className="px-2 py-1 text-xs rounded-md bg-purple-800/30 text-purple-300">
-                          {zone}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="mt-3">
-                    <h4 className="text-xs font-medium text-gray-300 uppercase tracking-wider mb-2">Inventory</h4>
-                    <div className="text-sm text-white">
-                      {products.filter((p) => p.warehouse === warehouse.name).length} Products
-                    </div>
-                    <div className="text-xs text-gray-400">
-                      {products.filter((p) => p.warehouse === warehouse.name && p.status === "Low Stock").length} Low
-                      Stock Items
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Add Warehouse Dialog */}
-            {isAddWarehouseOpen && (
-              <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-                <div className="bg-gray-900 border border-purple-700/30 rounded-lg p-6 w-full max-w-md">
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-semibold text-purple-300">Add New Warehouse</h3>
-                    <button className="text-gray-400 hover:text-white" onClick={() => setIsAddWarehouseOpen(false)}>
-                      <X size={20} />
-                    </button>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div>
-                      <label htmlFor="warehouse-name" className="text-sm text-gray-300 block mb-1">
-                        Warehouse Name
-                      </label>
-                      <input
-                        id="warehouse-name"
-                        type="text"
-                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                        value={newWarehouse.name}
-                        onChange={(e) => setNewWarehouse({ ...newWarehouse, name: e.target.value })}
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="warehouse-location" className="text-sm text-gray-300 block mb-1">
-                        Location
-                      </label>
-                      <input
-                        id="warehouse-location"
-                        type="text"
-                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                        value={newWarehouse.location}
-                        onChange={(e) => setNewWarehouse({ ...newWarehouse, location: e.target.value })}
-                      />
-                    </div>
-
-                    <div>
-                      <div className="flex justify-between items-center mb-1">
-                        <label className="text-sm text-gray-300">Zones</label>
-                        <button
-                          className="text-xs text-purple-400 hover:text-purple-300"
-                          onClick={addZoneToNewWarehouse}
-                        >
-                          + Add Zone
-                        </button>
-                      </div>
-
-                      {newWarehouse.zones.map((zone, index) => (
-                        <div key={index} className="flex items-center gap-2 mb-2">
-                          <input
-                            type="text"
-                            className="flex-1 px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                            value={zone}
-                            onChange={(e) => updateZoneInNewWarehouse(index, e.target.value)}
-                            placeholder="Zone name"
-                          />
-                          {newWarehouse.zones.length > 1 && (
-                            <button
-                              className="text-red-400 hover:text-red-300"
-                              onClick={() => removeZoneFromNewWarehouse(index)}
-                            >
-                              <X size={16} />
-                            </button>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end space-x-2 mt-6">
-                    <button
-                      className="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600 text-white"
-                      onClick={() => setIsAddWarehouseOpen(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="px-4 py-2 rounded-md bg-purple-700 hover:bg-purple-600 text-white"
-                      onClick={handleAddWarehouse}
-                    >
-                      Add Warehouse
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Transfers */}
-        {activeTab === "transfers" && (
-          <div className="animate-fadeIn">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-              <div>
-                <h2 className="text-2xl font-semibold text-white">Stock Transfers</h2>
-                <p className="text-gray-400 mt-1">Manage inter-location stock movements</p>
-              </div>
-              <button
-                className="flex items-center justify-center px-4 py-2 rounded-md bg-purple-700 hover:bg-purple-600 text-white"
-                onClick={() => setIsTransferDialogOpen(true)}
-              >
-                <Plus size={16} className="mr-2" />
-                New Transfer
-              </button>
-            </div>
-
-            <div className="bg-gray-900/50 rounded-lg overflow-hidden shadow-xl border border-purple-700/20">
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-purple-700/30">
-                  <thead className="bg-gray-800/50">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Date
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Product
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Quantity
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        From
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        To
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Status
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-purple-700/20">
-                    {transfers.map((transfer) => (
-                      <tr key={transfer.id} className="hover:bg-purple-900/10">
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{transfer.date}</td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{transfer.product}</td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{transfer.quantity}</td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{transfer.fromWarehouse}</td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{transfer.toWarehouse}</td>
-                        <td className="px-4 py-3 whitespace-nowrap">
-                          <span
-                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                              transfer.status === "Completed"
-                                ? "bg-green-800/30 text-green-300"
-                                : transfer.status === "In Transit"
-                                  ? "bg-yellow-800/30 text-yellow-300"
-                                  : "bg-red-800/30 text-red-300"
-                            }`}
-                          >
-                            {transfer.status}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-gray-300">
-                          <div className="flex space-x-2">
-                            {transfer.status === "In Transit" && (
-                              <button
-                                className="text-green-400 hover:text-green-300"
-                                onClick={() => {
-                                  const updatedTransfers = transfers.map((t) =>
-                                    t.id === transfer.id ? { ...t, status: "Completed" } : t,
-                                  )
-                                  setTransfers(updatedTransfers)
-                                }}
-                              >
-                                <CheckCircle size={16} />
-                              </button>
-                            )}
-                            <button className="text-red-400 hover:text-red-300">
-                              <XCircle size={16} />
-                            </button>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-            {/* Transfer Dialog */}
-            {isTransferDialogOpen && (
-              <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 z-50">
-                <div className="bg-gray-900 border border-purple-700/30 rounded-lg p-6 w-full max-w-md">
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-semibold text-purple-300">Create Stock Transfer</h3>
-                    <button className="text-gray-400 hover:text-white" onClick={() => setIsTransferDialogOpen(false)}>
-                      <X size={20} />
-                    </button>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div>
-                      <label htmlFor="transfer-product" className="text-sm text-gray-300 block mb-1">
-                        Product
-                      </label>
-                      <select
-                        id="transfer-product"
-                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                        value={newTransfer.product}
-                        onChange={(e) => setNewTransfer({ ...newTransfer, product: e.target.value })}
-                      >
-                        <option value="">Select a product</option>
-                        {products.map((product) => (
-                          <option key={product.id} value={product.name}>
-                            {product.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label htmlFor="transfer-quantity" className="text-sm text-gray-300 block mb-1">
-                        Quantity
-                      </label>
-                      <input
-                        id="transfer-quantity"
-                        type="number"
-                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                        value={newTransfer.quantity}
-                        onChange={(e) => setNewTransfer({ ...newTransfer, quantity: Number(e.target.value) || 1 })}
-                        min="1"
-                      />
-                    </div>
-
-                    <div>
-                      <label htmlFor="transfer-from" className="text-sm text-gray-300 block mb-1">
-                        From Warehouse
-                      </label>
-                      <select
-                        id="transfer-from"
-                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                        value={newTransfer.fromWarehouse}
-                        onChange={(e) => setNewTransfer({ ...newTransfer, fromWarehouse: e.target.value })}
-                      >
-                        {warehouses.map((warehouse) => (
-                          <option key={warehouse.id} value={warehouse.name}>
-                            {warehouse.name}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label htmlFor="transfer-to" className="text-sm text-gray-300 block mb-1">
-                        To Warehouse
-                      </label>
-                      <select
-                        id="transfer-to"
-                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                        value={newTransfer.toWarehouse}
-                        onChange={(e) => setNewTransfer({ ...newTransfer, toWarehouse: e.target.value })}
-                      >
-                        {warehouses
-                          .filter((w) => w.name !== newTransfer.fromWarehouse)
-                          .map((warehouse) => (
-                            <option key={warehouse.id} value={warehouse.name}>
-                              {warehouse.name}
-                            </option>
-                          ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label htmlFor="transfer-date" className="text-sm text-gray-300 block mb-1">
-                        Transfer Date
-                      </label>
-                      <input
-                        id="transfer-date"
-                        type="date"
-                        className="w-full px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                        value={newTransfer.date}
-                        onChange={(e) => setNewTransfer({ ...newTransfer, date: e.target.value })}
-                      />
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end space-x-2 mt-6">
-                    <button
-                      className="px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600 text-white"
-                      onClick={() => setIsTransferDialogOpen(false)}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      className="px-4 py-2 rounded-md bg-purple-700 hover:bg-purple-600 text-white"
-                      onClick={handleCreateTransfer}
-                    >
-                      Create Transfer
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* Batches & Expiry */}
-        {activeTab === "batches" && (
-          <div className="animate-fadeIn">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-              <div>
-                <h2 className="text-2xl font-semibold text-white">Batches & Expiry Dates</h2>
-                <p className="text-gray-400 mt-1">Monitor batch numbers and expiry dates</p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-                <button className="flex items-center justify-center px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600 text-white">
-                  <Filter size={16} className="mr-2" />
-                  Filter
-                </button>
-                <button className="flex items-center justify-center px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600 text-white">
-                  <Download size={16} className="mr-2" />
-                  Export
-                </button>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
-                <h3 className="text-md font-semibold text-white mb-2">Expiring Soon</h3>
-                <div className="text-3xl font-bold text-yellow-400">{expiringProducts.length}</div>
-                <p className="text-sm text-gray-400 mt-1">Products expiring in 30 days</p>
-              </div>
-
-              <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
-                <h3 className="text-md font-semibold text-white mb-2">Expired Products</h3>
-                <div className="text-3xl font-bold text-red-400">
-                  {products.filter((p) => new Date(p.expiryDate) < new Date()).length}
-                </div>
-                <p className="text-sm text-gray-400 mt-1">Products past expiry date</p>
-              </div>
-
-              <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
-                <h3 className="text-md font-semibold text-white mb-2">Total Batches</h3>
-                <div className="text-3xl font-bold text-purple-400">
-                  {new Set(products.map((p) => p.batchNumber).filter(Boolean)).size}
-                </div>
-                <p className="text-sm text-gray-400 mt-1">Active batch numbers</p>
-              </div>
-            </div>
-
-            <div className="bg-gray-900/50 rounded-lg overflow-hidden shadow-xl border border-purple-700/20">
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-purple-700/30">
-                  <thead className="bg-gray-800/50">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Product
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Batch Number
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Expiry Date
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Stock
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Warehouse
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Status
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-purple-700/20">
-                    {products
-                      .filter((p) => p.batchNumber && p.expiryDate)
-                      .sort((a, b) => new Date(a.expiryDate) - new Date(b.expiryDate))
-                      .map((product) => {
-                        const today = new Date()
-                        const expiryDate = new Date(product.expiryDate)
-                        const thirtyDaysFromNow = new Date()
-                        thirtyDaysFromNow.setDate(today.getDate() + 30)
-
-                        let status = "Valid"
-                        if (expiryDate < today) {
-                          status = "Expired"
-                        } else if (expiryDate <= thirtyDaysFromNow) {
-                          status = "Expiring Soon"
-                        }
-
-                        return (
-                          <tr key={product.id} className="hover:bg-purple-900/10">
-                            <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{product.name}</td>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{product.batchNumber}</td>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{product.expiryDate}</td>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
-                              {product.stock} {product.unit}
-                            </td>
-                            <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{product.warehouse}</td>
-                            <td className="px-4 py-3 whitespace-nowrap">
-                              <span
-                                className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                  status === "Valid"
-                                    ? "bg-green-800/30 text-green-300"
-                                    : status === "Expiring Soon"
-                                      ? "bg-yellow-800/30 text-yellow-300"
-                                      : "bg-red-800/30 text-red-300"
-                                }`}
-                              >
-                                {status}
-                              </span>
-                            </td>
-                          </tr>
-                        )
-                      })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Reorder Levels */}
-        {activeTab === "reorder" && (
-          <div className="animate-fadeIn">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-              <div>
-                <h2 className="text-2xl font-semibold text-white">Reorder Levels</h2>
-                <p className="text-gray-400 mt-1">Set alerts for low stock levels</p>
-              </div>
-              <button className="flex items-center justify-center px-4 py-2 rounded-md bg-purple-700 hover:bg-purple-600 text-white">
-                <Plus size={16} className="mr-2" />
-                Purchase Order
-              </button>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
-                <h3 className="text-md font-semibold text-white mb-2">Low Stock Items</h3>
-                <div className="text-3xl font-bold text-yellow-400">{lowStockProducts.length}</div>
-                <p className="text-sm text-gray-400 mt-1">Items below reorder level</p>
-              </div>
-
-              <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
-                <h3 className="text-md font-semibold text-white mb-2">Critical Items</h3>
-                <div className="text-3xl font-bold text-red-400">
-                  {products.filter((p) => p.stock <= p.reorderLevel * 0.5).length}
-                </div>
-                <p className="text-sm text-gray-400 mt-1">Items at critical level</p>
-              </div>
-
-              <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
-                <h3 className="text-md font-semibold text-white mb-2">Pending Orders</h3>
-                <div className="text-3xl font-bold text-purple-400">0</div>
-                <p className="text-sm text-gray-400 mt-1">Purchase orders in progress</p>
-              </div>
-            </div>
-
-            <div className="bg-gray-900/50 rounded-lg overflow-hidden shadow-xl border border-purple-700/20">
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-purple-700/30">
-                  <thead className="bg-gray-800/50">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Product
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Current Stock
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Reorder Level
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Warehouse
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Status
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-purple-700/20">
-                    {lowStockProducts.map((product) => (
-                      <tr key={product.id} className="hover:bg-purple-900/10">
-                        <td className="px-4 py-3 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <div className="ml-2">
-                              <div className="text-sm font-medium text-white">{product.name}</div>
-                              <div className="text-xs text-gray-400">SKU: {product.sku}</div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
-                          {product.stock} {product.unit}
-                        </td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
-                          {product.reorderLevel} {product.unit}
-                        </td>
-                        <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{product.warehouse}</td>
-                        <td className="px-4 py-3 whitespace-nowrap">
-                          <span
-                            className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                              product.stock <= product.reorderLevel * 0.5
-                                ? "bg-red-800/30 text-red-300"
-                                : "bg-yellow-800/30 text-yellow-300"
-                            }`}
-                          >
-                            {product.stock <= product.reorderLevel * 0.5 ? "Critical" : "Low Stock"}
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 whitespace-nowrap">
-                          <button className="px-2 py-1 text-xs rounded-md bg-purple-700 hover:bg-purple-600 text-white">
-                            Reorder
-                          </button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Inventory Valuation */}
-        {activeTab === "valuation" && (
-          <div className="animate-fadeIn">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-              <div>
-                <h2 className="text-2xl font-semibold text-white">Inventory Valuation</h2>
-                <p className="text-gray-400 mt-1">Support FIFO, LIFO, and Weighted Average methods</p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-                <select
-                  className="px-3 py-2 rounded-md bg-gray-800 border border-purple-700/30 text-white focus:outline-none focus:ring-1 focus:ring-purple-500"
-                  value={selectedValuationMethod}
-                  onChange={(e) => setSelectedValuationMethod(e.target.value)}
-                >
-                  <option value="FIFO">FIFO</option>
-                  <option value="LIFO">LIFO</option>
-                  <option value="Weighted Average">Weighted Average</option>
-                </select>
-                <button className="flex items-center justify-center px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600 text-white">
-                  <Download size={16} className="mr-2" />
-                  Export
-                </button>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
-                <h3 className="text-md font-semibold text-white mb-2">Total Inventory Value</h3>
-                <div className="text-3xl font-bold text-purple-400">
-                  ₹ {calculateTotalInventoryValue().toLocaleString()}
-                </div>
-                <p className="text-sm text-gray-400 mt-1">Based on {selectedValuationMethod} method</p>
-              </div>
-
-              <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
-                <h3 className="text-md font-semibold text-white mb-2">Total Items</h3>
-                <div className="text-3xl font-bold text-blue-400">{products.reduce((sum, p) => sum + p.stock, 0)}</div>
-                <p className="text-sm text-gray-400 mt-1">Across all warehouses</p>
-              </div>
-
-              <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
-                <h3 className="text-md font-semibold text-white mb-2">Average Item Value</h3>
-                <div className="text-3xl font-bold text-green-400">
-                  ₹{" "}
-                  {Math.round(
-                    calculateTotalInventoryValue() / products.reduce((sum, p) => sum + p.stock, 0),
-                  ).toLocaleString()}
-                </div>
-                <p className="text-sm text-gray-400 mt-1">Per unit average</p>
-              </div>
-            </div>
-
-            <div className="bg-gray-900/50 rounded-lg overflow-hidden shadow-xl border border-purple-700/20">
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-purple-700/30">
-                  <thead className="bg-gray-800/50">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Product
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Quantity
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Unit Cost
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Total Value
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Method
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Warehouse
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-purple-700/20">
-                    {products.map((product) => {
-                      const totalValue = product.price * product.stock
-
-                      return (
-                        <tr key={product.id} className="hover:bg-purple-900/10">
-                          <td className="px-4 py-3 whitespace-nowrap">
-                            <div className="flex items-center">
-                              <div className="ml-2">
-                                <div className="text-sm font-medium text-white">{product.name}</div>
-                                <div className="text-xs text-gray-400">SKU: {product.sku}</div>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
-                            {product.stock} {product.unit}
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
-                            ₹ {product.price.toLocaleString()}
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
-                            ₹ {totalValue.toLocaleString()}
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{product.valuationMethod}</td>
-                          <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{product.warehouse}</td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Stock Analysis */}
-        {activeTab === "analysis" && (
-          <div className="animate-fadeIn">
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
-              <div>
-                <h2 className="text-2xl font-semibold text-white">Stock Analysis</h2>
-                <p className="text-gray-400 mt-1">Identify dead stock and fast-moving items</p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
-                <button className="flex items-center justify-center px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600 text-white">
-                  <Filter size={16} className="mr-2" />
-                  Filter
-                </button>
-                <button className="flex items-center justify-center px-4 py-2 rounded-md bg-gray-700 hover:bg-gray-600 text-white">
-                  <Download size={16} className="mr-2" />
-                  Export
-                </button>
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-              <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
-                <h3 className="text-md font-semibold text-white mb-2">Fast Moving Items</h3>
-                <div className="text-3xl font-bold text-green-400">
-                  {products.filter((p) => p.movement === "High").length}
-                </div>
-                <p className="text-sm text-gray-400 mt-1">High turnover products</p>
-              </div>
-
-              <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
-                <h3 className="text-md font-semibold text-white mb-2">Medium Moving Items</h3>
-                <div className="text-3xl font-bold text-yellow-400">
-                  {products.filter((p) => p.movement === "Medium").length}
-                </div>
-                <p className="text-sm text-gray-400 mt-1">Average turnover products</p>
-              </div>
-
-              <div className="bg-gray-900/50 border border-purple-700/30 rounded-lg p-4 shadow-lg">
-                <h3 className="text-md font-semibold text-white mb-2">Slow/Dead Stock</h3>
-                <div className="text-3xl font-bold text-red-400">
-                  {products.filter((p) => p.movement === "Low").length}
-                </div>
-                <p className="text-sm text-gray-400 mt-1">Low turnover products</p>
-              </div>
-            </div>
-
-            <div className="bg-gray-900/50 rounded-lg overflow-hidden shadow-xl border border-purple-700/20">
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-purple-700/30">
-                  <thead className="bg-gray-800/50">
-                    <tr>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Product
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Current Stock
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Avg. Monthly Sales
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Days in Stock
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Movement
-                      </th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-300 uppercase tracking-wider">
-                        Category
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-purple-700/20">
-                    {products.map((product) => {
-                      const avgMonthlySales =
-                        product.movement === "High"
-                          ? Math.floor(Math.random() * 20) + 20
-                          : product.movement === "Medium"
-                            ? Math.floor(Math.random() * 10) + 5
-                            : Math.floor(Math.random() * 3) + 1
-
-                      const daysInStock = avgMonthlySales > 0 ? Math.floor((product.stock / avgMonthlySales) * 30) : 0
-
-                      return (
-                        <tr key={product.id} className="hover:bg-purple-900/10">
-                          <td className="px-4 py-3 whitespace-nowrap">
-                            <div className="flex items-center">
-                              <div className="ml-2">
-                                <div className="text-sm font-medium text-white">{product.name}</div>
-                                <div className="text-xs text-gray-400">SKU: {product.sku}</div>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
-                            {product.stock} {product.unit}
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap text-sm text-white">
-                            {avgMonthlySales} {product.unit}
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{daysInStock}</td>
-                          <td className="px-4 py-3 whitespace-nowrap">
-                            <span
-                              className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                                product.movement === "High"
-                                  ? "bg-green-800/30 text-green-300"
-                                  : product.movement === "Medium"
-                                    ? "bg-yellow-800/30 text-yellow-300"
-                                    : "bg-red-800/30 text-red-300"
-                              }`}
-                            >
-                              {product.movement}
-                            </span>
-                          </td>
-                          <td className="px-4 py-3 whitespace-nowrap text-sm text-white">{product.category}</td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </div>
           </div>
         )}
       </div>
     </div>
-  )
+  );
 }
-
-export default Inventory

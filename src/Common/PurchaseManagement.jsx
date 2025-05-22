@@ -606,18 +606,18 @@ export default function PurchaseManagement() {
   const filteredPOs = filterData(purchaseOrders, "po")
 
   return (
-    <div className="p-6 bg-black/90 border-r border-purple-700/30 backdrop-blur-md text-gray-400 min-h-screen">
+    <div className="p-6 bg-white border-r border-gray-300 backdrop-blur-md text-black min-h-screen">
       {/* Header */}
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-purple-400">Purchase Management</h1>
-          <p className="text-gray-400">Manage vendor orders and procurement</p>
+          <h1 className="text-3xl font-bold text-black">Purchase Management</h1>
+          <p className="text-gray-600">Manage vendor orders and procurement</p>
         </div>
         <div className="flex gap-3">
           <div className="flex items-center mr-4">
             <span className="mr-2">Industry:</span>
             <select
-              className="bg-black border border-purple-700/30 rounded-md p-2 text-white"
+              className="bg-white border border-gray-300 rounded-md p-2 text-black"
               value={industryType}
               onChange={(e) => setIndustryType(e.target.value)}
             >
@@ -626,11 +626,11 @@ export default function PurchaseManagement() {
               <option value="restaurant">Restaurant</option>
             </select>
           </div>
-          <button className="px-4 py-2 border border-purple-700/30 text-purple-400 hover:bg-purple-900/20 rounded-md flex items-center">
+          <button className="px-4 py-2 border border-gray-300 text-black hover:bg-gray-100 rounded-md flex items-center">
             <Download className="h-4 w-4 mr-2" /> Export
           </button>
           <button
-            className="px-4 py-2 bg-purple-700 hover:bg-purple-800 text-white rounded-md flex items-center"
+            className="px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-md flex items-center"
             onClick={() => openModal("new-purchase")}
           >
             <Plus className="h-4 w-4 mr-2" /> New Purchase
@@ -641,19 +641,19 @@ export default function PurchaseManagement() {
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         {purchaseStats.map((stat, index) => (
-          <div key={index} className="bg-black/50 border border-purple-700/30 rounded-lg p-4">
+          <div key={index} className="bg-white border border-gray-300 rounded-lg p-4">
             <div className="flex items-center mb-2">
-              <div className="p-2 bg-purple-800/30 rounded-full mr-3">
-                <stat.icon className="h-5 w-5 text-purple-400" />
+              <div className="p-2 bg-gray-200 rounded-full mr-3">
+                <stat.icon className="h-5 w-5 text-gray-600" />
               </div>
-              <span className="text-purple-300 font-medium">{stat.title}</span>
+              <span className="text-black font-medium">{stat.title}</span>
             </div>
-            <div className="text-2xl font-bold text-white">{stat.value}</div>
+            <div className="text-2xl font-bold text-black">{stat.value}</div>
             <div className="flex items-center mt-1">
-              <span className={`text-sm ${stat.change.startsWith("+") ? "text-green-400" : "text-red-400"}`}>
+              <span className={`text-sm ${stat.change.startsWith("+") ? "text-green-600" : "text-red-600"}`}>
                 {stat.change}
               </span>
-              <span className="text-gray-400 text-xs ml-1">from last month</span>
+              <span className="text-gray-600 text-xs ml-1">from last month</span>
             </div>
           </div>
         ))}
@@ -661,8 +661,8 @@ export default function PurchaseManagement() {
 
       {/* Purchase Process Flow */}
       <div className="mb-8 overflow-x-auto">
-        <div className="border border-purple-700/30 rounded-lg p-4 bg-black/50">
-          <h3 className="text-center text-purple-300 font-medium mb-4">Purchase Process Flow</h3>
+        <div className="border border-gray-300 rounded-lg p-4">
+          <h3 className="text-center text-black font-medium mb-4">Purchase Process Flow</h3>
           <div className="flex flex-nowrap justify-between">
             {[
               { icon: Clipboard, label: "Purchase Request" },
@@ -674,14 +674,14 @@ export default function PurchaseManagement() {
             ].map((step, index, arr) => (
               <>
                 <div key={step.label} className="flex flex-col items-center px-2">
-                  <div className="w-12 h-12 rounded-full bg-purple-800/30 flex items-center justify-center mb-2">
-                    <step.icon className="h-6 w-6 text-purple-400" />
+                  <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mb-2">
+                    <step.icon className="h-6 w-6 text-gray-600" />
                   </div>
                   <span className="text-sm text-center">{step.label}</span>
                 </div>
                 {index < arr.length - 1 && (
                   <div className="flex-1 flex items-center justify-center">
-                    <div className="h-0.5 w-full bg-purple-700/30"></div>
+                    <div className="h-0.5 w-full bg-gray-300"></div>
                   </div>
                 )}
               </>
@@ -692,15 +692,15 @@ export default function PurchaseManagement() {
 
       {/* Tabs */}
       <div className="mb-6">
-        <div className="flex overflow-x-auto bg-purple-900/20 border border-purple-700/30 rounded-lg p-1">
+        <div className="flex overflow-x-auto bg-gray-100 border border-gray-300 rounded-lg p-1">
           {["purchase-requests", "purchase-orders", "goods-receipt", "vendor-invoices", "payments", "vendors"].map(
             (tab) => (
               <button
                 key={tab}
                 className={`px-4 py-2 whitespace-nowrap rounded-md ${
                   activeTab === tab
-                    ? "bg-purple-800/30 text-purple-300"
-                    : "text-gray-400 hover:text-purple-300 hover:bg-purple-900/10"
+                    ? "bg-gray-200 text-black"
+                    : "text-black hover:text-black hover:bg-gray-100"
                 }`}
                 onClick={() => setActiveTab(tab)}
               >
@@ -714,32 +714,32 @@ export default function PurchaseManagement() {
       {/* Search and Filter */}
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-purple-400" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600" />
           <input
             type="text"
             placeholder="Search..."
-            className="w-full pl-10 pr-4 py-2 bg-black border border-purple-700/30 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 text-white"
+            className="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 text-black"
             value={searchTerm}
             onChange={handleSearch}
           />
         </div>
         <div className="relative">
           <button
-            className="px-4 py-2 border border-purple-700/30 text-purple-400 hover:bg-purple-900/20 rounded-md flex items-center"
+            className="px-4 py-2 border border-gray-300 text-black hover:bg-gray-100 rounded-md flex items-center"
             onClick={toggleFilterMenu}
           >
             <Filter className="h-4 w-4 mr-2" /> Filter <ChevronDown className="h-4 w-4 ml-2" />
           </button>
 
           {showFilterMenu && (
-            <div className="absolute right-0 mt-2 w-64 bg-black border border-purple-700/30 rounded-md shadow-lg z-10">
+            <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-300 rounded-md shadow-lg z-10">
               <div className="p-3">
-                <h4 className="text-purple-300 font-medium mb-2">Filter Options</h4>
+                <h4 className="text-black font-medium mb-2">Filter Options</h4>
                 {/* Filter options */}
                 <div className="mb-3">
-                  <label className="block text-sm text-gray-400 mb-1">Status</label>
+                  <label className="block text-sm text-black mb-1">Status</label>
                   <select
-                    className="w-full bg-black border border-purple-700/30 rounded-md p-2 text-white"
+                    className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
                     value={filterOptions.status}
                     onChange={(e) => handleFilterChange("status", e.target.value)}
                   >
@@ -751,9 +751,9 @@ export default function PurchaseManagement() {
                 </div>
 
                 <div className="mb-3">
-                  <label className="block text-sm text-gray-400 mb-1">Department</label>
+                  <label className="block text-sm text-black mb-1">Department</label>
                   <select
-                    className="w-full bg-black border border-purple-700/30 rounded-md p-2 text-white"
+                    className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
                     value={filterOptions.department}
                     onChange={(e) => handleFilterChange("department", e.target.value)}
                   >
@@ -767,9 +767,9 @@ export default function PurchaseManagement() {
                 </div>
 
                 <div className="mb-3">
-                  <label className="block text-sm text-gray-400 mb-1">Industry</label>
+                  <label className="block text-sm text-black mb-1">Industry</label>
                   <select
-                    className="w-full bg-black border border-purple-700/30 rounded-md p-2 text-white"
+                    className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
                     value={filterOptions.industry}
                     onChange={(e) => handleFilterChange("industry", e.target.value)}
                   >
@@ -781,7 +781,7 @@ export default function PurchaseManagement() {
 
                 <div className="flex justify-end">
                   <button
-                    className="px-3 py-1 bg-purple-600/20 hover:bg-purple-600/40 text-purple-300 rounded-md text-sm"
+                    className="px-3 py-1 bg-gray-200 hover:bg-gray-300 text-black rounded-md text-sm"
                     onClick={() => {
                       setFilterOptions({
                         status: "all",
@@ -795,7 +795,7 @@ export default function PurchaseManagement() {
                     Reset
                   </button>
                   <button
-                    className="px-3 py-1 bg-purple-700 hover:bg-purple-800 text-white rounded-md text-sm ml-2"
+                    className="px-3 py-1 bg-black hover:bg-gray-800 text-white rounded-md text-sm ml-2"
                     onClick={() => setShowFilterMenu(false)}
                   >
                     Apply
@@ -805,21 +805,21 @@ export default function PurchaseManagement() {
             </div>
           )}
         </div>
-        <button className="px-4 py-2 border border-purple-700/30 text-purple-400 hover:bg-purple-900/20 rounded-md flex items-center">
+        <button className="px-4 py-2 border border-gray-300 text-black hover:bg-gray-100 rounded-md flex items-center">
           <RefreshCw className="h-4 w-4 mr-2" /> Refresh
         </button>
       </div>
 
       {/* Tab Content */}
       {activeTab === "purchase-requests" && (
-        <div className="border border-purple-700/30 rounded-lg overflow-hidden">
-          <div className="bg-purple-900/20 p-4 border-b border-purple-700/30 flex justify-between items-center">
+        <div className="border border-gray-300 rounded-lg overflow-hidden">
+          <div className="bg-gray-100 p-4 border-b border-gray-300 flex justify-between items-center">
             <div>
-              <h3 className="text-lg font-medium text-purple-300">Purchase Requests</h3>
-              <p className="text-sm text-gray-400">Manage and track purchase requisitions</p>
+              <h3 className="text-lg font-medium text-black">Purchase Requests</h3>
+              <p className="text-sm text-black">Manage and track purchase requisitions</p>
             </div>
             <button
-              className="px-3 py-1 bg-purple-700 hover:bg-purple-800 text-white rounded-md text-sm flex items-center"
+              className="px-3 py-1 bg-black hover:bg-gray-800 text-white rounded-md text-sm flex items-center"
               onClick={() => openModal("new-request")}
             >
               <Plus className="h-4 w-4 mr-1" /> New Request
@@ -828,21 +828,21 @@ export default function PurchaseManagement() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="bg-purple-900/10">
-                  <th className="text-left py-3 px-4 font-medium text-purple-300">Request ID</th>
-                  <th className="text-left py-3 px-4 font-medium text-purple-300">Requester</th>
-                  <th className="text-left py-3 px-4 font-medium text-purple-300">Department</th>
-                  <th className="text-left py-3 px-4 font-medium text-purple-300">Industry</th>
-                  <th className="text-left py-3 px-4 font-medium text-purple-300">Location</th>
-                  <th className="text-left py-3 px-4 font-medium text-purple-300">Status</th>
-                  <th className="text-right py-3 px-4 font-medium text-purple-300">Actions</th>
+                <tr className="bg-gray-100">
+                  <th className="text-left py-3 px-4 font-medium text-black">Request ID</th>
+                  <th className="text-left py-3 px-4 font-medium text-black">Requester</th>
+                  <th className="text-left py-3 px-4 font-medium text-black">Department</th>
+                  <th className="text-left py-3 px-4 font-medium text-black">Industry</th>
+                  <th className="text-left py-3 px-4 font-medium text-black">Location</th>
+                  <th className="text-left py-3 px-4 font-medium text-black">Status</th>
+                  <th className="text-right py-3 px-4 font-medium text-black">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredRequests.map((request, index) => (
                   <tr
                     key={request.id}
-                    className={`border-b border-purple-700/20 hover:bg-purple-900/10 ${index % 2 === 0 ? "bg-purple-900/5" : ""}`}
+                    className={`border-b border-gray-300 hover:bg-gray-100 ${index % 2 === 0 ? "bg-gray-50" : ""}`}
                   >
                     <td className="py-3 px-4 font-medium">{request.id}</td>
                     <td className="py-3 px-4">{request.requester}</td>
@@ -877,7 +877,7 @@ export default function PurchaseManagement() {
                     <td className="py-3 px-4 text-right">
                       <div className="flex justify-end gap-2">
                         <button
-                          className="px-3 py-1 bg-purple-600/20 hover:bg-purple-600/40 text-purple-300 rounded-md text-sm flex items-center"
+                          className="px-3 py-1 bg-gray-200 hover:bg-gray-300 text-black rounded-md text-sm flex items-center"
                           onClick={() => openModal("view-request", request)}
                         >
                           <Eye className="h-4 w-4 mr-1" /> View
@@ -912,14 +912,14 @@ export default function PurchaseManagement() {
       )}
 
       {activeTab === "purchase-orders" && (
-        <div className="border border-purple-700/30 rounded-lg overflow-hidden">
-          <div className="bg-purple-900/20 p-4 border-b border-purple-700/30 flex justify-between items-center">
+        <div className="border border-gray-300 rounded-lg overflow-hidden">
+          <div className="bg-gray-100 p-4 border-b border-gray-300 flex justify-between items-center">
             <div>
-              <h3 className="text-lg font-medium text-purple-300">Purchase Orders</h3>
-              <p className="text-sm text-gray-400">Manage and track vendor orders</p>
+              <h3 className="text-lg font-medium text-black">Purchase Orders</h3>
+              <p className="text-sm text-black">Manage and track vendor orders</p>
             </div>
             <button
-              className="px-3 py-1 bg-purple-700 hover:bg-purple-800 text-white rounded-md text-sm flex items-center"
+              className="px-3 py-1 bg-black hover:bg-gray-800 text-white rounded-md text-sm flex items-center"
               onClick={() => openModal("new-po")}
             >
               <Plus className="h-4 w-4 mr-1" /> New PO
@@ -928,21 +928,21 @@ export default function PurchaseManagement() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="bg-purple-900/10">
-                  <th className="text-left py-3 px-4 font-medium text-purple-300">PO Number</th>
-                  <th className="text-left py-3 px-4 font-medium text-purple-300">Vendor</th>
-                  <th className="text-left py-3 px-4 font-medium text-purple-300">Amount</th>
-                  <th className="text-left py-3 px-4 font-medium text-purple-300">Industry</th>
-                  <th className="text-left py-3 px-4 font-medium text-purple-300">Location</th>
-                  <th className="text-left py-3 px-4 font-medium text-purple-300">Status</th>
-                  <th className="text-right py-3 px-4 font-medium text-purple-300">Actions</th>
+                <tr className="bg-gray-100">
+                  <th className="text-left py-3 px-4 font-medium text-black">PO Number</th>
+                  <th className="text-left py-3 px-4 font-medium text-black">Vendor</th>
+                  <th className="text-left py-3 px-4 font-medium text-black">Amount</th>
+                  <th className="text-left py-3 px-4 font-medium text-black">Industry</th>
+                  <th className="text-left py-3 px-4 font-medium text-black">Location</th>
+                  <th className="text-left py-3 px-4 font-medium text-black">Status</th>
+                  <th className="text-right py-3 px-4 font-medium text-black">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredPOs.map((order, index) => (
                   <tr
                     key={order.id}
-                    className={`border-b border-purple-700/20 hover:bg-purple-900/10 ${index % 2 === 0 ? "bg-purple-900/5" : ""}`}
+                    className={`border-b border-gray-300 hover:bg-gray-100 ${index % 2 === 0 ? "bg-gray-50" : ""}`}
                   >
                     <td className="py-3 px-4 font-medium">{order.id}</td>
                     <td className="py-3 px-4">{order.vendor}</td>
@@ -977,7 +977,7 @@ export default function PurchaseManagement() {
                     <td className="py-3 px-4 text-right">
                       <div className="flex justify-end gap-2">
                         <button
-                          className="px-3 py-1 bg-purple-600/20 hover:bg-purple-600/40 text-purple-300 rounded-md text-sm flex items-center"
+                          className="px-3 py-1 bg-gray-200 hover:bg-gray-300 text-black rounded-md text-sm flex items-center"
                           onClick={() => openModal("view-po", order)}
                         >
                           <Eye className="h-4 w-4 mr-1" /> View
@@ -1012,14 +1012,14 @@ export default function PurchaseManagement() {
       )}
 
       {activeTab === "vendors" && (
-        <div className="border border-purple-700/30 rounded-lg overflow-hidden">
-          <div className="bg-purple-900/20 p-4 border-b border-purple-700/30 flex justify-between items-center">
+        <div className="border border-gray-300 rounded-lg overflow-hidden">
+          <div className="bg-gray-100 p-4 border-b border-gray-300 flex justify-between items-center">
             <div>
-              <h3 className="text-lg font-medium text-purple-300">Vendor Master</h3>
-              <p className="text-sm text-gray-400">Manage vendor information and history</p>
+              <h3 className="text-lg font-medium text-black">Vendor Master</h3>
+              <p className="text-sm text-black">Manage vendor information and history</p>
             </div>
             <button
-              className="px-3 py-1 bg-purple-700 hover:bg-purple-800 text-white rounded-md text-sm flex items-center"
+              className="px-3 py-1 bg-black hover:bg-gray-800 text-white rounded-md text-sm flex items-center"
               onClick={() => openModal("new-vendor")}
             >
               <Plus className="h-4 w-4 mr-1" /> New Vendor
@@ -1028,21 +1028,21 @@ export default function PurchaseManagement() {
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead>
-                <tr className="bg-purple-900/10">
-                  <th className="text-left py-3 px-4 font-medium text-purple-300">Vendor Name</th>
-                  <th className="text-left py-3 px-4 font-medium text-purple-300">Contact Person</th>
-                  <th className="text-left py-3 px-4 font-medium text-purple-300">Email</th>
-                  <th className="text-left py-3 px-4 font-medium text-purple-300">Industry</th>
-                  <th className="text-left py-3 px-4 font-medium text-purple-300">Total Purchases</th>
-                  <th className="text-left py-3 px-4 font-medium text-purple-300">Rating</th>
-                  <th className="text-right py-3 px-4 font-medium text-purple-300">Actions</th>
+                <tr className="bg-gray-100">
+                  <th className="text-left py-3 px-4 font-medium text-black">Vendor Name</th>
+                  <th className="text-left py-3 px-4 font-medium text-black">Contact Person</th>
+                  <th className="text-left py-3 px-4 font-medium text-black">Email</th>
+                  <th className="text-left py-3 px-4 font-medium text-black">Industry</th>
+                  <th className="text-left py-3 px-4 font-medium text-black">Total Purchases</th>
+                  <th className="text-left py-3 px-4 font-medium text-black">Rating</th>
+                  <th className="text-right py-3 px-4 font-medium text-black">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredVendors.map((vendor, index) => (
                   <tr
                     key={vendor.id}
-                    className={`border-b border-purple-700/20 hover:bg-purple-900/10 ${index % 2 === 0 ? "bg-purple-900/5" : ""}`}
+                    className={`border-b border-gray-300 hover:bg-gray-100 ${index % 2 === 0 ? "bg-gray-50" : ""}`}
                   >
                     <td className="py-3 px-4 font-medium">{vendor.name}</td>
                     <td className="py-3 px-4">{vendor.contact.name}</td>
@@ -1080,7 +1080,7 @@ export default function PurchaseManagement() {
                     <td className="py-3 px-4 text-right">
                       <div className="flex justify-end gap-2">
                         <button
-                          className="px-3 py-1 bg-purple-600/20 hover:bg-purple-600/40 text-purple-300 rounded-md text-sm flex items-center"
+                          className="px-3 py-1 bg-gray-200 hover:bg-gray-300 text-black rounded-md text-sm flex items-center"
                           onClick={() => openModal("view-vendor", vendor)}
                         >
                           <Eye className="h-4 w-4 mr-1" /> Details
@@ -1117,10 +1117,10 @@ export default function PurchaseManagement() {
       {/* Modals */}
       {showModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-black border border-purple-700/30 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-black border border-gray-300 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
-            <div className="bg-purple-900/20 p-4 border-b border-purple-700/30 flex justify-between items-center">
-              <h3 className="text-lg font-medium text-purple-300">
+            <div className="bg-gray-100 p-4 border-b border-gray-300 flex justify-between items-center">
+              <h3 className="text-lg font-medium text-black">
                 {modalType === "new-request" && "New Purchase Request"}
                 {modalType === "edit-request" && "Edit Purchase Request"}
                 {modalType === "view-request" && "Purchase Request Details"}
@@ -1131,7 +1131,7 @@ export default function PurchaseManagement() {
                 {modalType === "edit-vendor" && "Edit Vendor"}
                 {modalType === "view-vendor" && "Vendor Details"}
               </h3>
-              <button className="text-gray-400 hover:text-white" onClick={closeModal}>
+              <button className="text-black hover:text-white" onClick={closeModal}>
                 <XCircle className="h-5 w-5" />
               </button>
             </div>
@@ -1143,11 +1143,11 @@ export default function PurchaseManagement() {
                 <form onSubmit={handleFormSubmit}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Requester</label>
+                      <label className="block text-sm text-black mb-1">Requester</label>
                       <input
                         type="text"
                         name="requester"
-                        className="w-full bg-black border border-purple-700/30 rounded-md p-2 text-white"
+                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
                         placeholder="Your Name"
                         value={formData.requester}
                         onChange={handleInputChange}
@@ -1155,10 +1155,10 @@ export default function PurchaseManagement() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Department</label>
+                      <label className="block text-sm text-black mb-1">Department</label>
                       <select
                         name="department"
-                        className="w-full bg-black border border-purple-700/30 rounded-md p-2 text-white"
+                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
                         value={formData.department}
                         onChange={handleInputChange}
                         required
@@ -1172,10 +1172,10 @@ export default function PurchaseManagement() {
                       </select>
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Industry Type</label>
+                      <label className="block text-sm text-black mb-1">Industry Type</label>
                       <select
                         name="industryType"
-                        className="w-full bg-black border border-purple-700/30 rounded-md p-2 text-white"
+                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
                         value={formData.industryType}
                         onChange={handleInputChange}
                         required
@@ -1186,10 +1186,10 @@ export default function PurchaseManagement() {
                     </div>
                     {formData.industryType === "construction" ? (
                       <div>
-                        <label className="block text-sm text-gray-400 mb-1">Construction Site</label>
+                        <label className="block text-sm text-black mb-1">Construction Site</label>
                         <select
                           name="constructionSite"
-                          className="w-full bg-black border border-purple-700/30 rounded-md p-2 text-white"
+                          className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
                           value={formData.constructionSite}
                           onChange={handleInputChange}
                           required
@@ -1204,10 +1204,10 @@ export default function PurchaseManagement() {
                       </div>
                     ) : (
                       <div>
-                        <label className="block text-sm text-gray-400 mb-1">Restaurant Location</label>
+                        <label className="block text-sm text-black mb-1">Restaurant Location</label>
                         <select
                           name="restaurantLocation"
-                          className="w-full bg-black border border-purple-700/30 rounded-md p-2 text-white"
+                          className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
                           value={formData.restaurantLocation}
                           onChange={handleInputChange}
                           required
@@ -1225,33 +1225,33 @@ export default function PurchaseManagement() {
 
                   <div className="mb-6">
                     <div className="flex justify-between items-center mb-2">
-                      <label className="block text-sm text-gray-400">Items</label>
+                      <label className="block text-sm text-black">Items</label>
                       <button
                         type="button"
-                        className="px-2 py-1 bg-purple-700 hover:bg-purple-800 text-white rounded-md text-xs flex items-center"
+                        className="px-2 py-1 bg-black hover:bg-gray-800 text-white rounded-md text-xs flex items-center"
                         onClick={() => addItemRow("items")}
                       >
                         <Plus className="h-3 w-3 mr-1" /> Add Item
                       </button>
                     </div>
-                    <table className="w-full border border-purple-700/30 rounded-lg overflow-hidden">
+                    <table className="w-full border border-gray-300 rounded-lg overflow-hidden">
                       <thead>
-                        <tr className="bg-purple-900/20">
-                          <th className="text-left p-2 text-xs font-medium text-purple-300">Item Name</th>
-                          <th className="text-left p-2 text-xs font-medium text-purple-300">Quantity</th>
-                          <th className="text-left p-2 text-xs font-medium text-purple-300">Est. Cost</th>
-                          <th className="text-left p-2 text-xs font-medium text-purple-300">Justification</th>
-                          <th className="w-10 p-2 text-xs font-medium text-purple-300"></th>
+                        <tr className="bg-gray-100">
+                          <th className="text-left p-2 text-xs font-medium text-black">Item Name</th>
+                          <th className="text-left p-2 text-xs font-medium text-black">Quantity</th>
+                          <th className="text-left p-2 text-xs font-medium text-black">Est. Cost</th>
+                          <th className="text-left p-2 text-xs font-medium text-black">Justification</th>
+                          <th className="w-10 p-2 text-xs font-medium text-black"></th>
                         </tr>
                       </thead>
                       <tbody>
                         {formData.items.map((item, index) => (
-                          <tr key={index} className="border-b border-purple-700/20">
+                          <tr key={index} className="border-b border-gray-300">
                             <td className="p-2">
                               <input
                                 type="text"
                                 name="name"
-                                className="w-full bg-black border border-purple-700/30 rounded-md p-1 text-white text-sm"
+                                className="w-full bg-white border border-gray-300 rounded-md p-1 text-black text-sm"
                                 placeholder="Item name"
                                 value={item.name}
                                 onChange={(e) => handleInputChange(e, index, "items")}
@@ -1262,7 +1262,7 @@ export default function PurchaseManagement() {
                               <input
                                 type="number"
                                 name="quantity"
-                                className="w-full bg-black border border-purple-700/30 rounded-md p-1 text-white text-sm"
+                                className="w-full bg-white border border-gray-300 rounded-md p-1 text-black text-sm"
                                 placeholder="Qty"
                                 value={item.quantity}
                                 onChange={(e) => handleInputChange(e, index, "items")}
@@ -1274,7 +1274,7 @@ export default function PurchaseManagement() {
                               <input
                                 type="text"
                                 name="estimatedCost"
-                                className="w-full bg-black border border-purple-700/30 rounded-md p-1 text-white text-sm"
+                                className="w-full bg-white border border-gray-300 rounded-md p-1 text-black text-sm"
                                 placeholder="0.00"
                                 value={item.estimatedCost}
                                 onChange={(e) => handleInputChange(e, index, "items")}
@@ -1285,7 +1285,7 @@ export default function PurchaseManagement() {
                               <input
                                 type="text"
                                 name="justification"
-                                className="w-full bg-black border border-purple-700/30 rounded-md p-1 text-white text-sm"
+                                className="w-full bg-white border border-gray-300 rounded-md p-1 text-black text-sm"
                                 placeholder="Reason for purchase"
                                 value={item.justification}
                                 onChange={(e) => handleInputChange(e, index, "items")}
@@ -1310,14 +1310,14 @@ export default function PurchaseManagement() {
                   <div className="flex justify-end gap-3">
                     <button
                       type="button"
-                      className="px-4 py-2 border border-purple-700/30 text-purple-400 hover:bg-purple-900/20 rounded-md"
+                      className="px-4 py-2 border border-gray-300 text-black hover:bg-gray-100 rounded-md"
                       onClick={closeModal}
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
-                      className="px-4 py-2 bg-purple-700 hover:bg-purple-800 text-white rounded-md flex items-center"
+                      className="px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-md flex items-center"
                     >
                       <Save className="h-4 w-4 mr-2" />{" "}
                       {modalType === "new-request" ? "Submit Request" : "Update Request"}
@@ -1331,11 +1331,11 @@ export default function PurchaseManagement() {
                 <form onSubmit={handleFormSubmit}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Vendor Name</label>
+                      <label className="block text-sm text-black mb-1">Vendor Name</label>
                       <input
                         type="text"
                         name="vendorName"
-                        className="w-full bg-black border border-purple-700/30 rounded-md p-2 text-white"
+                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
                         placeholder="Vendor Name"
                         value={formData.vendorName}
                         onChange={handleInputChange}
@@ -1343,11 +1343,11 @@ export default function PurchaseManagement() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Contact Person</label>
+                      <label className="block text-sm text-black mb-1">Contact Person</label>
                       <input
                         type="text"
                         name="contactPerson"
-                        className="w-full bg-black border border-purple-700/30 rounded-md p-2 text-white"
+                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
                         placeholder="Contact Person"
                         value={formData.contactPerson}
                         onChange={handleInputChange}
@@ -1355,11 +1355,11 @@ export default function PurchaseManagement() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Email</label>
+                      <label className="block text-sm text-black mb-1">Email</label>
                       <input
                         type="email"
                         name="email"
-                        className="w-full bg-black border border-purple-700/30 rounded-md p-2 text-white"
+                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
                         placeholder="Email"
                         value={formData.email}
                         onChange={handleInputChange}
@@ -1367,11 +1367,11 @@ export default function PurchaseManagement() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Phone</label>
+                      <label className="block text-sm text-black mb-1">Phone</label>
                       <input
                         type="text"
                         name="phone"
-                        className="w-full bg-black border border-purple-700/30 rounded-md p-2 text-white"
+                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
                         placeholder="Phone"
                         value={formData.phone}
                         onChange={handleInputChange}
@@ -1379,11 +1379,11 @@ export default function PurchaseManagement() {
                       />
                     </div>
                     <div className="md:col-span-2">
-                      <label className="block text-sm text-gray-400 mb-1">Address</label>
+                      <label className="block text-sm text-black mb-1">Address</label>
                       <input
                         type="text"
                         name="address"
-                        className="w-full bg-black border border-purple-700/30 rounded-md p-2 text-white"
+                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
                         placeholder="Address"
                         value={formData.address}
                         onChange={handleInputChange}
@@ -1391,10 +1391,10 @@ export default function PurchaseManagement() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Industry Type</label>
+                      <label className="block text-sm text-black mb-1">Industry Type</label>
                       <select
                         name="industryType"
-                        className="w-full bg-black border border-purple-700/30 rounded-md p-2 text-white"
+                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
                         value={formData.industryType}
                         onChange={handleInputChange}
                         required
@@ -1409,14 +1409,14 @@ export default function PurchaseManagement() {
                   <div className="flex justify-end gap-3">
                     <button
                       type="button"
-                      className="px-4 py-2 border border-purple-700/30 text-purple-400 hover:bg-purple-900/20 rounded-md"
+                      className="px-4 py-2 border border-gray-300 text-black hover:bg-gray-100 rounded-md"
                       onClick={closeModal}
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
-                      className="px-4 py-2 bg-purple-700 hover:bg-purple-800 text-white rounded-md flex items-center"
+                      className="px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-md flex items-center"
                     >
                       <Save className="h-4 w-4 mr-2" /> {modalType === "new-vendor" ? "Add Vendor" : "Update Vendor"}
                     </button>
@@ -1429,14 +1429,14 @@ export default function PurchaseManagement() {
                 <div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Request ID</label>
-                      <div className="p-2 bg-black/50 border border-purple-700/30 rounded-md text-white">
+                      <label className="block text-sm text-black mb-1">Request ID</label>
+                      <div className="p-2 bg-gray-100 border border-gray-300 rounded-md text-black">
                         {selectedItem.id}
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Status</label>
-                      <div className="p-2 bg-black/50 border border-purple-700/30 rounded-md">
+                      <label className="block text-sm text-black mb-1">Status</label>
+                      <div className="p-2 bg-gray-100 border border-gray-300 rounded-md">
                         <span
                           className={`px-2 py-1 rounded-full text-xs ${
                             selectedItem.status === "Approved"
@@ -1451,26 +1451,26 @@ export default function PurchaseManagement() {
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Requester</label>
-                      <div className="p-2 bg-black/50 border border-purple-700/30 rounded-md text-white">
+                      <label className="block text-sm text-black mb-1">Requester</label>
+                      <div className="p-2 bg-gray-100 border border-gray-300 rounded-md text-black">
                         {selectedItem.requester}
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Department</label>
-                      <div className="p-2 bg-black/50 border border-purple-700/30 rounded-md text-white">
+                      <label className="block text-sm text-black mb-1">Department</label>
+                      <div className="p-2 bg-gray-100 border border-gray-300 rounded-md text-black">
                         {selectedItem.department}
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Industry</label>
-                      <div className="p-2 bg-black/50 border border-purple-700/30 rounded-md text-white">
+                      <label className="block text-sm text-black mb-1">Industry</label>
+                      <div className="p-2 bg-gray-100 border border-gray-300 rounded-md text-black">
                         {selectedItem.industryType === "construction" ? "Construction" : "Restaurant"}
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Location</label>
-                      <div className="p-2 bg-black/50 border border-purple-700/30 rounded-md text-white">
+                      <label className="block text-sm text-black mb-1">Location</label>
+                      <div className="p-2 bg-gray-100 border border-gray-300 rounded-md text-black">
                         {selectedItem.industryType === "construction"
                           ? selectedItem.constructionSite
                           : selectedItem.restaurantLocation}
@@ -1479,23 +1479,23 @@ export default function PurchaseManagement() {
                   </div>
 
                   <div className="mb-6">
-                    <label className="block text-sm text-gray-400 mb-2">Requested Items</label>
-                    <table className="w-full border border-purple-700/30 rounded-lg overflow-hidden">
+                    <label className="block text-sm text-black mb-2">Requested Items</label>
+                    <table className="w-full border border-gray-300 rounded-lg overflow-hidden">
                       <thead>
-                        <tr className="bg-purple-900/20">
-                          <th className="text-left p-3 text-sm font-medium text-purple-300">Item Name</th>
-                          <th className="text-center p-3 text-sm font-medium text-purple-300">Quantity</th>
-                          <th className="text-right p-3 text-sm font-medium text-purple-300">Est. Cost</th>
-                          <th className="text-left p-3 text-sm font-medium text-purple-300">Justification</th>
+                        <tr className="bg-gray-100">
+                          <th className="text-left p-3 text-sm font-medium text-black">Item Name</th>
+                          <th className="text-center p-3 text-sm font-medium text-black">Quantity</th>
+                          <th className="text-right p-3 text-sm font-medium text-black">Est. Cost</th>
+                          <th className="text-left p-3 text-sm font-medium text-black">Justification</th>
                         </tr>
                       </thead>
                       <tbody>
                         {selectedItem.items.map((item) => (
-                          <tr key={item.id} className="border-b border-purple-700/20">
-                            <td className="p-3 text-white">{item.name}</td>
-                            <td className="p-3 text-center text-white">{item.quantity}</td>
-                            <td className="p-3 text-right text-white">{item.estimatedCost}</td>
-                            <td className="p-3 text-white">{item.justification}</td>
+                          <tr key={item.id} className="border-b border-gray-300">
+                            <td className="p-3 text-black">{item.name}</td>
+                            <td className="p-3 text-center text-black">{item.quantity}</td>
+                            <td className="p-3 text-right text-black">{item.estimatedCost}</td>
+                            <td className="p-3 text-black">{item.justification}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -1504,14 +1504,14 @@ export default function PurchaseManagement() {
 
                   <div className="flex justify-end gap-3">
                     <button
-                      className="px-4 py-2 border border-purple-700/30 text-purple-400 hover:bg-purple-900/20 rounded-md"
+                      className="px-4 py-2 border border-gray-300 text-black hover:bg-gray-100 rounded-md"
                       onClick={closeModal}
                     >
                       Close
                     </button>
                     {selectedItem.status === "Approved" && (
                       <button
-                        className="px-4 py-2 bg-purple-700 hover:bg-purple-800 text-white rounded-md flex items-center"
+                        className="px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-md flex items-center"
                         onClick={() => {
                           closeModal()
                           openModal("create-po", selectedItem)
@@ -1527,14 +1527,14 @@ export default function PurchaseManagement() {
               {/* Delete Confirmation */}
               {isDeleteConfirmOpen && (
                 <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
-                  <div className="bg-black border border-purple-700/30 rounded-lg p-6 w-full max-w-md">
-                    <h3 className="text-lg font-medium text-purple-300 mb-4">Confirm Delete</h3>
-                    <p className="text-gray-400 mb-6">
+                  <div className="bg-black border border-gray-300 rounded-lg p-6 w-full max-w-md">
+                    <h3 className="text-lg font-medium text-black mb-4">Confirm Delete</h3>
+                    <p className="text-black mb-6">
                       Are you sure you want to delete this {deleteType}? This action cannot be undone.
                     </p>
                     <div className="flex justify-end gap-3">
                       <button
-                        className="px-4 py-2 border border-purple-700/30 text-purple-400 hover:bg-purple-900/20 rounded-md"
+                        className="px-4 py-2 border border-gray-300 text-black hover:bg-gray-100 rounded-md"
                         onClick={() => {
                           setIsDeleteConfirmOpen(false)
                           setItemToDelete(null)

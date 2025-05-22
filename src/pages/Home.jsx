@@ -4,19 +4,21 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Home() {
   const navigate = useNavigate();
 
-  const features = [
+  const features = [   
     {
-      title: "Construction CRM",
-      description: "Create detailed company profiles with custom modules",
-    },
+      title: " Common CRM Management",
+      description: "Manage multiple companies with a powerful admin dashboard",
+    },   
     {
       title: "Resturant CRM",
       description: "Resturant CRM for management",
     },
     {
-      title: "CRM Management",
-      description: "Manage multiple companies with a powerful admin dashboard",
+      title: "Construction CRM",
+      description: "Create detailed company profiles with custom modules",
     },
+   
+  
   ];
 
   return (
@@ -74,7 +76,7 @@ export default function Home() {
                         navigate("/RestaurantCrmDashboard");
                       } else if (feature.title == "Construction CRM") {
                         navigate("/admin/create");
-                      }else if(feature.title == "CRM Management") {
+                      }else if(feature.title == " Common CRM Management") {
                         navigate("/common");
                       }
                     }}

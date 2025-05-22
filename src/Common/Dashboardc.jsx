@@ -711,7 +711,7 @@ export default function PurchaseManagement() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0F0817] to-black text-white p-4 md:p-6">
+    <div className="min-h-screen bg-white text-black p-4 md:p-6">
       {/* Success Message Toast */}
       <AnimatePresence>
         {successMessage && (
@@ -731,10 +731,10 @@ export default function PurchaseManagement() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <div>
           <h1 className="text-2xl font-bold">Purchase Management</h1>
-          <p className="text-gray-400">Manage your complete purchase lifecycle</p>
+          <p className="text-white-400">Manage your complete purchase lifecycle</p>
         </div>
         <button
-          className="px-4 py-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-white transition-colors flex items-center gap-2 shadow-lg"
+          className="px-4 py-2 bg-purple-600 hover:bg-gradient-to-r from-purple-400 to-pink-400 rounded-lg text-white transition-colors flex items-center gap-2 shadow-lg"
           onClick={() => setShowNewVendorForm(true)}
         >
           <Plus className="h-4 w-4" /> New Vendor
@@ -746,10 +746,10 @@ export default function PurchaseManagement() {
         {purchaseStats.map((stat, index) => (
           <div
             key={index}
-            className="bg-black/90 border border-purple-700/30 rounded-lg p-4 shadow-md hover:shadow-purple-900/10 transition-all hover:translate-y-[-2px]"
+            className="bg-white/90 border border-purple-700/30 rounded-lg p-4 shadow-md hover:shadow-purple-900/10 transition-all hover:translate-y-[-2px]"
           >
             <div className="flex justify-between items-center mb-2">
-              <h3 className="text-sm text-gray-400">{stat.title}</h3>
+              <h3 className="text-black">{stat.title}</h3>
               <div className="p-2 bg-purple-900/20 rounded-full">
                 <stat.icon className="h-4 w-4 text-purple-400" />
               </div>
@@ -761,11 +761,11 @@ export default function PurchaseManagement() {
       </div>
 
       {/* Purchase Workflow Summary Card */}
-      <div className="bg-black/90 border border-purple-700/30 rounded-lg overflow-hidden mb-6 shadow-md">
+      <div className="bg-white/90 border border-purple-700/30 rounded-lg overflow-hidden mb-6 shadow-md">
         <div className="p-4 border-b border-purple-700/30 flex justify-between items-center">
           <h2 className="font-bold">Purchase Workflow Summary</h2>
           <button
-            className="p-1 rounded-lg hover:bg-purple-900/30 text-gray-400 hover:text-white transition-colors"
+            className="p-1 rounded-lg hover:bg-purple-900/30 text-white-400 hover:text-white transition-colors"
             onClick={() => updateStats()}
           >
             <RefreshCw className="h-4 w-4" />
@@ -774,7 +774,7 @@ export default function PurchaseManagement() {
         <div className="p-4 overflow-x-auto">
           <table className="w-full min-w-[640px]">
             <thead>
-              <tr className="text-left text-sm text-gray-400">
+              <tr className="text-left text-black">
                 <th className="pb-3 font-medium">Stage</th>
                 <th className="pb-3 font-medium">Count</th>
                 <th className="pb-3 font-medium">Value</th>
@@ -837,7 +837,7 @@ export default function PurchaseManagement() {
             className={`px-4 py-2 whitespace-nowrap flex items-center ${
               activeTab === stage.id
                 ? "text-purple-400 border-b-2 border-purple-500"
-                : "text-gray-400 hover:text-white hover:bg-purple-900/10"
+                : "text-white-400 hover:text-white hover:bg-purple-900/10"
             } transition-colors`}
             onClick={() => setActiveTab(stage.id)}
           >
@@ -850,17 +850,17 @@ export default function PurchaseManagement() {
       {/* Search and Filter */}
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-white-400" />
           <input
             type="text"
             placeholder={`Search ${activeStage.name.toLowerCase()}...`}
-            className="w-full pl-10 pr-4 py-2.5 bg-black/90 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white shadow-sm"
+            className="w-full pl-10 pr-4 py-2.5 bg-white/90 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white shadow-sm"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
         <button
-          className="px-4 py-2.5 bg-black/90 border border-purple-700/30 rounded-lg text-purple-300 hover:bg-purple-900/20 transition-colors flex items-center gap-2 shadow-sm"
+          className="px-4 py-2.5 bg-white/90 border border-purple-700/30 rounded-lg text-purple-300 hover:bg-purple-900/20 transition-colors flex items-center gap-2 shadow-sm"
           onClick={() => setShowFilterModal(true)}
         >
           <Filter className="h-4 w-4" /> Filter
@@ -868,7 +868,7 @@ export default function PurchaseManagement() {
       </div>
 
       {/* Items List */}
-      <div className="bg-black/90 border border-purple-700/30 rounded-lg overflow-hidden shadow-md">
+      <div className="bg-white/90 border border-purple-700/30 rounded-lg overflow-hidden shadow-md">
         {isLoading ? (
           <div className="p-8 flex justify-center">
             <div className="animate-spin rounded-full h-8 w-8 border-2 border-purple-500 border-t-transparent"></div>
@@ -876,7 +876,7 @@ export default function PurchaseManagement() {
         ) : (
           <>
             {/* Table Header */}
-            <div className="grid grid-cols-12 gap-4 p-4 border-b border-purple-700/30 bg-black/40 text-xs font-medium text-gray-400 uppercase">
+            <div className="grid grid-cols-12 gap-4 p-4 border-b border-purple-700/30 bg-white/40 text-xs font-medium text-white-400 uppercase">
               <div
                 className="col-span-4 flex items-center cursor-pointer hover:text-white transition-colors"
                 onClick={() => requestSort("name")}
@@ -890,7 +890,7 @@ export default function PurchaseManagement() {
                 Value {getSortDirectionIcon("value")}
               </div>
               <div
-                className="col-span-2 flex items-center cursor-pointer hover:text-white transition-colors"
+                className="col-span-2 flex items-center cursor-pointer hover:text-black transition-colors"
                 onClick={() => requestSort("date")}
               >
                 Date {getSortDirectionIcon("date")}
@@ -917,8 +917,8 @@ export default function PurchaseManagement() {
                         {item.name}
                       </div>
                     </div>
-                    <div className="col-span-2 text-gray-300">{item.value}</div>
-                    <div className="col-span-2 text-gray-400 flex items-center">
+                    <div className="col-span-2 text-black">{item.value}</div>
+                    <div className="col-span-2 text-white-400 flex items-center">
                       <Calendar className="h-3 w-3 mr-1.5" />
                       {item.date}
                     </div>
@@ -934,21 +934,21 @@ export default function PurchaseManagement() {
                     </div>
                     <div className="col-span-2 flex items-center justify-end space-x-2">
                       <button
-                        className="p-1.5 rounded-lg hover:bg-purple-900/30 text-gray-400 hover:text-white transition-colors"
+                        className="p-1.5 rounded-lg hover:bg-purple-900/30 text-white-400 hover:text-white transition-colors"
                         onClick={() => handleViewDetails(item)}
                         title="View Details"
                       >
                         <Eye size={16} />
                       </button>
                       <button
-                        className="p-1.5 rounded-lg hover:bg-purple-900/30 text-gray-400 hover:text-white transition-colors"
+                        className="p-1.5 rounded-lg hover:bg-purple-900/30 text-white-400 hover:text-white transition-colors"
                         onClick={() => handleEditClick(item)}
                         title="Edit"
                       >
                         <Edit size={16} />
                       </button>
                       <button
-                        className="p-1.5 rounded-lg hover:bg-red-900/30 text-gray-400 hover:text-red-400 transition-colors"
+                        className="p-1.5 rounded-lg hover:bg-red-900/30 text-white-400 hover:text-red-400 transition-colors"
                         onClick={() => handleDeleteClick(item)}
                         title="Delete"
                       >
@@ -956,7 +956,7 @@ export default function PurchaseManagement() {
                       </button>
                       <div className="relative">
                         <button
-                          className="p-1.5 rounded-lg hover:bg-purple-900/30 text-gray-400 hover:text-white transition-colors"
+                          className="p-1.5 rounded-lg hover:bg-purple-900/30 text-white-400 hover:text-white transition-colors"
                           onClick={() => toggleActionMenu(item.id)}
                           title="More Actions"
                         >
@@ -965,7 +965,7 @@ export default function PurchaseManagement() {
                         {actionMenuOpen === item.id && (
                           <div className="absolute right-0 mt-2 w-48 bg-gray-900 border border-purple-700/30 rounded-lg shadow-lg z-10 py-1">
                             <button
-                              className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-purple-900/20 hover:text-white transition-colors flex items-center"
+                              className="w-full text-left px-4 py-2 text-sm text-black hover:bg-purple-900/20 hover:text-white transition-colors flex items-center"
                               onClick={() => {
                                 setSelectedItem(item)
                                 setActionMenuOpen(null)
@@ -984,7 +984,7 @@ export default function PurchaseManagement() {
                               Move to Next Stage
                             </button>
                             <button
-                              className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-purple-900/20 hover:text-white transition-colors flex items-center"
+                              className="w-full text-left px-4 py-2 text-sm text-black hover:bg-purple-900/20 hover:text-white transition-colors flex items-center"
                               onClick={() => {
                                 window.location.href = `mailto:${item.email}`
                                 setActionMenuOpen(null)
@@ -994,7 +994,7 @@ export default function PurchaseManagement() {
                               Send Email
                             </button>
                             <button
-                              className="w-full text-left px-4 py-2 text-sm text-gray-300 hover:bg-purple-900/20 hover:text-white transition-colors flex items-center"
+                              className="w-full text-left px-4 py-2 text-sm text-black hover:bg-purple-900/20 hover:text-white transition-colors flex items-center"
                               onClick={() => {
                                 window.location.href = `tel:${item.phone}`
                                 setActionMenuOpen(null)
@@ -1010,7 +1010,7 @@ export default function PurchaseManagement() {
                   </div>
                 ))
               ) : (
-                <div className="p-8 text-center text-gray-400 flex flex-col items-center">
+                <div className="p-8 text-center text-white-400 flex flex-col items-center">
                   <AlertTriangle className="h-8 w-8 mb-2 text-amber-400" />
                   <p>No items found matching your search criteria.</p>
                   <button
@@ -1028,18 +1028,18 @@ export default function PurchaseManagement() {
 
             {/* Pagination */}
             <div className="flex justify-between items-center p-4 border-t border-purple-700/30">
-              <div className="text-sm text-gray-400">
+              <div className="text-black">
                 Showing <span className="font-medium text-white">1-{filteredItems.length}</span> of{" "}
                 <span className="font-medium text-white">{activeStage.count}</span> items
               </div>
               <div className="flex gap-1">
                 <button
-                  className="px-3 py-1.5 rounded-lg bg-black/90 border border-purple-700/30 text-gray-400 hover:text-white hover:bg-purple-900/20 transition-colors disabled:opacity-50"
+                  className="px-3 py-1.5 rounded-lg bg-white/90 border border-purple-700/30 text-white-400 hover:text-white hover:bg-purple-900/20 transition-colors disabled:opacity-50"
                   disabled
                 >
                   Previous
                 </button>
-                <button className="px-3 py-1.5 rounded-lg bg-black/90 border border-purple-700/30 text-gray-400 hover:text-white hover:bg-purple-900/20 transition-colors">
+                <button className="px-3 py-1.5 rounded-lg bg-white/90 border border-purple-700/30 text-white-400 hover:text-white hover:bg-purple-900/20 transition-colors">
                   Next
                 </button>
               </div>
@@ -1061,7 +1061,7 @@ export default function PurchaseManagement() {
             <div className="p-4 border-b border-purple-700/30 flex justify-between items-center sticky top-0 bg-gray-900 z-10">
               <h2 className="font-bold text-lg">{selectedItem.name}</h2>
               <button
-                className="p-1 rounded-lg hover:bg-purple-900/30 text-gray-400 hover:text-white transition-colors"
+                className="p-1 rounded-lg hover:bg-purple-900/30 text-white-400 hover:text-white transition-colors"
                 onClick={() => setSelectedItem(null)}
               >
                 <X size={20} />
@@ -1083,8 +1083,8 @@ export default function PurchaseManagement() {
 
               <div className="space-y-4">
                 <div>
-                  <h3 className="text-sm text-gray-400 mb-1">Contact Information</h3>
-                  <div className="bg-black/30 rounded-lg p-3 space-y-2">
+                  <h3 className="text-black mb-1">Contact Information</h3>
+                  <div className="bg-white/30 rounded-lg p-3 space-y-2">
                     <div className="flex items-center">
                       <Users className="h-4 w-4 text-purple-400 mr-2" />
                       <span>{selectedItem.contact}</span>
@@ -1105,32 +1105,32 @@ export default function PurchaseManagement() {
                 </div>
 
                 <div>
-                  <h3 className="text-sm text-gray-400 mb-1">Details</h3>
-                  <div className="bg-black/30 rounded-lg p-3 space-y-2">
+                  <h3 className="text-black mb-1">Details</h3>
+                  <div className="bg-white/30 rounded-lg p-3 space-y-2">
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Category:</span>
+                      <span className="text-white-400">Category:</span>
                       <span>{selectedItem.category}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Created:</span>
+                      <span className="text-white-400">Created:</span>
                       <span>{selectedItem.date}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-400">Stage:</span>
+                      <span className="text-white-400">Stage:</span>
                       <span>{activeStage.name}</span>
                     </div>
                   </div>
                 </div>
 
                 <div>
-                  <h3 className="text-sm text-gray-400 mb-1">Notes</h3>
-                  <div className="bg-black/30 rounded-lg p-3">
+                  <h3 className="text-black mb-1">Notes</h3>
+                  <div className="bg-white/30 rounded-lg p-3">
                     <p className="text-sm">{selectedItem.notes}</p>
                   </div>
                 </div>
 
                 <div className="pt-4 border-t border-purple-700/30">
-                  <h3 className="text-sm text-gray-400 mb-3">Actions</h3>
+                  <h3 className="text-black mb-3">Actions</h3>
                   <div className="grid grid-cols-2 gap-2">
                     {activeTab === "quotations" && (
                       <>
@@ -1141,7 +1141,7 @@ export default function PurchaseManagement() {
                           <ShoppingCart className="h-4 w-4" /> Create Purchase Order
                         </button>
                         <button
-                          className="px-3 py-2 bg-black/50 border border-purple-700/30 rounded-lg text-gray-300 hover:bg-purple-900/20 transition-colors flex items-center justify-center gap-1"
+                          className="px-3 py-2 bg-white/50 border border-purple-700/30 rounded-lg text-black hover:bg-purple-900/20 transition-colors flex items-center justify-center gap-1"
                           onClick={() => handleStageAction("reject", "quotations")}
                         >
                           <X className="h-4 w-4" /> Reject Quotation
@@ -1157,7 +1157,7 @@ export default function PurchaseManagement() {
                         >
                           <Clipboard className="h-4 w-4" /> Record Goods Receipt
                         </button>
-                        <button className="px-3 py-2 bg-black/50 border border-purple-700/30 rounded-lg text-gray-300 hover:bg-purple-900/20 transition-colors flex items-center justify-center gap-1">
+                        <button className="px-3 py-2 bg-white/50 border border-purple-700/30 rounded-lg text-black hover:bg-purple-900/20 transition-colors flex items-center justify-center gap-1">
                           <Send className="h-4 w-4" /> Send to Vendor
                         </button>
                       </>
@@ -1171,7 +1171,7 @@ export default function PurchaseManagement() {
                         >
                           <Receipt className="h-4 w-4" /> Create Invoice
                         </button>
-                        <button className="px-3 py-2 bg-black/50 border border-purple-700/30 rounded-lg text-gray-300 hover:bg-purple-900/20 transition-colors flex items-center justify-center gap-1">
+                        <button className="px-3 py-2 bg-white/50 border border-purple-700/30 rounded-lg text-black hover:bg-purple-900/20 transition-colors flex items-center justify-center gap-1">
                           <Printer className="h-4 w-4" /> Print GPN
                         </button>
                       </>
@@ -1185,7 +1185,7 @@ export default function PurchaseManagement() {
                         >
                           <CreditCard className="h-4 w-4" /> Process Payment
                         </button>
-                        <button className="px-3 py-2 bg-black/50 border border-purple-700/30 rounded-lg text-gray-300 hover:bg-purple-900/20 transition-colors flex items-center justify-center gap-1">
+                        <button className="px-3 py-2 bg-white/50 border border-purple-700/30 rounded-lg text-black hover:bg-purple-900/20 transition-colors flex items-center justify-center gap-1">
                           <Check className="h-4 w-4" /> Approve Invoice
                         </button>
                       </>
@@ -1196,7 +1196,7 @@ export default function PurchaseManagement() {
                         <button className="px-3 py-2 bg-purple-600/20 border border-purple-700/50 rounded-lg text-purple-300 hover:bg-purple-900/40 transition-colors flex items-center justify-center gap-1">
                           <Download className="h-4 w-4" /> Download Receipt
                         </button>
-                        <button className="px-3 py-2 bg-black/50 border border-purple-700/30 rounded-lg text-gray-300 hover:bg-purple-900/20 transition-colors flex items-center justify-center gap-1">
+                        <button className="px-3 py-2 bg-white/50 border border-purple-700/30 rounded-lg text-black hover:bg-purple-900/20 transition-colors flex items-center justify-center gap-1">
                           <Send className="h-4 w-4" /> Email Confirmation
                         </button>
                       </>
@@ -1205,7 +1205,7 @@ export default function PurchaseManagement() {
 
                   <div className="flex justify-between mt-4">
                     <button
-                      className="px-3 py-2 bg-black/50 border border-purple-700/30 rounded-lg text-gray-300 hover:bg-purple-900/20 transition-colors flex items-center gap-1"
+                      className="px-3 py-2 bg-white/50 border border-purple-700/30 rounded-lg text-black hover:bg-purple-900/20 transition-colors flex items-center gap-1"
                       onClick={handleEditClick}
                     >
                       <Edit className="h-4 w-4" /> Edit
@@ -1231,20 +1231,20 @@ export default function PurchaseManagement() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50"
+            className="fixed inset-0 bg-white/70 flex items-center justify-center p-4 z-50"
             onClick={() => setShowNewVendorForm(false)}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-gray-900 border border-purple-700/30 rounded-lg w-full max-w-md shadow-xl"
+              className="bg-white-900 border border-purple-700/30 rounded-lg w-full max-w-md shadow-xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-4 border-b border-purple-700/30 flex justify-between items-center bg-black/30">
-                <h2 className="font-bold text-lg">Add New Vendor</h2>
+              <div className="p-4 border-b border-purple-700/30 flex justify-between items-center bg-white/30">
+                <h2 className="font-bold text-lg ">Add New Vendor</h2>
                 <button
-                  className="p-1 rounded-lg hover:bg-purple-900/30 text-gray-400 hover:text-white transition-colors"
+                  className="p-1 rounded-lg hover:bg-purple-900/20 text-white-400 hover:text-white transition-colors"
                   onClick={() => setShowNewVendorForm(false)}
                 >
                   <X size={20} />
@@ -1254,73 +1254,73 @@ export default function PurchaseManagement() {
               <form onSubmit={handleSubmit} className="p-4">
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm text-gray-400 mb-1">Vendor Name*</label>
+                    <label className="block text-black mb-1">Vendor Name*</label>
                     <input
                       type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                      className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm text-gray-400 mb-1">Contact Person*</label>
+                    <label className="block text-black mb-1">Contact Person*</label>
                     <input
                       type="text"
                       name="contact"
                       value={formData.contact}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                      className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
                       required
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Email*</label>
+                      <label className="block text-black mb-1">Email*</label>
                       <input
                         type="email"
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                        className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Phone</label>
+                      <label className="block text-black mb-1">Phone</label>
                       <input
                         type="tel"
                         name="phone"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                        className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Initial Order Value*</label>
+                      <label className="block text-black mb-1">Initial Order Value*</label>
                       <input
                         type="text"
                         name="value"
                         value={formData.value}
                         onChange={handleInputChange}
                         placeholder="$0.00"
-                        className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                        className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Category</label>
+                      <label className="block text-black mb-1">Category</label>
                       <select
                         name="category"
                         value={formData.category}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                        className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
                       >
                         <option value="Office Supplies">Office Supplies</option>
                         <option value="IT Equipment">IT Equipment</option>
@@ -1335,13 +1335,13 @@ export default function PurchaseManagement() {
                   </div>
 
                   <div>
-                    <label className="block text-sm text-gray-400 mb-1">Notes</label>
+                    <label className="block text-black mb-1">Notes</label>
                     <textarea
                       name="notes"
                       value={formData.notes}
                       onChange={handleInputChange}
                       rows={3}
-                      className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                      className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
                     ></textarea>
                   </div>
                 </div>
@@ -1349,7 +1349,7 @@ export default function PurchaseManagement() {
                 <div className="flex justify-end gap-3 mt-6">
                   <button
                     type="button"
-                    className="px-4 py-2 bg-black/50 border border-purple-700/30 rounded-lg text-gray-300 hover:bg-purple-900/20 transition-colors"
+                    className="px-4 py-2 bg-white/50 border border-purple-700/30 rounded-lg text-black hover:bg-purple-900/20 transition-colors"
                     onClick={() => setShowNewVendorForm(false)}
                   >
                     Cancel
@@ -1374,7 +1374,7 @@ export default function PurchaseManagement() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50"
+            className="fixed inset-0 bg-white/70 flex items-center justify-center p-4 z-50"
             onClick={() => setShowEditForm(false)}
           >
             <motion.div
@@ -1384,10 +1384,10 @@ export default function PurchaseManagement() {
               className="bg-gray-900 border border-purple-700/30 rounded-lg w-full max-w-md shadow-xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-4 border-b border-purple-700/30 flex justify-between items-center bg-black/30">
+              <div className="p-4 border-b border-purple-700/30 flex justify-between items-center bg-white/30">
                 <h2 className="font-bold text-lg">Edit Vendor</h2>
                 <button
-                  className="p-1 rounded-lg hover:bg-purple-900/30 text-gray-400 hover:text-white transition-colors"
+                  className="p-1 rounded-lg hover:bg-purple-900/30 text-white-400 hover:text-white transition-colors"
                   onClick={() => setShowEditForm(false)}
                 >
                   <X size={20} />
@@ -1397,72 +1397,72 @@ export default function PurchaseManagement() {
               <form onSubmit={handleEditSubmit} className="p-4">
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm text-gray-400 mb-1">Vendor Name*</label>
+                    <label className="block text-black mb-1">Vendor Name*</label>
                     <input
                       type="text"
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                      className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
                       required
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm text-gray-400 mb-1">Contact Person*</label>
+                    <label className="block text-black mb-1">Contact Person*</label>
                     <input
                       type="text"
                       name="contact"
                       value={formData.contact}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                      className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
                       required
                     />
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Email*</label>
+                      <label className="block text-black mb-1">Email*</label>
                       <input
                         type="email"
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                        className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Phone</label>
+                      <label className="block text-black mb-1">Phone</label>
                       <input
                         type="tel"
                         name="phone"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                        className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
                       />
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Value*</label>
+                      <label className="block text-black mb-1">Value*</label>
                       <input
                         type="text"
                         name="value"
                         value={formData.value}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                        className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
                         required
                       />
                     </div>
                     <div>
-                      <label className="block text-sm text-gray-400 mb-1">Category</label>
+                      <label className="block text-black mb-1">Category</label>
                       <select
                         name="category"
                         value={formData.category}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                        className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
                       >
                         <option value="Office Supplies">Office Supplies</option>
                         <option value="IT Equipment">IT Equipment</option>
@@ -1477,12 +1477,12 @@ export default function PurchaseManagement() {
                   </div>
 
                   <div>
-                    <label className="block text-sm text-gray-400 mb-1">Status</label>
+                    <label className="block text-black mb-1">Status</label>
                     <select
                       name="status"
                       value={formData.status}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                      className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
                     >
                       <option value="New">New</option>
                       <option value="Under Review">Under Review</option>
@@ -1500,13 +1500,13 @@ export default function PurchaseManagement() {
                   </div>
 
                   <div>
-                    <label className="block text-sm text-gray-400 mb-1">Notes</label>
+                    <label className="block text-black mb-1">Notes</label>
                     <textarea
                       name="notes"
                       value={formData.notes}
                       onChange={handleInputChange}
                       rows={3}
-                      className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                      className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
                     ></textarea>
                   </div>
                 </div>
@@ -1514,7 +1514,7 @@ export default function PurchaseManagement() {
                 <div className="flex justify-end gap-3 mt-6">
                   <button
                     type="button"
-                    className="px-4 py-2 bg-black/50 border border-purple-700/30 rounded-lg text-gray-300 hover:bg-purple-900/20 transition-colors"
+                    className="px-4 py-2 bg-white/50 border border-purple-700/30 rounded-lg text-black hover:bg-purple-900/20 transition-colors"
                     onClick={() => setShowEditForm(false)}
                   >
                     Cancel
@@ -1539,7 +1539,7 @@ export default function PurchaseManagement() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50"
+            className="fixed inset-0 bg-white/70 flex items-center justify-center p-4 z-50"
             onClick={() => setShowDeleteConfirmation(false)}
           >
             <motion.div
@@ -1553,13 +1553,13 @@ export default function PurchaseManagement() {
                 <AlertTriangle className="h-6 w-6 mr-2" />
                 <h3 className="text-lg font-bold">Confirm Deletion</h3>
               </div>
-              <p className="text-gray-300 mb-6">
+              <p className="text-black mb-6">
                 Are you sure you want to delete <span className="text-white font-medium">{selectedItem?.name}</span>?
                 This action cannot be undone.
               </p>
               <div className="flex justify-end gap-3">
                 <button
-                  className="px-4 py-2 bg-black/50 border border-purple-700/30 rounded-lg text-gray-300 hover:bg-purple-900/20 transition-colors"
+                  className="px-4 py-2 bg-white/50 border border-purple-700/30 rounded-lg text-black hover:bg-purple-900/20 transition-colors"
                   onClick={() => setShowDeleteConfirmation(false)}
                 >
                   Cancel
@@ -1583,7 +1583,7 @@ export default function PurchaseManagement() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50"
+            className="fixed inset-0 bg-white/70 flex items-center justify-center p-4 z-50"
             onClick={() => setShowFilterModal(false)}
           >
             <motion.div
@@ -1593,10 +1593,10 @@ export default function PurchaseManagement() {
               className="bg-gray-900 border border-purple-700/30 rounded-lg w-full max-w-md shadow-xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-4 border-b border-purple-700/30 flex justify-between items-center bg-black/30">
+              <div className="p-4 border-b border-purple-700/30 flex justify-between items-center bg-white/30">
                 <h2 className="font-bold text-lg">Filter Options</h2>
                 <button
-                  className="p-1 rounded-lg hover:bg-purple-900/30 text-gray-400 hover:text-white transition-colors"
+                  className="p-1 rounded-lg hover:bg-purple-900/30 text-white-400 hover:text-white transition-colors"
                   onClick={() => setShowFilterModal(false)}
                 >
                   <X size={20} />
@@ -1605,11 +1605,11 @@ export default function PurchaseManagement() {
 
               <div className="p-4 space-y-4">
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Status</label>
+                  <label className="block text-black mb-1">Status</label>
                   <select
                     value={filterOptions.status}
                     onChange={(e) => setFilterOptions({ ...filterOptions, status: e.target.value })}
-                    className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                    className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
                   >
                     <option value="all">All Statuses</option>
                     {getUniqueStatuses().map((status) => (
@@ -1621,11 +1621,11 @@ export default function PurchaseManagement() {
                 </div>
 
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Category</label>
+                  <label className="block text-black mb-1">Category</label>
                   <select
                     value={filterOptions.category}
                     onChange={(e) => setFilterOptions({ ...filterOptions, category: e.target.value })}
-                    className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                    className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
                   >
                     <option value="all">All Categories</option>
                     {getUniqueCategories().map((category) => (
@@ -1637,11 +1637,11 @@ export default function PurchaseManagement() {
                 </div>
 
                 <div>
-                  <label className="block text-sm text-gray-400 mb-1">Date Range</label>
+                  <label className="block text-black mb-1">Date Range</label>
                   <select
                     value={filterOptions.dateRange}
                     onChange={(e) => setFilterOptions({ ...filterOptions, dateRange: e.target.value })}
-                    className="w-full px-3 py-2 bg-black/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                    className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
                   >
                     <option value="all">All Dates</option>
                     <option value="today">Today</option>
@@ -1654,7 +1654,7 @@ export default function PurchaseManagement() {
 
               <div className="p-4 border-t border-purple-700/30 flex justify-end gap-3">
                 <button
-                  className="px-4 py-2 bg-black/50 border border-purple-700/30 rounded-lg text-gray-300 hover:bg-purple-900/20 transition-colors"
+                  className="px-4 py-2 bg-white/50 border border-purple-700/30 rounded-lg text-black hover:bg-purple-900/20 transition-colors"
                   onClick={resetFilters}
                 >
                   Reset

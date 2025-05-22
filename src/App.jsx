@@ -56,7 +56,7 @@ import CRMHRManagement from "../src/Common/CRMHRManagement";
 import Attend from "./Common/Attendence";
 import Payroll from "../src/Common/Payroll";
 import AccountsFinance from "../src/Common/Account&Finance";
-
+import SecurityRoles from "./Common/SecurityRoles";
 
 //restaurant components
 import RestoDashboard from '../src/Restaurant/RestoDashboard'
@@ -77,7 +77,8 @@ import CustomerProfile from './Restaurant/CustomerManagement/CustomerProfile';
 import TableManagement from "./Restaurant/Reservations & Table Management/TableManagement";
 import KitchenManagement from "./Restaurant/KitchenManagement.jsx/Kitchen";
 
-
+// Import the AlertsAndNotifications component
+import AlertsAndNotifications from "./Common/AlertsAndNotifications";
 
 function App() {
   return (
@@ -191,7 +192,11 @@ function App() {
           <Route path="payroll" element={<Payroll />} />
           <Route path="finance" element={<AccountsFinance />} />
           <Route path="reports" element={<ReportAnalytics />} />
+          <Route path="security" element={<SecurityRoles />} />
+          <Route path="alerts" element={<AlertsAndNotifications />} />
         </Route>
+        <Route path="/security" element={<SecurityRoles />} />
+        <Route path="/alerts" element={<AlertsAndNotifications />} />
       </Routes>
     </BrowserRouter>
   );
