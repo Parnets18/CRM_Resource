@@ -66,6 +66,12 @@ export default function Nav() {
   };
 
   const navItems = [
+       {
+      title: "Dashboard",
+      icon: PieChart,
+      id: "dashboard",
+      path: "/ConstructionDashboard",
+    }, 
     {
       title: "HR & Payroll Module",
       icon: MapPin,

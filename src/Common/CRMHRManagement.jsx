@@ -1049,7 +1049,7 @@ const CRMManagement = () => {
           </motion.div>
         )}
 
-        {/* Contracts & Renewals */}
+        {/* Con                                                                                                                                                                                                                                      tracts & Renewals */}
         {activeTab === "contracts" && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.3 }}>
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">

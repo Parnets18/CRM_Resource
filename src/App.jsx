@@ -6,7 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 
 // Admin Pages
-//import Dashboard from './Admin/Dashboard';
+import Dashboard from './Admin/DashboardcConstruction';
 import Nav from "./Admin/Nav";
 import AdminPayroll from "./Admin/HR/AdminPayroll";
 
@@ -76,7 +76,8 @@ import Addtocart from '../src/Restaurant/Order&Billing/Addtocart'
 import CustomerProfile from './Restaurant/CustomerManagement/CustomerProfile';
 import TableManagement from "./Restaurant/Reservations & Table Management/TableManagement";
 import KitchenManagement from "./Restaurant/KitchenManagement.jsx/Kitchen";
-
+import HRAndPayroll from "./Restaurant/Hr&Managenent/HrPayroll";
+import ConstructionDashboard from "./Admin/DashboardcConstruction";
 
 
 function App() {
@@ -136,6 +137,7 @@ function App() {
         <Route path='/Customermanagemnet' element={<CustomerProfile />} />
         <Route path='/Tablemangement' element={<TableManagement />} />
         <Route path='/Kitchebnmanagement' element={<KitchenManagement />} />
+        <Route path='/HrPayroll' element={<HRAndPayroll />} />
 
 
 
@@ -150,6 +152,7 @@ function App() {
         {/* Admin Routes */}
         {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         <Route path="/nav" element={<Nav />} />
+        <Route path="/ConstructionDashboard" element={<ConstructionDashboard />} />
 
         <Route path="/manager" element={<HRManager />} />
         <Route path="/adminPayroll" element={<AdminPayroll />} />

@@ -168,7 +168,7 @@ export default function RawMaterials() {
       {/* Dialogs */}
       {/* Add Material Dialog */}
       <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-        <DialogContent className="bg-white border border-purple-500/20 text-black">
+        <DialogContent className="bg-white border border-purple-500/20 text-black ">
           <DialogHeader>
             <DialogTitle>Add New Material</DialogTitle>
           </DialogHeader>

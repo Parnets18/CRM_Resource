@@ -73,7 +73,7 @@ export default function Home() {
                       if (feature.title == "Resturant CRM") {
                         navigate("/RestaurantCrmDashboard");
                       } else if (feature.title == "Construction CRM") {
-                        navigate("/admin/create");
+                        navigate("/ConstructionDashboard");
                       }else if(feature.title == "CRM Management") {
                         navigate("/common");
                       }

@@ -156,6 +156,15 @@ export default function RestoNav() {
        
       ]
     },
+      {
+      title: "Hr & Management",
+      icon: ShoppingCart,
+      id: "kop",
+      subtabs: [
+        { title: "Hr Payroll", icon: CreditCard, path: "/Hrpayroll" },
+       
+      ]
+    },
     
     // {
     //   title: "Sales Management",
@@ -172,10 +181,7 @@ export default function RestoNav() {
       icon: Scale,
       id: "expense",
       subtabs: [
-        { title: "Site Supervisor", icon: Wallet, path: "/expensesupervisor" },
-        { title: "Project Manager", icon: Calculator, path: "/expensemanager" },
-        { title: "Accountant", icon: BarChart3, path: "/expenseaccountant" },
-        { title: "Admin", icon: DollarSign, path: "/expenseadmin" },
+       
       ],
     },
   ];
