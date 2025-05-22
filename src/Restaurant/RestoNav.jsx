@@ -157,16 +157,16 @@ export default function RestoNav() {
       ]
     },
     
-    {
-      title: "Sales Management",
-      icon: Banknote,
-      id: "sales",
-      subtabs: [
-        { title: "Admin", icon: DollarSign, path: "/salesadmin" },
-        { title: "Accountant", icon: PieChart, path: "/salesaccountant" },
-        { title: "Project Manager", icon: Users, path: "/salesproject" },
-      ],
-    },
+    // {
+    //   title: "Sales Management",
+    //   icon: Banknote,
+    //   id: "sales",
+    //   subtabs: [
+    //     { title: "Admin", icon: DollarSign, path: "/salesadmin" },
+    //     { title: "Accountant", icon: PieChart, path: "/salesaccountant" },
+    //     { title: "Project Manager", icon: Users, path: "/salesproject" },
+    //   ],
+    // },
     {
       title: "Expense Management",
       icon: Scale,

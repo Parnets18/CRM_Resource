@@ -6,16 +6,16 @@ export default function Home() {
 
   const features = [
     {
-      title: "CRM Management",
-      description: "Manage multiple companies with a powerful admin dashboard",
-    },
-    {
       title: "Construction CRM",
       description: "Create detailed company profiles with custom modules",
     },
     {
       title: "Resturant CRM",
       description: "Resturant CRM for management",
+    },
+    {
+      title: "CRM Management",
+      description: "Manage multiple companies with a powerful admin dashboard",
     },
   ];
 
@@ -24,11 +24,8 @@ export default function Home() {
       <header className="h-16 w-full bg-white px-12 flex items-center justify-between fixed top-0 z-50">
         <div className="flex items-center space-x-2">
           <Link to="/" className="flex items-center space-x-2">
-            <div className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center">
-              <span className="text-white font-bold">N</span>
-            </div>
             <span className="hidden md:inline font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
-              NexusCRM
+              CRM
             </span>
           </Link>
         </div>
@@ -72,7 +69,15 @@ export default function Home() {
                 {features.map((feature, index) => (
                   <div
                     key={index}
-                    onClick={() => navigate("/login")}
+                    onClick={() => {
+                      if (feature.title == "Resturant CRM") {
+                        navigate("/RestaurantCrmDashboard");
+                      } else if (feature.title == "Construction CRM") {
+                        navigate("/admin/create");
+                      }else if(feature.title == "CRM Management") {
+                        navigate("/common");
+                      }
+                    }}
                     className="group rounded-xl border border-purple-200 bg-purple-50 p-5 cursor-pointer transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 hover:border-purple-500"
                   >
                     <h3 className="text-xl font-semibold text-gray-900 group-hover:text-purple-600 transition-colors duration-300">
@@ -90,7 +95,7 @@ export default function Home() {
       </main>
 
       <footer className="h-16 bg-blue-50 flex items-center justify-between px-10 text-black text-sm">
-        <p>© 2023 NexusCRM. All rights reserved.</p>
+        <p>© 2023 CRM. All rights reserved.</p>
         <div className="flex items-center gap-4">
           <Link
             to="/terms"
