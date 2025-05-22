@@ -1,26 +1,59 @@
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
-import { Bell, Truck, ClipboardList, Factory, Scale, CheckCircle, UserPlus, Pencil, Wallet, Clock, BadgeCheck } from "lucide-react";
-
+import {
+  Bell,
+  Truck,
+  ClipboardList,
+  Factory,
+  Scale,
+  CheckCircle,
+  UserPlus,
+  Pencil,
+  Wallet,
+  Clock,
+  BadgeCheck,
+} from "lucide-react";
 import Nav from "../Nav";
 
 export default function PurchaseAdmin() {
- 
-  const vendors = [
+  const [vendors, setVendors] = useState([
     { id: 1, name: "ABC Suppliers", contact: "suppliers@abc.com", category: "Electronics" },
-    { id: 2, name: "XYZ Materials", contact: "purchasing@xyz.com", category: "Raw Materials" }
-  ];
-
-  const pendingPOs = [
+    { id: 2, name: "XYZ Materials", contact: "purchasing@xyz.com", category: "Raw Materials" },
+  ]);
+  const [pendingPOs] = useState([
     { id: 1, poNumber: "PO-2024-050", vendor: "ABC Corp", amount: 125000 },
     { id: 2, poNumber: "PO-2024-051", vendor: "XYZ Ltd", amount: 89000 },
-  ];
-  
+  ]);
+
+  // Modal state
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editVendor, setEditVendor] = useState(null);
+
+  // Handle edit button click
+  const handleEditVendor = (vendor) => {
+    setEditVendor(vendor);
+    setIsEditModalOpen(true);
+  };
+
+  // Handle modal form change
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setEditVendor((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Handle save
+  const handleSaveVendor = (e) => {
+    e.preventDefault();
+    setVendors((prev) =>
+      prev.map((v) => (v.id === editVendor.id ? editVendor : v))
+    );
+    setIsEditModalOpen(false);
+  };
 
   return (
     <div className="min-h-screen bg-white lg:ml-64">
-      
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-gray-100 to-white"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
@@ -30,7 +63,6 @@ export default function PurchaseAdmin() {
         <Nav />
 
         <div className="flex-1 p-8 mt-16 md:mt-0">
-         
           <div className="flex justify-between items-center mb-8">
             <div>
               <h2 className="text-2xl font-bold text-black">Purchase Administration</h2>
@@ -42,14 +74,13 @@ export default function PurchaseAdmin() {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            
             <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-black">Vendor Management</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 {vendors.map((vendor) => (
-                  <motion.div 
+                  <motion.div
                     key={vendor.id}
                     whileHover={{ x: 5 }}
                     className="flex items-center justify-between p-3 rounded-lg bg-gray-100"
@@ -59,7 +90,12 @@ export default function PurchaseAdmin() {
                       <p className="text-xs text-gray-500">{vendor.category} • {vendor.contact}</p>
                     </div>
                     <div className="flex gap-2">
-                      <Button size="sm" variant="outline" className="text-purple-700 border-purple-500/50">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-purple-700 border-purple-500/50"
+                        onClick={() => handleEditVendor(vendor)}
+                      >
                         <Pencil className="w-4 h-4 mr-2" /> Edit
                       </Button>
                     </div>
@@ -77,25 +113,25 @@ export default function PurchaseAdmin() {
               </CardHeader>
               <CardContent>
                 <form className="space-y-4">
-                  <input 
-                    type="text" 
-                    placeholder="Vendor Name" 
+                  <input
+                    type="text"
+                    placeholder="Vendor Name"
                     className="w-full p-2 rounded bg-gray-100 border border-gray-300 text-black"
                   />
                   <div className="grid grid-cols-2 gap-4">
-                    <input 
-                      type="email" 
-                      placeholder="Contact Email" 
+                    <input
+                      type="email"
+                      placeholder="Contact Email"
                       className="w-full p-2 rounded bg-gray-100 border border-gray-300 text-black"
                     />
-                    <input 
-                      type="text" 
-                      placeholder="Category" 
+                    <input
+                      type="text"
+                      placeholder="Category"
                       className="w-full p-2 rounded bg-gray-100 border border-gray-300 text-black"
                     />
                   </div>
-                  <textarea 
-                    placeholder="Address & Details" 
+                  <textarea
+                    placeholder="Address & Details"
                     className="w-full p-2 rounded bg-gray-100 border border-gray-300 text-black"
                     rows={3}
                   />
@@ -163,6 +199,62 @@ export default function PurchaseAdmin() {
           </div>
         </div>
       </div>
+
+      {/* Edit Vendor Modal */}
+      {isEditModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+          <div className="bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+            <h2 className="text-xl font-bold mb-4">Edit Vendor</h2>
+            <form onSubmit={handleSaveVendor} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-1">Vendor Name</label>
+                <input
+                  type="text"
+                  name="name"
+                  value={editVendor.name}
+                  onChange={handleEditChange}
+                  className="w-full p-2 rounded bg-gray-100 border border-gray-300 text-black"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Contact Email</label>
+                <input
+                  type="email"
+                  name="contact"
+                  value={editVendor.contact}
+                  onChange={handleEditChange}
+                  className="w-full p-2 rounded bg-gray-100 border border-gray-300 text-black"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium mb-1">Category</label>
+                <input
+                  type="text"
+                  name="category"
+                  value={editVendor.category}
+                  onChange={handleEditChange}
+                  className="w-full p-2 rounded bg-gray-100 border border-gray-300 text-black"
+                  required
+                />
+              </div>
+              <div className="flex justify-end gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  onClick={() => setIsEditModalOpen(false)}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" className="bg-purple-600 hover:bg-purple-700 text-white">
+                  Save
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -543,7 +543,7 @@ export default function UserManagement() {
                     <Search className="absolute left-2 top-2.5 h-4 w-4 text-black" />
                     <Input
                       placeholder="Search users..."
-                      className="border-gray-700 text-white pl-8"
+                      className="border-gray-700 text-black pl-8"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />

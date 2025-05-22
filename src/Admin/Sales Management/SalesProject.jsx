@@ -4,7 +4,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { motion } from "framer-motion";
 import { Bell, ClipboardList, CheckCircle, AlertTriangle, Clock, Users } from "lucide-react";
 import Nav from "../Nav";
-import RestoNav from "@/Restaurant/RestoNav";
+
 
 export default function SalesProject() {
  
@@ -28,7 +28,7 @@ export default function SalesProject() {
       </div>
 
       <div className="relative z-10 flex">
-       <RestoNav/>
+       <Nav/>
 
         <div className="flex-1 p-8 mt-16 md:mt-0">
          

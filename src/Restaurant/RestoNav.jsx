@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { motion , AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
   Banknote,
@@ -36,7 +35,7 @@ import {
   TableCellsSplit,
   CircleDollarSign,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
@@ -58,10 +57,23 @@ export default function RestoNav() {
   const [expandedSection, setExpandedSection] = useState(null);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const isMobile = useIsMobile();
+  const location = useLocation();
+
+  // Track active subtab by current path
+  const [activeSubtab, setActiveSubtab] = useState(location.pathname);
+
+  useEffect(() => {
+    setActiveSubtab(location.pathname);
+    // Expand the main section if the current path matches a subtab
+    navItems.forEach((item) => {
+      if (item.subtabs.some((sub) => sub.path === location.pathname)) {
+        setExpandedSection(item.id);
+      }
+    });
+    // eslint-disable-next-line
+  }, [location.pathname]);
 
   const navItems = [
-   
-  
     {
       title: "Restaurant Setup",
       icon: Utensils,
@@ -129,7 +141,7 @@ export default function RestoNav() {
     {
       title: "Customer Managment",
       icon: ShoppingCart,
-      id: "kop",
+      id: "k",
       subtabs: [
         {
           title: "CustomerProfiile",
@@ -138,35 +150,22 @@ export default function RestoNav() {
         },
       ],
     },
-      {
+    {
       title: "Reservations Management",
       icon: ShoppingCart,
-      id: "kop",
+      id: "ko",
       subtabs: [
         { title: "Table Mangagemnet", icon: CreditCard, path: "/Tablemangement" },
-       
-      ]
+      ],
     },
-      {
+    {
       title: "Kitchen Management",
       icon: ShoppingCart,
-      id: "kop",
+      // id: "kop",
       subtabs: [
         { title: "Kitchen Mangemnet", icon: CreditCard, path: "/Kitchebnmanagement" },
-       
-      ]
+      ],
     },
-    
-    // {
-    //   title: "Sales Management",
-    //   icon: Banknote,
-    //   id: "sales",
-    //   subtabs: [
-    //     { title: "Admin", icon: DollarSign, path: "/salesadmin" },
-    //     { title: "Accountant", icon: PieChart, path: "/salesaccountant" },
-    //     { title: "Project Manager", icon: Users, path: "/salesproject" },
-    //   ],
-    // },
     {
       title: "Expense Management",
       icon: Scale,
@@ -182,104 +181,88 @@ export default function RestoNav() {
 
   return (
     <div>
-      {" "}
-      <>
-        {/* Hamburger Menu Button */}
-
-        {isMobile && (
-          <button
-            onClick={() => setIsNavOpen(!isNavOpen)}
-            className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white hover:bg-gray-100 text-purple-700 border border-purple-200"
-          >
-            {isNavOpen ? (
-              <X className="w-6 h-6" />
-            ) : (
-              <Menu className="w-6 h-6" />
-            )}
-          </button>
-        )}
-
-        <motion.div
-          initial={{ x: isMobile ? "-100%" : 0 }}
-          animate={{ x: isMobile && !isNavOpen ? "-100%" : 0 }}
-          transition={{ type: "tween", duration: 0.3 }}
-          className="w-64 fixed top-0 left-0 h-screen border-r border-purple-500/20 bg-white backdrop-blur-sm p-4 overflow-y-auto z-40"
+      {/* Hamburger Menu Button */}
+      {isMobile && (
+        <button
+          onClick={() => setIsNavOpen(!isNavOpen)}
+          className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white hover:bg-gray-100 text-purple-700 border border-purple-200"
         >
-          <div className="flex items-center gap-2 mb-8">
-            {/* <motion.div
-              animate={{ rotate: 360 }}
-              transition={{
-                duration: 2,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: "linear",
-              }}
-              className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center"
-            >
-              <span className="text-white font-bold text-sm">N</span>
-            </motion.div> */}
-            <h1 className="text-xl font-bold text- text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
-              CRM
-            </h1>
-            {isMobile && (
-              <button onClick={() => setIsNavOpen(false)} className="ml-auto">
-                <X className="w-6 h-6 text-purple-400" />
-              </button>
-            )}
-          </div>
+          {isNavOpen ? (
+            <X className="w-6 h-6" />
+          ) : (
+            <Menu className="w-6 h-6" />
+          )}
+        </button>
+      )}
 
-          <nav className="space-y-1">
-            {navItems.map((item) => (
-              <div key={item.id}>
-                <Button
-                  variant="ghost"
-                  className="w-full justify-start text-gray-700 hover:bg-gray-100 hover:text-purple-700"
-                  onClick={() =>
-                    setExpandedSection(
-                      expandedSection === item.id ? null : item.id
-                    )
-                  }
-                >
-                  <item.icon className="w-4 h-4 mr-2 text-purple-400" />
-                  <span className="flex-1">{item.title}</span>
-                  {expandedSection === item.id ? (
-                    <ChevronDown className="w-4 h-4 text-purple-400" />
-                  ) : (
-                    <ChevronRight className="w-4 h-4 text-purple-400" />
-                  )}
-                </Button>
-                <AnimatePresence>
-                  {expandedSection === item.id && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                      className="overflow-hidden"
+      <div
+        className="w-64 fixed top-0 left-0 h-screen border-r border-purple-500/20 bg-white backdrop-blur-sm p-4 overflow-y-auto z-40"
+        style={{ display: isMobile && !isNavOpen ? "none" : "block" }}
+      >
+        <div className="flex items-center gap-2 mb-8">
+          <h1 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
+            CRM
+          </h1>
+          {isMobile && (
+            <button onClick={() => setIsNavOpen(false)} className="ml-auto">
+              <X className="w-6 h-6 text-purple-400" />
+            </button>
+          )}
+        </div>
+
+        <nav className="space-y-1">
+          {navItems.map((item) => (
+            <div key={item.id}>
+              <Button
+                variant="ghost"
+                className={`w-full justify-start text-gray-700 hover:bg-gray-100 hover:text-purple-700 ${
+                  expandedSection === item.id ? "bg-purple-50" : ""
+                }`}
+                onClick={() =>
+                  setExpandedSection(
+                    expandedSection === item.id ? null : item.id
+                  )
+                }
+              >
+                <item.icon className="w-4 h-4 mr-2 text-purple-400" />
+                <span className="flex-1">{item.title}</span>
+                {expandedSection === item.id ? (
+                  <ChevronDown className="w-4 h-4 text-purple-400" />
+                ) : (
+                  <ChevronRight className="w-4 h-4 text-purple-400" />
+                )}
+              </Button>
+              {expandedSection === item.id && (
+                <div className="overflow-hidden">
+                  {item.subtabs.map((subtab, index) => (
+                    <Link
+                      key={index}
+                      to={subtab.path}
+                      className="block no-underline"
+                      onClick={() => {
+                        setActiveSubtab(subtab.path);
+                        if (isMobile) setIsNavOpen(false);
+                      }}
                     >
-                      {item.subtabs.map((subtab, index) => (
-                        <Link
-                          key={index}
-                          to={subtab.path}
-                          className="block no-underline"
-                          onClick={() => isMobile && setIsNavOpen(false)}
-                        >
-                          <Button
-                            variant="ghost"
-                            className="w-full justify-start text-gray-500 hover:bg-gray-100 hover:text-purple-700 pl-8"
-                          >
-                            <subtab.icon className="w-4 h-4 mr-2 text-purple-400" />
-                            {subtab.title}
-                          </Button>
-                        </Link>
-                      ))}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
-          </nav>
-        </motion.div>
-      </>
+                      <Button
+                        variant="ghost"
+                        className={`w-full justify-start pl-8 text-gray-500 hover:bg-gray-100 hover:text-purple-700 ${
+                          activeSubtab === subtab.path
+                            ? "bg-purple-100 text-purple-700"
+                            : ""
+                        }`}
+                      >
+                        <subtab.icon className="w-4 h-4 mr-2 text-purple-400" />
+                        {subtab.title}
+                      </Button>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </nav>
+      </div>
     </div>
   );
 }

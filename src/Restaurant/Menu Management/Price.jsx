@@ -20,6 +20,7 @@ import {
   Leaf,
   Beef,
   ClipboardList,
+  X,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -38,7 +39,7 @@ const restaurants = [
   { id: 2, name: "Spice Garden", location: "Midtown" },
 ];
 
-const menuItems = [
+const initialMenuItems = [
   {
     id: 1,
     name: "Margherita Pizza",
@@ -103,10 +104,21 @@ const recipes = [
 export default function MenuManagement() {
   // State management
   const [selectedRestaurant, setSelectedRestaurant] = useState(restaurants[0]);
+  const [menuItems, setMenuItems] = useState(initialMenuItems);
   const [selectedDish, setSelectedDish] = useState(null);
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [showRecipeModal, setShowRecipeModal] = useState(false);
   const [rawMaterials, setRawMaterials] = useState([]);
+
+  // Add Dish Modal state
+  const [showAddDishModal, setShowAddDishModal] = useState(false);
+  const [newDish, setNewDish] = useState({
+    name: "",
+    category: "",
+    subcategory: "",
+    price: "",
+    status: "Available",
+  });
 
   // Auto-select first restaurant on load
   useEffect(() => {
@@ -175,6 +187,40 @@ export default function MenuManagement() {
     );
   };
 
+  // Add Dish handlers
+  const handleAddDishChange = (e) => {
+    const { name, value } = e.target;
+    setNewDish((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleAddDishSubmit = (e) => {
+    e.preventDefault();
+    // Add logic to actually add the dish to your menuItems array
+    const id = menuItems.length
+      ? Math.max(...menuItems.map((item) => item.id)) + 1
+      : 1;
+    const pricing = { standard: parseFloat(newDish.price) };
+    setMenuItems((prev) => [
+      ...prev,
+      {
+        id,
+        name: newDish.name,
+        category: newDish.category,
+        subcategory: newDish.subcategory,
+        pricing,
+        status: newDish.status,
+      },
+    ]);
+    setShowAddDishModal(false);
+    setNewDish({
+      name: "",
+      category: "",
+      subcategory: "",
+      price: "",
+      status: "Available",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-white lg:ml-64">
       {/* Background gradients */}
@@ -226,7 +272,10 @@ export default function MenuManagement() {
               <CardHeader>
                 <div className="flex justify-between items-center">
                   <CardTitle className="text-black">Menu Items</CardTitle>
-                  <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+                  <Button
+                    className="bg-purple-600 hover:bg-purple-700 text-white"
+                    onClick={() => setShowAddDishModal(true)}
+                  >
                     <Plus className="w-4 h-4 mr-2" />
                     Add Dish
                   </Button>
@@ -457,6 +506,109 @@ export default function MenuManagement() {
           </div>
         </div>
       </div>
+
+      {/* Add Dish Modal */}
+      {showAddDishModal && (
+        <div className="fixed inset-0 bg-black/30 z-50 flex items-center justify-center p-4">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="bg-white border border-purple-500/20 rounded-lg w-full max-w-md max-h-[90vh] overflow-y-auto"
+          >
+            <div className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-bold text-black">Add New Dish</h3>
+                <button
+                  onClick={() => setShowAddDishModal(false)}
+                  className="text-gray-500 hover:text-black"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <form onSubmit={handleAddDishSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Dish Name
+                  </label>
+                  <Input
+                    name="name"
+                    value={newDish.name}
+                    onChange={handleAddDishChange}
+                    className="bg-gray-100 border-gray-300 text-black"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Category
+                  </label>
+                  <Input
+                    name="category"
+                    value={newDish.category}
+                    onChange={handleAddDishChange}
+                    className="bg-gray-100 border-gray-300 text-black"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Subcategory
+                  </label>
+                  <Input
+                    name="subcategory"
+                    value={newDish.subcategory}
+                    onChange={handleAddDishChange}
+                    className="bg-gray-100 border-gray-300 text-black"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Price
+                  </label>
+                  <Input
+                    name="price"
+                    type="number"
+                    value={newDish.price}
+                    onChange={handleAddDishChange}
+                    className="bg-gray-100 border-gray-300 text-black"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-gray-700 mb-1">
+                    Status
+                  </label>
+                  <select
+                    name="status"
+                    value={newDish.status}
+                    onChange={handleAddDishChange}
+                    className="w-full px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-black text-sm"
+                  >
+                    <option value="Available">Available</option>
+                    <option value="Unavailable">Unavailable</option>
+                  </select>
+                </div>
+                <div className="flex justify-end gap-2 pt-4">
+                  <Button
+                    variant="outline"
+                    className="border-gray-300 text-black hover:bg-gray-100"
+                    type="button"
+                    onClick={() => setShowAddDishModal(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    className="bg-purple-600 hover:bg-purple-700 text-white"
+                    type="submit"
+                  >
+                    Add Dish
+                  </Button>
+                </div>
+              </form>
+            </div>
+          </motion.div>
+        </div>
+      )}
 
       {/* Recipe Modal */}
       {showRecipeModal && selectedDish && (
