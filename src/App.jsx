@@ -76,15 +76,11 @@ import Addtocart from '../src/Restaurant/Order&Billing/Addtocart'
 import CustomerProfile from './Restaurant/CustomerManagement/CustomerProfile';
 import TableManagement from "./Restaurant/Reservations & Table Management/TableManagement";
 import KitchenManagement from "./Restaurant/KitchenManagement.jsx/Kitchen";
-<<<<<<< HEAD
-import HRAndPayroll from "./Restaurant/Hr&Managenent/HrPayroll";
-import ConstructionDashboard from "./Admin/DashboardcConstruction";
-
-=======
 
 // Import the AlertsAndNotifications component
 import AlertsAndNotifications from "./Common/AlertsAndNotifications";
->>>>>>> 3ac8e18278f4b5065d8252afbcfc7a8997e56b8a
+import HRAndPayroll from "./Restaurant/Hr&Managenent/HrPayroll";
+import ConstructionDashboard from "./Admin/DashboardcConstruction";
 
 function App() {
   return (

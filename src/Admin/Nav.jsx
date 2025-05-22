@@ -228,9 +228,9 @@ export default function Nav() {
               </Button>
               {expandedSection === item.id && (
                 <div className="overflow-hidden">
-                  {item.subtabs.map((subtab, index) => {
-                    const hasSubtabs = subtab.subtabs && subtab.subtabs.length > 0;
-                    const isSubtabExpanded = expandedSubtab === subtab.title;
+                  {item?.subtabs?.map((subtab, index) => {
+                    const hasSubtabs = subtab?.subtabs && subtab?.subtabs.length > 0;
+                    const isSubtabExpanded = expandedSubtab === subtab?.title;
 
                     if (hasSubtabs) {
                       return (

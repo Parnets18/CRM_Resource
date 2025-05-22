@@ -166,7 +166,6 @@ export default function RestoNav() {
         { title: "Kitchen Mangemnet", icon: CreditCard, path: "/Kitchebnmanagement" },
       ],
     },
-<<<<<<< HEAD
       {
       title: "Hr & Management",
       icon: ShoppingCart,
@@ -187,8 +186,6 @@ export default function RestoNav() {
     //     { title: "Project Manager", icon: Users, path: "/salesproject" },
     //   ],
     // },
-=======
->>>>>>> 3ac8e18278f4b5065d8252afbcfc7a8997e56b8a
     {
       title: "Expense Management",
       icon: Scale,
