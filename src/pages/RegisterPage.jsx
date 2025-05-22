@@ -10,9 +10,15 @@ import {
   Receipt,
   HardHat,
   Warehouse,
-} from "lucide-react"; 
+} from "lucide-react";
 import { Button } from "../components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../components/ui/card";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
 import { Checkbox } from "../components/ui/checkbox";
@@ -28,7 +34,7 @@ export default function RegisterPage() {
     roleConfiguration: {},
   });
   const [selectedRoles, setSelectedRoles] = useState({});
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const modules = [
     {
@@ -121,17 +127,17 @@ export default function RegisterPage() {
         "Expense Reports",
       ],
     },
-  ]
+  ];
 
   const handleModuleClick = (moduleId) => {
     if (moduleId === "hr-payroll") {
-      localStorage.setItem('selectedModule', 'hr-payroll');
-      navigate('/dashboard/hr/setup'); 
+      localStorage.setItem("selectedModule", "hr-payroll");
+      navigate("/dashboard/hr/setup");
     }
   };
 
   return (
-    <div className="min-h-screen text-white p-4 md:p-8">
+    <div className="min-h-screen  p-4 md:p-8">
       <div className="max-w-6xl mx-auto space-y-8">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-black">
@@ -153,7 +159,9 @@ export default function RegisterPage() {
             <Card className="border-gray-800 bg-gray-900/50">
               <CardHeader>
                 <CardTitle>Company Information</CardTitle>
-                <CardDescription>Enter your company details to get started</CardDescription>
+                <CardDescription>
+                  Enter your company details to get started
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -165,7 +173,10 @@ export default function RegisterPage() {
                       className="bg-gray-800/50 border-gray-700 text-white placeholder-gray-400"
                       value={formData.companyName}
                       onChange={(e) =>
-                        setFormData({ ...formData, companyName: e.target.value })
+                        setFormData({
+                          ...formData,
+                          companyName: e.target.value,
+                        })
                       }
                     />
                   </div>
@@ -218,32 +229,37 @@ export default function RegisterPage() {
           </motion.div>
         )}
 
-      
-      {step === 2 && (
-        <motion.div
-          key="hr-payroll"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-        >
-          {modules.map((module) => (
-            <div
-              key={module.id}
-              onClick={() => {
-                handleModuleClick(module.id); // Updated navigation handler
-                setFormData({
-                  ...formData,
-                  selectedModules: formData.selectedModules.includes(module.id)
-                    ? formData.selectedModules.filter((id) => id !== module.id)
-                    : [...formData.selectedModules, module.id],
-                });
-              }}
-              className="cursor-pointer"
-            >
-            <Card className="border-gray-800 bg-gray-900/50 hover:bg-gray-900/70 transition-all">
+        {step === 2 && (
+          <motion.div
+            key="hr-payroll"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+          >
+            {modules.map((module) => (
+              <div
+                key={module.id}
+                onClick={() => {
+                  handleModuleClick(module.id); // Updated navigation handler
+                  setFormData({
+                    ...formData,
+                    selectedModules: formData.selectedModules.includes(
+                      module.id
+                    )
+                      ? formData.selectedModules.filter(
+                          (id) => id !== module.id
+                        )
+                      : [...formData.selectedModules, module.id],
+                  });
+                }}
+                className="cursor-pointer"
+              >
+                <Card className="border-gray-800 bg-gray-900/50 hover:bg-gray-900/70 transition-all">
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <div className={`w-12 h-12 rounded-lg bg-gradient-to-r ${module.color} flex items-center justify-center`}>
+                      <div
+                        className={`w-12 h-12 rounded-lg bg-gradient-to-r ${module.color} flex items-center justify-center`}
+                      >
                         <module.icon className="h-6 w-6 text-white" />
                       </div>
                       <Checkbox
@@ -253,17 +269,23 @@ export default function RegisterPage() {
                             ...formData,
                             selectedModules: checked
                               ? [...formData.selectedModules, module.id]
-                              : formData.selectedModules.filter((id) => id !== module.id),
-                          })
+                              : formData.selectedModules.filter(
+                                  (id) => id !== module.id
+                                ),
+                          });
                         }}
                       />
                     </div>
-                    <CardTitle className="text-lg text-white">{module.name}</CardTitle>
+                    <CardTitle className="text-lg text-white">
+                      {module.name}
+                    </CardTitle>
                     <CardDescription>{module.description}</CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-2">
-                      <p className="text-sm font-medium text-gray-300">Key Features:</p>
+                      <p className="text-sm font-medium text-gray-300">
+                        Key Features:
+                      </p>
                       <ul className="text-sm text-gray-400 space-y-1">
                         {module.features.map((feature, index) => (
                           <li key={index} className="flex items-center gap-2">
@@ -274,7 +296,9 @@ export default function RegisterPage() {
                       </ul>
                     </div>
                     <div className="mt-4">
-                      <p className="text-sm font-medium text-gray-300">Available Roles:</p>
+                      <p className="text-sm font-medium text-gray-300">
+                        Available Roles:
+                      </p>
                       <div className="flex flex-wrap gap-2 mt-2">
                         {module.roles.map((role, index) => (
                           <span
@@ -321,40 +345,55 @@ export default function RegisterPage() {
             <Card className="border-gray-800 bg-gray-900/50">
               <CardHeader>
                 <CardTitle className="text-white">Role Configuration</CardTitle>
-                <CardDescription>Set up roles for your selected modules</CardDescription>
+                <CardDescription>
+                  Set up roles for your selected modules
+                </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 {formData.selectedModules.map((moduleId) => {
-                  const module = modules.find((m) => m.id === moduleId)
+                  const module = modules.find((m) => m.id === moduleId);
                   return (
                     <div key={moduleId} className="space-y-4">
                       <div className="flex items-center gap-3">
-                        <div className={`w-10 h-10 rounded-lg bg-gradient-to-r ${module.color} flex items-center justify-center`}>
+                        <div
+                          className={`w-10 h-10 rounded-lg bg-gradient-to-r ${module.color} flex items-center justify-center`}
+                        >
                           <module.icon className="h-5 w-5 text-white" />
                         </div>
-                        <h3 className="text-lg font-semibold text-white">{module.name}</h3>
+                        <h3 className="text-lg font-semibold text-white">
+                          {module.name}
+                        </h3>
                       </div>
                       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
                         {module.roles.map((role) => (
-                          <Card key={role} className="border-gray-800 bg-gray-800/50">
+                          <Card
+                            key={role}
+                            className="border-gray-800 bg-gray-800/50"
+                          >
                             <CardHeader className="pb-3">
-                              <CardTitle className="text-sm text-white">{role}</CardTitle>
+                              <CardTitle className="text-sm text-white">
+                                {role}
+                              </CardTitle>
                             </CardHeader>
                             <CardContent>
                               <div className="space-y-2">
                                 <div className="space-y-1">
-                                  <Label className="text-xs text-gray-400">Number of Users</Label>
+                                  <Label className="text-xs text-gray-400">
+                                    Number of Users
+                                  </Label>
                                   <Input
                                     type="number"
                                     min="0"
                                     className="bg-gray-900/50 border-gray-700"
                                     placeholder="0"
-                                    value={selectedRoles[`${moduleId}-${role}`] || ""}
+                                    value={
+                                      selectedRoles[`${moduleId}-${role}`] || ""
+                                    }
                                     onChange={(e) => {
                                       setSelectedRoles({
                                         ...selectedRoles,
                                         [`${moduleId}-${role}`]: e.target.value,
-                                      })
+                                      });
                                     }}
                                   />
                                 </div>
@@ -364,7 +403,7 @@ export default function RegisterPage() {
                         ))}
                       </div>
                     </div>
-                  )
+                  );
                 })}
                 <div className="flex justify-between pt-4">
                   <Button
@@ -377,12 +416,11 @@ export default function RegisterPage() {
                   <Button
                     className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
                     onClick={() => {
-                    
                       const finalData = {
                         ...formData,
                         roleConfiguration: selectedRoles,
-                      }
-                      console.log("Final Configuration:", finalData)
+                      };
+                      console.log("Final Configuration:", finalData);
                     }}
                   >
                     Complete Setup

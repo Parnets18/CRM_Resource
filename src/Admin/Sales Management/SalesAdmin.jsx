@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { motion } from "framer-motion";
 import { Bell, UserPlus, Briefcase, FileText, Percent, DollarSign, ClipboardList } from "lucide-react";
 
-import RestoNav from "@/Restaurant/RestoNav";
+import Nav from "../Nav";
 
 export default function SalesAdmin() {
   
@@ -29,7 +29,7 @@ export default function SalesAdmin() {
       </div>
 
       <div className="relative z-10 flex">
-        <RestoNav />
+        <Nav />
 
         <div className="flex-1 p-8 mt-16 md:mt-0">
           

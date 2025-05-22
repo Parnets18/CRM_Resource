@@ -321,7 +321,7 @@ export default function CustomerManagement() {
                   >
                     {isEditMode ? "Cancel" : "Clear"}
                   </Button>
-                  <Button type="button" className="bg-blue-600 hover:bg-blue-700 text-white" onClick={handleSave}>
+                  <Button type="button" className="bg-purple-600 hover:bg-purple-700 text-white" onClick={handleSave}>
                     {isEditMode ? "Update Customer" : "Add Customer"}
                   </Button>
                 </div>

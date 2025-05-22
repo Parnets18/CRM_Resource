@@ -134,7 +134,6 @@ Generated on: ${new Date().toLocaleString()}
     URL.revokeObjectURL(url)
   }
 
-  // ...existing code...
   return (
     <div className="min-h-screen bg-white lg:ml-64">
       <div className="absolute inset-0 z-0">
@@ -319,11 +318,11 @@ Generated on: ${new Date().toLocaleString()}
 
         {/* Add GRN Dialog */}
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
-          <DialogContent className="bg-white border border-purple-500/20 text-black rounded-xl">
+          <DialogContent className="bg-white border border-purple-500/20 text-black rounded-xl max-w-md p-0">
             <DialogHeader>
-              <DialogTitle className="text-xl">Add New Goods Receipt Note</DialogTitle>
+              <DialogTitle className="text-xl px-5 py-1">Add New Goods Receipt Note</DialogTitle>
             </DialogHeader>
-            <div className="py-4 space-y-4">
+            <div className=" space-y-4 px-6">
               <div className="space-y-2">
                 <Label htmlFor="poNumber">PO Number</Label>
                 <Input
@@ -401,7 +400,7 @@ Generated on: ${new Date().toLocaleString()}
                 />
               </div>
             </div>
-            <DialogFooter>
+            <DialogFooter className="px-6 pb-4">
               <Button variant="outline" className="border-gray-300 rounded-lg text-gray-700" onClick={() => setIsAddDialogOpen(false)}>
                 Cancel
               </Button>
@@ -414,11 +413,11 @@ Generated on: ${new Date().toLocaleString()}
 
         {/* Edit GRN Dialog */}
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
-          <DialogContent className="bg-white border border-purple-500/20 text-black rounded-xl">
+          <DialogContent className="bg-white border border-purple-500/20 text-black rounded-xl max-w-md p-0">
             <DialogHeader>
-              <DialogTitle className="text-xl">Edit Goods Receipt Note</DialogTitle>
+              <DialogTitle className="text-xl py-1 px-5">Edit Goods Receipt Note</DialogTitle>
             </DialogHeader>
-            <div className="py-4 space-y-4">
+            <div className=" space-y-4 px-6">
               <div className="space-y-2">
                 <Label htmlFor="poNumber">PO Number</Label>
                 <Input
@@ -498,7 +497,7 @@ Generated on: ${new Date().toLocaleString()}
                 />
               </div>
             </div>
-            <DialogFooter>
+            <DialogFooter className="px-6 pb-4">
               <Button variant="outline" className="border-gray-300 rounded-lg text-gray-700" onClick={() => setIsEditDialogOpen(false)}>
                 Cancel
               </Button>
@@ -511,14 +510,14 @@ Generated on: ${new Date().toLocaleString()}
 
         {/* Delete GRN Dialog */}
         <Dialog open={isDeleteDialogOpen} onOpenChange={setIsDeleteDialogOpen}>
-          <DialogContent className="bg-white border border-purple-500/20 text-black rounded-xl">
+          <DialogContent className="bg-white border border-purple-500/20 text-black rounded-xl max-w-sm p-0">
             <DialogHeader>
               <DialogTitle className="text-xl flex items-center">
                 <AlertTriangle className="w-5 h-5 text-red-500 mr-2" />
                 Confirm Delete Goods Receipt Note
               </DialogTitle>
             </DialogHeader>
-            <div className="py-4">
+            <div className="py-4 px-6">
               <p className="text-gray-700">
                 Are you sure you want to delete GRN{" "}
                 <span className="font-medium text-black">{selectedGRN?.poNumber}</span>?
@@ -527,7 +526,7 @@ Generated on: ${new Date().toLocaleString()}
                 This action cannot be undone.
               </p>
             </div>
-            <DialogFooter>
+            <DialogFooter className="px-6 pb-4">
               <Button variant="outline" className="border-gray-300 rounded-lg text-gray-700" onClick={() => setIsDeleteDialogOpen(false)}>
                 Cancel
               </Button>
@@ -540,14 +539,14 @@ Generated on: ${new Date().toLocaleString()}
 
         {/* Success Dialog */}
         <Dialog open={isSuccessDialogOpen} onOpenChange={setIsSuccessDialogOpen}>
-          <DialogContent className="bg-white border border-purple-500/20 text-black rounded-xl">
+          <DialogContent className="bg-white border border-purple-500/20 text-black rounded-xl max-w-xs p-0">
             <DialogHeader>
               <DialogTitle className="text-xl flex items-center">
                 <Check className="w-5 h-5 text-green-500 mr-2" />
                 Operation Successful
               </DialogTitle>
             </DialogHeader>
-            <div className="py-4">
+            <div className="py-4 px-6">
               <p className="text-gray-700">
                 Goods receipt note operation completed successfully.
               </p>
@@ -557,5 +556,4 @@ Generated on: ${new Date().toLocaleString()}
       </div>
     </div>
   )
-// ...existing code...
 }
