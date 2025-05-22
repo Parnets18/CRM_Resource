@@ -3,8 +3,21 @@ import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { motion } from "framer-motion";
 
 export default function LoginPage() {
@@ -45,7 +58,9 @@ export default function LoginPage() {
                 <span className="text-white font-bold text-xl">N</span>
               </motion.div> */}
             </div>
-            <CardTitle className="text-2xl font-bold text-center text-white">Login to CRM</CardTitle>
+            <CardTitle className="text-2xl font-bold text-center text-white">
+              Login to CRM
+            </CardTitle>
             <CardDescription className="text-center text-gray-400">
               Enter your credentials to access your account
             </CardDescription>
@@ -63,9 +78,15 @@ export default function LoginPage() {
                     <SelectItem value="admin">Admin</SelectItem>
                     <SelectItem value="hr-manager">HR Manager</SelectItem>
                     <SelectItem value="employee">Employee</SelectItem>
-                    <SelectItem value="project-manager">Project Manager</SelectItem>
-                    <SelectItem value="site-supervisor">Site Supervisor</SelectItem>
-                    <SelectItem value="procurement-officer">Procurement Officer</SelectItem>
+                    <SelectItem value="project-manager">
+                      Project Manager
+                    </SelectItem>
+                    <SelectItem value="site-supervisor">
+                      Site Supervisor
+                    </SelectItem>
+                    <SelectItem value="procurement-officer">
+                      Procurement Officer
+                    </SelectItem>
                     <SelectItem value="accountant">Accountant</SelectItem>
                   </SelectContent>
                 </Select>
@@ -103,20 +124,20 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="   text-white focus:border-purple-500 focus:ring-purple-500/20"
+                  className="   text-black focus:border-purple-500 focus:ring-purple-500/20"
                 />
               </div>
             </CardContent>
             <CardFooter className="flex flex-col">
-              <Link to='/admin/create'>
-              <Button
-                type="submit"
-                className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg shadow-purple-600/20 mt-4 cursor-pointer"
-                 >
-                Login
-              </Button>
+              <Link to="/admin/create">
+                <Button
+                  type="submit"
+                  className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 shadow-lg shadow-purple-600/20 mt-4 cursor-pointer"
+                >
+                  Login
+                </Button>
               </Link>
-              <p className="mt-4 text-center text-sm text-gray-400">
+              <p className="mt-4 text-center text-sm">
                 Don&apos;t have an account?{" "}
                 <Link
                   to="/register"
