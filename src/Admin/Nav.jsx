@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import {
   Banknote,
@@ -33,7 +32,7 @@ import {
   LockKeyhole,
   User,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
@@ -53,17 +52,32 @@ function useIsMobile() {
 
 export default function Nav() {
   const [expandedSection, setExpandedSection] = useState(null);
-  const [expandedSubtabs, setExpandedSubtabs] = useState([]);
+  const [expandedSubtab, setExpandedSubtab] = useState(null);
   const [isNavOpen, setIsNavOpen] = useState(false);
   const isMobile = useIsMobile();
+  const location = useLocation();
 
-  const toggleSubtabExpansion = (subtabId) => {
-    setExpandedSubtabs((prev) =>
-      prev.includes(subtabId)
-        ? prev.filter((id) => id !== subtabId)
-        : [...prev, subtabId]
-    );
-  };
+  // Track active subtab path for highlighting
+  const [activeSubtabPath, setActiveSubtabPath] = useState(location.pathname);
+
+  useEffect(() => {
+    setActiveSubtabPath(location.pathname);
+    // Expand the main section and subtab if the current path matches
+    navItems.forEach((item) => {
+      if (item.subtabs) {
+        item.subtabs.forEach((sub) => {
+          if (sub.subtabs && sub.subtabs.some((nested) => nested.path === location.pathname)) {
+            setExpandedSection(item.id);
+            setExpandedSubtab(sub.title);
+          } else if (sub.path === location.pathname) {
+            setExpandedSection(item.id);
+            setExpandedSubtab(null);
+          }
+        });
+      }
+    });
+    // eslint-disable-next-line
+  }, [location.pathname]);
 
   const navItems = [
     {
@@ -84,21 +98,11 @@ export default function Nav() {
           title: "HR Manager",
           icon: FileSpreadsheet,
           path: "/manager",
-          // subtabs: [
-          //   { title: "Employee Detail", icon: Users, path: "/manager/employee" },
-          //   { title: "Leave Management", icon: CalendarDays, path: "/leave" },
-          //   { title: "Performance Reviews", icon: Star, path: "/performance" }
-          // ]
         },
         {
           title: "Employee",
           icon: Calendar,
           path: "/employee",
-          // subtabs: [
-          //   { title: "My Profile", icon: User, path: "/profile" },
-          //   { title: "Pay Slips", icon: Wallet, path: "/payslips" },
-          //   { title: "Benefits", icon: Gift, path: "/benefits" }
-          // ]
         },
       ],
     },
@@ -179,24 +183,11 @@ export default function Nav() {
         </button>
       )}
 
-      <motion.div
-        initial={{ x: isMobile ? "-100%" : 0 }}
-        animate={{ x: isMobile && !isNavOpen ? "-100%" : 0 }}
-        transition={{ type: "tween", duration: 0.3 }}
+      <div
         className="w-64 fixed top-0 left-0 h-screen border-r border-purple-500/20 bg-white backdrop-blur-sm p-4 overflow-y-auto z-40"
+        style={{ display: isMobile && !isNavOpen ? "none" : "block" }}
       >
         <div className="flex items-center gap-2 mb-8">
-          {/* <motion.div
-            animate={{ rotate: 360 }}
-            transition={{
-              duration: 2,
-              repeat: Number.POSITIVE_INFINITY,
-              ease: "linear",
-            }}
-            className="h-8 w-8 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center"
-          >
-            <span className="text-white font-bold text-sm">N</span>
-          </motion.div> */}
           <h1 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
             CRM
           </h1>
@@ -212,7 +203,9 @@ export default function Nav() {
             <div key={item.id}>
               <Button
                 variant="ghost"
-                className="w-full justify-start text-gray-700 hover:bg-gray-100 hover:text-purple-700"
+                className={`w-full justify-start text-gray-700 hover:bg-gray-100 hover:text-purple-700 ${
+                  expandedSection === item.id ? "bg-purple-50" : ""
+                }`}
                 onClick={() =>
                   setExpandedSection(
                     expandedSection === item.id ? null : item.id
@@ -227,97 +220,95 @@ export default function Nav() {
                   <ChevronRight className="w-4 h-4 text-purple-400" />
                 )}
               </Button>
-              <AnimatePresence>
-                {expandedSection === item.id && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.2 }}
-                    className="overflow-hidden"
-                  >
-                    {item.subtabs.map((subtab, index) => {
-                      const subtabId = `${item.id}-${subtab.title
-                        .toLowerCase()
-                        .replace(/\s+/g, "-")}`;
-                      const hasSubtabs =
-                        subtab.subtabs && subtab.subtabs.length > 0;
+              {expandedSection === item.id && (
+                <div className="overflow-hidden">
+                  {item.subtabs.map((subtab, index) => {
+                    const hasSubtabs = subtab.subtabs && subtab.subtabs.length > 0;
+                    const isSubtabExpanded = expandedSubtab === subtab.title;
 
+                    if (hasSubtabs) {
                       return (
                         <div key={index}>
-                          {hasSubtabs ? (
-                            <>
-                              <Button
-                                variant="ghost"
-                                className="w-full justify-start text-gray-500 hover:bg-gray-100 hover:text-purple-700 pl-8"
-                                onClick={() => toggleSubtabExpansion(subtabId)}
-                              >
-                                <subtab.icon className="w-4 h-4 mr-2 text-purple-400" />
-                                {subtab.title}
-                                {expandedSubtabs.includes(subtabId) ? (
-                                  <ChevronDown className="w-4 h-4 ml-auto text-purple-400" />
-                                ) : (
-                                  <ChevronRight className="w-4 h-4 ml-auto text-purple-400" />
-                                )}
-                              </Button>
-                              <AnimatePresence>
-                                {expandedSubtabs.includes(subtabId) && (
-                                  <motion.div
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: "auto", opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                    transition={{ duration: 0.2 }}
-                                    className="overflow-hidden"
+                          <Button
+                            variant="ghost"
+                            className={`w-full justify-start text-gray-500 hover:bg-gray-100 hover:text-purple-700 pl-8 ${
+                              isSubtabExpanded ? "bg-purple-100 text-purple-700" : ""
+                            }`}
+                            onClick={() =>
+                              setExpandedSubtab(
+                                isSubtabExpanded ? null : subtab.title
+                              )
+                            }
+                          >
+                            <subtab.icon className="w-4 h-4 mr-2 text-purple-400" />
+                            {subtab.title}
+                            {isSubtabExpanded ? (
+                              <ChevronDown className="w-4 h-4 ml-auto text-purple-400" />
+                            ) : (
+                              <ChevronRight className="w-4 h-4 ml-auto text-purple-400" />
+                            )}
+                          </Button>
+                          {isSubtabExpanded && (
+                            <div className="overflow-hidden">
+                              {subtab.subtabs.map((nestedSubtab, nestedIndex) => (
+                                <Link
+                                  key={nestedIndex}
+                                  to={nestedSubtab.path}
+                                  className="block no-underline"
+                                  onClick={() => {
+                                    setActiveSubtabPath(nestedSubtab.path);
+                                    if (isMobile) setIsNavOpen(false);
+                                  }}
+                                >
+                                  <Button
+                                    variant="ghost"
+                                    className={`w-full justify-start text-gray-500 hover:bg-gray-100 hover:text-purple-700 pl-12 ${
+                                      activeSubtabPath === nestedSubtab.path
+                                        ? "bg-purple-200 text-purple-700"
+                                        : ""
+                                    }`}
                                   >
-                                    {subtab.subtabs.map(
-                                      (nestedSubtab, nestedIndex) => (
-                                        <Link
-                                          key={nestedIndex}
-                                          to={nestedSubtab.path}
-                                          className="block no-underline"
-                                          onClick={() =>
-                                            isMobile && setIsNavOpen(false)
-                                          }
-                                        >
-                                          <Button
-                                            variant="ghost"
-                                            className="w-full justify-start text-gray-500 hover:bg-gray-100 hover:text-purple-700 pl-12"
-                                          >
-                                            <nestedSubtab.icon className="w-4 h-4 mr-2 text-purple-400" />
-                                            {nestedSubtab.title}
-                                          </Button>
-                                        </Link>
-                                      )
-                                    )}
-                                  </motion.div>
-                                )}
-                              </AnimatePresence>
-                            </>
-                          ) : (
-                            <Link
-                              to={subtab.path}
-                              className="block no-underline"
-                              onClick={() => isMobile && setIsNavOpen(false)}
-                            >
-                              <Button
-                                variant="ghost"
-                                className="w-full justify-start text-gray-500 hover:bg-gray-100 hover:text-purple-700 pl-8"
-                              >
-                                <subtab.icon className="w-4 h-4 mr-2 text-purple-400" />
-                                {subtab.title}
-                              </Button>
-                            </Link>
+                                    <nestedSubtab.icon className="w-4 h-4 mr-2 text-purple-400" />
+                                    {nestedSubtab.title}
+                                  </Button>
+                                </Link>
+                              ))}
+                            </div>
                           )}
                         </div>
                       );
-                    })}
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                    } else {
+                      return (
+                        <Link
+                          key={index}
+                          to={subtab.path}
+                          className="block no-underline"
+                          onClick={() => {
+                            setActiveSubtabPath(subtab.path);
+                            if (isMobile) setIsNavOpen(false);
+                          }}
+                        >
+                          <Button
+                            variant="ghost"
+                            className={`w-full justify-start pl-8 text-gray-500 hover:bg-gray-100 hover:text-purple-700 ${
+                              activeSubtabPath === subtab.path
+                                ? "bg-purple-100 text-purple-700"
+                                : ""
+                            }`}
+                          >
+                            <subtab.icon className="w-4 h-4 mr-2 text-purple-400" />
+                            {subtab.title}
+                          </Button>
+                        </Link>
+                      );
+                    }
+                  })}
+                </div>
+              )}
             </div>
           ))}
         </nav>
-      </motion.div>
+      </div>
     </>
   );
 }

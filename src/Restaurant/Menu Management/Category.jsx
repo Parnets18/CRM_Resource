@@ -19,6 +19,7 @@ import {
   ChevronUp,
   Leaf,
   Beef,
+  X,
 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -52,7 +53,7 @@ export default function MenuManagement() {
   ];
 
   // Sample menu data with category and subcategory
-  const menuItems = [
+  const [menuItems, setMenuItems] = useState([
     {
       id: 1,
       name: "Spring Rolls",
@@ -107,7 +108,7 @@ export default function MenuManagement() {
       status: "Available",
       ingredients: "Yogurt, mango",
     },
-  ];
+  ]);
 
   // State for active subcategory filter
   const [activeFilter, setActiveFilter] = useState(null);
@@ -117,6 +118,16 @@ export default function MenuManagement() {
       {}
     )
   );
+
+  // Edit modal state
+  const [editItem, setEditItem] = useState(null);
+  const [editForm, setEditForm] = useState({
+    name: "",
+    price: "",
+    ingredients: "",
+    status: "",
+    subcategory: "",
+  });
 
   // Toggle category expansion
   const toggleCategory = (categoryName) => {
@@ -130,6 +141,37 @@ export default function MenuManagement() {
   const filteredItems = activeFilter
     ? menuItems.filter((item) => item.subcategory === activeFilter)
     : menuItems;
+
+  // Open edit modal and populate form
+  const openEditModal = (item) => {
+    setEditItem(item);
+    setEditForm({
+      name: item.name,
+      price: item.price,
+      ingredients: item.ingredients,
+      status: item.status,
+      subcategory: item.subcategory,
+    });
+  };
+
+  // Handle edit form changes
+  const handleEditChange = (e) => {
+    const { name, value } = e.target;
+    setEditForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Save changes (replace with your update logic)
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    setMenuItems((prev) =>
+      prev.map((item) =>
+        item.id === editItem.id
+          ? { ...item, ...editForm, price: parseFloat(editForm.price) }
+          : item
+      )
+    );
+    setEditItem(null);
+  };
 
   return (
     <div className="min-h-screen bg-white lg:ml-64">
@@ -157,10 +199,6 @@ export default function MenuManagement() {
                 </span>
               </div>
             </div>
-            {/* <Button className="bg-purple-600 hover:bg-purple-700 text-white">
-                            <Plus className="w-4 h-4 mr-2" />
-                            Add Item
-                        </Button> */}
           </div>
 
           {/* Subcategory filters */}
@@ -219,6 +257,115 @@ export default function MenuManagement() {
               Cold Drinks
             </Button>
           </div>
+
+          {/* Edit Modal */}
+          {editItem && (
+            <div className="fixed inset-0 bg-white bg-opacity-30 flex items-center justify-center z-50">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.97 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-white border border-purple-500/30 rounded-xl shadow-2xl w-full max-w-md"
+                style={{ maxHeight: 400, overflowY: "auto" }}
+              >
+                <div className="flex justify-between items-center border-b border-purple-500/20 p-4">
+                  <h3 className="text-lg font-semibold text-black">Edit Menu Item</h3>
+                  <button
+                    onClick={() => setEditItem(null)}
+                    className="text-gray-500 hover:text-black"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <form onSubmit={handleEditSubmit} className="p-4 space-y-4">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={editForm.name}
+                      onChange={handleEditChange}
+                      className="w-full px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-black text-sm"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Price
+                    </label>
+                    <input
+                      type="number"
+                      name="price"
+                      value={editForm.price}
+                      onChange={handleEditChange}
+                      className="w-full px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-black text-sm"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Ingredients
+                    </label>
+                    <input
+                      type="text"
+                      name="ingredients"
+                      value={editForm.ingredients}
+                      onChange={handleEditChange}
+                      className="w-full px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-black text-sm"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Status
+                    </label>
+                    <select
+                      name="status"
+                      value={editForm.status}
+                      onChange={handleEditChange}
+                      className="w-full px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-black text-sm"
+                      required
+                    >
+                      <option value="Available">Available</option>
+                      <option value="Unavailable">Unavailable</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Subcategory
+                    </label>
+                    <select
+                      name="subcategory"
+                      value={editForm.subcategory}
+                      onChange={handleEditChange}
+                      className="w-full px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-black text-sm"
+                      required
+                    >
+                      <option value="Veg">Veg</option>
+                      <option value="Non-Veg">Non-Veg</option>
+                      <option value="Hot">Hot</option>
+                      <option value="Cold">Cold</option>
+                    </select>
+                  </div>
+                  <div className="flex justify-end space-x-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setEditItem(null)}
+                      className="px-3 py-1 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 text-sm"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-3 py-1 bg-purple-600 text-white rounded-md hover:bg-purple-700 flex items-center text-sm"
+                    >
+                      Save Changes
+                    </button>
+                  </div>
+                </form>
+              </motion.div>
+            </div>
+          )}
 
           {/* Menu Items by Category */}
           <div className="space-y-6">
@@ -341,6 +488,7 @@ export default function MenuManagement() {
                                     variant="ghost"
                                     size="icon"
                                     className="text-purple-700 hover:bg-purple-100"
+                                    onClick={() => openEditModal(item)}
                                   >
                                     <Edit className="w-4 h-4" />
                                   </Button>

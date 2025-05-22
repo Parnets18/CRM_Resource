@@ -163,7 +163,7 @@ export default function Configuration() {
                                     <Card className="border border-blue-500/20 bg-white backdrop-blur-sm mb-6">
                                         <CardHeader className="flex flex-row justify-between items-center">
                                             <CardTitle className="text-black">Tax Configuration</CardTitle>
-                                            <Button onClick={addNewTax} className="bg-blue-600 hover:bg-blue-700 text-white">
+                                            <Button onClick={addNewTax} className="bg-purple-600 hover:bg-purple-700 text-white">
                                                 <Plus className="w-4 h-4 mr-2" /> Add Tax
                                             </Button>
                                         </CardHeader>

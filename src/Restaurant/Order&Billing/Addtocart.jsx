@@ -1555,7 +1555,7 @@ export default function POSSystem() {
                           </div>
 
                           <button
-                            className={`w-full mt-6 py-2 px-4 rounded-md text-white flex items-center justify-center gap-2 ${
+                            className={`w-full mt-6 py-2 px-4 rounded-md flex items-center justify-center gap-2 ${
                               totalPaid < totalAmount
                                 ? "bg-gray-100 cursor-not-allowed"
                                 : "bg-blue-600 hover:bg-blue-700"
