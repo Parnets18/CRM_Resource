@@ -284,7 +284,7 @@ export default function HRAndPayroll() {
                     </div>
                     <Dialog open={isAddingStaff} onOpenChange={setIsAddingStaff}>
                       <DialogTrigger asChild>
-                        <Button>
+                        <Button className="bg-purple-600 hover:bg-purple-700">
                           <UserPlus className="mr-2 h-4 w-4" /> Add Staff
                         </Button>
                       </DialogTrigger>
@@ -367,7 +367,7 @@ export default function HRAndPayroll() {
                             </div>
                           </div>
                           <DialogFooter>
-                            <Button type="submit">Add Staff</Button>
+                            <Button type="submit"  >Add Staff</Button>
                           </DialogFooter>
                         </form>
                       </DialogContent>
