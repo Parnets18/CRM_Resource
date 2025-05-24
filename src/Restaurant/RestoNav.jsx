@@ -133,67 +133,82 @@ export default function RestoNav() {
       ],
     },
     {
-      title: "Order&Billing",
-      icon: ShoppingCart,
-      id: "kop",
-      subtabs: [{ title: "Pos", icon: CreditCard, path: "/Addtocart" }],
-    },
+  title: "Order & Billing",
+  icon: CreditCard, // Previously ShoppingCart
+  id: "kop",
+  subtabs: [{ title: "Pos", icon: CreditCard, path: "/Addtocart" }],
+},
     {
-      title: "Customer Managment",
-      icon: ShoppingCart,
-      id: "k",
-      subtabs: [
-        {
-          title: "CustomerProfiile",
-          icon: CreditCard,
-          path: "/Customermanagemnet",
-        },
-      ],
-    },
+  title: "Customer Management",
+  icon: Users2, // Changed from ShoppingCart
+  id: "k",
+  subtabs: [
     {
-      title: "Reservations Management",
-      icon: ShoppingCart,
-      id: "ko",
-      subtabs: [
-        { title: "Table Mangagemnet", icon: CreditCard, path: "/Tablemangement" },
-      ],
+      title: "Customer Profile",
+      icon: UserPlus,
+      path: "/Customermanagemnet",
     },
+  ],
+},
+    {
+  title: "Reservations Management",
+  icon: Calendar, // Changed from ShoppingCart
+  id: "ko",
+  subtabs: [
+    {
+      title: "Table Management",
+      icon: TableCellsSplit,
+      path: "/Tablemangement",
+    },
+  ],
+},
+   {
+  title: "Kitchen Management",
+  icon: CookingPot, // Changed from ShoppingCart
+  subtabs: [
     {
       title: "Kitchen Management",
-      icon: ShoppingCart,
-      // id: "kop",
-      subtabs: [
-        { title: "Kitchen Mangemnet", icon: CreditCard, path: "/Kitchebnmanagement" },
-      ],
+      icon: Utensils,
+      path: "/Kitchebnmanagement",
     },
+  ],
+},
       {
-      title: "Hr & Management",
-      icon: ShoppingCart,
-      id: "kop",
-      subtabs: [
-        { title: "Hr Payroll", icon: CreditCard, path: "/Hrpayroll" },
-       
-      ]
+  title: "HR & Management",
+  icon: Building, // Changed from ShoppingCart
+  id: "kop",
+  subtabs: [
+    {
+      title: "HR Payroll",
+      icon: DollarSign,
+      path: "/Hrpayroll",
     },
+  ],
+},
     
-    // {
-    //   title: "Sales Management",
-    //   icon: Banknote,
-    //   id: "sales",
-    //   subtabs: [
-    //     { title: "Admin", icon: DollarSign, path: "/salesadmin" },
-    //     { title: "Accountant", icon: PieChart, path: "/salesaccountant" },
-    //     { title: "Project Manager", icon: Users, path: "/salesproject" },
-    //   ],
-    // },
+   
     {
       title: "Expense Management",
       icon: Scale,
       id: "expense",
       subtabs: [
-       
+        { title: "Expense Managemnet", icon: CreditCard, path: "/Restaurantexpense" },
       ],
     },
+
+    {
+  title: "Restaurant Analytics",
+  icon: PieChart, // Changed from Scale
+  id: "analytics",
+  subtabs: [
+    {
+      title: "Report & Analytics",
+      icon: BarChart3, // Changed from CreditCard
+      path: "/Restaurant&analytics",
+    },
+  ],
+},
+
   ];
 
   return (

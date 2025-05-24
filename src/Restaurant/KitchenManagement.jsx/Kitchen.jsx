@@ -609,7 +609,7 @@ export default function KitchenManagement() {
                                     {item.status === "Pending" ? (
                                       <Button
                                         size="sm"
-                                        className="h-8 bg-blue-600 hover:bg-blue-700 text-white"
+                                        className="h-8 bg-purple-600 hover:bg-purple-600 text-white"
                                         onClick={() => updateItemStatus(kot.id, item.id, "In Progress")}
                                       >
                                         Start Cooking
