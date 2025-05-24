@@ -22,7 +22,7 @@
 
 // src/Common/CommonLayout.jsx
 import React from 'react';
-import Sidebar from './Sidebar';
+import Sidebar from '../pages/Sidebar';
 import { Outlet } from 'react-router-dom';
 import RestoNav from '@/Restaurant/RestoNav';
 
