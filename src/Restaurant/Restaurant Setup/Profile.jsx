@@ -32,7 +32,7 @@ export default function Profile() {
           <Card className="border border-blue-500/20 bg-white backdrop-blur-sm mb-8">
             <CardHeader>
               <CardTitle className="text-black flex items-center gap-2">
-                <FileText className="w-5 h-5 text-blue-400" />
+                <FileText className="w-5 h-5 text-purple-400" />
                 Business Information
               </CardTitle>
             </CardHeader>
@@ -129,7 +129,7 @@ export default function Profile() {
           <Card className="border border-blue-500/20 bg-white backdrop-blur-sm mb-8">
             <CardHeader>
               <CardTitle className="text-black flex items-center gap-2">
-                <Utensils className="w-5 h-5 text-blue-400" />
+                <Utensils className="w-5 h-5 text-purple-400" />
                 Restaurant Details
               </CardTitle>
             </CardHeader>
@@ -190,7 +190,7 @@ export default function Profile() {
             <Card className="border border-blue-500/20 bg-white backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-black flex items-center gap-2">
-                  <Phone className="w-5 h-5 text-blue-400" />
+                  <Phone className="w-5 h-5 text-purple-400" />
                   Contact Information
                 </CardTitle>
               </CardHeader>
@@ -234,7 +234,7 @@ export default function Profile() {
             <Card className="border border-blue-500/20 bg-white backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-black flex items-center gap-2">
-                  <MapPin className="w-5 h-5 text-blue-400" />
+                  <MapPin className="w-5 h-5 text-purple-400" />
                   Location
                 </CardTitle>
               </CardHeader>
@@ -292,7 +292,7 @@ export default function Profile() {
             <Card className="border border-blue-500/20 bg-white backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-black flex items-center gap-2">
-                  <IndianRupee className="w-5 h-5 text-blue-400" />
+                  <IndianRupee className="w-5 h-5 text-purple-400" />
                   Financial Information
                 </CardTitle>
               </CardHeader>
@@ -347,7 +347,7 @@ export default function Profile() {
           <Card className="border border-blue-500/20 bg-white backdrop-blur-sm mb-8">
             <CardHeader>
               <CardTitle className="text-black flex items-center gap-2">
-                <CreditCard className="w-5 h-5 text-blue-400" />
+                <CreditCard className="w-5 h-5 text-purple-400" />
                 Document Uploads
               </CardTitle>
             </CardHeader>
@@ -415,7 +415,7 @@ export default function Profile() {
             <Button variant="outline" className="text-gray-700 border-gray-300">
               Cancel
             </Button>
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white">
+            <Button className="bg-purple-600 hover:bg-purple-700 text-white">
               Save Changes
             </Button>
           </div>

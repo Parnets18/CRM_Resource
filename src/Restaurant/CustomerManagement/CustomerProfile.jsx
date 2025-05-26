@@ -154,8 +154,8 @@ export default function CustomerManagement() {
   return (
     <div className="min-h-screen bg-white lg:ml-64">
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-gray-100 to-white"></div>
-        <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-blue-600/10 to-transparent"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-gray-100 to-white"></div>
+        <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
       </div>
 
       <div className="relative z-10 flex">
@@ -172,11 +172,57 @@ export default function CustomerManagement() {
             </Button>
           </div>
 
+          {/* Customer Insights Section */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-black text-lg flex items-center gap-2">
+                  <Users className="w-4 h-4 text-purple-400" />
+                  Total Customers
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-purple-600">{customers.length}</div>
+                <p className="text-gray-600 text-sm">Active customer records</p>
+              </CardContent>
+            </Card>
+
+            <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-black text-lg flex items-center gap-2">
+                  <Gift className="w-4 h-4 text-purple-400" />
+                  Total Loyalty Points
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-purple-600">
+                  {customers.reduce((total, customer) => total + (Number.parseInt(customer.loyaltyPoints) || 0), 0)}
+                </div>
+                <p className="text-gray-600 text-sm">Points issued to customers</p>
+              </CardContent>
+            </Card>
+
+            <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-black text-lg flex items-center gap-2">
+                  <MessageSquare className="w-4 h-4 text-purple-400" />
+                  Feedback Collected
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold text-purple-600">
+                  {customers.filter((customer) => customer.feedback && customer.feedback.trim() !== "").length}
+                </div>
+                <p className="text-gray-600 text-sm">Customer feedback entries</p>
+              </CardContent>
+            </Card>
+          </div>
+
           {/* Customer Form Section */}
-          <Card className="border border-blue-500/20 bg-white backdrop-blur-sm mb-8">
+          <Card className="border border-purple-500/20 bg-white backdrop-blur-sm mb-8">
             <CardHeader>
               <CardTitle className="text-black flex items-center gap-2">
-                <UserPlus className="w-5 h-5 text-blue-400" />
+                <UserPlus className="w-5 h-5 text-purple-400" />
                 {isEditMode ? "Edit Customer" : "Add New Customer"}
               </CardTitle>
             </CardHeader>
@@ -321,7 +367,7 @@ export default function CustomerManagement() {
                   >
                     {isEditMode ? "Cancel" : "Clear"}
                   </Button>
-                  <Button type="button" className="bg-blue-600 hover:bg-blue-700 text-white" onClick={handleSave}>
+                  <Button type="button" className="bg-purple-600 hover:bg-purple-700 text-white" onClick={handleSave}>
                     {isEditMode ? "Update Customer" : "Add Customer"}
                   </Button>
                 </div>
@@ -330,11 +376,11 @@ export default function CustomerManagement() {
           </Card>
 
           {/* Customer List Section */}
-          <Card className="border border-blue-500/20 bg-white backdrop-blur-sm mb-8">
+          <Card className="border border-purple-500/20 bg-white backdrop-blur-sm mb-8">
             <CardHeader>
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <CardTitle className="text-black flex items-center gap-2">
-                  <Users className="w-5 h-5 text-blue-400" />
+                  <Users className="w-5 h-5 text-purple-400" />
                   Customer List
                 </CardTitle>
                 <div className="relative w-full md:w-64">
@@ -398,7 +444,7 @@ export default function CustomerManagement() {
                           </td>
                           <td className="py-3 px-4">
                             <div className="flex items-center">
-                              <Gift className="w-4 h-4 text-blue-500 mr-1" />
+                              <Gift className="w-4 h-4 text-purple-500 mr-1" />
                               <span className="font-medium">{customer.loyaltyPoints} points</span>
                             </div>
                           </td>
@@ -419,7 +465,7 @@ export default function CustomerManagement() {
                               <Button
                                 variant="ghost"
                                 size="sm"
-                                className="h-8 px-2 text-blue-600"
+                                className="h-8 px-2 text-purple-600"
                                 onClick={() => handleEdit(customer)}
                               >
                                 Edit
@@ -451,57 +497,11 @@ export default function CustomerManagement() {
             </CardContent>
           </Card>
 
-          {/* Customer Insights Section */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            <Card className="border border-blue-500/20 bg-white backdrop-blur-sm">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-black text-lg flex items-center gap-2">
-                  <Users className="w-4 h-4 text-blue-400" />
-                  Total Customers
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-blue-600">{customers.length}</div>
-                <p className="text-gray-600 text-sm">Active customer records</p>
-              </CardContent>
-            </Card>
-
-            <Card className="border border-blue-500/20 bg-white backdrop-blur-sm">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-black text-lg flex items-center gap-2">
-                  <Gift className="w-4 h-4 text-blue-400" />
-                  Total Loyalty Points
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-blue-600">
-                  {customers.reduce((total, customer) => total + (Number.parseInt(customer.loyaltyPoints) || 0), 0)}
-                </div>
-                <p className="text-gray-600 text-sm">Points issued to customers</p>
-              </CardContent>
-            </Card>
-
-            <Card className="border border-blue-500/20 bg-white backdrop-blur-sm">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-black text-lg flex items-center gap-2">
-                  <MessageSquare className="w-4 h-4 text-blue-400" />
-                  Feedback Collected
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-3xl font-bold text-blue-600">
-                  {customers.filter((customer) => customer.feedback && customer.feedback.trim() !== "").length}
-                </div>
-                <p className="text-gray-600 text-sm">Customer feedback entries</p>
-              </CardContent>
-            </Card>
-          </div>
-
           {/* Upcoming Birthdays & Anniversaries */}
-          <Card className="border border-blue-500/20 bg-white backdrop-blur-sm mb-8">
+          <Card className="border border-purple-500/20 bg-white backdrop-blur-sm mb-8">
             <CardHeader>
               <CardTitle className="text-black flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-blue-400" />
+                <Calendar className="w-5 h-5 text-purple-400" />
                 Upcoming Special Dates
               </CardTitle>
             </CardHeader>
@@ -509,7 +509,7 @@ export default function CustomerManagement() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
-                    <Calendar className="w-4 h-4 mr-2 text-blue-500" />
+                    <Calendar className="w-4 h-4 mr-2 text-purple-500" />
                     Upcoming Birthdays
                   </h3>
                   <div className="space-y-3">
@@ -521,8 +521,8 @@ export default function CustomerManagement() {
                           key={`birthday-${customer.id}`}
                           className="flex items-center p-2 border border-gray-200 rounded-md"
                         >
-                          <div className="bg-blue-100 p-2 rounded-full mr-3">
-                            <Calendar className="w-5 h-5 text-blue-600" />
+                          <div className="bg-purple-100 p-2 rounded-full mr-3">
+                            <Calendar className="w-5 h-5 text-purple-600" />
                           </div>
                           <div>
                             <div className="font-medium text-gray-800">{customer.name}</div>
@@ -538,7 +538,7 @@ export default function CustomerManagement() {
 
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
-                    <Heart className="w-4 h-4 mr-2 text-red-500" />
+                    <Heart className="w-4 h-4 mr-2 text-purple-500" />
                     Upcoming Anniversaries
                   </h3>
                   <div className="space-y-3">
@@ -550,8 +550,8 @@ export default function CustomerManagement() {
                           key={`anniversary-${customer.id}`}
                           className="flex items-center p-2 border border-gray-200 rounded-md"
                         >
-                          <div className="bg-red-100 p-2 rounded-full mr-3">
-                            <Heart className="w-5 h-5 text-red-600" />
+                          <div className="bg-purple-100 p-2 rounded-full mr-3">
+                            <Heart className="w-5 h-5 text-purple-600" />
                           </div>
                           <div>
                             <div className="font-medium text-gray-800">{customer.name}</div>

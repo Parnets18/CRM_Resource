@@ -395,7 +395,7 @@ export default function Configuration() {
                             animate={{ opacity: 1 }}
                             className="flex flex-col items-center justify-center py-16 text-center"
                         >
-                            <Printer className="w-12 h-12 text-blue-400 mb-4" />
+                            <Printer className="w-12 h-12 text-purple-400 mb-4" />
                             <h3 className="text-xl font-medium text-black mb-2">Select a Restaurant</h3>
                             <p className="text-gray-700 max-w-md">
                                 Please select a restaurant from the dropdown above to configure its settings.
