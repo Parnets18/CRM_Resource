@@ -229,7 +229,7 @@ export default function Configuration() {
                                     <Card className="border border-blue-500/20 bg-white backdrop-blur-sm mb-6">
                                         <CardHeader className="flex flex-row justify-between items-center">
                                             <CardTitle className="text-black">Units of Measurement</CardTitle>
-                                            <Button onClick={addNewUnit} className="bg-blue-600 hover:bg-blue-700 text-white">
+                                            <Button onClick={addNewUnit} className="bg-purple-600 hover:bg-purple-600 text-white">
                                                 <Plus className="w-4 h-4 mr-2" /> Add Unit
                                             </Button>
                                         </CardHeader>
@@ -300,7 +300,7 @@ export default function Configuration() {
                                     <Card className="border border-blue-500/20 bg-white backdrop-blur-sm mb-6">
                                         <CardHeader className="flex flex-row justify-between items-center">
                                             <CardTitle className="text-black">Kitchen Printers</CardTitle>
-                                            <Button onClick={addNewPrinter} className="bg-blue-600 hover:bg-blue-700 text-white">
+                                            <Button onClick={addNewPrinter} className="bg-purple-600 hover:bg-purple-700 text-white">
                                                 <Plus className="w-4 h-4 mr-2" /> Add Printer
                                             </Button>
                                         </CardHeader>
@@ -324,7 +324,7 @@ export default function Configuration() {
                                                         </div>
                                                         <div>
                                                             <Label className="text-gray-700">Print Test Page</Label>
-                                                            <Button variant="outline" className="bg-blue-600 hover:bg-blue-700 text-white">
+                                                            <Button variant="outline" className="bg-purple-600 hover:bg-purple-700 text-white">
                                                                 Print Test
                                                             </Button>
                                                         </div>
