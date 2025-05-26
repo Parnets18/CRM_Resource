@@ -1,29 +1,49 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Truck, Search, Check, AlertTriangle, Plus, Edit, Trash2 } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import RestoNav from "../RestoNav"
+import { useState } from "react";
+import {
+  Truck,
+  Search,
+  Check,
+  AlertTriangle,
+  Plus,
+  Edit,
+  Trash2,
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import RestoNav from "../RestoNav";
 
 export default function SuppliersVendors() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
-  const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false)
-  const [selectedSupplier, setSelectedSupplier] = useState(null)
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false);
+  const [selectedSupplier, setSelectedSupplier] = useState(null);
   const [newSupplier, setNewSupplier] = useState({
     name: "",
     contact: "",
     email: "",
     category: "",
-    address: ""
-  })
+    address: "",
+  });
 
   // Sample suppliers data
   const suppliers = [
@@ -33,7 +53,7 @@ export default function SuppliersVendors() {
       contact: "555-0101",
       email: "contact@freshfarms.com",
       category: "Produce",
-      address: "123 Farm Road, Springfield"
+      address: "123 Farm Road, Springfield",
     },
     {
       id: 2,
@@ -41,7 +61,7 @@ export default function SuppliersVendors() {
       contact: "555-0102",
       email: "info@dairydirect.com",
       category: "Dairy",
-      address: "456 Milk Lane, Springfield"
+      address: "456 Milk Lane, Springfield",
     },
     {
       id: 3,
@@ -49,61 +69,61 @@ export default function SuppliersVendors() {
       contact: "555-0103",
       email: "sales@grainco.com",
       category: "Grains",
-      address: "789 Wheat Street, Springfield"
-    }
-  ]
+      address: "789 Wheat Street, Springfield",
+    },
+  ];
 
   const filteredSuppliers = suppliers.filter(
     (supplier) =>
       supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       supplier.category.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  );
 
   const handleAddSupplier = () => {
     // Here you would implement the actual supplier addition logic
-    setIsAddDialogOpen(false)
-    setIsSuccessDialogOpen(true)
-    
+    setIsAddDialogOpen(false);
+    setIsSuccessDialogOpen(true);
+
     // Reset form
     setNewSupplier({
       name: "",
       contact: "",
       email: "",
       category: "",
-      address: ""
-    })
+      address: "",
+    });
 
     // Auto-close success dialog
     setTimeout(() => {
-      setIsSuccessDialogOpen(false)
-    }, 2000)
-  }
+      setIsSuccessDialogOpen(false);
+    }, 2000);
+  };
 
   const handleEditSupplier = () => {
     // Here you would implement the actual supplier edit logic
-    setIsEditDialogOpen(false)
-    setIsSuccessDialogOpen(true)
-    
+    setIsEditDialogOpen(false);
+    setIsSuccessDialogOpen(true);
+
     // Auto-close success dialog
     setTimeout(() => {
-      setIsSuccessDialogOpen(false)
-      setSelectedSupplier(null)
-    }, 2000)
-  }
+      setIsSuccessDialogOpen(false);
+      setSelectedSupplier(null);
+    }, 2000);
+  };
 
   const handleDeleteSupplier = () => {
     // Here you would implement the actual supplier deletion logic
-    setIsDeleteDialogOpen(false)
-    setIsSuccessDialogOpen(true)
-    
+    setIsDeleteDialogOpen(false);
+    setIsSuccessDialogOpen(true);
+
     // Auto-close success dialog
     setTimeout(() => {
-      setIsSuccessDialogOpen(false)
-      setSelectedSupplier(null)
-    }, 2000)
-  }
+      setIsSuccessDialogOpen(false);
+      setSelectedSupplier(null);
+    }, 2000);
+  };
 
-// ...existing code...
+  // ...existing code...
   return (
     <div className="p-6 bg-white min-h-screen">
       <div className="absolute inset-0 z-0">
@@ -115,10 +135,14 @@ export default function SuppliersVendors() {
       <div className="relative z-10 max-w-5xl mx-auto ml-[16rem]">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h2 className="text-2xl font-bold text-black">Suppliers & Vendors</h2>
-            <p className="text-gray-700">Manage your restaurant's suppliers and vendors</p>
+            <h2 className="text-2xl font-bold text-black">
+              Suppliers & Vendors
+            </h2>
+            <p className="text-gray-700">
+              Manage your restaurant's suppliers and vendors
+            </p>
           </div>
-          <Button 
+          <Button
             className="bg-purple-600 hover:bg-purple-700 text-white"
             onClick={() => setIsAddDialogOpen(true)}
           >
@@ -178,7 +202,8 @@ export default function SuppliersVendors() {
                             <span>{supplier.name}</span>
                           </div>
                           <div className="text-xs text-gray-500 mt-1">
-                            Category: {supplier.category} • Contact: {supplier.contact}
+                            Category: {supplier.category} • Contact:{" "}
+                            {supplier.contact}
                           </div>
                         </div>
                       ))}
@@ -203,16 +228,16 @@ export default function SuppliersVendors() {
                         {selectedSupplier.name}
                       </h3>
                       <div className="space-x-2">
-                        <Button 
+                        <Button
                           className="bg-blue-600 hover:bg-blue-700 text-white"
                           onClick={() => {
-                            setNewSupplier(selectedSupplier)
-                            setIsEditDialogOpen(true)
+                            setNewSupplier(selectedSupplier);
+                            setIsEditDialogOpen(true);
                           }}
                         >
                           <Edit className="w-4 h-4 mr-2" /> Edit
                         </Button>
-                        <Button 
+                        <Button
                           className="bg-red-600 hover:bg-red-700 text-white"
                           onClick={() => setIsDeleteDialogOpen(true)}
                         >
@@ -224,28 +249,39 @@ export default function SuppliersVendors() {
                     <div className="grid grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label>Contact</Label>
-                        <p className="text-gray-700">{selectedSupplier.contact}</p>
+                        <p className="text-gray-700">
+                          {selectedSupplier.contact}
+                        </p>
                       </div>
                       <div className="space-y-2">
                         <Label>Email</Label>
-                        <p className="text-gray-700">{selectedSupplier.email}</p>
+                        <p className="text-gray-700">
+                          {selectedSupplier.email}
+                        </p>
                       </div>
                       <div className="space-y-2">
                         <Label>Category</Label>
-                        <p className="text-gray-700">{selectedSupplier.category}</p>
+                        <p className="text-gray-700">
+                          {selectedSupplier.category}
+                        </p>
                       </div>
                       <div className="space-y-2">
                         <Label>Address</Label>
-                        <p className="text-gray-700">{selectedSupplier.address}</p>
+                        <p className="text-gray-700">
+                          {selectedSupplier.address}
+                        </p>
                       </div>
                     </div>
                   </div>
                 ) : (
                   <div className="flex flex-col items-center justify-center py-12 text-center">
                     <Truck className="w-12 h-12 text-gray-400 mb-4" />
-                    <h3 className="text-lg font-medium text-gray-500">No Supplier Selected</h3>
+                    <h3 className="text-lg font-medium text-gray-500">
+                      No Supplier Selected
+                    </h3>
                     <p className="text-gray-500 mt-2 max-w-md">
-                      Select a supplier from the list to view details or add a new supplier.
+                      Select a supplier from the list to view details or add a
+                      new supplier.
                     </p>
                   </div>
                 )}
@@ -268,7 +304,9 @@ export default function SuppliersVendors() {
                 id="name"
                 className="bg-gray-100 border-gray-300 text-black"
                 value={newSupplier.name}
-                onChange={(e) => setNewSupplier({ ...newSupplier, name: e.target.value })}
+                onChange={(e) =>
+                  setNewSupplier({ ...newSupplier, name: e.target.value })
+                }
               />
             </div>
             <div className="space-y-2">
@@ -277,7 +315,9 @@ export default function SuppliersVendors() {
                 id="contact"
                 className="bg-gray-100 border-gray-300 text-black"
                 value={newSupplier.contact}
-                onChange={(e) => setNewSupplier({ ...newSupplier, contact: e.target.value })}
+                onChange={(e) =>
+                  setNewSupplier({ ...newSupplier, contact: e.target.value })
+                }
               />
             </div>
             <div className="space-y-2">
@@ -287,13 +327,17 @@ export default function SuppliersVendors() {
                 type="email"
                 className="bg-gray-100 border-gray-300 text-black"
                 value={newSupplier.email}
-                onChange={(e) => setNewSupplier({ ...newSupplier, email: e.target.value })}
+                onChange={(e) =>
+                  setNewSupplier({ ...newSupplier, email: e.target.value })
+                }
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="category">Category</Label>
               <Select
-                onValueChange={(value) => setNewSupplier({ ...newSupplier, category: value })}
+                onValueChange={(value) =>
+                  setNewSupplier({ ...newSupplier, category: value })
+                }
               >
                 <SelectTrigger className="bg-gray-100 border-gray-300 text-black">
                   <SelectValue placeholder="Select category" />
@@ -311,15 +355,24 @@ export default function SuppliersVendors() {
                 id="address"
                 className="bg-gray-100 border-gray-300 text-black"
                 value={newSupplier.address}
-                onChange={(e) => setNewSupplier({ ...newSupplier, address: e.target.value })}
+                onChange={(e) =>
+                  setNewSupplier({ ...newSupplier, address: e.target.value })
+                }
               />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" className="border-gray-300 text-gray-700" onClick={() => setIsAddDialogOpen(false)}>
+            <Button
+              variant="outline"
+              className="border-gray-300 text-gray-700"
+              onClick={() => setIsAddDialogOpen(false)}
+            >
               Cancel
             </Button>
-            <Button className="bg-purple-600 hover:bg-purple-700 text-white" onClick={handleAddSupplier}>
+            <Button
+              className="bg-purple-600 hover:bg-purple-700 text-white"
+              onClick={handleAddSupplier}
+            >
               Add Supplier
             </Button>
           </DialogFooter>
@@ -339,7 +392,9 @@ export default function SuppliersVendors() {
                 id="name"
                 className="bg-gray-100 border-gray-300 text-black"
                 value={newSupplier.name}
-                onChange={(e) => setNewSupplier({ ...newSupplier, name: e.target.value })}
+                onChange={(e) =>
+                  setNewSupplier({ ...newSupplier, name: e.target.value })
+                }
               />
             </div>
             <div className="space-y-2">
@@ -348,7 +403,9 @@ export default function SuppliersVendors() {
                 id="contact"
                 className="bg-gray-100 border-gray-300 text-black"
                 value={newSupplier.contact}
-                onChange={(e) => setNewSupplier({ ...newSupplier, contact: e.target.value })}
+                onChange={(e) =>
+                  setNewSupplier({ ...newSupplier, contact: e.target.value })
+                }
               />
             </div>
             <div className="space-y-2">
@@ -358,14 +415,18 @@ export default function SuppliersVendors() {
                 type="email"
                 className="bg-gray-100 border-gray-300 text-black"
                 value={newSupplier.email}
-                onChange={(e) => setNewSupplier({ ...newSupplier, email: e.target.value })}
+                onChange={(e) =>
+                  setNewSupplier({ ...newSupplier, email: e.target.value })
+                }
               />
             </div>
             <div className="space-y-2">
               <Label htmlFor="category">Category</Label>
               <Select
                 value={newSupplier.category}
-                onValueChange={(value) => setNewSupplier({ ...newSupplier, category: value })}
+                onValueChange={(value) =>
+                  setNewSupplier({ ...newSupplier, category: value })
+                }
               >
                 <SelectTrigger className="bg-gray-100 border-gray-300 text-black">
                   <SelectValue placeholder="Select category" />
@@ -383,15 +444,24 @@ export default function SuppliersVendors() {
                 id="address"
                 className="bg-gray-100 border-gray-300 text-black"
                 value={newSupplier.address}
-                onChange={(e) => setNewSupplier({ ...newSupplier, address: e.target.value })}
+                onChange={(e) =>
+                  setNewSupplier({ ...newSupplier, address: e.target.value })
+                }
               />
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" className="border-gray-300 text-gray-700" onClick={() => setIsEditDialogOpen(false)}>
+            <Button
+              variant="outline"
+              className="border-gray-300 text-gray-700"
+              onClick={() => setIsEditDialogOpen(false)}
+            >
               Cancel
             </Button>
-            <Button className="bg-blue-600 hover:bg-blue-700 text-white" onClick={handleEditSupplier}>
+            <Button
+              className="bg-blue-600 hover:bg-blue-700 text-white"
+              onClick={handleEditSupplier}
+            >
               Save Changes
             </Button>
           </DialogFooter>
@@ -407,17 +477,27 @@ export default function SuppliersVendors() {
           <div className="py-4">
             <p className="text-gray-700">
               Are you sure you want to delete{" "}
-              <span className="font-medium text-black">{selectedSupplier?.name}</span>?
+              <span className="font-medium text-black">
+                {selectedSupplier?.name}
+              </span>
+              ?
             </p>
             <p className="text-gray-500 text-sm mt-2">
               This action cannot be undone.
             </p>
           </div>
           <DialogFooter>
-            <Button variant="outline" className="border-gray-300 text-gray-700" onClick={() => setIsDeleteDialogOpen(false)}>
+            <Button
+              variant="outline"
+              className="border-gray-300 text-gray-700"
+              onClick={() => setIsDeleteDialogOpen(false)}
+            >
               Cancel
             </Button>
-            <Button className="bg-red-600 hover:bg-red-700 text-white" onClick={handleDeleteSupplier}>
+            <Button
+              className="bg-red-600 hover:bg-red-700 text-white"
+              onClick={handleDeleteSupplier}
+            >
               Delete Supplier
             </Button>
           </DialogFooter>
@@ -441,6 +521,8 @@ export default function SuppliersVendors() {
         </DialogContent>
       </Dialog>
     </div>
-  )
-// ...existing code...
+  );
+  // ...existing code...
 }
+
+

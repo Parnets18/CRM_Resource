@@ -96,7 +96,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="h-16 bg-blue-50 flex items-center justify-between px-10 text-black text-sm">
+      {/* <footer className="h-16 bg-blue-50 flex items-center justify-between px-10 text-black text-sm">
         <p>© 2023 CRM. All rights reserved.</p>
         <div className="flex items-center gap-4">
           <Link
@@ -112,7 +112,7 @@ export default function Home() {
             Privacy
           </Link>
         </div>
-      </footer>
+      </footer> */}
     </div>
   );
 }
