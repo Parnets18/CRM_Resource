@@ -1,38 +1,15 @@
-import React, { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { motion } from "framer-motion";
-import {
-  Plus,
-  Trash2,
-  Edit,
-  Utensils,
-  ChevronDown,
-  ChevronUp,
-  Leaf,
-  Beef,
-  X,
-} from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import RestoNav from "../RestoNav";
+import React, { useState, useEffect } from 'react';
+import { Plus, Edit2, Trash2, Save, X, Search, ChefHat } from 'lucide-react';
+import RestoNav from '../RestoNav';
 
-export default function MenuManagement() {
-  // Auto-selected restaurant
-  const [selectedRestaurant] = useState({
-    id: 1,
-    name: "Urban Bites",
-    location: "Downtown",
-  });
+const RecipeManagement = () => {
+  const [recipes, setRecipes] = useState([]);
+  const [rawMaterials, setRawMaterials] = useState([]);
+  const [showAddRecipe, setShowAddRecipe] = useState(false);
+  const [editingRecipe, setEditingRecipe] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
 
+<<<<<<< HEAD
   // Menu categories with subcategories
   const [categories, setCategories] = useState([
     {
@@ -51,84 +28,69 @@ export default function MenuManagement() {
       expanded: true,
     },
   ]);
+=======
+  // Sample raw materials data
+  const sampleRawMaterials = [
+    { id: 1, name: 'Tomatoes', unit: 'kg', cost_per_unit: 50 },
+    { id: 2, name: 'Onions', unit: 'kg', cost_per_unit: 30 },
+    { id: 3, name: 'Chicken Breast', unit: 'kg', cost_per_unit: 300 },
+    { id: 4, name: 'Rice', unit: 'kg', cost_per_unit: 40 },
+    { id: 5, name: 'Oil', unit: 'liter', cost_per_unit: 120 },
+    { id: 6, name: 'Salt', unit: 'kg', cost_per_unit: 20 },
+    { id: 7, name: 'Spices Mix', unit: 'kg', cost_per_unit: 200 },
+    { id: 8, name: 'Flour', unit: 'kg', cost_per_unit: 35 }
+  ];
+>>>>>>> b09516f7ff1e110bbd5fbb2108bd7c26387be63f
 
-  // Sample menu data with category and subcategory
-  const [menuItems, setMenuItems] = useState([
+  // Sample recipes data
+  const sampleRecipes = [
     {
       id: 1,
-      name: "Spring Rolls",
-      category: "Starters",
-      subcategory: "Veg",
-      price: 5.99,
-      status: "Available",
-      ingredients: "Vegetables, wrappers",
+      name: 'Chicken Biryani',
+      description: 'Aromatic basmati rice with spiced chicken',
+      cooking_time: 45,
+      servings: 4,
+      cost_per_serving: 85,
+      ingredients: [
+        { raw_material_id: 3, quantity: 0.5, unit: 'kg' },
+        { raw_material_id: 4, quantity: 0.4, unit: 'kg' },
+        { raw_material_id: 2, quantity: 0.2, unit: 'kg' },
+        { raw_material_id: 7, quantity: 0.05, unit: 'kg' }
+      ],
+      instructions: 'Marinate chicken, cook rice, layer and dum cook for 30 minutes.'
     },
     {
       id: 2,
-      name: "Chicken Wings",
-      category: "Starters",
-      subcategory: "Non-Veg",
-      price: 8.99,
-      status: "Available",
-      ingredients: "Chicken, spices",
-    },
-    {
-      id: 3,
-      name: "Paneer Tikka",
-      category: "Main Course",
-      subcategory: "Veg",
-      price: 12.99,
-      status: "Available",
-      ingredients: "Paneer, spices",
-    },
-    {
-      id: 4,
-      name: "Butter Chicken",
-      category: "Main Course",
-      subcategory: "Non-Veg",
-      price: 14.99,
-      status: "Available",
-      ingredients: "Chicken, butter, spices",
-    },
-    {
-      id: 5,
-      name: "Masala Chai",
-      category: "Beverages",
-      subcategory: "Hot",
-      price: 2.99,
-      status: "Available",
-      ingredients: "Tea, spices, milk",
-    },
-    {
-      id: 6,
-      name: "Mango Lassi",
-      category: "Beverages",
-      subcategory: "Cold",
-      price: 3.99,
-      status: "Available",
-      ingredients: "Yogurt, mango",
-    },
-  ]);
+      name: 'Vegetable Curry',
+      description: 'Mixed vegetables in spiced gravy',
+      cooking_time: 30,
+      servings: 3,
+      cost_per_serving: 45,
+      ingredients: [
+        { raw_material_id: 1, quantity: 0.3, unit: 'kg' },
+        { raw_material_id: 2, quantity: 0.2, unit: 'kg' },
+        { raw_material_id: 5, quantity: 0.05, unit: 'liter' },
+        { raw_material_id: 7, quantity: 0.03, unit: 'kg' }
+      ],
+      instructions: 'Sauté onions, add vegetables and spices, simmer until tender.'
+    }
+  ];
 
-  // State for active subcategory filter
-  const [activeFilter, setActiveFilter] = useState(null);
-  const [expandedCategories, setExpandedCategories] = useState(
-    categories.reduce(
-      (acc, category) => ({ ...acc, [category.name]: true }),
-      {}
-    )
-  );
+  useEffect(() => {
+    setRawMaterials(sampleRawMaterials);
+    setRecipes(sampleRecipes);
+  }, []);
 
-  // Edit modal state
-  const [editItem, setEditItem] = useState(null);
-  const [editForm, setEditForm] = useState({
-    name: "",
-    price: "",
-    ingredients: "",
-    status: "",
-    subcategory: "",
+  const [newRecipe, setNewRecipe] = useState({
+    name: '',
+    description: '',
+    cooking_time: '',
+    servings: '',
+    ingredients: [{ raw_material_id: '', quantity: '', unit: '' }],
+    instructions: ''
   });
 
+<<<<<<< HEAD
   // Add Category modal state
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [newCategory, setNewCategory] = useState({
@@ -142,31 +104,110 @@ export default function MenuManagement() {
       ...prev,
       [categoryName]: !prev[categoryName],
     }));
+=======
+  const calculateRecipeCost = (ingredients) => {
+    return ingredients.reduce((total, ingredient) => {
+      const material = rawMaterials.find(m => m.id === parseInt(ingredient.raw_material_id));
+      if (material && ingredient.quantity) {
+        return total + (material.cost_per_unit * parseFloat(ingredient.quantity));
+      }
+      return total;
+    }, 0);
+>>>>>>> b09516f7ff1e110bbd5fbb2108bd7c26387be63f
   };
 
-  // Filter menu items by subcategory if active filter is set
-  const filteredItems = activeFilter
-    ? menuItems.filter((item) => item.subcategory === activeFilter)
-    : menuItems;
+  const addIngredient = () => {
+    const recipe = editingRecipe || newRecipe;
+    const updatedIngredients = [...recipe.ingredients, { raw_material_id: '', quantity: '', unit: '' }];
+    
+    if (editingRecipe) {
+      setEditingRecipe({ ...editingRecipe, ingredients: updatedIngredients });
+    } else {
+      setNewRecipe({ ...newRecipe, ingredients: updatedIngredients });
+    }
+  };
 
-  // Open edit modal and populate form
-  const openEditModal = (item) => {
-    setEditItem(item);
-    setEditForm({
-      name: item.name,
-      price: item.price,
-      ingredients: item.ingredients,
-      status: item.status,
-      subcategory: item.subcategory,
+  const removeIngredient = (index) => {
+    const recipe = editingRecipe || newRecipe;
+    const updatedIngredients = recipe.ingredients.filter((_, i) => i !== index);
+    
+    if (editingRecipe) {
+      setEditingRecipe({ ...editingRecipe, ingredients: updatedIngredients });
+    } else {
+      setNewRecipe({ ...newRecipe, ingredients: updatedIngredients });
+    }
+  };
+
+  const updateIngredient = (index, field, value) => {
+    const recipe = editingRecipe || newRecipe;
+    const updatedIngredients = recipe.ingredients.map((ingredient, i) => 
+      i === index ? { ...ingredient, [field]: value } : ingredient
+    );
+    
+    if (editingRecipe) {
+      setEditingRecipe({ ...editingRecipe, ingredients: updatedIngredients });
+    } else {
+      setNewRecipe({ ...newRecipe, ingredients: updatedIngredients });
+    }
+  };
+
+  const saveRecipe = () => {
+    const recipe = editingRecipe || newRecipe;
+    const totalCost = calculateRecipeCost(recipe.ingredients);
+    const costPerServing = recipe.servings ? (totalCost / parseInt(recipe.servings)).toFixed(2) : 0;
+
+    const recipeData = {
+      ...recipe,
+      cost_per_serving: parseFloat(costPerServing),
+      cooking_time: parseInt(recipe.cooking_time),
+      servings: parseInt(recipe.servings)
+    };
+
+    if (editingRecipe) {
+      setRecipes(recipes.map(r => r.id === editingRecipe.id ? { ...recipeData, id: editingRecipe.id } : r));
+      setEditingRecipe(null);
+    } else {
+      setRecipes([...recipes, { ...recipeData, id: Date.now() }]);
+      setNewRecipe({
+        name: '',
+        description: '',
+        cooking_time: '',
+        servings: '',
+        ingredients: [{ raw_material_id: '', quantity: '', unit: '' }],
+        instructions: ''
+      });
+      setShowAddRecipe(false);
+    }
+  };
+
+  const editRecipe = (recipe) => {
+    setEditingRecipe({ ...recipe });
+    setShowAddRecipe(false);
+  };
+
+  const deleteRecipe = (id) => {
+    setRecipes(recipes.filter(r => r.id !== id));
+  };
+
+  const cancelEdit = () => {
+    setEditingRecipe(null);
+    setShowAddRecipe(false);
+    setNewRecipe({
+      name: '',
+      description: '',
+      cooking_time: '',
+      servings: '',
+      ingredients: [{ raw_material_id: '', quantity: '', unit: '' }],
+      instructions: ''
     });
   };
 
-  // Handle edit form changes
-  const handleEditChange = (e) => {
-    const { name, value } = e.target;
-    setEditForm((prev) => ({ ...prev, [name]: value }));
-  };
+  const filteredRecipes = recipes.filter(recipe =>
+    recipe.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    recipe.description.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
+<<<<<<< HEAD
   // Save changes (replace with your update logic)
   const handleEditSubmit = (e) => {
     e.preventDefault();
@@ -619,8 +660,313 @@ export default function MenuManagement() {
               );
             })}
           </div>
+=======
+  const RecipeForm = ({ recipe, setRecipe, title }) => (
+    <div className="bg-white p-6 rounded-lg shadow-lg border">
+      <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
+        <ChefHat className="w-5 h-5" />
+        {title}
+      </h3>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Recipe Name</label>
+          <input
+            type="text"
+            value={recipe.name}
+            onChange={(e) => setRecipe({ ...recipe, name: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter recipe name"
+          />
         </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Cooking Time (minutes)</label>
+          <input
+            type="number"
+            value={recipe.cooking_time}
+            onChange={(e) => setRecipe({ ...recipe, cooking_time: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="30"
+          />
+        </div>
+        
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          <input
+            type="text"
+            value={recipe.description}
+            onChange={(e) => setRecipe({ ...recipe, description: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Brief description of the recipe"
+          />
+        </div>
+        
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Servings</label>
+          <input
+            type="number"
+            value={recipe.servings}
+            onChange={(e) => setRecipe({ ...recipe, servings: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="4"
+          />
+        </div>
+      </div>
+
+      <div className="mb-6">
+        <div className="flex justify-between items-center mb-3">
+          <h4 className="text-lg font-medium text-gray-800">Ingredients</h4>
+          <button
+            onClick={addIngredient}
+            className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 flex items-center gap-1 text-sm"
+          >
+            <Plus className="w-4 h-4" />
+            Add Ingredient
+          </button>
+>>>>>>> b09516f7ff1e110bbd5fbb2108bd7c26387be63f
+        </div>
+        
+        <div className="space-y-3">
+          {recipe.ingredients.map((ingredient, index) => (
+            <div key={index} className="flex gap-3 items-center bg-gray-50 p-3 rounded-md">
+              <div className="flex-1">
+                <select
+                  value={ingredient.raw_material_id}
+                  onChange={(e) => updateIngredient(index, 'raw_material_id', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select Material</option>
+                  {rawMaterials.map(material => (
+                    <option key={material.id} value={material.id}>
+                      {material.name} (₹{material.cost_per_unit}/{material.unit})
+                    </option>
+                  ))}
+                </select>
+              </div>
+              
+              <div className="w-24">
+                <input
+                  type="number"
+                  step="0.01"
+                  value={ingredient.quantity}
+                  onChange={(e) => updateIngredient(index, 'quantity', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Qty"
+                />
+              </div>
+              
+              <div className="w-20">
+                <input
+                  type="text"
+                  value={ingredient.unit}
+                  onChange={(e) => updateIngredient(index, 'unit', e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Unit"
+                />
+              </div>
+              
+              <button
+                onClick={() => removeIngredient(index)}
+                className="text-red-500 hover:text-red-700"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="mb-6">
+        <label className="block text-sm font-medium text-gray-700 mb-1">Cooking Instructions</label>
+        <textarea
+          value={recipe.instructions}
+          onChange={(e) => setRecipe({ ...recipe, instructions: e.target.value })}
+          rows={4}
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Step by step cooking instructions..."
+        />
+      </div>
+
+      <div className="bg-blue-50 p-4 rounded-md mb-6">
+        <div className="text-sm text-gray-600">
+          <strong>Total Cost:</strong> ₹{calculateRecipeCost(recipe.ingredients).toFixed(2)}
+          {recipe.servings && (
+            <span className="ml-4">
+              <strong>Cost per Serving:</strong> ₹{(calculateRecipeCost(recipe.ingredients) / parseInt(recipe.servings)).toFixed(2)}
+            </span>
+          )}
+        </div>
+      </div>
+
+      <div className="flex gap-3">
+        <button
+          onClick={saveRecipe}
+          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 flex items-center gap-2"
+        >
+          <Save className="w-4 h-4" />
+          Save Recipe
+        </button>
+        <button
+          onClick={cancelEdit}
+          className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 flex items-center gap-2"
+        >
+          <X className="w-4 h-4" />
+          Cancel
+        </button>
       </div>
     </div>
   );
-}
+
+  return (
+    <div className='ml-64'>
+      <div className="max-w-7xl mx-auto p-6 bg-gray-50 min-h-screen">
+      <RestoNav />
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-800 mb-2 flex items-center gap-3">
+          <ChefHat className="w-8 h-8 text-blue-500" />
+          Recipe Management
+        </h1>
+        <p className="text-gray-600">Manage recipes, ingredients, and calculate costs</p>
+      </div>
+
+      {/* Add Recipe Button */}
+      {!showAddRecipe && !editingRecipe && (
+        <div className="mb-6">
+          <button
+            onClick={() => setShowAddRecipe(true)}
+            className="bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 flex items-center gap-2 font-medium"
+          >
+            <Plus className="w-5 h-5" />
+            Add New Recipe
+          </button>
+        </div>
+      )}
+
+      {/* Search Bar */}
+      {!showAddRecipe && !editingRecipe && (
+        <div className="mb-6">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input
+              type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              placeholder="Search recipes..."
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        </div>
+      )}
+
+      {/* Add Recipe Form */}
+      {showAddRecipe && (
+        <div className="mb-8">
+          <RecipeForm
+            recipe={newRecipe}
+            setRecipe={setNewRecipe}
+            title="Add New Recipe"
+          />
+        </div>
+      )}
+
+      {/* Edit Recipe Form */}
+      {editingRecipe && (
+        <div className="mb-8">
+          <RecipeForm
+            recipe={editingRecipe}
+            setRecipe={setEditingRecipe}
+            title="Edit Recipe"
+          />
+        </div>
+      )}
+
+      {/* Recipes List */}
+      {!showAddRecipe && !editingRecipe && (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {filteredRecipes.map(recipe => (
+            <div key={recipe.id} className="bg-white rounded-lg shadow-lg border hover:shadow-xl transition-shadow">
+              <div className="p-6">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-800 mb-1">{recipe.name}</h3>
+                    <p className="text-gray-600 text-sm">{recipe.description}</p>
+                  </div>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => editRecipe(recipe)}
+                      className="text-blue-500 hover:text-blue-700 p-1"
+                    >
+                      <Edit2 className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => deleteRecipe(recipe.id)}
+                      className="text-red-500 hover:text-red-700 p-1"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
+                  <div>
+                    <span className="text-gray-500">Cooking Time:</span>
+                    <span className="ml-2 font-medium">{recipe.cooking_time} mins</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-500">Servings:</span>
+                    <span className="ml-2 font-medium">{recipe.servings}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-500">Cost per Serving:</span>
+                    <span className="ml-2 font-medium text-green-600">₹{recipe.cost_per_serving}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-500">Total Cost:</span>
+                    <span className="ml-2 font-medium">₹{(recipe.cost_per_serving * recipe.servings).toFixed(2)}</span>
+                  </div>
+                </div>
+
+                <div className="mb-4">
+                  <h4 className="font-medium text-gray-700 mb-2">Ingredients:</h4>
+                  <div className="space-y-1">
+                    {recipe.ingredients.map((ingredient, index) => {
+                      const material = rawMaterials.find(m => m.id === ingredient.raw_material_id);
+                      return (
+                        <div key={index} className="text-sm text-gray-600 flex justify-between">
+                          <span>{material?.name || 'Unknown'}</span>
+                          <span>{ingredient.quantity} {ingredient.unit}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {recipe.instructions && (
+                  <div className="border-t pt-4">
+                    <h4 className="font-medium text-gray-700 mb-2">Instructions:</h4>
+                    <p className="text-sm text-gray-600">{recipe.instructions}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {!showAddRecipe && !editingRecipe && filteredRecipes.length === 0 && (
+        <div className="text-center py-12">
+          <ChefHat className="w-16 h-16 text-gray-400 mx-auto mb-4" />
+          <h3 className="text-xl font-medium text-gray-600 mb-2">No recipes found</h3>
+          <p className="text-gray-500">
+            {searchTerm ? 'Try adjusting your search terms' : 'Create your first recipe to get started'}
+          </p>
+        </div>
+      )}
+    </div>
+    </div>
+     
+  );
+};
+
+export default RecipeManagement;

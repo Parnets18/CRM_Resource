@@ -91,6 +91,10 @@ export default function RestoNav() {
       id: "site",
       subtabs: [
         { title: "Category", icon: ChartBarStacked, path: "/Category" },
+<<<<<<< HEAD
+=======
+
+>>>>>>> b09516f7ff1e110bbd5fbb2108bd7c26387be63f
         { title: "Menu", icon: SquareMenu, path: "/Menu" },
         { title: "Recipe", icon: CookingPot, path: "/Recipe" },
         { title: "Price", icon: CircleDollarSign, path: "/Price" },
@@ -133,82 +137,97 @@ export default function RestoNav() {
       ],
     },
     {
-  title: "Order & Billing",
-  icon: CreditCard, // Previously ShoppingCart
-  id: "kop",
-  subtabs: [{ title: "Pos", icon: CreditCard, path: "/Addtocart" }],
-},
-    {
-  title: "Customer Management",
-  icon: Users2, // Changed from ShoppingCart
-  id: "k",
-  subtabs: [
-    {
-      title: "Customer Profile",
-      icon: UserPlus,
-      path: "/Customermanagemnet",
+      title: "Order & Billing",
+      icon: CreditCard, // Previously ShoppingCart
+      id: "kop",
+      subtabs: [{ title: "Pos", icon: CreditCard, path: "/Addtocart" }],
     },
-  ],
-},
     {
-  title: "Reservations Management",
-  icon: Calendar, // Changed from ShoppingCart
-  id: "ko",
-  subtabs: [
-    {
-      title: "Table Management",
-      icon: TableCellsSplit,
-      path: "/Tablemangement",
+      title: "Customer Management",
+      icon: Users2, // Changed from ShoppingCart
+      id: "k",
+      subtabs: [
+        {
+          title: "Customer Profile",
+          icon: UserPlus,
+          path: "/Customermanagemnet",
+        },
+      ],
     },
-  ],
-},
-   {
-  title: "Kitchen Management",
-  icon: CookingPot, // Changed from ShoppingCart
-  subtabs: [
+    {
+      title: "Reservations Management",
+      icon: Calendar, // Changed from ShoppingCart
+      id: "ko",
+      subtabs: [
+        {
+          title: "Table Management",
+          icon: TableCellsSplit,
+          path: "/Tablemangement",
+        },
+      ],
+    },
     {
       title: "Kitchen Management",
-      icon: Utensils,
-      path: "/Kitchebnmanagement",
+      icon: CookingPot, // Changed from ShoppingCart
+      subtabs: [
+        {
+          title: "Kitchen Management",
+          icon: Utensils,
+          path: "/Kitchebnmanagement",
+        },
+      ],
     },
-  ],
-},
-      {
-  title: "HR & Management",
-  icon: Building, // Changed from ShoppingCart
-  id: "kop",
-  subtabs: [
     {
-      title: "HR Payroll",
-      icon: DollarSign,
-      path: "/Hrpayroll",
+      title: "HR & Management",
+      icon: Building, // Changed from ShoppingCart
+      id: "kop",
+      subtabs: [
+        {
+          title: "HR Payroll",
+          icon: DollarSign,
+          path: "/Hrpayroll",
+        },
+      ],
     },
-  ],
-},
-    
-   
+
     {
       title: "Expense Management",
       icon: Scale,
       id: "expense",
       subtabs: [
-        { title: "Expense Managemnet", icon: CreditCard, path: "/Restaurantexpense" },
+        {
+          title: "Expense Managemnet",
+          icon: CreditCard,
+          path: "/Restaurantexpense",
+        },
       ],
     },
 
     {
-  title: "Restaurant Analytics",
-  icon: PieChart, // Changed from Scale
-  id: "analytics",
-  subtabs: [
-    {
-      title: "Report & Analytics",
-      icon: BarChart3, // Changed from CreditCard
-      path: "/Restaurant&analytics",
+      title: "Restaurant Analytics",
+      icon: PieChart, // Changed from Scale
+      id: "analytics",
+      subtabs: [
+        {
+          title: "Report & Analytics",
+          icon: BarChart3, // Changed from CreditCard
+          path: "/Restaurant&analytics",
+        },
+      ],
     },
-  ],
-},
 
+    {
+      title: "Supervisor",
+      icon: Users2, // Changed from Scale
+      id: "supervisor",
+      subtabs: [
+        {
+          title: "Supervisor",
+          icon: Users2,
+          path: "/Supervisor",
+        },
+      ],
+    },
   ];
 
   return (
@@ -219,11 +238,7 @@ export default function RestoNav() {
           onClick={() => setIsNavOpen(!isNavOpen)}
           className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white hover:bg-gray-100 text-purple-700 border border-purple-200"
         >
-          {isNavOpen ? (
-            <X className="w-6 h-6" />
-          ) : (
-            <Menu className="w-6 h-6" />
-          )}
+          {isNavOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
         </button>
       )}
 
