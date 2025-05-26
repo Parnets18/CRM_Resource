@@ -72,11 +72,6 @@ export default function TableManagement() {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  // Handle select changes
-  const handleSelectChange = (name, value) => {
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }
-
   // Create a new reservation
   const handleCreateReservation = () => {
     const newReservation = {
@@ -182,11 +177,6 @@ export default function TableManagement() {
     setCurrentReservation(null)
   }
 
-  // Update table status directly
-  const handleTableStatusChange = (tableId, newStatus) => {
-    setTables((prev) => prev.map((table) => (table.id === tableId ? { ...table, status: newStatus } : table)))
-  }
-
   // Filter reservations by search query
   const filteredReservations = reservations.filter(
     (res) =>
@@ -195,40 +185,48 @@ export default function TableManagement() {
       res.tableId.toString().includes(searchQuery),
   )
 
-  // Get status color classes
+  // Professional color palette for table status
   const getStatusColorClasses = (status) => {
     switch (status) {
       case "Free":
         return {
-          bg: "bg-green-100",
-          border: "border-green-500",
-          text: "bg-green-500 text-white",
-          pill: "bg-green-100 text-green-800",
-          dot: "bg-green-500",
+          bg: "bg-purple-100", // <-- Table bg is now purple-300 for all statuses
+          border: "border-gray-300",
+          text: "bg-gray-200 text-gray-700",
+          pill: "bg-gray-100 text-gray-700",
+          dot: "bg-gray-400",
         }
       case "Reserved":
         return {
-          bg: "bg-yellow-100",
-          border: "border-yellow-500",
-          text: "bg-yellow-500 text-white",
-          pill: "bg-yellow-100 text-yellow-800",
-          dot: "bg-yellow-500",
+          bg: "bg-purple-300",
+          border: "border-indigo-400",
+          text: "bg-indigo-500 text-white",
+          pill: "bg-indigo-100 text-indigo-700",
+          dot: "bg-indigo-500",
         }
       case "Occupied":
         return {
-          bg: "bg-red-100",
-          border: "border-red-500",
-          text: "bg-red-500 text-white",
-          pill: "bg-red-100 text-red-800",
-          dot: "bg-red-500",
+          bg: "bg-purple-300",
+          border: "border-rose-400",
+          text: "bg-rose-500 text-white",
+          pill: "bg-rose-100 text-rose-700",
+          dot: "bg-rose-500",
+        }
+      case "No-show":
+        return {
+          bg: "bg-purple-300",
+          border: "border-yellow-400",
+          text: "bg-yellow-500 text-white",
+          pill: "bg-yellow-100 text-yellow-700",
+          dot: "bg-yellow-400",
         }
       default:
         return {
-          bg: "bg-gray-100",
-          border: "border-gray-500",
-          text: "bg-gray-500 text-white",
+          bg: "bg-purple-300",
+          border: "border-gray-400",
+          text: "bg-gray-400 text-white",
           pill: "bg-gray-100 text-gray-800",
-          dot: "bg-gray-500",
+          dot: "bg-gray-400",
         }
     }
   }
@@ -248,13 +246,13 @@ export default function TableManagement() {
           <div className="flex">
             <button
               onClick={() => setActiveTab("layout")}
-              className={`px-4 py-2 font-medium ${activeTab === "layout" ? "border-b-2 border-blue-500" : ""}`}
+              className={`px-4 py-2 font-medium ${activeTab === "layout" ? "border-b-2 border-purple-500 text-purple-600" : ""}`}
             >
               Table Layout
             </button>
             <button
               onClick={() => setActiveTab("reservations")}
-              className={`px-4 py-2 font-medium ${activeTab === "reservations" ? "border-b-2 border-blue-500" : ""}`}
+              className={`px-4 py-2 font-medium ${activeTab === "reservations" ? "border-b-2 border-purple-500 text-purple-600" : ""}`}
             >
               Reservations
             </button>
@@ -267,7 +265,7 @@ export default function TableManagement() {
               <h2 className="text-xl font-semibold">Restaurant Floor Plan</h2>
               <button
                 onClick={() => handleNewReservation()}
-                className="flex items-center gap-1 bg-blue-500 text-white px-3 py-1 rounded-md"
+                className="flex items-center gap-1 bg-purple-600 text-white px-3 py-1 rounded-md hover:bg-purple-700"
               >
                 <PlusCircleIcon size={16} />
                 New Reservation
@@ -282,7 +280,7 @@ export default function TableManagement() {
                     <div
                       className={`relative p-4 border rounded-md cursor-pointer flex flex-col items-center justify-center ${
                         table.shape === "round" ? "rounded-full" : ""
-                      } ${statusColors.bg} ${statusColors.border}`}
+                      } ${statusColors.bg} ${statusColors.border} transition-colors duration-200`}
                       style={{ height: "100px" }}
                       onClick={() => {
                         const existingReservation = reservations.find(
@@ -344,7 +342,7 @@ export default function TableManagement() {
                 </div>
                 <button
                   onClick={() => handleNewReservation()}
-                  className="flex items-center gap-1 bg-blue-500 text-white px-3 py-1.5 rounded-md text-sm"
+                  className="flex items-center gap-1 bg-purple-600 text-white px-3 py-1.5 rounded-md text-sm hover:bg-purple-700"
                 >
                   <PlusCircleIcon size={16} />
                   New
@@ -353,16 +351,16 @@ export default function TableManagement() {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="min-w-full bg-white border">
+              <table className="min-w-full bg-purple-300 border rounded-lg shadow-sm">
                 <thead>
                   <tr className="bg-gray-100">
-                    <th className="py-2 px-3 text-left text-sm font-medium">Table</th>
-                    <th className="py-2 px-3 text-left text-sm font-medium">Customer</th>
-                    <th className="py-2 px-3 text-left text-sm font-medium">Date & Time</th>
-                    <th className="py-2 px-3 text-left text-sm font-medium">Guests</th>
-                    <th className="py-2 px-3 text-left text-sm font-medium">Waiter</th>
-                    <th className="py-2 px-3 text-left text-sm font-medium">Status</th>
-                    <th className="py-2 px-3 text-left text-sm font-medium">Actions</th>
+                    <th className="py-2 px-3 text-left text-sm font-semibold text-gray-700">Table</th>
+                    <th className="py-2 px-3 text-left text-sm font-semibold text-gray-700">Customer</th>
+                    <th className="py-2 px-3 text-left text-sm font-semibold text-gray-700">Date & Time</th>
+                    <th className="py-2 px-3 text-left text-sm font-semibold text-gray-700">Guests</th>
+                    <th className="py-2 px-3 text-left text-sm font-semibold text-gray-700">Waiter</th>
+                    <th className="py-2 px-3 text-left text-sm font-semibold text-gray-700">Status</th>
+                    <th className="py-2 px-3 text-left text-sm font-semibold text-gray-700">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -370,7 +368,7 @@ export default function TableManagement() {
                     filteredReservations.map((reservation) => {
                       const statusColors = getStatusColorClasses(reservation.status)
                       return (
-                        <tr key={reservation.id} className="border-t hover:bg-gray-50">
+                        <tr key={reservation.id} className="border-t hover:bg-gray-50 transition-colors duration-150">
                           <td className="py-2 px-3 text-sm">
                             {tables.find((t) => t.id.toString() === reservation.tableId)?.name || reservation.tableId}
                           </td>
@@ -395,7 +393,7 @@ export default function TableManagement() {
                             <div className="flex gap-2">
                               <button
                                 onClick={() => handleEditReservationClick(reservation)}
-                                className="p-1 text-blue-600 hover:bg-blue-50 rounded"
+                                className="p-1 text-purple-600 hover:bg-purple-50 rounded"
                               >
                                 <PencilIcon size={16} />
                               </button>
@@ -600,7 +598,7 @@ export default function TableManagement() {
                 </button>
                 <button
                   onClick={currentReservation ? handleEditReservation : handleCreateReservation}
-                  className="px-4 py-2 bg-blue-500 text-white rounded-md"
+                  className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
                   disabled={!formData.tableId || !formData.customerName}
                 >
                   {currentReservation ? "Update" : "Create"}

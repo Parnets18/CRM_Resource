@@ -229,7 +229,7 @@ export default function Configuration() {
                                     <Card className="border border-blue-500/20 bg-white backdrop-blur-sm mb-6">
                                         <CardHeader className="flex flex-row justify-between items-center">
                                             <CardTitle className="text-black">Units of Measurement</CardTitle>
-                                            <Button onClick={addNewUnit} className="bg-blue-600 hover:bg-blue-700 text-white">
+                                            <Button onClick={addNewUnit} className="bg-purple-600 hover:bg-purple-600 text-white">
                                                 <Plus className="w-4 h-4 mr-2" /> Add Unit
                                             </Button>
                                         </CardHeader>
@@ -300,7 +300,7 @@ export default function Configuration() {
                                     <Card className="border border-blue-500/20 bg-white backdrop-blur-sm mb-6">
                                         <CardHeader className="flex flex-row justify-between items-center">
                                             <CardTitle className="text-black">Kitchen Printers</CardTitle>
-                                            <Button onClick={addNewPrinter} className="bg-blue-600 hover:bg-blue-700 text-white">
+                                            <Button onClick={addNewPrinter} className="bg-purple-600 hover:bg-purple-700 text-white">
                                                 <Plus className="w-4 h-4 mr-2" /> Add Printer
                                             </Button>
                                         </CardHeader>
@@ -324,7 +324,7 @@ export default function Configuration() {
                                                         </div>
                                                         <div>
                                                             <Label className="text-gray-700">Print Test Page</Label>
-                                                            <Button variant="outline" className="bg-blue-600 hover:bg-blue-700 text-white">
+                                                            <Button variant="outline" className="bg-purple-600 hover:bg-purple-700 text-white">
                                                                 Print Test
                                                             </Button>
                                                         </div>
@@ -395,7 +395,7 @@ export default function Configuration() {
                             animate={{ opacity: 1 }}
                             className="flex flex-col items-center justify-center py-16 text-center"
                         >
-                            <Printer className="w-12 h-12 text-blue-400 mb-4" />
+                            <Printer className="w-12 h-12 text-purple-400 mb-4" />
                             <h3 className="text-xl font-medium text-black mb-2">Select a Restaurant</h3>
                             <p className="text-gray-700 max-w-md">
                                 Please select a restaurant from the dropdown above to configure its settings.
