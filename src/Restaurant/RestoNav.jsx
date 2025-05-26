@@ -91,10 +91,6 @@ export default function RestoNav() {
       id: "site",
       subtabs: [
         { title: "Category", icon: ChartBarStacked, path: "/Category" },
-<<<<<<< HEAD
-=======
-
->>>>>>> b09516f7ff1e110bbd5fbb2108bd7c26387be63f
         { title: "Menu", icon: SquareMenu, path: "/Menu" },
         { title: "Recipe", icon: CookingPot, path: "/Recipe" },
         { title: "Price", icon: CircleDollarSign, path: "/Price" },

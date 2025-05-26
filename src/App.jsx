@@ -61,7 +61,7 @@ import SalesManagement from "../src/Common/SalesManagement";
 import Inventory from "../src/Common/Inventory";
 import CRMManagement from "../src/Common/Crmmanagement";
 import CRMHRManagement from "../src/Common/CRMHRManagement";
-import Attend from "./Common/Attendence";
+// import Attend from "./Common/Attendence";
 import Payroll from "../src/Common/Payroll";
 import AccountsFinance from "../src/Common/Account&Finance";
 import SecurityRoles from "./Common/SecurityRoles";
@@ -93,7 +93,6 @@ import RestaurantAnalytics from "./Restaurant/Report/Restaurant&Analytics";
 import AlertsAndNotifications from "./Common/AlertsAndNotifications";
 import HRAndPayroll from "./Restaurant/Hr&Managenent/HrPayroll";
 import ConstructionDashboard from "./Admin/DashboardcConstruction";
-import Supervisor from "./Restaurant/Supervisor/Supervisor";
 // import RestaurantAnalytics from "./Restaurant/Report/Restaurant&Analytics";
 
 function App() {
@@ -155,9 +154,10 @@ function App() {
         <Route path="/Kitchebnmanagement" element={<KitchenManagement />} />
         <Route path="/HrPayroll" element={<HRAndPayroll />} />
         <Route path="/Restaurantexpense" element={<ExpenseManagement />} />
+        {/* <Route path="/Restaurant&analytics" element={<ReportAnalytics />} /> */}
+        {/* <Route path="/Restaurant&analytics" element={<ReportAnalytics />} /> */}
         <Route path="/Restaurant&analytics" element={<RestaurantAnalytics />} />
-        <Route path="/Supervisor" element={<Supervisor />} />
-
+        
         
  
         <Route path="/register" element={<RegisterPage />} />
@@ -212,7 +212,7 @@ function App() {
           <Route path="inventory" element={<Inventory />} />
           <Route path="customers" element={<CRMManagement />} />
           <Route path="hr" element={<CRMHRManagement />} />
-          <Route path="attendance" element={<Attend />} />
+          {/* <Route path="attendance" element={<Attend />} /> */}
           <Route path="payroll" element={<Payroll />} />
           <Route path="payroll" element={<Payroll />} />
           <Route path="finance" element={<AccountsFinance />} />

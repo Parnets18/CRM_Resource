@@ -9,7 +9,6 @@ const RecipeManagement = () => {
   const [editingRecipe, setEditingRecipe] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
 
-<<<<<<< HEAD
   // Menu categories with subcategories
   const [categories, setCategories] = useState([
     {
@@ -28,19 +27,6 @@ const RecipeManagement = () => {
       expanded: true,
     },
   ]);
-=======
-  // Sample raw materials data
-  const sampleRawMaterials = [
-    { id: 1, name: 'Tomatoes', unit: 'kg', cost_per_unit: 50 },
-    { id: 2, name: 'Onions', unit: 'kg', cost_per_unit: 30 },
-    { id: 3, name: 'Chicken Breast', unit: 'kg', cost_per_unit: 300 },
-    { id: 4, name: 'Rice', unit: 'kg', cost_per_unit: 40 },
-    { id: 5, name: 'Oil', unit: 'liter', cost_per_unit: 120 },
-    { id: 6, name: 'Salt', unit: 'kg', cost_per_unit: 20 },
-    { id: 7, name: 'Spices Mix', unit: 'kg', cost_per_unit: 200 },
-    { id: 8, name: 'Flour', unit: 'kg', cost_per_unit: 35 }
-  ];
->>>>>>> b09516f7ff1e110bbd5fbb2108bd7c26387be63f
 
   // Sample recipes data
   const sampleRecipes = [
@@ -90,7 +76,6 @@ const RecipeManagement = () => {
     instructions: ''
   });
 
-<<<<<<< HEAD
   // Add Category modal state
   const [showAddCategory, setShowAddCategory] = useState(false);
   const [newCategory, setNewCategory] = useState({
@@ -104,16 +89,6 @@ const RecipeManagement = () => {
       ...prev,
       [categoryName]: !prev[categoryName],
     }));
-=======
-  const calculateRecipeCost = (ingredients) => {
-    return ingredients.reduce((total, ingredient) => {
-      const material = rawMaterials.find(m => m.id === parseInt(ingredient.raw_material_id));
-      if (material && ingredient.quantity) {
-        return total + (material.cost_per_unit * parseFloat(ingredient.quantity));
-      }
-      return total;
-    }, 0);
->>>>>>> b09516f7ff1e110bbd5fbb2108bd7c26387be63f
   };
 
   const addIngredient = () => {
@@ -207,7 +182,6 @@ const RecipeManagement = () => {
     recipe.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-<<<<<<< HEAD
   // Save changes (replace with your update logic)
   const handleEditSubmit = (e) => {
     e.preventDefault();
@@ -660,71 +634,6 @@ const RecipeManagement = () => {
               );
             })}
           </div>
-=======
-  const RecipeForm = ({ recipe, setRecipe, title }) => (
-    <div className="bg-white p-6 rounded-lg shadow-lg border">
-      <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
-        <ChefHat className="w-5 h-5" />
-        {title}
-      </h3>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Recipe Name</label>
-          <input
-            type="text"
-            value={recipe.name}
-            onChange={(e) => setRecipe({ ...recipe, name: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Enter recipe name"
-          />
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Cooking Time (minutes)</label>
-          <input
-            type="number"
-            value={recipe.cooking_time}
-            onChange={(e) => setRecipe({ ...recipe, cooking_time: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="30"
-          />
-        </div>
-        
-        <div className="md:col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-          <input
-            type="text"
-            value={recipe.description}
-            onChange={(e) => setRecipe({ ...recipe, description: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="Brief description of the recipe"
-          />
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Servings</label>
-          <input
-            type="number"
-            value={recipe.servings}
-            onChange={(e) => setRecipe({ ...recipe, servings: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="4"
-          />
-        </div>
-      </div>
-
-      <div className="mb-6">
-        <div className="flex justify-between items-center mb-3">
-          <h4 className="text-lg font-medium text-gray-800">Ingredients</h4>
-          <button
-            onClick={addIngredient}
-            className="bg-green-500 text-white px-3 py-1 rounded-md hover:bg-green-600 flex items-center gap-1 text-sm"
-          >
-            <Plus className="w-4 h-4" />
-            Add Ingredient
-          </button>
->>>>>>> b09516f7ff1e110bbd5fbb2108bd7c26387be63f
         </div>
         
         <div className="space-y-3">

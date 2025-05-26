@@ -1,209 +1,305 @@
-import { Button } from "@/components/ui/button";
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { motion } from "framer-motion";
-import { Bell, Settings, UserPlus, Building, Key, Users } from "lucide-react";
-import Nav from "../Nav";
+import { Button } from "@/components/ui/button";
+import { Building, Users, Plus, Edit3, Trash2, Search, MapPin, User, DollarSign, Calendar, X, CheckCircle } from "lucide-react";
+import Nav from '../Nav';
+export default function SiteManagementCRUD() {
+  const [sites, setSites] = useState([
+    { id: 1, name: "Downtown Complex", location: "New York", manager: "Sarah Johnson", budget: "$2.5M", workers: 45, status: "Active", startDate: "2024-01-15" },
+    { id: 2, name: "Tech Hub", location: "San Francisco", manager: "Michael Chen", budget: "$3.8M", workers: 32, status: "Active", startDate: "2024-03-01" },
+    { id: 3, name: "Residential Tower", location: "Chicago", manager: "Emily Rodriguez", budget: "$4.2M", workers: 12, status: "Planning", startDate: "2024-06-01" }
+  ]);
+  
+  const [showForm, setShowForm] = useState(false);
+  const [editingSite, setEditingSite] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [formData, setFormData] = useState({
+    name: "", location: "", manager: "", budget: "", workers: "", status: "Active", startDate: ""
+  });
 
-export default function SiteAdmin() {
- 
-  const projectManagers = [
-    { id: 1, name: "Sarah Johnson", email: "sarah@company.com" },
-    { id: 2, name: "Michael Chen", email: "michael@company.com" }
-  ];
+  const filteredSites = sites.filter(site => 
+    site.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    site.location.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-  const sites = [
-    { id: 1, name: "Downtown Tower", location: "New York", pm: "Sarah Johnson", roles: ["view", "edit"] },
-    { id: 2, name: "Tech Campus", location: "San Francisco", pm: "Michael Chen", roles: ["admin"] }
-  ];
+  const handleSubmit = () => {
+    if (!formData.name || !formData.location || !formData.manager || !formData.budget || !formData.workers || !formData.startDate) {
+      alert("Please fill in all required fields");
+      return;
+    }
+    if (editingSite) {
+      setSites(prev => prev.map(site => 
+        site.id === editingSite.id ? { ...formData, id: editingSite.id } : site
+      ));
+    } else {
+      setSites(prev => [...prev, { ...formData, id: Date.now() }]);
+    }
+    resetForm();
+  };
 
-  // ...existing code...
+  const handleEdit = (site) => {
+    setEditingSite(site);
+    setFormData(site);
+    setShowForm(true);
+  };
+
+  const handleDelete = (id) => {
+    if (confirm("Are you sure you want to delete this site?")) {
+      setSites(prev => prev.filter(site => site.id !== id));
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({ name: "", location: "", manager: "", budget: "", workers: "", status: "Active", startDate: "" });
+    setEditingSite(null);
+    setShowForm(false);
+  };
+
+  const getStatusColor = (status) => {
+    return status === "Active" ? "bg-green-100 text-green-700" : 
+           status === "Planning" ? "bg-blue-100 text-blue-700" : "bg-gray-100 text-gray-700";
+  };
+
   return (
-    <div className="min-h-screen bg-white lg:ml-64">
-      
-      <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-200/30 via-gray-100 to-white"></div>
-        <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-300/10 to-transparent"></div>
-      </div>
-
-      <div className="relative z-10 flex">
-        <Nav />
-
-        
-        <div className="flex-1 p-8 mt-16 md:mt-0">
-         
-          <div className="flex justify-between items-center mb-8">
-            <div>
-              <h2 className="text-2xl font-bold text-black">Administration Dashboard</h2>
-              <p className="text-gray-600">System configuration and management</p>
-            </div>
-            {/* <Button variant="ghost" size="icon" className="text-gray-700 hover:bg-gray-100/50">
-              <Bell className="w-5 h-5" />
-            </Button> */}
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6 ml-64" >
+      <Nav/>
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+              <Building className="w-8 h-8 text-blue-600" />
+              Site Management
+            </h1>
+            <p className="text-gray-600 mt-1">Manage your construction sites efficiently</p>
           </div>
+          <div className="bg-white rounded-lg px-4 py-2 shadow-sm border">
+            <span className="text-2xl font-bold text-blue-600">{sites.length}</span>
+            <span className="text-gray-600 ml-2">Total Sites</span>
+          </div>
+        </div>
 
-        
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-         
-            <Card className="border border-purple-500/20 bg-white/80 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="text-black flex items-center gap-2">
-                  <Building className="w-5 h-5" /> Create New Site
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form className="space-y-4">
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">Site Name</label>
-                    <input 
-                      type="text" 
-                      className="w-full p-2 rounded bg-gray-100/50 border border-gray-300 text-black"
-                      placeholder="Enter site name"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">Location</label>
-                    <input 
-                      type="text" 
-                      className="w-full p-2 rounded bg-gray-100/50 border border-gray-300 text-black"
-                      placeholder="Enter location"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium text-gray-700">Assign Project Manager</label>
-                    <select className="w-full p-2 rounded bg-gray-100/50 border border-gray-300 text-black">
-                      <option value="">Select Project Manager</option>
-                      {projectManagers.map(pm => (
-                        <option key={pm.id} value={pm.id}>{pm.name} ({pm.email})</option>
-                      ))}
-                    </select>
-                  </div>
-                  <Button className="w-full bg-purple-600 hover:bg-purple-700">
-                    <UserPlus className="w-4 h-4 mr-2" /> Create Site
+        {/* Search & Add Button */}
+        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+          <div className="relative flex-1">
+            <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search sites by name or location..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-200 bg-white shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            />
+          </div>
+          <Button 
+            onClick={() => setShowForm(true)}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 shadow-lg"
+          >
+            <Plus className="w-5 h-5 mr-2" />
+            Add New Site
+          </Button>
+        </div>
+
+        {/* Form Modal */}
+        {showForm && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <Card className="w-full max-w-md bg-white shadow-2xl">
+              <CardHeader className="pb-4">
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-xl text-gray-900">
+                    {editingSite ? "Edit Site" : "Add New Site"}
+                  </CardTitle>
+                  <Button variant="ghost" size="sm" onClick={resetForm}>
+                    <X className="w-5 h-5" />
                   </Button>
-                </form>
-              </CardContent>
-            </Card>
-
-            <Card className="border border-purple-500/20 bg-white/80 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="text-black flex items-center gap-2">
-                  <Key className="w-5 h-5" /> Manage Access Roles
-                </CardTitle>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="overflow-x-auto">
-                    <table className="w-full">
-                      <thead>
-                        <tr className="text-left text-sm text-gray-600 border-b border-gray-200">
-                          <th className="pb-3">Site Name</th>
-                          <th className="pb-3">Location</th>
-                          <th className="pb-3">Project Manager</th>
-                          <th className="pb-3">Access Roles</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {sites.map(site => (
-                          <motion.tr 
-                            key={site.id} 
-                            whileHover={{ scale: 1.01 }}
-                            className="border-b border-gray-200 hover:bg-purple-100/30"
-                          >
-                            <td className="py-3 text-black">{site.name}</td>
-                            <td className="py-3 text-gray-700">{site.location}</td>
-                            <td className="py-3 text-purple-700">{site.pm}</td>
-                            <td className="py-3">
-                              <div className="flex gap-4">
-                                <label className="flex items-center gap-1 text-sm">
-                                  <input 
-                                    type="checkbox" 
-                                    className="accent-purple-500"
-                                    checked={site.roles.includes('view')}
-                                    readOnly
-                                  />
-                                  View
-                                </label>
-                                <label className="flex items-center gap-1 text-sm">
-                                  <input 
-                                    type="checkbox" 
-                                    className="accent-purple-500"
-                                    checked={site.roles.includes('edit')}
-                                    readOnly
-                                  />
-                                  Edit
-                                </label>
-                                <label className="flex items-center gap-1 text-sm">
-                                  <input 
-                                    type="checkbox" 
-                                    className="accent-purple-500"
-                                    checked={site.roles.includes('admin')}
-                                    readOnly
-                                  />
-                                  Admin
-                                </label>
-                              </div>
-                            </td>
-                          </motion.tr>
-                        ))}
-                      </tbody>
-                    </table>
+                  <div>
+                    <label className="text-sm font-medium text-gray-700 mb-1 block">Site Name</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={(e) => setFormData({...formData, name: e.target.value})}
+                      className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Enter site name"
+                    />
                   </div>
-
-                  <div className="flex justify-end gap-2">
-                    <Button variant="outline" className="border-purple-500 text-purple-700 hover:bg-purple-500/10">
-                      Reset Changes
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-sm font-medium text-gray-700 mb-1 block">Location</label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.location}
+                        onChange={(e) => setFormData({...formData, location: e.target.value})}
+                        className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="City"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-700 mb-1 block">Workers</label>
+                      <input
+                        type="number"
+                        required
+                        value={formData.workers}
+                        onChange={(e) => setFormData({...formData, workers: parseInt(e.target.value)})}
+                        className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="0"
+                      />
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-700 mb-1 block">Project Manager</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.manager}
+                      onChange={(e) => setFormData({...formData, manager: e.target.value})}
+                      className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Manager name"
+                    />
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-sm font-medium text-gray-700 mb-1 block">Budget</label>
+                      <input
+                        type="text"
+                        required
+                        value={formData.budget}
+                        onChange={(e) => setFormData({...formData, budget: e.target.value})}
+                        className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        placeholder="$0.00"
+                      />
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-gray-700 mb-1 block">Status</label>
+                      <select
+                        value={formData.status}
+                        onChange={(e) => setFormData({...formData, status: e.target.value})}
+                        className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      >
+                        <option value="Active">Active</option>
+                        <option value="Planning">Planning</option>
+                        <option value="Completed">Completed</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-gray-700 mb-1 block">Start Date</label>
+                    <input
+                      type="date"
+                      required
+                      value={formData.startDate}
+                      onChange={(e) => setFormData({...formData, startDate: e.target.value})}
+                      className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                    />
+                  </div>
+                  <div className="flex gap-3 pt-4">
+                    <Button type="button" variant="outline" onClick={resetForm} className="flex-1">
+                      Cancel
                     </Button>
-                    <Button className="bg-purple-600 hover:bg-purple-700">
-                      <Settings className="w-4 h-4 mr-2" /> Save Permissions
+                    <Button type="button" onClick={handleSubmit} className="flex-1 bg-blue-600 hover:bg-blue-700 text-white">
+                      <CheckCircle className="w-4 h-4 mr-2" />
+                      {editingSite ? "Update" : "Create"}
                     </Button>
                   </div>
                 </div>
               </CardContent>
             </Card>
           </div>
+        )}
 
-          
-          <div className="mt-6">
-            <Card className="border border-purple-500/20 bg-white/80 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="text-black flex items-center gap-2">
-                  <Users className="w-5 h-5" /> Managed Sites
-                </CardTitle>
+        {/* Sites Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {filteredSites.map(site => (
+            <Card key={site.id} className="bg-white shadow-lg hover:shadow-xl transition-all duration-300 border-0">
+              <CardHeader className="pb-3">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <CardTitle className="text-lg font-semibold text-gray-900 mb-2">
+                      {site.name}
+                    </CardTitle>
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <MapPin className="w-4 h-4" />
+                      <span className="text-sm">{site.location}</span>
+                    </div>
+                  </div>
+                  <span className={`px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(site.status)}`}>
+                    {site.status}
+                  </span>
+                </div>
               </CardHeader>
-              <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {sites.map(site => (
-                    <motion.div 
-                      key={site.id}
-                      whileHover={{ scale: 1.02 }}
-                      className="p-4 rounded-lg bg-gray-100/50 border border-gray-200"
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="flex items-center gap-2">
+                    <Users className="w-4 h-4 text-blue-500" />
+                    <div>
+                      <div className="text-lg font-semibold text-gray-900">{site.workers}</div>
+                      <div className="text-xs text-gray-500">Workers</div>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <DollarSign className="w-4 h-4 text-green-500" />
+                    <div>
+                      <div className="text-lg font-semibold text-gray-900">{site.budget}</div>
+                      <div className="text-xs text-gray-500">Budget</div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="border-t pt-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <User className="w-4 h-4 text-gray-400" />
+                    <div>
+                      <div className="text-sm font-medium text-gray-900">{site.manager}</div>
+                      <div className="text-xs text-gray-500">Project Manager</div>
+                    </div>
+                  </div>
+                  
+                  <div className="flex items-center gap-2 mb-4">
+                    <Calendar className="w-4 h-4 text-gray-400" />
+                    <span className="text-sm text-gray-600">Started: {site.startDate}</span>
+                  </div>
+                  
+                  <div className="flex gap-2">
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      onClick={() => handleEdit(site)}
+                      className="flex-1 hover:bg-blue-50 hover:border-blue-300"
                     >
-                      <div className="flex items-center justify-between mb-2">
-                        <h3 className="text-lg font-semibold text-black">{site.name}</h3>
-                        <span className="text-xs px-2 py-1 rounded-full bg-purple-500/20 text-purple-700">
-                          {site.location}
-                        </span>
-                      </div>
-                      <p className="text-sm text-gray-700 mb-2">Manager: {site.pm}</p>
-                      <div className="flex flex-wrap gap-2">
-                        {site.roles.map(role => (
-                          <span 
-                            key={role}
-                            className="text-xs px-2 py-1 rounded-full bg-purple-100 text-purple-700"
-                          >
-                            {role}
-                          </span>
-                        ))}
-                      </div>
-                    </motion.div>
-                  ))}
+                      <Edit3 className="w-4 h-4 mr-1" />
+                      Edit
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="outline" 
+                      onClick={() => handleDelete(site.id)}
+                      className="flex-1 hover:bg-red-50 hover:border-red-300 hover:text-red-600"
+                    >
+                      <Trash2 className="w-4 h-4 mr-1" />
+                      Delete
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>
-          </div>
+          ))}
         </div>
+
+        {filteredSites.length === 0 && (
+          <div className="text-center py-12">
+            <Building className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">No sites found</h3>
+            <p className="text-gray-500">
+              {searchTerm ? "Try adjusting your search terms" : "Get started by adding your first construction site"}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );
-// ...existing code...
 }
