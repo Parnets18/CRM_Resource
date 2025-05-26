@@ -42,6 +42,14 @@ import CommonLayout from "../src/Common/CommonLayout";
 import CreateRole from "./Admin/HR/Admin/CreateRole";
 import ConfigPage from "./Admin/HR/Admin/Salary";
 import ReportsPage from "./Admin/HR/Admin/Reports";
+import EmployeeProfile from "./Admin/HR/Admin/Employee/EmployeeProfile";
+import LeaveApplication from "./Admin/HR/Admin/Employee/LeaveApplication";
+import PayslipDownload from "./Admin/HR/Admin/Employee/PayslipDownload";
+import RestaurantAttendence from "./Admin/HR/Admin/Employee/RestaurantAttendence";
+
+
+
+
 // import EmployeeForm from './Admin/HR/HRManager/EmployeeForm';
 // import AttendanceTracker from './Admin/HR/HRManager/AttendanceTracker';
 // Common Components
@@ -186,9 +194,16 @@ function App() {
         <Route path="/admin/create" element={<CreateRole />} />
         <Route path="/admin/config" element={<ConfigPage />} />
         <Route path="/admin/report" element={<ReportsPage />} />
+        <Route path="/employee/profile" element={<EmployeeProfile/>} />
+        <Route path="/employee/profile" element={<EmployeeProfile/>} />
+        <Route path="/employee/leave" element={<LeaveApplication/>} />
+        <Route path="/employee/payslip" element={<PayslipDownload/>} />
+        <Route path="/employee/attendance" element={<RestaurantAttendence/>} />
+
         {/* <Route path='/manager/employee' element={<EmployeeForm/>}/>
         <Route path='/manager/attendence' element={<AttendanceTracker/>}/> */}
-
+{/*         
+         common routes */}
         <Route path="/common" element={<CommonLayout />}>
           <Route index element={<Dashboardc />} />
           <Route path="layout" element={<Layout />} />

@@ -90,8 +90,8 @@ export default function RestoNav() {
       icon: SquareKanban,
       id: "site",
       subtabs: [
-        { title: "Menu", icon: SquareMenu, path: "/Menu" },
         { title: "Category", icon: ChartBarStacked, path: "/Category" },
+        { title: "Menu", icon: SquareMenu, path: "/Menu" },
         { title: "Recipe", icon: CookingPot, path: "/Recipe" },
         { title: "Price", icon: CircleDollarSign, path: "/Price" },
       ],

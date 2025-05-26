@@ -161,14 +161,14 @@ const RestaurantAnalytics = () => {
         {/* Key Metrics */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <StatCard 
-            title="Total Sales" 
+            title="Total Revenue  " 
             value={`$${analytics.totalSales.toFixed(2)}`} 
             icon={DollarSign} 
             color="#10B981"
             subtitle={`${analytics.filteredSales.length} orders`}
           />
           <StatCard 
-            title="Profit" 
+            title=" Total Profit" 
             value={`$${analytics.profit.toFixed(2)}`} 
             icon={TrendingUp} 
             color={analytics.profit > 0 ? "#10B981" : "#EF4444"}

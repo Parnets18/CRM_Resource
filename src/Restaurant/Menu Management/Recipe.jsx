@@ -34,7 +34,7 @@ export default function MenuManagement() {
   });
 
   // Menu categories with subcategories
-  const categories = [
+  const [categories, setCategories] = useState([
     {
       name: "Starters",
       subcategories: ["Veg", "Non-Veg"],
@@ -50,7 +50,7 @@ export default function MenuManagement() {
       subcategories: ["Hot", "Cold"],
       expanded: true,
     },
-  ];
+  ]);
 
   // Sample menu data with category and subcategory
   const [menuItems, setMenuItems] = useState([
@@ -129,6 +129,13 @@ export default function MenuManagement() {
     subcategory: "",
   });
 
+  // Add Category modal state
+  const [showAddCategory, setShowAddCategory] = useState(false);
+  const [newCategory, setNewCategory] = useState({
+    name: "",
+    subcategories: "",
+  });
+
   // Toggle category expansion
   const toggleCategory = (categoryName) => {
     setExpandedCategories((prev) => ({
@@ -171,6 +178,28 @@ export default function MenuManagement() {
       )
     );
     setEditItem(null);
+  };
+
+  // Handle add category modal submit
+  const handleAddCategory = (e) => {
+    e.preventDefault();
+    setCategories((prev) => [
+      ...prev,
+      {
+        name: newCategory.name,
+        subcategories: newCategory.subcategories
+          .split(",")
+          .map((s) => s.trim())
+          .filter(Boolean),
+        expanded: true,
+      },
+    ]);
+    setExpandedCategories((prev) => ({
+      ...prev,
+      [newCategory.name]: true,
+    }));
+    setShowAddCategory(false);
+    setNewCategory({ name: "", subcategories: "" });
   };
 
   return (
@@ -256,7 +285,86 @@ export default function MenuManagement() {
             >
               Cold Drinks
             </Button>
+            <Button
+              className="ml-120 bg-purple-600 text-white hover:bg-purple-600"
+              onClick={() => setShowAddCategory(true)}
+            >
+              + Add category
+            </Button>
           </div>
+
+          {/* Add Category Modal */}
+          {showAddCategory && (
+            <div className="fixed inset-0 bg-white bg-opacity-30 flex items-center justify-center z-50">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.97 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="bg-white border border-purple-500/30 rounded-xl shadow-2xl w-full max-w-md"
+                style={{ maxHeight: 350, overflowY: "auto" }}
+              >
+                <div className="flex justify-between items-center border-b border-purple-500/20 p-4">
+                  <h3 className="text-lg font-semibold text-black">Add Category</h3>
+                  <button
+                    onClick={() => setShowAddCategory(false)}
+                    className="text-gray-500 hover:text-black"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <form onSubmit={handleAddCategory} className="p-4 space-y-4">
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Category Name
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={newCategory.name}
+                      onChange={(e) =>
+                        setNewCategory((prev) => ({ ...prev, name: e.target.value }))
+                      }
+                      className="w-full px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-black text-sm"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-medium text-gray-700 mb-1">
+                      Subcategories (comma separated)
+                    </label>
+                    <input
+                      type="text"
+                      name="subcategories"
+                      value={newCategory.subcategories}
+                      onChange={(e) =>
+                        setNewCategory((prev) => ({
+                          ...prev,
+                          subcategories: e.target.value,
+                        }))
+                      }
+                      className="w-full px-2 py-1 bg-gray-100 border border-gray-300 rounded-md text-black text-sm"
+                      placeholder="e.g. Veg, Non-Veg"
+                      required
+                    />
+                  </div>
+                  <div className="flex justify-end space-x-2 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setShowAddCategory(false)}
+                      className="px-3 py-1 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100 text-sm"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-3 py-1 bg-purple-600 text-white rounded-md hover:bg-purple-700 flex items-center text-sm"
+                    >
+                      Add Category
+                    </button>
+                  </div>
+                </form>
+              </motion.div>
+            </div>
+          )}
 
           {/* Edit Modal */}
           {editItem && (
