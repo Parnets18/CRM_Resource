@@ -1,365 +1,20 @@
-// import React, { useState } from 'react';
-// import { Button } from "@/components/ui/button";
-// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-// import { User, Plus, Edit, Trash2, X } from "lucide-react";
-// import Nav from '@/Admin/Nav';
-// export default function EmployeeProfile() {
-//   const [employees, setEmployees] = useState([
-//     {
-//       id: 1,
-//       name: "John Doe",
-//       position: "Chef",
-//       email: "john.doe@company.com",
-//       department: "Cooking",
-//       joinDate: "2022-01-15",
-//       leaveBalance: "12 days"
-//     },
-//     {
-//       id: 2,
-//       name: "Jane Smith",
-//       position: "Manager",
-//       email: "jane.smith@company.com",
-//       department: "Operations",
-//       joinDate: "2021-03-10",
-//       leaveBalance: "8 days"
-//     },
-//     {
-//       id: 3,
-//       name: "Mike Johnson",
-//       position: "Waiter",
-//       email: "mike.johnson@company.com",
-//       department: "Service",
-//       joinDate: "2023-06-20",
-//       leaveBalance: "15 days"
-//     }
-//   ]);
+"use client";
 
-//   const [showForm, setShowForm] = useState(false);
-//   const [editingEmployee, setEditingEmployee] = useState(null);
-//   const [formData, setFormData] = useState({
-//     name: '',
-//     position: '',
-//     email: '',
-//     department: '',
-//     joinDate: '',
-//     leaveBalance: ''
-//   });
-
-//   const handleAddEmployee = () => {
-//     setEditingEmployee(null);
-//     setFormData({
-//       name: '',
-//       position: '',
-//       email: '',
-//       department: '',
-//       joinDate: '',
-//       leaveBalance: ''
-//     });
-//     setShowForm(true);
-//   };
-
-//   const handleEditEmployee = (employee) => {
-//     setEditingEmployee(employee.id);
-//     setFormData({
-//       name: employee.name,
-//       position: employee.position,
-//       email: employee.email,
-//       department: employee.department,
-//       joinDate: employee.joinDate,
-//       leaveBalance: employee.leaveBalance
-//     });
-//     setShowForm(true);
-//   };
-
-//   const handleDeleteEmployee = (id) => {
-//     setEmployees(employees.filter(emp => emp.id !== id));
-//   };
-
-//   const handleSubmit = () => {
-    
-//     if (editingEmployee) {
-//       // Update existing employee
-//       setEmployees(employees.map(emp => 
-//         emp.id === editingEmployee 
-//           ? { ...emp, ...formData }
-//           : emp
-//       ));
-//     } else {
-//       // Add new employee
-//       const newEmployee = {
-//         id: Math.max(...employees.map(emp => emp.id)) + 1,
-//         ...formData
-//       };
-//       setEmployees([...employees, newEmployee]);
-//     }
-    
-//     setShowForm(false);
-//     setEditingEmployee(null);
-//     setFormData({
-//       name: '',
-//       position: '',
-//       email: '',
-//       department: '',
-//       joinDate: '',
-//       leaveBalance: ''
-//     });
-//   };
-
-//   const handleInputChange = (e) => {
-//     const { name, value } = e.target;
-//     setFormData(prev => ({
-//       ...prev,
-//       [name]: value
-//     }));
-//   };
-
-//   const handleCloseForm = () => {
-//     setShowForm(false);
-//     setEditingEmployee(null);
-//     setFormData({
-//       name: '',
-//       position: '',
-//       email: '',
-//       department: '',
-//       joinDate: '',
-//       leaveBalance: ''
-//     });
-//   };
-
-//   return (
-//     <div className="ml-64">
-//       <Nav/>
-//       <div className="min-h-screen bg-white p-8">
-//         <div className="absolute inset-0 z-0">
-//           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-200/30 via-gray-100 to-white"></div>
-//           <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-300/10 to-transparent"></div>
-//         </div>
-
-//         <div className="relative z-10 max-w-6xl mx-auto">
-//           <div className="mb-8 flex justify-between items-center">
-//             <div>
-//               <h2 className="text-2xl font-bold text-black">Employee Management</h2>
-//               <p className="text-gray-600">Manage employee profiles and information</p>
-//             </div>
-//             <Button 
-//               onClick={handleAddEmployee}
-//               className="bg-purple-600 hover:bg-purple-700 flex items-center gap-2"
-//             >
-//               <Plus className="w-4 h-4" />
-//               Add Employee
-//             </Button>
-//           </div>
-
-//           {/* Employee Table */}
-//           <Card className="border border-purple-500/20 bg-white/80 backdrop-blur-sm mb-6">
-//             <CardHeader>
-//               <CardTitle className="text-black flex items-center gap-2">
-//                 <User className="w-5 h-5" /> Employee List
-//               </CardTitle>
-//             </CardHeader>
-//             <CardContent>
-//               <div className="overflow-x-auto">
-//                 <table className="w-full">
-//                   <thead>
-//                     <tr className="border-b border-purple-200">
-//                       <th className="text-left p-4 font-semibold text-gray-700">Name</th>
-//                       <th className="text-left p-4 font-semibold text-gray-700">Position</th>
-//                       <th className="text-left p-4 font-semibold text-gray-700">Email</th>
-//                       <th className="text-left p-4 font-semibold text-gray-700">Department</th>
-//                       <th className="text-left p-4 font-semibold text-gray-700">Join Date</th>
-//                       <th className="text-left p-4 font-semibold text-gray-700">Leave Balance</th>
-//                       <th className="text-left p-4 font-semibold text-gray-700">Actions</th>
-//                     </tr>
-//                   </thead>
-//                   <tbody>
-//                     {employees.map((employee) => (
-//                       <tr key={employee.id} className="border-b border-gray-100 hover:bg-purple-50/50">
-//                         <td className="p-4">
-//                           <div className="flex items-center gap-3">
-//                             <div className="w-8 h-8 rounded-full bg-purple-600/20 flex items-center justify-center">
-//                               <User className="w-4 h-4 text-purple-400" />
-//                             </div>
-//                             <span className="font-medium text-black">{employee.name}</span>
-//                           </div>
-//                         </td>
-//                         <td className="p-4 text-gray-700">{employee.position}</td>
-//                         <td className="p-4 text-gray-700">{employee.email}</td>
-//                         <td className="p-4 text-gray-700">{employee.department}</td>
-//                         <td className="p-4 text-gray-700">{employee.joinDate}</td>
-//                         <td className="p-4 text-gray-700 font-semibold">{employee.leaveBalance}</td>
-//                         <td className="p-4">
-//                           <div className="flex gap-2">
-//                             <Button
-//                               onClick={() => handleEditEmployee(employee)}
-//                               size="sm"
-//                               variant="outline"
-//                               className="border-purple-300 text-purple-600 hover:bg-purple-50"
-//                             >
-//                               <Edit className="w-4 h-4" />
-//                             </Button>
-//                             <Button
-//                               onClick={() => handleDeleteEmployee(employee.id)}
-//                               size="sm"
-//                               variant="outline"
-//                               className="border-red-300 text-red-600 hover:bg-red-50"
-//                             >
-//                               <Trash2 className="w-4 h-4" />
-//                             </Button>
-//                           </div>
-//                         </td>
-//                       </tr>
-//                     ))}
-//                   </tbody>
-//                 </table>
-//               </div>
-//             </CardContent>
-//           </Card>
-
-//           {/* Add/Edit Employee Form Modal */}
-//           {showForm && (
-//             <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-//               <Card className="w-full max-w-2xl bg-white">
-//                 <CardHeader className="flex flex-row items-center justify-between">
-//                   <CardTitle className="text-black">
-//                     {editingEmployee ? 'Edit Employee' : 'Add New Employee'}
-//                   </CardTitle>
-//                   <Button
-//                     onClick={handleCloseForm}
-//                     variant="outline"
-//                     size="sm"
-//                     className="border-gray-300"
-//                   >
-//                     <X className="w-4 h-4" />
-//                   </Button>
-//                 </CardHeader>
-//                 <CardContent>
-//                   <div className="space-y-6">
-//                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-//                       <div>
-//                         <label className="block text-sm font-medium text-gray-700 mb-2">
-//                           Full Name *
-//                         </label>
-//                         <input
-//                           type="text"
-//                           name="name"
-//                           value={formData.name}
-//                           onChange={handleInputChange}
-//                           required
-//                           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-//                           placeholder="Enter full name"
-//                         />
-//                       </div>
-//                       <div>
-//                         <label className="block text-sm font-medium text-gray-700 mb-2">
-//                           Position *
-//                         </label>
-//                         <input
-//                           type="text"
-//                           name="position"
-//                           value={formData.position}
-//                           onChange={handleInputChange}
-//                           required
-//                           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-//                           placeholder="Enter position"
-//                         />
-//                       </div>
-//                       <div>
-//                         <label className="block text-sm font-medium text-gray-700 mb-2">
-//                           Email Address *
-//                         </label>
-//                         <input
-//                           type="email"
-//                           name="email"
-//                           value={formData.email}
-//                           onChange={handleInputChange}
-//                           required
-//                           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-//                           placeholder="Enter email address"
-//                         />
-//                       </div>
-//                       <div>
-//                         <label className="block text-sm font-medium text-gray-700 mb-2">
-//                           Department *
-//                         </label>
-//                         <select
-//                           name="department"
-//                           value={formData.department}
-//                           onChange={handleInputChange}
-//                           required
-//                           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-//                         >
-//                           <option value="">Select Department</option>
-//                           <option value="Cooking">Cooking</option>
-//                           <option value="Service">Service</option>
-//                           <option value="Operations">Operations</option>
-//                           <option value="Management">Management</option>
-//                           <option value="Cleaning">Cleaning</option>
-//                         </select>
-//                       </div>
-//                       <div>
-//                         <label className="block text-sm font-medium text-gray-700 mb-2">
-//                           Join Date *
-//                         </label>
-//                         <input
-//                           type="date"
-//                           name="joinDate"
-//                           value={formData.joinDate}
-//                           onChange={handleInputChange}
-//                           required
-//                           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-//                         />
-//                       </div>
-//                       <div>
-//                         <label className="block text-sm font-medium text-gray-700 mb-2">
-//                           Leave Balance
-//                         </label>
-//                         <input
-//                           type="text"
-//                           name="leaveBalance"
-//                           value={formData.leaveBalance}
-//                           onChange={handleInputChange}
-//                           className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
-//                           placeholder="e.g., 12 days"
-//                         />
-//                       </div>
-//                     </div>
-
-//                     <div className="flex gap-4 pt-4">
-//                       <Button
-//                         onClick={handleSubmit}
-//                         className="flex-1 bg-purple-600 hover:bg-purple-700"
-//                       >
-//                         {editingEmployee ? 'Update Employee' : 'Add Employee'}
-//                       </Button>
-//                       <Button
-//                         onClick={handleCloseForm}
-//                         variant="outline"
-//                         className="flex-1 border-gray-300"
-//                       >
-//                         Cancel
-//                       </Button>
-//                     </div>
-//                   </div>
-//                 </CardContent>
-//               </Card>
-//             </div>
-//           )}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-
-
-"use client"
-
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { HardHat, Plus, Edit, Trash2, X, MapPin, Calendar, Shield, Wrench } from "lucide-react"
-import Nav from "@/Admin/Nav"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  HardHat,
+  Plus,
+  Edit,
+  Trash2,
+  X,
+  MapPin,
+  Calendar,
+  Shield,
+  Wrench,
+} from "lucide-react";
+import Nav from "@/Admin/Nav";
 
 export default function ConstructionEmployeeProfile() {
   const [employees, setEmployees] = useState([
@@ -427,10 +82,10 @@ export default function ConstructionEmployeeProfile() {
       safetyTraining: "Completed",
       emergencyContact: "+91-9876543241",
     },
-  ])
+  ]);
 
-  const [showForm, setShowForm] = useState(false)
-  const [editingEmployee, setEditingEmployee] = useState(null)
+  const [showForm, setShowForm] = useState(false);
+  const [editingEmployee, setEditingEmployee] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     position: "",
@@ -445,7 +100,7 @@ export default function ConstructionEmployeeProfile() {
     currentSite: "",
     safetyTraining: "",
     emergencyContact: "",
-  })
+  });
 
   const constructionDepartments = [
     "Site Operations",
@@ -456,7 +111,7 @@ export default function ConstructionEmployeeProfile() {
     "Equipment Management",
     "HR & Administration",
     "Accounts & Finance",
-  ]
+  ];
 
   const constructionPositions = [
     "Site Supervisor",
@@ -475,7 +130,7 @@ export default function ConstructionEmployeeProfile() {
     "Welder",
     "HR Manager",
     "Accountant",
-  ]
+  ];
 
   const siteLocations = [
     "Cyber City Phase 2",
@@ -484,10 +139,10 @@ export default function ConstructionEmployeeProfile() {
     "Residential Tower A",
     "Commercial Complex B",
     "Head Office",
-  ]
+  ];
 
   const handleAddEmployee = () => {
-    setEditingEmployee(null)
+    setEditingEmployee(null);
     setFormData({
       name: "",
       position: "",
@@ -502,12 +157,12 @@ export default function ConstructionEmployeeProfile() {
       currentSite: "",
       safetyTraining: "",
       emergencyContact: "",
-    })
-    setShowForm(true)
-  }
+    });
+    setShowForm(true);
+  };
 
   const handleEditEmployee = (employee) => {
-    setEditingEmployee(employee.id)
+    setEditingEmployee(employee.id);
     setFormData({
       name: employee.name,
       position: employee.position,
@@ -522,31 +177,35 @@ export default function ConstructionEmployeeProfile() {
       currentSite: employee.currentSite,
       safetyTraining: employee.safetyTraining,
       emergencyContact: employee.emergencyContact,
-    })
-    setShowForm(true)
-  }
+    });
+    setShowForm(true);
+  };
 
   const handleDeleteEmployee = (id) => {
     if (window.confirm("Are you sure you want to delete this employee?")) {
-      setEmployees(employees.filter((emp) => emp.id !== id))
+      setEmployees(employees.filter((emp) => emp.id !== id));
     }
-  }
+  };
 
   const handleSubmit = () => {
     if (editingEmployee) {
       // Update existing employee
-      setEmployees(employees.map((emp) => (emp.id === editingEmployee ? { ...emp, ...formData } : emp)))
+      setEmployees(
+        employees.map((emp) =>
+          emp.id === editingEmployee ? { ...emp, ...formData } : emp
+        )
+      );
     } else {
       // Add new employee
       const newEmployee = {
         id: Math.max(...employees.map((emp) => emp.id)) + 1,
         ...formData,
-      }
-      setEmployees([...employees, newEmployee])
+      };
+      setEmployees([...employees, newEmployee]);
     }
 
-    setShowForm(false)
-    setEditingEmployee(null)
+    setShowForm(false);
+    setEditingEmployee(null);
     setFormData({
       name: "",
       position: "",
@@ -561,20 +220,20 @@ export default function ConstructionEmployeeProfile() {
       currentSite: "",
       safetyTraining: "",
       emergencyContact: "",
-    })
-  }
+    });
+  };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
       [name]: value,
-    }))
-  }
+    }));
+  };
 
   const handleCloseForm = () => {
-    setShowForm(false)
-    setEditingEmployee(null)
+    setShowForm(false);
+    setEditingEmployee(null);
     setFormData({
       name: "",
       position: "",
@@ -589,21 +248,21 @@ export default function ConstructionEmployeeProfile() {
       currentSite: "",
       safetyTraining: "",
       emergencyContact: "",
-    })
-  }
+    });
+  };
 
   const getSafetyBadgeColor = (status) => {
     switch (status) {
       case "Completed":
-        return "bg-green-100 text-green-800"
+        return "bg-green-100 text-green-800";
       case "Pending":
-        return "bg-red-100 text-red-800"
+        return "bg-red-100 text-red-800";
       case "In Progress":
-        return "bg-yellow-100 text-yellow-800"
+        return "bg-yellow-100 text-yellow-800";
       default:
-        return "bg-gray-100 text-gray-800"
+        return "bg-gray-100 text-gray-800";
     }
-  }
+  };
 
   return (
     <div className="ml-64">
@@ -621,15 +280,18 @@ export default function ConstructionEmployeeProfile() {
                 <HardHat className="w-8 h-8 text-blue-600" />
                 Construction Employee Management
               </h2>
-              <p className="text-gray-600">Manage construction worker profiles and site assignments</p>
+              <p className="text-gray-600">
+                Manage construction worker profiles and site assignments
+              </p>
             </div>
-            <Button onClick={handleAddEmployee} className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2">
+            <Button
+              onClick={handleAddEmployee}
+              className="bg-blue-600 hover:bg-blue-700 flex items-center gap-2"
+            >
               <Plus className="w-4 h-4" />
               Add Employee
             </Button>
           </div>
-
-     
 
           {/* Employee Table */}
           <Card className="border border-blue-500/20 bg-white/80 backdrop-blur-sm mb-6">
@@ -643,41 +305,72 @@ export default function ConstructionEmployeeProfile() {
                 <table className="w-full">
                   <thead>
                     <tr className="border-b border-blue-200">
-                      <th className="text-left p-4 font-semibold text-gray-700">Employee</th>
-                      <th className="text-left p-4 font-semibold text-gray-700">Position</th>
-                      <th className="text-left p-4 font-semibold text-gray-700">Department</th>
-                      <th className="text-left p-4 font-semibold text-gray-700">Current Site</th>
-                      <th className="text-left p-4 font-semibold text-gray-700">Experience</th>
-                      <th className="text-left p-4 font-semibold text-gray-700">Safety Training</th>
-                      <th className="text-left p-4 font-semibold text-gray-700">Actions</th>
+                      <th className="text-left p-4 font-semibold text-gray-700">
+                        Employee
+                      </th>
+                      <th className="text-left p-4 font-semibold text-gray-700">
+                        Position
+                      </th>
+                      <th className="text-left p-4 font-semibold text-gray-700">
+                        Department
+                      </th>
+                      <th className="text-left p-4 font-semibold text-gray-700">
+                        Current Site
+                      </th>
+                      <th className="text-left p-4 font-semibold text-gray-700">
+                        Experience
+                      </th>
+                      <th className="text-left p-4 font-semibold text-gray-700">
+                        Safety Training
+                      </th>
+                      <th className="text-left p-4 font-semibold text-gray-700">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     {employees.map((employee) => (
-                      <tr key={employee.id} className="border-b border-gray-100 hover:bg-blue-50/50">
+                      <tr
+                        key={employee.id}
+                        className="border-b border-gray-100 hover:bg-blue-50/50"
+                      >
                         <td className="p-4">
                           <div className="flex items-center gap-3">
                             <div className="w-10 h-10 rounded-full bg-blue-600/20 flex items-center justify-center">
                               <HardHat className="w-5 h-5 text-blue-600" />
                             </div>
                             <div>
-                              <span className="font-medium text-black block">{employee.name}</span>
-                              <span className="text-sm text-gray-500">{employee.employeeId}</span>
+                              <span className="font-medium text-black block">
+                                {employee.name}
+                              </span>
+                              <span className="text-sm text-gray-500">
+                                {employee.employeeId}
+                              </span>
                             </div>
                           </div>
                         </td>
-                        <td className="p-4 text-gray-700">{employee.position}</td>
-                        <td className="p-4 text-gray-700">{employee.department}</td>
+                        <td className="p-4 text-gray-700">
+                          {employee.position}
+                        </td>
+                        <td className="p-4 text-gray-700">
+                          {employee.department}
+                        </td>
                         <td className="p-4">
                           <div className="flex items-center gap-1">
                             <MapPin className="w-4 h-4 text-gray-500" />
-                            <span className="text-gray-700">{employee.currentSite}</span>
+                            <span className="text-gray-700">
+                              {employee.currentSite}
+                            </span>
                           </div>
                         </td>
-                        <td className="p-4 text-gray-700">{employee.experience}</td>
+                        <td className="p-4 text-gray-700">
+                          {employee.experience}
+                        </td>
                         <td className="p-4">
                           <span
-                            className={`px-2 py-1 rounded-full text-xs font-medium ${getSafetyBadgeColor(employee.safetyTraining)}`}
+                            className={`px-2 py-1 rounded-full text-xs font-medium ${getSafetyBadgeColor(
+                              employee.safetyTraining
+                            )}`}
                           >
                             {employee.safetyTraining}
                           </span>
@@ -712,14 +405,19 @@ export default function ConstructionEmployeeProfile() {
 
           {/* Add/Edit Employee Form Modal */}
           {showForm && (
-            <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50">
-              <Card className="w-full max-w-4xl bg-white max-h-[90vh] overflow-y-auto">
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center  z-50">
+              <Card className="w-full max-w-4xl  max-h-[90vh] overflow-y-auto">
                 <CardHeader className="flex flex-row items-center justify-between">
                   <CardTitle className="text-black flex items-center gap-2">
                     <HardHat className="w-5 h-5" />
                     {editingEmployee ? "Edit Employee" : "Add New Employee"}
                   </CardTitle>
-                  <Button onClick={handleCloseForm} variant="outline" size="sm" className="border-gray-300">
+                  <Button
+                    onClick={handleCloseForm}
+                    variant="outline"
+                    size="sm"
+                    className="border-gray-300"
+                  >
                     <X className="w-4 h-4" />
                   </Button>
                 </CardHeader>
@@ -733,7 +431,9 @@ export default function ConstructionEmployeeProfile() {
                       </h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Full Name *
+                          </label>
                           <input
                             type="text"
                             name="name"
@@ -745,7 +445,9 @@ export default function ConstructionEmployeeProfile() {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Employee ID *</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Employee ID *
+                          </label>
                           <input
                             type="text"
                             name="employeeId"
@@ -757,7 +459,9 @@ export default function ConstructionEmployeeProfile() {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Email Address *
+                          </label>
                           <input
                             type="email"
                             name="email"
@@ -769,7 +473,9 @@ export default function ConstructionEmployeeProfile() {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Phone Number *
+                          </label>
                           <input
                             type="tel"
                             name="phone"
@@ -781,7 +487,9 @@ export default function ConstructionEmployeeProfile() {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Aadhaar Number *</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Aadhaar Number *
+                          </label>
                           <input
                             type="text"
                             name="aadhaar"
@@ -793,7 +501,9 @@ export default function ConstructionEmployeeProfile() {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Emergency Contact *</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Emergency Contact *
+                          </label>
                           <input
                             type="tel"
                             name="emergencyContact"
@@ -815,7 +525,9 @@ export default function ConstructionEmployeeProfile() {
                       </h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Position *</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Position *
+                          </label>
                           <select
                             name="position"
                             value={formData.position}
@@ -832,7 +544,9 @@ export default function ConstructionEmployeeProfile() {
                           </select>
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Department *</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Department *
+                          </label>
                           <select
                             name="department"
                             value={formData.department}
@@ -849,7 +563,9 @@ export default function ConstructionEmployeeProfile() {
                           </select>
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Current Site *</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Current Site *
+                          </label>
                           <select
                             name="currentSite"
                             value={formData.currentSite}
@@ -866,7 +582,9 @@ export default function ConstructionEmployeeProfile() {
                           </select>
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Experience</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Experience
+                          </label>
                           <input
                             type="text"
                             name="experience"
@@ -877,7 +595,9 @@ export default function ConstructionEmployeeProfile() {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Join Date *</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Join Date *
+                          </label>
                           <input
                             type="date"
                             name="joinDate"
@@ -915,7 +635,9 @@ export default function ConstructionEmployeeProfile() {
                       </h3>
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Leave Balance</label>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Leave Balance
+                          </label>
                           <input
                             type="text"
                             name="leaveBalance"
@@ -929,10 +651,17 @@ export default function ConstructionEmployeeProfile() {
                     </div>
 
                     <div className="flex gap-4 pt-4 border-t">
-                      <Button onClick={handleSubmit} className="flex-1 bg-blue-600 hover:bg-blue-700">
+                      <Button
+                        onClick={handleSubmit}
+                        className="flex-1 bg-blue-600 hover:bg-blue-700"
+                      >
                         {editingEmployee ? "Update Employee" : "Add Employee"}
                       </Button>
-                      <Button onClick={handleCloseForm} variant="outline" className="flex-1 border-gray-300">
+                      <Button
+                        onClick={handleCloseForm}
+                        variant="outline"
+                        className="flex-1 border-gray-300"
+                      >
                         Cancel
                       </Button>
                     </div>
@@ -944,5 +673,5 @@ export default function ConstructionEmployeeProfile() {
         </div>
       </div>
     </div>
-  )
+  );
 }

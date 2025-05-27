@@ -171,7 +171,7 @@ export default function MenuManagement() {
     }
 
     return (
-      <div className="flex gap-1">
+      <div className="flex flex-wrap gap-1">
         {variants.map((variant) => (
           <Badge
             key={variant}
@@ -230,7 +230,7 @@ export default function MenuManagement() {
       </div>
       <RestoNav />
 
-      <div className="relative z-10 p-8">
+      <div className="relative z-10 p-4 sm:p-8">
         {/* Restaurant Selection */}
         <Card className="border border-purple-500/20 bg-white backdrop-blur-sm mb-6">
           <CardHeader>
@@ -246,7 +246,7 @@ export default function MenuManagement() {
                 setSelectedRestaurant(restaurant);
               }}
             >
-              <SelectTrigger className="w-[300px] bg-gray-100 border-gray-300 text-black">
+              <SelectTrigger className="w-full sm:w-[300px] bg-gray-100 border-gray-300 text-black">
                 <SelectValue placeholder="Select restaurant" />
               </SelectTrigger>
               <SelectContent className="bg-white border-gray-200 text-black">
@@ -270,10 +270,10 @@ export default function MenuManagement() {
           <div className="lg:col-span-2">
             <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
               <CardHeader>
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                   <CardTitle className="text-black">Menu Items</CardTitle>
                   <Button
-                    className="bg-purple-600 hover:bg-purple-700 text-white"
+                    className="bg-purple-600 hover:bg-purple-700 text-white w-full sm:w-auto"
                     onClick={() => setShowAddDishModal(true)}
                   >
                     <Plus className="w-4 h-4 mr-2" />
@@ -282,70 +282,80 @@ export default function MenuManagement() {
                 </div>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow className="hover:bg-transparent">
-                      <TableHead className="text-gray-700">Dish</TableHead>
-                      <TableHead className="text-gray-700">Category</TableHead>
-                      <TableHead className="text-gray-700">Price</TableHead>
-                      <TableHead className="text-gray-700">Status</TableHead>
-                      <TableHead className="text-right text-gray-700">
-                        Actions
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {menuItems.map((item) => (
-                      <motion.tr
-                        key={item.id}
-                        whileHover={{
-                          backgroundColor: "rgba(139, 92, 246, 0.08)",
-                        }}
-                        className={`border-t border-gray-200 ${
-                          selectedDish?.id === item.id ? "bg-purple-100" : ""
-                        }`}
-                        onClick={() => handleDishSelect(item)}
-                      >
-                        <TableCell className="font-medium text-black">
-                          {item.name}
-                        </TableCell>
-                        <TableCell>
-                          <Badge
-                            variant="outline"
-                            className="border-purple-500/50 text-purple-700"
-                          >
-                            {item.category}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>{renderPrice(item.pricing)}</TableCell>
-                        <TableCell>
-                          <Badge
-                            variant={
-                              item.status === "Available"
-                                ? "default"
-                                : "destructive"
-                            }
-                          >
-                            {item.status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-right">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="text-purple-700 hover:bg-purple-100"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              setShowRecipeModal(true);
-                            }}
-                          >
-                            <ClipboardList className="w-4 h-4" />
-                          </Button>
-                        </TableCell>
-                      </motion.tr>
-                    ))}
-                  </TableBody>
-                </Table>
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="hover:bg-transparent">
+                        <TableHead className="text-gray-700 min-w-[120px]">
+                          Dish
+                        </TableHead>
+                        <TableHead className="text-gray-700 min-w-[100px]">
+                          Category
+                        </TableHead>
+                        <TableHead className="text-gray-700 min-w-[100px]">
+                          Price
+                        </TableHead>
+                        <TableHead className="text-gray-700 min-w-[100px]">
+                          Status
+                        </TableHead>
+                        <TableHead className="text-right text-gray-700 min-w-[100px]">
+                          Actions
+                        </TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {menuItems.map((item) => (
+                        <motion.tr
+                          key={item.id}
+                          whileHover={{
+                            backgroundColor: "rgba(139, 92, 246, 0.08)",
+                          }}
+                          className={`border-t border-gray-200 ${
+                            selectedDish?.id === item.id ? "bg-purple-100" : ""
+                          }`}
+                          onClick={() => handleDishSelect(item)}
+                        >
+                          <TableCell className="font-medium text-black">
+                            {item.name}
+                          </TableCell>
+                          <TableCell>
+                            <Badge
+                              variant="outline"
+                              className="border-purple-500/50 text-purple-700"
+                            >
+                              {item.category}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>{renderPrice(item.pricing)}</TableCell>
+                          <TableCell>
+                            <Badge
+                              variant={
+                                item.status === "Available"
+                                  ? "default"
+                                  : "destructive"
+                              }
+                            >
+                              {item.status}
+                            </Badge>
+                          </TableCell>
+                          <TableCell className="text-right">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="text-purple-700 hover:bg-purple-100"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setShowRecipeModal(true);
+                              }}
+                            >
+                              <ClipboardList className="w-4 h-4" />
+                            </Button>
+                          </TableCell>
+                        </motion.tr>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -364,7 +374,7 @@ export default function MenuManagement() {
                       {selectedDish.name}
                     </h3>
 
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 flex-wrap">
                       <Badge
                         variant="outline"
                         className="border-purple-500/50 text-purple-700"
@@ -588,17 +598,17 @@ export default function MenuManagement() {
                     <option value="Unavailable">Unavailable</option>
                   </select>
                 </div>
-                <div className="flex justify-end gap-2 pt-4">
+                <div className="flex flex-col sm:flex-row justify-end gap-2 pt-4">
                   <Button
                     variant="outline"
-                    className="border-gray-300 text-black hover:bg-gray-100"
+                    className="border-gray-300 text-black hover:bg-gray-100 w-full sm:w-auto"
                     type="button"
                     onClick={() => setShowAddDishModal(false)}
                   >
                     Cancel
                   </Button>
                   <Button
-                    className="bg-purple-600 hover:bg-purple-700 text-white"
+                    className="bg-purple-600 hover:bg-purple-700 text-white w-full sm:w-auto"
                     type="submit"
                   >
                     Add Dish
@@ -627,7 +637,7 @@ export default function MenuManagement() {
                   onClick={() => setShowRecipeModal(false)}
                   className="text-gray-500 hover:text-black"
                 >
-                  ✕
+                  <X className="w-5 h-5" />
                 </button>
               </div>
 
@@ -639,7 +649,7 @@ export default function MenuManagement() {
                       <p className="text-sm font-medium text-gray-700 mb-2">
                         Recipe Variants:
                       </p>
-                      <div className="flex border-b border-gray-200">
+                      <div className="flex flex-wrap border-b border-gray-200">
                         {Object.keys(selectedDish.pricing).map((variant) => (
                           <button
                             key={variant}
@@ -678,21 +688,21 @@ export default function MenuManagement() {
                     {rawMaterials.map((item, index) => (
                       <div
                         key={index}
-                        className="grid grid-cols-12 gap-2 items-center"
+                        className="grid grid-cols-1 sm:grid-cols-12 gap-2 items-center"
                       >
                         <Input
                           defaultValue={item.name}
-                          className="col-span-5 bg-gray-100 border-gray-300 text-black"
+                          className="sm:col-span-5 bg-gray-100 border-gray-300 text-black"
                           placeholder="Ingredient"
                         />
                         <Input
                           defaultValue={item.quantity}
                           type="number"
-                          className="col-span-3 bg-gray-100 border-gray-300 text-black"
+                          className="sm:col-span-3 bg-gray-100 border-gray-300 text-black"
                           placeholder="Qty"
                         />
                         <Select defaultValue={item.unit}>
-                          <SelectTrigger className="col-span-3 bg-gray-100 border-gray-300 text-black">
+                          <SelectTrigger className="sm:col-span-3 bg-gray-100 border-gray-300 text-black">
                             <SelectValue placeholder="Unit" />
                           </SelectTrigger>
                           <SelectContent className="bg-white border-gray-200 text-black">
@@ -706,7 +716,7 @@ export default function MenuManagement() {
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="col-span-1 text-red-700 hover:bg-red-100"
+                          className="text-red-700 hover:bg-red-100"
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
@@ -722,15 +732,15 @@ export default function MenuManagement() {
                   </div>
                 </div>
 
-                <div className="flex justify-end gap-2 pt-4">
+                <div className="flex flex-col sm:flex-row justify-end gap-2 pt-4">
                   <Button
                     variant="outline"
-                    className="border-gray-300 text-black hover:bg-gray-100"
+                    className="border-gray-300 text-black hover:bg-gray-100 w-full sm:w-auto"
                     onClick={() => setShowRecipeModal(false)}
                   >
                     Cancel
                   </Button>
-                  <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+                  <Button className="bg-purple-600 hover:bg-purple-700 text-white w-full sm:w-auto">
                     Save Recipe
                   </Button>
                 </div>

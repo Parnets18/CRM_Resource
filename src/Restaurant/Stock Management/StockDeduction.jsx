@@ -1,13 +1,32 @@
 "use client"
 
 import { useState } from "react"
-import { ArrowDownCircle, Utensils, Search, Check, AlertTriangle, ShoppingCart } from "lucide-react"
+import {
+  ArrowDownCircle,
+  Utensils,
+  Search,
+  Check,
+  AlertTriangle,
+  ShoppingCart,
+} from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog"
 import RestoNav from "../RestoNav"
 
 export default function RecipeStockDeduction() {
@@ -95,27 +114,28 @@ export default function RecipeStockDeduction() {
       setQuantity(1)
     }, 2000)
   }
-// ...existing code...
+
   return (
-    <div className="p-6 bg-white min-h-screen">
+    <div className="p-4 sm:p-6 bg-white min-h-screen">
       <div className="absolute inset-0 z-0">
         <RestoNav />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-gray-100 to-white"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
       </div>
 
-      <div className="relative z-10 max-w-5xl mx-auto ml-[16rem]">
-        <div className="flex justify-between items-center mb-8">
+      <div className="relative z-10 max-w-5xl mx-auto lg:ml-[16rem]">
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
           <div>
             <h2 className="text-2xl font-bold text-black">Recipe Stock Deduction</h2>
             <p className="text-gray-700">Automatically deduct stock based on recipes used</p>
           </div>
-          <Button className="bg-purple-600 hover:bg-purple-700 text-white">
+          <Button className="bg-purple-600 hover:bg-purple-700 text-white w-full sm:w-auto">
             <ShoppingCart className="w-4 h-4 mr-2" /> View Sales
           </Button>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Recipe List */}
           <div className="md:col-span-1">
             <Card className="border border-purple-500/20 bg-white backdrop-blur-sm h-full">
               <CardHeader>
@@ -178,6 +198,7 @@ export default function RecipeStockDeduction() {
             </Card>
           </div>
 
+          {/* Recipe Details & Deduction */}
           <div className="md:col-span-2">
             <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
               <CardHeader>
@@ -186,7 +207,7 @@ export default function RecipeStockDeduction() {
               <CardContent>
                 {selectedRecipe ? (
                   <div className="space-y-6">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                       <h3 className="text-xl font-medium text-black flex items-center">
                         <Utensils className="w-5 h-5 mr-2 text-purple-400" />
                         {selectedRecipe.name}
@@ -194,7 +215,7 @@ export default function RecipeStockDeduction() {
                       <div className="text-sm text-gray-700">Category: {selectedRecipe.category}</div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label htmlFor="quantity">Quantity to Prepare</Label>
                         <Input
@@ -220,14 +241,14 @@ export default function RecipeStockDeduction() {
                       </div>
                     </div>
 
-                    <div className="border border-gray-200 rounded-lg p-4">
+                    <div className="border border-gray-200 rounded-lg p-4 overflow-x-auto">
                       <h4 className="text-black font-medium mb-3">Required Ingredients</h4>
-                      <div className="space-y-2">
-                        <div className="grid grid-cols-5 gap-2 text-sm text-gray-700 pb-2 border-b border-gray-200">
+                      <div className="space-y-2 min-w-[400px]">
+                        <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-5 gap-2 text-sm text-gray-700 pb-2 border-b border-gray-200">
                           <div>Material</div>
                           <div>Required</div>
                           <div>In Stock</div>
-                          <div>Remaining</div>
+                          <div className="hidden xs:block sm:block">Remaining</div>
                           <div>Status</div>
                         </div>
                         {selectedRecipe.ingredients.map((ingredient, idx) => {
@@ -236,7 +257,7 @@ export default function RecipeStockDeduction() {
                           const isLowStock = remainingAmount < ingredient.minLevel
 
                           return (
-                            <div key={idx} className="grid grid-cols-5 gap-2 py-2 border-b border-gray-200">
+                            <div key={idx} className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-5 gap-2 py-2 border-b border-gray-200 items-center">
                               <div className="text-black">{ingredient.material}</div>
                               <div className="text-gray-700">
                                 {requiredAmount} {ingredient.unit}
@@ -244,7 +265,7 @@ export default function RecipeStockDeduction() {
                               <div className="text-gray-700">
                                 {ingredient.inStock} {ingredient.unit}
                               </div>
-                              <div className="text-gray-700">
+                              <div className="hidden xs:block sm:block text-gray-700">
                                 {remainingAmount} {ingredient.unit}
                               </div>
                               <div>
@@ -264,8 +285,8 @@ export default function RecipeStockDeduction() {
                       </div>
                     </div>
 
-                    <div className="flex justify-end">
-                      <Button className="bg-purple-600 hover:bg-purple-700 text-white" onClick={handleDeductStock}>
+                    <div className="flex flex-col sm:flex-row justify-end gap-2">
+                      <Button className="bg-purple-600 hover:bg-purple-700 text-white w-full sm:w-auto" onClick={handleDeductStock}>
                         <ArrowDownCircle className="w-4 h-4 mr-2" /> Deduct Stock
                       </Button>
                     </div>
@@ -380,5 +401,4 @@ export default function RecipeStockDeduction() {
       </Dialog>
     </div>
   )
-// ...existing code...
 }

@@ -186,8 +186,9 @@ const RecipeManagement = () => {
       recipe.description.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // Responsive Recipe Form
   const RecipeForm = ({ recipe, setRecipe, title }) => (
-    <div className="bg-white p-6 rounded-lg shadow-lg border">
+    <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg border">
       <h3 className="text-xl font-semibold mb-4 flex items-center gap-2">
         <ChefHat className="w-5 h-5" />
         {title}
@@ -252,7 +253,7 @@ const RecipeManagement = () => {
       </div>
 
       <div className="mb-6">
-        <div className="flex justify-between items-center mb-3">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-3 gap-2">
           <h4 className="text-lg font-medium text-gray-800">Ingredients</h4>
           <button
             onClick={addIngredient}
@@ -267,7 +268,7 @@ const RecipeManagement = () => {
           {recipe.ingredients.map((ingredient, index) => (
             <div
               key={index}
-              className="flex gap-3 items-center bg-gray-50 p-3 rounded-md"
+              className="flex flex-col sm:flex-row gap-2 sm:gap-3 items-stretch sm:items-center bg-gray-50 p-3 rounded-md"
             >
               <div className="flex-1">
                 <select
@@ -287,7 +288,7 @@ const RecipeManagement = () => {
                 </select>
               </div>
 
-              <div className="w-24">
+              <div className="w-full sm:w-24">
                 <input
                   type="number"
                   step="0.01"
@@ -300,7 +301,7 @@ const RecipeManagement = () => {
                 />
               </div>
 
-              <div className="w-20">
+              <div className="w-full sm:w-20">
                 <input
                   type="text"
                   value={ingredient.unit}
@@ -314,7 +315,7 @@ const RecipeManagement = () => {
 
               <button
                 onClick={() => removeIngredient(index)}
-                className="text-red-500 hover:text-red-700"
+                className="text-red-500 hover:text-red-700 self-end sm:self-auto"
               >
                 <Trash2 className="w-4 h-4" />
               </button>
@@ -343,7 +344,7 @@ const RecipeManagement = () => {
           <strong>Total Cost:</strong> ₹
           {calculateRecipeCost(recipe.ingredients).toFixed(2)}
           {recipe.servings && (
-            <span className="ml-4">
+            <span className="ml-4 block sm:inline">
               <strong>Cost per Serving:</strong> ₹
               {(
                 calculateRecipeCost(recipe.ingredients) /
@@ -354,17 +355,17 @@ const RecipeManagement = () => {
         </div>
       </div>
 
-      <div className="flex gap-3">
+      <div className="flex flex-col sm:flex-row gap-3">
         <button
           onClick={saveRecipe}
-          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 flex items-center gap-2"
+          className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 flex items-center gap-2 justify-center"
         >
           <Save className="w-4 h-4" />
           Save Recipe
         </button>
         <button
           onClick={cancelEdit}
-          className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 flex items-center gap-2"
+          className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600 flex items-center gap-2 justify-center"
         >
           <X className="w-4 h-4" />
           Cancel
@@ -374,8 +375,8 @@ const RecipeManagement = () => {
   );
 
   return (
-    <div className="ml-64">
-      <div className="max-w-7xl mx-auto p-6 bg-gray-50 min-h-screen">
+    <div className="lg:ml-64">
+      <div className="max-w-7xl mx-auto p-4 sm:p-6 bg-gray-50 min-h-screen">
         <RestoNav />
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800 mb-2 flex items-center gap-3">
@@ -392,7 +393,7 @@ const RecipeManagement = () => {
           <div className="mb-6">
             <button
               onClick={() => setShowAddRecipe(true)}
-              className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-600 flex items-center gap-2 font-medium"
+              className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 flex items-center gap-2 font-medium w-full sm:w-auto justify-center"
             >
               <Plus className="w-5 h-5" />
               Add New Recipe
@@ -447,7 +448,7 @@ const RecipeManagement = () => {
                 className="bg-white rounded-lg shadow-lg border hover:shadow-xl transition-shadow"
               >
                 <div className="p-6">
-                  <div className="flex justify-between items-start mb-4">
+                  <div className="flex flex-col sm:flex-row justify-between items-start mb-4 gap-2">
                     <div>
                       <h3 className="text-xl font-semibold text-gray-800 mb-1">
                         {recipe.name}
@@ -456,7 +457,7 @@ const RecipeManagement = () => {
                         {recipe.description}
                       </p>
                     </div>
-                    <div className="flex gap-2">
+                    <div className="flex gap-2 mt-2 sm:mt-0">
                       <button
                         onClick={() => editRecipe(recipe)}
                         className="text-purple-500 hover:text-purple-600 p-1"
@@ -472,7 +473,7 @@ const RecipeManagement = () => {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 mb-4 text-sm">
+                  <div className="grid grid-cols-1 xs:grid-cols-2 gap-4 mb-4 text-sm">
                     <div>
                       <span className="text-gray-500">Cooking Time:</span>
                       <span className="ml-2 font-medium">

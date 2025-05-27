@@ -267,7 +267,7 @@ export default function MenuManagement() {
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Category
@@ -305,7 +305,7 @@ export default function MenuManagement() {
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Serving Unit
@@ -459,10 +459,10 @@ export default function MenuManagement() {
       </div>
 
       <div className="relative z-10">
-        <div className="flex-1 p-8">
+        <div className="flex-1 p-4 md:p-8">
           {/* Header */}
           <RestoNav />
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4">
             <div>
               <h2 className="text-2xl font-bold text-black">Menu Items</h2>
               <p className="text-gray-700">
@@ -474,7 +474,7 @@ export default function MenuManagement() {
                 resetForm();
                 setIsAddModalOpen(true);
               }}
-              className="bg-purple-600 hover:bg-purple-700 text-white"
+              className="bg-purple-600 hover:bg-purple-700 text-white w-full md:w-auto"
             >
               <Plus className="w-4 h-4 mr-2" />
               Add Item
@@ -597,13 +597,13 @@ export default function MenuManagement() {
           <div>
             <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
               <CardHeader>
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
                   <CardTitle className="text-black">All Menu Items</CardTitle>
-                  <div className="relative w-64">
+                  <div className="relative w-full md:w-64">
                     <Search className="absolute left-2 top-2.5 h-4 w-4 text-gray-500" />
                     <Input
                       placeholder="Search items..."
-                      className="bg-gray-100 border-gray-300 text-black pl-8"
+                      className="bg-gray-100 border-gray-300 text-black pl-8 w-full"
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
@@ -611,107 +611,117 @@ export default function MenuManagement() {
                 </div>
               </CardHeader>
               <CardContent>
-                <Table>
-                  <TableHeader>
-                    <TableRow className="hover:bg-transparent">
-                      <TableHead className="text-gray-700">Item</TableHead>
-                      <TableHead className="text-gray-700">Category</TableHead>
-                      <TableHead className="text-gray-700">Price</TableHead>
-                      <TableHead className="text-gray-700">Status</TableHead>
-                      <TableHead className="text-right text-gray-700">
-                        Actions
-                      </TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {filteredMenuItems.length > 0 ? (
-                      filteredMenuItems.map((item) => (
-                        <motion.tr
-                          key={item.id}
-                          whileHover={{
-                            backgroundColor: "rgba(139, 92, 246, 0.08)",
-                          }}
-                          className="border-b border-gray-200"
-                        >
-                          <TableCell>
-                            <div className="font-medium text-black">
-                              {item.name}
-                            </div>
-                            <div className="text-xs text-gray-500">
-                              {item.ingredients}
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <Badge
-                              variant="outline"
-                              className="border-purple-500/50 text-purple-700"
-                            >
-                              {item.category}
-                            </Badge>
-                            {item.type && (
+                <div className="overflow-x-auto">
+                  <Table>
+                    <TableHeader>
+                      <TableRow className="hover:bg-transparent">
+                        <TableHead className="text-gray-700 min-w-[140px]">
+                          Item
+                        </TableHead>
+                        <TableHead className="text-gray-700 min-w-[120px]">
+                          Category
+                        </TableHead>
+                        <TableHead className="text-gray-700 min-w-[100px]">
+                          Price
+                        </TableHead>
+                        <TableHead className="text-gray-700 min-w-[120px]">
+                          Status
+                        </TableHead>
+                        <TableHead className="text-right text-gray-700 min-w-[100px]">
+                          Actions
+                        </TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {filteredMenuItems.length > 0 ? (
+                        filteredMenuItems.map((item) => (
+                          <motion.tr
+                            key={item.id}
+                            whileHover={{
+                              backgroundColor: "rgba(139, 92, 246, 0.08)",
+                            }}
+                            className="border-b border-gray-200"
+                          >
+                            <TableCell>
+                              <div className="font-medium text-black">
+                                {item.name}
+                              </div>
+                              <div className="text-xs text-gray-500">
+                                {item.ingredients}
+                              </div>
+                            </TableCell>
+                            <TableCell>
                               <Badge
                                 variant="outline"
-                                className={`ml-2 ${
-                                  item.type === "veg"
-                                    ? "border-green-500/50 text-green-700"
-                                    : "border-red-500/50 text-red-700"
+                                className="border-purple-500/50 text-purple-700"
+                              >
+                                {item.category}
+                              </Badge>
+                              {item.type && (
+                                <Badge
+                                  variant="outline"
+                                  className={`ml-2 ${
+                                    item.type === "veg"
+                                      ? "border-green-500/50 text-green-700"
+                                      : "border-red-500/50 text-red-700"
+                                  }`}
+                                >
+                                  {item.type === "veg" ? "Veg" : "Non-Veg"}
+                                </Badge>
+                              )}
+                            </TableCell>
+                            <TableCell className="text-black">
+                              ${item.price.toFixed(2)}
+                            </TableCell>
+                            <TableCell>
+                              <span
+                                className={`px-2 py-1 rounded-full text-xs ${
+                                  item.status === "Available"
+                                    ? "bg-green-100 text-green-700"
+                                    : item.status === "Out of Stock"
+                                    ? "bg-red-100 text-red-700"
+                                    : "bg-yellow-100 text-yellow-700"
                                 }`}
                               >
-                                {item.type === "veg" ? "Veg" : "Non-Veg"}
-                              </Badge>
-                            )}
+                                {item.status}
+                              </span>
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex justify-end gap-2">
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="text-purple-700 "
+                                  onClick={() => handleEditClick(item)}
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="text-red-700 "
+                                  onClick={() => handleDeleteClick(item)}
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </motion.tr>
+                        ))
+                      ) : (
+                        <TableRow>
+                          <TableCell
+                            colSpan={5}
+                            className="text-center py-8 text-gray-500"
+                          >
+                            No menu items found. Try a different search or add a
+                            new item.
                           </TableCell>
-                          <TableCell className="text-black">
-                            ${item.price.toFixed(2)}
-                          </TableCell>
-                          <TableCell>
-                            <span
-                              className={`px-2 py-1 rounded-full text-xs ${
-                                item.status === "Available"
-                                  ? "bg-green-100 text-green-700"
-                                  : item.status === "Out of Stock"
-                                  ? "bg-red-100 text-red-700"
-                                  : "bg-yellow-100 text-yellow-700"
-                              }`}
-                            >
-                              {item.status}
-                            </span>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex justify-end gap-2">
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="text-purple-700 "
-                                onClick={() => handleEditClick(item)}
-                              >
-                                <Edit className="w-4 h-4" />
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="text-red-700 "
-                                onClick={() => handleDeleteClick(item)}
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
-                            </div>
-                          </TableCell>
-                        </motion.tr>
-                      ))
-                    ) : (
-                      <TableRow>
-                        <TableCell
-                          colSpan={5}
-                          className="text-center py-8 text-gray-500"
-                        >
-                          No menu items found. Try a different search or add a
-                          new item.
-                        </TableCell>
-                      </TableRow>
-                    )}
-                  </TableBody>
-                </Table>
+                        </TableRow>
+                      )}
+                    </TableBody>
+                  </Table>
+                </div>
               </CardContent>
             </Card>
           </div>
