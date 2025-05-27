@@ -93,7 +93,7 @@ export default function ConstructionHRManager() {
   ];
 
   const EmployeeForm = ({ employee, onSave, isEdit = false }) => (
-    <div className="space-y-4 max-h-96 overflow-y-auto">
+    <div className="space-y-4  max-h-96 overflow-y-auto">
       <div className="grid grid-cols-2 gap-4">
         <div><Label>First Name</Label><Input value={employee.firstName} onChange={(e) => onSave({ ...employee, firstName: e.target.value })} /></div>
         <div><Label>Last Name</Label><Input value={employee.lastName} onChange={(e) => onSave({ ...employee, lastName: e.target.value })} /></div>
@@ -108,7 +108,7 @@ export default function ConstructionHRManager() {
         <div><Label>Hourly Rate ($)</Label><Input type="number" value={employee.hourlyRate} onChange={(e) => onSave({ ...employee, hourlyRate: isEdit ? Number.parseFloat(e.target.value) : e.target.value })} /></div>
         <div><Label>Join Date</Label><Input type="date" value={employee.joinDate} onChange={(e) => onSave({ ...employee, joinDate: e.target.value })} /></div>
       </div>
-      <Button onClick={isEdit ? updateEmployee : addEmployee} className="w-full bg-orange-600 hover:bg-orange-700">{isEdit ? 'Update' : 'Add'} Worker</Button>
+      <Button onClick={isEdit ? updateEmployee : addEmployee} className="w-full bg-purple-600 hover:bg-orange-700">{isEdit ? 'Update' : 'Add'} Worker</Button>
     </div>
   );
 
@@ -118,11 +118,11 @@ export default function ConstructionHRManager() {
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8">
           <div className="flex items-center gap-4">
-            <div className="p-3 bg-orange-600 rounded-lg"><Building className="w-8 h-8 text-white" /></div>
+            <div className="p-3 bg-purple-600 rounded-lg"><Building className="w-8 h-8 text-white" /></div>
             <div><h1 className="text-3xl font-bold text-gray-900">Construction HR Manager</h1><p className="text-gray-600">Workforce management for construction sites</p></div>
           </div>
           <Dialog open={isAddEmployeeOpen} onOpenChange={setIsAddEmployeeOpen}>
-            <DialogTrigger asChild><Button className="bg-orange-600 hover:bg-orange-700"><UserPlus className="w-4 h-4 mr-2" />Add Worker</Button></DialogTrigger>
+            <DialogTrigger asChild><Button className="bg-purple-600 hover:bg-purple-700"><UserPlus className="w-4 h-4 mr-2" />Add Worker</Button></DialogTrigger>
             <DialogContent className="max-w-md"><DialogHeader><DialogTitle>Add New Worker</DialogTitle></DialogHeader><EmployeeForm employee={newEmployee} onSave={setNewEmployee} /></DialogContent>
           </Dialog>
         </div>
@@ -141,8 +141,8 @@ export default function ConstructionHRManager() {
         </div>
 
         <Tabs defaultValue="workers" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5 bg-orange-100">
-            <TabsTrigger value="workers" className="data-[state=active]:bg-orange-600 data-[state=active]:text-white">Workers</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-5 bg-purple-100">
+            <TabsTrigger value="workers" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">Workers</TabsTrigger>
             <TabsTrigger value="attendance">Attendance</TabsTrigger>
             <TabsTrigger value="leaves">Leave Requests</TabsTrigger>
             <TabsTrigger value="payroll">Payroll</TabsTrigger>
@@ -153,7 +153,7 @@ export default function ConstructionHRManager() {
             <Card>
               <CardHeader>
                 <div className="flex justify-between items-center">
-                  <CardTitle className="flex items-center gap-2"><HardHat className="w-5 h-5 text-orange-600" />Worker Management</CardTitle>
+                  <CardTitle className="flex items-center gap-2"><HardHat className="w-5 h-5 text-purple-600" />Worker Management</CardTitle>
                   <div className="flex gap-3">
                     <Input placeholder="Search workers..." className="w-64" value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
                     <Select value={siteFilter} onValueChange={setSiteFilter}><SelectTrigger className="w-40"><SelectValue /></SelectTrigger><SelectContent><SelectItem value="all">All Sites</SelectItem>{sites.map(site => <SelectItem key={site} value={site}>{site}</SelectItem>)}</SelectContent></Select>
@@ -163,9 +163,9 @@ export default function ConstructionHRManager() {
               <CardContent>
                 <div className="space-y-4">
                   {filteredEmployees.map(employee => (
-                    <div key={employee.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-orange-50 transition-colors">
+                    <div key={employee.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-purple-50 transition-colors">
                       <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center"><HardHat className="w-6 h-6 text-orange-600" /></div>
+                        <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center"><HardHat className="w-6 h-6 text-purple-600" /></div>
                         <div>
                           <h3 className="font-semibold text-gray-900">{employee.firstName} {employee.lastName}</h3>
                           <p className="text-sm text-gray-600 flex items-center gap-2"><Wrench className="w-4 h-4" />{employee.role}</p>
