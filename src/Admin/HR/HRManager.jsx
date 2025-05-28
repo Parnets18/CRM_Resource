@@ -43,15 +43,50 @@ export default function ConstructionHRManager() {
   const [isAddEmployeeOpen, setIsAddEmployeeOpen] = useState(false);
   const [isEditEmployeeOpen, setIsEditEmployeeOpen] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [siteFilter, setSiteFilter] = useState('all');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [siteFilter, setSiteFilter] = useState("all");
   const [newEmployee, setNewEmployee] = useState({
-    firstName: '', lastName: '', email: '', role: '', site: '', hourlyRate: '', joinDate: '', phone: '', certifications: []
+    firstName: "",
+    lastName: "",
+    email: "",
+    role: "",
+    site: "",
+    hourlyRate: "",
+    joinDate: "",
+    phone: "",
+    certifications: [],
   });
 
-  const roles = ['Site Supervisor', 'Foreman', 'Crane Operator', 'Electrician', 'Plumber', 'Welder', 'Carpenter', 'Mason', 'Heavy Equipment Operator', 'Safety Officer'];
-  const sites = ['Downtown Complex', 'Riverside Mall', 'Office Tower', 'Bridge Project', 'Industrial Park'];
-  const certificationsList = ['OSHA 10', 'OSHA 30', 'First Aid', 'CPR', 'CCO Certified', 'Master Electrician', 'Welding Certified', 'Safety Manager', 'Forklift Operator'];
+  const roles = [
+    "Site Supervisor",
+    "Foreman",
+    "Crane Operator",
+    "Electrician",
+    "Plumber",
+    "Welder",
+    "Carpenter",
+    "Mason",
+    "Heavy Equipment Operator",
+    "Safety Officer",
+  ];
+  const sites = [
+    "Downtown Complex",
+    "Riverside Mall",
+    "Office Tower",
+    "Bridge Project",
+    "Industrial Park",
+  ];
+  const certificationsList = [
+    "OSHA 10",
+    "OSHA 30",
+    "First Aid",
+    "CPR",
+    "CCO Certified",
+    "Master Electrician",
+    "Welding Certified",
+    "Safety Manager",
+    "Forklift Operator",
+  ];
 
   const addEmployee = () => {
     if (newEmployee.firstName && newEmployee.lastName && newEmployee.email) {
@@ -65,27 +100,66 @@ export default function ConstructionHRManager() {
         avatar: initials
       };
       setEmployees([...employees, employee]);
-      setNewEmployee({ firstName: '', lastName: '', email: '', role: '', site: '', hourlyRate: '', joinDate: '', phone: '', certifications: [] });
+      setNewEmployee({
+        firstName: "",
+        lastName: "",
+        email: "",
+        role: "",
+        site: "",
+        hourlyRate: "",
+        joinDate: "",
+        phone: "",
+        certifications: [],
+      });
       setIsAddEmployeeOpen(false);
     }
   };
 
   const updateEmployee = () => {
-    setEmployees(employees.map(emp => emp.id === editingEmployee.id ? editingEmployee : emp));
+    setEmployees(
+      employees.map((emp) =>
+        emp.id === editingEmployee.id ? editingEmployee : emp
+      )
+    );
     setIsEditEmployeeOpen(false);
     setEditingEmployee(null);
   };
 
-  const deleteEmployee = (id) => setEmployees(employees.filter(emp => emp.id !== id));
-  const approveLeave = (id) => setLeaveRequests(leaveRequests.map(req => req.id === id ? { ...req, status: 'approved' } : req));
-  const rejectLeave = (id) => setLeaveRequests(leaveRequests.map(req => req.id === id ? { ...req, status: 'rejected' } : req));
+  const deleteEmployee = (id) =>
+    setEmployees(employees.filter((emp) => emp.id !== id));
+  const approveLeave = (id) =>
+    setLeaveRequests(
+      leaveRequests.map((req) =>
+        req.id === id ? { ...req, status: "approved" } : req
+      )
+    );
+  const rejectLeave = (id) =>
+    setLeaveRequests(
+      leaveRequests.map((req) =>
+        req.id === id ? { ...req, status: "rejected" } : req
+      )
+    );
 
   const processPayroll = (id) => {
-    const totalAmount = employees.reduce((sum, emp) => sum + (emp.hourlyRate * 160), 0);
-    setPayrollData(payrollData.map(payroll => payroll.id === id ? { ...payroll, processed: true, totalAmount } : payroll));
+    const totalAmount = employees.reduce(
+      (sum, emp) => sum + emp.hourlyRate * 160,
+      0
+    );
+    setPayrollData(
+      payrollData.map((payroll) =>
+        payroll.id === id
+          ? { ...payroll, processed: true, totalAmount }
+          : payroll
+      )
+    );
   };
 
-  const sendPayslips = (id) => setPayrollData(payrollData.map(payroll => payroll.id === id ? { ...payroll, sent: true } : payroll));
+  const sendPayslips = (id) =>
+    setPayrollData(
+      payrollData.map((payroll) =>
+        payroll.id === id ? { ...payroll, sent: true } : payroll
+      )
+    );
 
   const filteredEmployees = employees.filter(emp => {
     const matchesSearch = emp.firstName.toLowerCase().includes(searchTerm.toLowerCase()) || 
@@ -95,6 +169,7 @@ export default function ConstructionHRManager() {
     return matchesSearch && matchesSite;
   });
 
+  // --- COLOR CHANGES: orange/amber -> purple ---
   const stats = [
     { title: 'Total Workers', value: employees.length, change: '+12 this month', icon: Users, color: 'bg-blue-500', bgColor: 'bg-blue-50' },
     { title: 'On Site Today', value: attendance.present, change: '96% attendance', icon: HardHat, color: 'bg-green-500', bgColor: 'bg-green-50' },

@@ -86,6 +86,7 @@ import TableManagement from "./Restaurant/Reservations & Table Management/TableM
 import KitchenManagement from "./Restaurant/KitchenManagement.jsx/Kitchen";
 import ExpenseManagement from "./Restaurant/ExpenseManagemnet/RestaurantExpense";
 import RestaurantAnalytics from "./Restaurant/Report/Restaurant&Analytics";
+import Supervisor from "./Restaurant/Supervisor/Supervisor";
 
 
 
@@ -157,6 +158,7 @@ function App() {
         {/* <Route path="/Restaurant&analytics" element={<ReportAnalytics />} /> */}
         {/* <Route path="/Restaurant&analytics" element={<ReportAnalytics />} /> */}
         <Route path="/Restaurant&analytics" element={<RestaurantAnalytics />} />
+        <Route path="/Supervisor" element={<Supervisor />} />
         
         
  
