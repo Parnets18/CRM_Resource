@@ -1,256 +1,6 @@
-// import { Button } from "@/components/ui/button";
-// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-// import { Input } from "@/components/ui/input";
-// import { Label } from "@/components/ui/label";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
-// import { motion } from "framer-motion";
-// import Nav from "../../Nav";
-
-// // ...existing code...
-// export default function ConfigPage() {
-//   return (
-//     <div className="min-h-screen  lg:ml-64">
-//       <div className="absolute inset-0 z-0">
-//         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/30 via-gray-900 to-black"></div>
-//         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
-//       </div>
-
-//       <div className="relative z-10 flex">
-//         <Nav />
-
-//         <div className="flex-1 p-8 mt-16 md:mt-0">
-//           <motion.div
-//             initial={{ opacity: 0, y: 20 }}
-//             animate={{ opacity: 1, y: 0 }}
-//             transition={{ duration: 0.3 }}
-//             className="space-y-8 max-w-4xl mx-auto"
-//           >
-//             {/* Salary Structure Card */}
-//             <Card className=" bg-white backdrop-blur-sm">
-//               <CardHeader>
-//                 <CardTitle className="text-white"> {/* keep white for title for contrast */}
-//                   Salary Structure Configuration
-//                 </CardTitle>
-//               </CardHeader>
-//               <CardContent>
-//                 <form className="space-y-6">
-//                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-//                     <div className="space-y-2">
-//                       <Label className="text-black">Base Salary</Label>
-//                       <Input
-//                         type="number"
-//                         className=" text-black"
-//                         placeholder="Enter base salary"
-//                       />
-//                     </div>
-//                     <div className="space-y-2">
-//                       <Label className="text-black">Bonus Percentage</Label>
-//                       <Input
-//                         type="number"
-//                         className=" text-black"
-//                         placeholder="Enter bonus %"
-//                       />
-//                     </div>
-//                     <div className="space-y-2">
-//                       <Label className="text-black">Tax Deduction</Label>
-//                       <Select>
-//                         <SelectTrigger className=" text-black">
-//                           <SelectValue placeholder="Select tax regime" />
-//                         </SelectTrigger>
-//                         <SelectContent className=" text-black">
-//                           <SelectItem value="new">New Tax Regime</SelectItem>
-//                           <SelectItem value="old">Old Tax Regime</SelectItem>
-//                         </SelectContent>
-//                       </Select>
-//                     </div>
-//                   </div>
-
-//                   <div className="space-y-2">
-//                     <Label className="text-black">Allowances</Label>
-//                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-//                       {["HRA", "Travel", "Medical"].map((allowance, index) => (
-//                         <div
-//                           key={index}
-//                           className="flex items-center space-x-2 bg-gray-100 p-3 rounded-lg"
-//                         >
-//                           <Input
-//                             type="number"
-//                             className=" text-black flex-1"
-//                             placeholder={`${allowance} Amount`}
-//                           />
-//                         </div>
-//                       ))}
-//                     </div>
-//                   </div>
-//                 </form>
-//               </CardContent>
-//             </Card>
-
-//             {/* Leave Policy Card */}
-//             <Card className=" bg-white backdrop-blur-sm">
-//               <CardHeader>
-//                 <CardTitle className="text-white">
-//                   Leave Policy Configuration
-//                 </CardTitle>
-//               </CardHeader>
-//               <CardContent>
-//                 <div className="space-y-6">
-//                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-//                     <div className="space-y-2">
-//                       <Label className="text-black">Annual Leave Days</Label>
-//                       <Input
-//                         type="number"
-//                         className=" text-black"
-//                         placeholder="Enter days"
-//                       />
-//                     </div>
-//                     <div className="space-y-2">
-//                       <Label className="text-black">Sick Leave Days</Label>
-//                       <Input
-//                         type="number"
-//                         className=" text-black"
-//                         placeholder="Enter days"
-//                       />
-//                     </div>
-//                   </div>
-
-//                   <div className="space-y-2">
-//                     <Label className="text-black">Leave Accrual Rate</Label>
-//                     <div className="flex items-center space-x-2">
-//                       <Input
-//                         type="number"
-//                         className=" text-black"
-//                         placeholder="Accrual rate"
-//                       />
-//                       <span className="text-gray-400">days per month</span>
-//                     </div>
-//                   </div>
-
-//                   <div className="space-y-2">
-//                     <Label className="text-black">Leave Carry Forward</Label>
-//                     <Select>
-//                       <SelectTrigger className=" text-black">
-//                         <SelectValue placeholder="Select carry forward policy" />
-//                       </SelectTrigger>
-//                       <SelectContent className=" text-black">
-//                         <SelectItem value="unlimited">Unlimited</SelectItem>
-//                         <SelectItem value="limited">
-//                           Limited Carry Forward
-//                         </SelectItem>
-//                         <SelectItem value="none">No Carry Forward</SelectItem>
-//                       </SelectContent>
-//                     </Select>
-//                   </div>
-//                 </div>
-//               </CardContent>
-//             </Card>
-
-//             {/* Attendance Policy Card */}
-//             <Card className=" bg-white backdrop-blur-sm">
-//               <CardHeader>
-//                 <CardTitle className="text-white">Attendance Policy</CardTitle>
-//               </CardHeader>
-//               <CardContent>
-//                 <div className="space-y-6">
-//                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-//                     <div className="space-y-2">
-//                       <Label className="text-black">Working Hours</Label>
-//                       <div className="flex gap-2">
-//                         <Input
-//                           type="time"
-//                           className=" text-black"
-//                         />
-//                         <Input
-//                           type="time"
-//                           className=" text-black"
-//                         />
-//                       </div>
-//                     </div>
-//                     <div className="space-y-2">
-//                       <Label className="text-black">Late Penalty</Label>
-//                       <div className="flex items-center space-x-2">
-//                         <Input
-//                           type="number"
-//                           className=" text-black"
-//                           placeholder="Grace period (mins)"
-//                         />
-//                         <Input
-//                           type="number"
-//                           className=" text-black"
-//                           placeholder="Penalty amount"
-//                         />
-//                       </div>
-//                     </div>
-//                   </div>
-
-//                   <div className="space-y-2">
-//                     <Label className="text-black">Remote Work Policy</Label>
-//                     <div className="flex items-center space-x-4">
-//                       <div className="flex items-center space-x-2">
-//                         <input
-//                           type="checkbox"
-//                           className="form-checkbox text-purple-500   cursor-pointer"
-//                         />
-//                         <span className="text-black">Allow Remote Work</span>
-//                       </div>
-//                       <div className="flex items-center space-x-2">
-//                         <input
-//                           type="checkbox"
-//                           className="form-checkbox text-purple-500   cursor-pointer"
-//                         />
-//                         <span className="text-black">Hybrid Model</span>
-//                       </div>
-//                     </div>
-//                   </div>
-
-//                   <div className="space-y-2">
-//                     <Label className="text-black">Overtime Policy</Label>
-//                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-//                       <Input
-//                         type="number"
-//                         className=" text-black"
-//                         placeholder="Overtime rate multiplier"
-//                       />
-//                       <Select>
-//                         <SelectTrigger className=" text-black">
-//                           <SelectValue placeholder="Overtime calculation basis" />
-//                         </SelectTrigger>
-//                         <SelectContent className=" text-black">
-//                           <SelectItem value="daily">Daily Basis</SelectItem>
-//                           <SelectItem value="weekly">Weekly Basis</SelectItem>
-//                           <SelectItem value="monthly">Monthly Basis</SelectItem>
-//                         </SelectContent>
-//                       </Select>
-//                     </div>
-//                   </div>
-//                 </div>
-//               </CardContent>
-//             </Card>
-
-//             <Button
-//               type="submit"
-//               className="w-full bg-purple-600 hover:bg-purple-700"
-//             >
-//               Save Configuration
-//             </Button>
-//           </motion.div>
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-// // ...existing code...
-
-
-import Nav from "@/Admin/Nav"
 import { useState } from "react"
 import { Building2, Plus, Eye, Edit2, Trash2, X, DollarSign, Calendar, Clock } from "lucide-react"
+import Nav from "@/Admin/Nav"
 
 const HRConfigurationSystem = () => {
   const [configurations, setConfigurations] = useState([
@@ -261,6 +11,14 @@ const HRConfigurationSystem = () => {
       details: "Base: $75,000 | Bonus: 15% | HRA: $12,000",
       createdBy: "HR Manager",
       lastUpdated: "2024-05-20",
+      data: {
+        baseSalary: "75000",
+        bonusPercentage: "15",
+        taxRegime: "new",
+        hra: "12000",
+        travelAllowance: "5000",
+        medicalAllowance: "3000"
+      }
     },
     {
       id: "LEV-001",
@@ -269,6 +27,13 @@ const HRConfigurationSystem = () => {
       details: "Annual: 24 days | Sick: 12 days | Accrual: Monthly",
       createdBy: "Project Manager",
       lastUpdated: "2024-05-18",
+      data: {
+        annualLeave: "24",
+        sickLeave: "12",
+        accrualRate: "monthly",
+        carryForward: true,
+        maxCarryForward: "5"
+      }
     },
     {
       id: "ATT-001",
@@ -277,10 +42,21 @@ const HRConfigurationSystem = () => {
       details: "8 hrs/day | Late penalty: $20 | Remote: Not allowed",
       createdBy: "Site Supervisor",
       lastUpdated: "2024-05-22",
+      data: {
+        workingHours: "8",
+        latePenalty: "20",
+        remoteWork: false,
+        overtimeRate: "1.5",
+        flexibleHours: false
+      }
     },
   ])
+  
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [activeTab, setActiveTab] = useState("salary")
+  const [editingConfig, setEditingConfig] = useState(null)
+  const [isEditing, setIsEditing] = useState(false)
+  
   const [formData, setFormData] = useState({
     name: "",
     baseSalary: "",
@@ -339,32 +115,17 @@ const HRConfigurationSystem = () => {
   const getDetailsString = (type, data) => {
     switch (type) {
       case "salary":
-        return `Base: $${data.baseSalary?.toLocaleString()} | Bonus: ${data.bonusPercentage}% | HRA: $${data.hra?.toLocaleString()}`
+        return `Base: $${parseInt(data.baseSalary || 0).toLocaleString()} | Bonus: ${data.bonusPercentage || 0}% | HRA: $${parseInt(data.hra || 0).toLocaleString()}`
       case "leave":
-        return `Annual: ${data.annualLeave} days | Sick: ${data.sickLeave} days | Accrual: ${data.accrualRate}`
+        return `Annual: ${data.annualLeave || 0} days | Sick: ${data.sickLeave || 0} days | Accrual: ${data.accrualRate || 'monthly'}`
       case "attendance":
-        return `${data.workingHours} hrs/day | Late penalty: $${data.latePenalty} | Remote: ${data.remoteWork ? "Allowed" : "Not allowed"}`
+        return `${data.workingHours || 0} hrs/day | Late penalty: $${data.latePenalty || 0} | Remote: ${data.remoteWork ? "Allowed" : "Not allowed"}`
       default:
         return ""
     }
   }
 
-  const handleSubmit = () => {
-    if (!formData.name.trim()) {
-      alert("Please enter a configuration name")
-      return
-    }
-
-    const newConfig = {
-      id: generateId(activeTab),
-      name: formData.name,
-      type: activeTab,
-      details: getDetailsString(activeTab, formData),
-      createdBy: "Current User",
-      lastUpdated: new Date().toISOString().split("T")[0],
-    }
-
-    setConfigurations((prev) => [...prev, newConfig])
+  const resetForm = () => {
     setFormData({
       name: "",
       baseSalary: "",
@@ -384,11 +145,113 @@ const HRConfigurationSystem = () => {
       overtimeRate: "",
       flexibleHours: false,
     })
+    setEditingConfig(null)
+    setIsEditing(false)
+  }
+
+  const handleEdit = (config) => {
+    setEditingConfig(config)
+    setIsEditing(true)
+    setActiveTab(config.type)
+    
+    // Populate form with existing data
+    setFormData({
+      name: config.name,
+      baseSalary: config.data?.baseSalary || "",
+      bonusPercentage: config.data?.bonusPercentage || "",
+      taxRegime: config.data?.taxRegime || "new",
+      hra: config.data?.hra || "",
+      travelAllowance: config.data?.travelAllowance || "",
+      medicalAllowance: config.data?.medicalAllowance || "",
+      annualLeave: config.data?.annualLeave || "",
+      sickLeave: config.data?.sickLeave || "",
+      accrualRate: config.data?.accrualRate || "monthly",
+      carryForward: config.data?.carryForward || true,
+      maxCarryForward: config.data?.maxCarryForward || "",
+      workingHours: config.data?.workingHours || "",
+      latePenalty: config.data?.latePenalty || "",
+      remoteWork: config.data?.remoteWork || false,
+      overtimeRate: config.data?.overtimeRate || "",
+      flexibleHours: config.data?.flexibleHours || false,
+    })
+    
+    setIsModalOpen(true)
+  }
+
+  const handleSubmit = () => {
+    if (!formData.name.trim()) {
+      alert("Please enter a configuration name")
+      return
+    }
+
+    const configData = {
+      baseSalary: formData.baseSalary,
+      bonusPercentage: formData.bonusPercentage,
+      taxRegime: formData.taxRegime,
+      hra: formData.hra,
+      travelAllowance: formData.travelAllowance,
+      medicalAllowance: formData.medicalAllowance,
+      annualLeave: formData.annualLeave,
+      sickLeave: formData.sickLeave,
+      accrualRate: formData.accrualRate,
+      carryForward: formData.carryForward,
+      maxCarryForward: formData.maxCarryForward,
+      workingHours: formData.workingHours,
+      latePenalty: formData.latePenalty,
+      remoteWork: formData.remoteWork,
+      overtimeRate: formData.overtimeRate,
+      flexibleHours: formData.flexibleHours,
+    }
+
+    if (isEditing && editingConfig) {
+      // Update existing configuration
+      const updatedConfig = {
+        ...editingConfig,
+        name: formData.name,
+        details: getDetailsString(activeTab, configData),
+        lastUpdated: new Date().toISOString().split("T")[0],
+        data: configData
+      }
+
+      setConfigurations((prev) => 
+        prev.map((config) => 
+          config.id === editingConfig.id ? updatedConfig : config
+        )
+      )
+    } else {
+      // Create new configuration
+      const newConfig = {
+        id: generateId(activeTab),
+        name: formData.name,
+        type: activeTab,
+        details: getDetailsString(activeTab, configData),
+        createdBy: "Current User",
+        lastUpdated: new Date().toISOString().split("T")[0],
+        data: configData
+      }
+
+      setConfigurations((prev) => [...prev, newConfig])
+    }
+
+    resetForm()
     setIsModalOpen(false)
   }
 
   const handleDelete = (id) => {
-    setConfigurations((prev) => prev.filter((config) => config.id !== id))
+    if (window.confirm("Are you sure you want to delete this configuration?")) {
+      setConfigurations((prev) => prev.filter((config) => config.id !== id))
+    }
+  }
+
+  const handleModalClose = () => {
+    resetForm()
+    setIsModalOpen(false)
+  }
+
+  const handleAddNew = () => {
+    resetForm()
+    setActiveTab("salary")
+    setIsModalOpen(true)
   }
 
   const renderTabContent = () => {
@@ -591,10 +454,8 @@ const HRConfigurationSystem = () => {
   }
 
   return (
-    <div >
-      <Nav />
-          <div className="min-h-screen ml-64 bg-gray-50 p-6">
-     
+    <div className="min-h-screen bg-gray-50 p-6 ml-64">
+      <Nav/>
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
@@ -604,7 +465,7 @@ const HRConfigurationSystem = () => {
           <p className="text-gray-600 mt-2">Manage salary structures, leave policies, and attendance configurations</p>
         </div>
         <button
-          onClick={() => setIsModalOpen(true)}
+          onClick={handleAddNew}
           className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg flex items-center gap-2 font-medium transition-colors"
         >
           <Plus className="w-5 h-5" />
@@ -687,15 +548,18 @@ const HRConfigurationSystem = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center gap-2">
-                      <button className="text-blue-600 hover:text-blue-800 p-1 rounded transition-colors">
-                        <Eye className="w-4 h-4" />
-                      </button>
-                      <button className="text-green-600 hover:text-green-800 p-1 rounded transition-colors">
+                    
+                      <button 
+                        onClick={() => handleEdit(config)}
+                        className="text-green-600 hover:text-green-800 p-1 rounded transition-colors"
+                        title="Edit Configuration"
+                      >
                         <Edit2 className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleDelete(config.id)}
                         className="text-red-600 hover:text-red-800 p-1 rounded transition-colors"
+                        title="Delete Configuration"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -714,16 +578,18 @@ const HRConfigurationSystem = () => {
           <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
             <div className="flex justify-between items-center p-6 border-b border-gray-200">
-              <h2 className="text-2xl font-bold text-gray-900">Add New Configuration</h2>
+              <h2 className="text-2xl font-bold text-gray-900">
+                {isEditing ? `Edit Configuration: ${editingConfig?.name}` : "Add New Configuration"}
+              </h2>
               <button
-                onClick={() => setIsModalOpen(false)}
+                onClick={handleModalClose}
                 className="text-gray-400 hover:text-gray-600 p-1 rounded transition-colors"
               >
                 <X className="w-6 h-6" />
               </button>
             </div>
 
-            {/* Tab Navigation */}
+            {/* Tab Navigation - Disabled during edit mode */}
             <div className="px-6 pt-6">
               <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg">
                 {[
@@ -733,9 +599,14 @@ const HRConfigurationSystem = () => {
                 ].map((tab) => (
                   <button
                     key={tab.id}
-                    onClick={() => setActiveTab(tab.id)}
+                    onClick={() => !isEditing && setActiveTab(tab.id)}
+                    disabled={isEditing}
                     className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium rounded-md transition-colors ${
-                      activeTab === tab.id ? "bg-white text-blue-600 shadow-sm" : "text-gray-600 hover:text-gray-900"
+                      activeTab === tab.id 
+                        ? "bg-white text-blue-600 shadow-sm" 
+                        : isEditing 
+                        ? "text-gray-400 cursor-not-allowed" 
+                        : "text-gray-600 hover:text-gray-900"
                     }`}
                   >
                     <tab.icon className="w-4 h-4" />
@@ -743,6 +614,11 @@ const HRConfigurationSystem = () => {
                   </button>
                 ))}
               </div>
+              {isEditing && (
+                <p className="text-sm text-gray-500 mt-2">
+                  Configuration type cannot be changed during edit mode.
+                </p>
+              )}
             </div>
 
             {/* Form Content */}
@@ -753,7 +629,7 @@ const HRConfigurationSystem = () => {
               <div className="flex justify-end gap-3 mt-8 pt-6 border-t border-gray-200">
                 <button
                   type="button"
-                  onClick={() => setIsModalOpen(false)}
+                  onClick={handleModalClose}
                   className="px-6 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   Cancel
@@ -763,7 +639,7 @@ const HRConfigurationSystem = () => {
                   onClick={handleSubmit}
                   className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
-                  Create Configuration
+                  {isEditing ? "Update Configuration" : "Create Configuration"}
                 </button>
               </div>
             </div>
@@ -771,8 +647,6 @@ const HRConfigurationSystem = () => {
         </div>
       )}
     </div>
-    </div>
-
   )
 }
 
