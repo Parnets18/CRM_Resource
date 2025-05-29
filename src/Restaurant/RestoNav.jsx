@@ -35,7 +35,7 @@ import {
   TableCellsSplit,
   CircleDollarSign,
 } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 function useIsMobile() {
   const [isMobile, setIsMobile] = useState(false);
@@ -58,6 +58,7 @@ export default function RestoNav() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const isMobile = useIsMobile();
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Track active subtab by current path
   const [activeSubtab, setActiveSubtab] = useState(location.pathname);
@@ -66,7 +67,7 @@ export default function RestoNav() {
     setActiveSubtab(location.pathname);
     // Expand the main section if the current path matches a subtab
     navItems.forEach((item) => {
-      if (item.subtabs.some((sub) => sub.path === location.pathname)) {
+      if (item.subtabs && item.subtabs.some((sub) => sub.path === location.pathname)) {
         setExpandedSection(item.id);
       }
     });
@@ -74,6 +75,13 @@ export default function RestoNav() {
   }, [location.pathname]);
 
   const navItems = [
+    {
+      title: "Resturant Dashboard",
+      icon: PieChart,
+      id: "resturantdashboard",
+      path: "/RestaurantCrmDashboard",
+      subtabs: [],
+    },
     {
       title: "Restaurant Setup",
       icon: Utensils,
@@ -134,13 +142,13 @@ export default function RestoNav() {
     },
     {
       title: "Order & Billing",
-      icon: CreditCard, // Previously ShoppingCart
+      icon: CreditCard,
       id: "kop",
       subtabs: [{ title: "Pos", icon: CreditCard, path: "/Addtocart" }],
     },
     {
       title: "Customer Management",
-      icon: Users2, // Changed from ShoppingCart
+      icon: Users2,
       id: "k",
       subtabs: [
         {
@@ -152,7 +160,7 @@ export default function RestoNav() {
     },
     {
       title: "Reservations Management",
-      icon: Calendar, // Changed from ShoppingCart
+      icon: Calendar,
       id: "ko",
       subtabs: [
         {
@@ -164,7 +172,7 @@ export default function RestoNav() {
     },
     {
       title: "Kitchen Management",
-      icon: CookingPot, // Changed from ShoppingCart
+      icon: CookingPot,
       subtabs: [
         {
           title: "Kitchen Management",
@@ -175,7 +183,7 @@ export default function RestoNav() {
     },
     {
       title: "HR & Management",
-      icon: Building, // Changed from ShoppingCart
+      icon: Building,
       id: "kop",
       subtabs: [
         {
@@ -185,7 +193,6 @@ export default function RestoNav() {
         },
       ],
     },
-
     {
       title: "Expense Management",
       icon: Scale,
@@ -198,23 +205,21 @@ export default function RestoNav() {
         },
       ],
     },
-
     {
       title: "Restaurant Analytics",
-      icon: PieChart, // Changed from Scale
+      icon: PieChart,
       id: "analytics",
       subtabs: [
         {
           title: "Report & Analytics",
-          icon: BarChart3, // Changed from CreditCard
+          icon: BarChart3,
           path: "/Restaurant&analytics",
         },
       ],
     },
-
     {
       title: "Supervisor",
-      icon: Users2, // Changed from Scale
+      icon: Users2,
       id: "supervisor",
       subtabs: [
         {
@@ -228,7 +233,7 @@ export default function RestoNav() {
 
   return (
     <div>
-    {/* Hamburger Menu Button */}
+      {/* Hamburger Menu Button */}
       {isMobile && !isNavOpen && (
         <button
           onClick={() => setIsNavOpen(true)}
@@ -238,7 +243,7 @@ export default function RestoNav() {
         </button>
       )}
 
-     <div
+      <div
         className="w-64 fixed top-0 left-0 h-screen border-r border-purple-500/20 bg-white backdrop-blur-sm p-4 overflow-y-auto z-40"
         style={{ display: isMobile && !isNavOpen ? "none" : "block" }}
       >
@@ -253,55 +258,80 @@ export default function RestoNav() {
           )}
         </div>
 
-
         <nav className="space-y-1">
           {navItems.map((item) => (
             <div key={item.id}>
-              <Button
-                variant="ghost"
-                className={`w-full justify-start text-gray-700 hover:bg-gray-100 hover:text-purple-700 ${
-                  expandedSection === item.id ? "bg-purple-50" : ""
-                }`}
-                onClick={() =>
-                  setExpandedSection(
-                    expandedSection === item.id ? null : item.id
-                  )
-                }
-              >
-                <item.icon className="w-4 h-4 mr-2 text-purple-400" />
-                <span className="flex-1">{item.title}</span>
-                {expandedSection === item.id ? (
-                  <ChevronDown className="w-4 h-4 text-purple-400" />
-                ) : (
-                  <ChevronRight className="w-4 h-4 text-purple-400" />
-                )}
-              </Button>
-              {expandedSection === item.id && (
-                <div className="overflow-hidden">
-                  {item.subtabs.map((subtab, index) => (
-                    <Link
-                      key={index}
-                      to={subtab.path}
-                      className="block no-underline"
-                      onClick={() => {
-                        setActiveSubtab(subtab.path);
-                        if (isMobile) setIsNavOpen(false);
-                      }}
-                    >
-                      <Button
-                        variant="ghost"
-                        className={`w-full justify-start pl-8 text-gray-500 hover:bg-gray-100 hover:text-purple-700 ${
-                          activeSubtab === subtab.path
-                            ? "bg-purple-100 text-purple-700"
-                            : ""
-                        }`}
-                      >
-                        <subtab.icon className="w-4 h-4 mr-2 text-purple-400" />
-                        {subtab.title}
-                      </Button>
-                    </Link>
-                  ))}
-                </div>
+              {/* If item has a direct path, make the button a link */}
+              {item.path ? (
+                <Link
+                  to={item.path}
+                  className="block no-underline"
+                  onClick={() => {
+                    setActiveSubtab(item.path);
+                    if (isMobile) setIsNavOpen(false);
+                  }}
+                >
+                  <Button
+                    variant="ghost"
+                    className={`w-full justify-start text-gray-700 hover:bg-gray-100 hover:text-purple-700 ${
+                      activeSubtab === item.path ? "bg-purple-100 text-purple-700" : ""
+                    }`}
+                  >
+                    <item.icon className="w-4 h-4 mr-2 text-purple-400" />
+                    <span className="flex-1">{item.title}</span>
+                  </Button>
+                </Link>
+              ) : (
+                <>
+                  <Button
+                    variant="ghost"
+                    className={`w-full justify-start text-gray-700 hover:bg-gray-100 hover:text-purple-700 ${
+                      expandedSection === item.id ? "bg-purple-50" : ""
+                    }`}
+                    onClick={() =>
+                      setExpandedSection(
+                        expandedSection === item.id ? null : item.id
+                      )
+                    }
+                  >
+                    <item.icon className="w-4 h-4 mr-2 text-purple-400" />
+                    <span className="flex-1">{item.title}</span>
+                    {item.subtabs && item.subtabs.length > 0 ? (
+                      expandedSection === item.id ? (
+                        <ChevronDown className="w-4 h-4 text-purple-400" />
+                      ) : (
+                        <ChevronRight className="w-4 h-4 text-purple-400" />
+                      )
+                    ) : null}
+                  </Button>
+                  {item.subtabs && item.subtabs.length > 0 && expandedSection === item.id && (
+                    <div className="overflow-hidden">
+                      {item.subtabs.map((subtab, index) => (
+                        <Link
+                          key={index}
+                          to={subtab.path}
+                          className="block no-underline"
+                          onClick={() => {
+                            setActiveSubtab(subtab.path);
+                            if (isMobile) setIsNavOpen(false);
+                          }}
+                        >
+                          <Button
+                            variant="ghost"
+                            className={`w-full justify-start pl-8 text-gray-500 hover:bg-gray-100 hover:text-purple-700 ${
+                              activeSubtab === subtab.path
+                                ? "bg-purple-100 text-purple-700"
+                                : ""
+                            }`}
+                          >
+                            <subtab.icon className="w-4 h-4 mr-2 text-purple-400" />
+                            {subtab.title}
+                          </Button>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </>
               )}
             </div>
           ))}

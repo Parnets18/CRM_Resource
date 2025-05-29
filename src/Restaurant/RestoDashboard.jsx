@@ -1,1002 +1,558 @@
-"use client"
-
-import { useState } from "react"
-import { Link } from "react-router-dom"
-import { motion } from "framer-motion"
+import React, { useState, useEffect } from "react";
 import {
-  BarChart3,
-  Calendar,
-  Clipboard,
-  CreditCard,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  PieChart,
+  Pie,
+  Cell,
+  AreaChart,
+  Area,
+} from "recharts";
+import {
+  Store,
+  Users,
+  ShoppingCart,
   Package,
+  Receipt,
+  Calendar,
+  ChefHat,
+  UserCheck,
+  DollarSign,
   TrendingUp,
-  TrendingDown,
-  AlertCircle,
+  Bell,
+  Settings,
+  Eye,
+  AlertTriangle,
   Clock,
-} from "lucide-react"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@radix-ui/react-tabs"
-import RestoNav from "./RestoNav"
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog"
+  Utensils,
+  Table,
+  CreditCard,
+  Star,
+  ArrowUp,
+  ArrowDown,
+} from "lucide-react";
+import RestoNav from "./RestoNav";
 
-// Mock data for dashboard
-const salesData = {
-  today: 12580,
-  yesterday: 10450,
-  percentChange: 20.38,
-  orders: 42,
-  averageOrder: 299.52,
-}
+const RestaurantDashboard = () => {
+  const [currentTime, setCurrentTime] = useState(new Date());
 
-const inventoryAlerts = [
-  { item: "Chicken", status: "Low Stock", quantity: "2.5 kg", threshold: "5 kg" },
-  { item: "Tomatoes", status: "Low Stock", quantity: "1.2 kg", threshold: "3 kg" },
-  { item: "Cheese", status: "Expiring Soon", quantity: "4 kg", expiryDate: "2025-05-22" },
-]
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
-const pendingOrders = [
-  { id: "ORD-2345", table: "Table 4", items: 6, time: "10 mins ago", status: "Preparing" },
-  { id: "ORD-2344", table: "Table 7", items: 3, time: "15 mins ago", status: "Ready" },
-  { id: "ORD-2343", table: "Takeaway", items: 2, time: "20 mins ago", status: "Preparing" },
-]
+  // Sample data
+  const salesData = [
+    { name: "Mon", sales: 4500, orders: 45, profit: 1350 },
+    { name: "Tue", sales: 5200, orders: 52, profit: 1560 },
+    { name: "Wed", sales: 4800, orders: 48, profit: 1440 },
+    { name: "Thu", sales: 6100, orders: 61, profit: 1830 },
+    { name: "Fri", sales: 7500, orders: 75, profit: 2250 },
+    { name: "Sat", sales: 8200, orders: 82, profit: 2460 },
+    { name: "Sun", sales: 6800, orders: 68, profit: 2040 },
+  ];
 
-const reservations = [
-  { id: "RES-1234", name: "Rahul Sharma", time: "7:30 PM", guests: 4, table: "Table 8" },
-  { id: "RES-1235", name: "Priya Patel", time: "8:00 PM", guests: 2, table: "Table 3" },
-]
+  const hourlyData = [
+    { hour: "9AM", orders: 5, revenue: 850 },
+    { hour: "10AM", orders: 12, revenue: 1200 },
+    { hour: "11AM", orders: 18, revenue: 1800 },
+    { hour: "12PM", orders: 35, revenue: 3500 },
+    { hour: "1PM", orders: 42, revenue: 4200 },
+    { hour: "2PM", orders: 28, revenue: 2800 },
+    { hour: "3PM", orders: 15, revenue: 1500 },
+    { hour: "4PM", orders: 8, revenue: 800 },
+    { hour: "5PM", orders: 22, revenue: 2200 },
+    { hour: "6PM", orders: 38, revenue: 3800 },
+    { hour: "7PM", orders: 45, revenue: 4500 },
+    { hour: "8PM", orders: 52, revenue: 5200 },
+    { hour: "9PM", orders: 35, revenue: 3500 },
+  ];
 
-const topSellingItems = [
-  { name: "Butter Chicken", quantity: 28, revenue: 5600 },
-  { name: "Paneer Tikka", quantity: 22, revenue: 3300 },
-  { name: "Veg Biryani", quantity: 18, revenue: 2700 },
-  { name: "Gulab Jamun", quantity: 15, revenue: 1500 },
-]
+  const categoryData = [
+    { name: "Main Course", value: 45, color: "#3b82f6", amount: 20250 },
+    { name: "Starters", value: 30, color: "#10b981", amount: 13500 },
+    { name: "Beverages", value: 15, color: "#f59e0b", amount: 6750 },
+    { name: "Desserts", value: 10, color: "#ef4444", amount: 4500 },
+  ];
 
-export default function RestoDashboard() {
-  const [activeTab, setActiveTab] = useState("overview")
-  const [viewAllType, setViewAllType] = useState(null)
-  const [quickActionModal, setQuickActionModal] = useState(null)
+  const topItems = [
+    { name: "Chicken Biryani", sales: 45, revenue: 6750, growth: 12 },
+    { name: "Butter Chicken", sales: 38, revenue: 5700, growth: 8 },
+    { name: "Paneer Tikka", sales: 32, revenue: 4800, growth: -3 },
+    { name: "Fish Curry", sales: 28, revenue: 4200, growth: 15 },
+    { name: "Veg Fried Rice", sales: 25, revenue: 3000, growth: 5 },
+  ];
 
-  // Helper to open modal for a type
-  const openViewAll = (type) => setViewAllType(type)
-  const closeViewAll = () => setViewAllType(null)
+  const tableStatus = [
+    { id: 1, status: "occupied", waiter: "John", order: 2450, time: "45 min" },
+    { id: 2, status: "reserved", customer: "Smith Family", time: "7:30 PM" },
+    { id: 3, status: "free" },
+    { id: 4, status: "occupied", waiter: "Sarah", order: 1850, time: "25 min" },
+    { id: 5, status: "free" },
+    { id: 6, status: "occupied", waiter: "Mike", order: 3200, time: "12 min" },
+    { id: 7, status: "reserved", customer: "Johnson", time: "8:00 PM" },
+    { id: 8, status: "free" },
+  ];
 
-  // Quick Actions modal handlers
-  const openQuickAction = (type) => setQuickActionModal(type)
-  const closeQuickAction = () => setQuickActionModal(null)
+  const kitchenOrders = [
+    { id: "KOT001", table: 3, items: 2, status: "ready", time: "2 min" },
+    { id: "KOT002", table: 7, items: 3, status: "cooking", time: "8 min" },
+    { id: "KOT003", table: 2, items: 1, status: "pending", time: "1 min" },
+    { id: "KOT004", table: 5, items: 4, status: "cooking", time: "12 min" },
+  ];
+
+  const lowStockItems = [
+    { name: "Chicken Breast", current: 2, min: 5, unit: "kg", urgency: "high" },
+    { name: "Tomatoes", current: 3, min: 10, unit: "kg", urgency: "high" },
+    {
+      name: "Basmati Rice",
+      current: 8,
+      min: 15,
+      unit: "kg",
+      urgency: "medium",
+    },
+    { name: "Cheese", current: 1, min: 3, unit: "kg", urgency: "high" },
+  ];
+
+  const StatCard = ({
+    title,
+    value,
+    change,
+    icon: Icon,
+    color = "#3b82f6",
+    subtitle,
+  }) => (
+    <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow">
+      <div className="flex items-center justify-between">
+        <div className="flex-1">
+          <p className="text-sm font-medium text-gray-600 mb-1">{title}</p>
+          <p className="text-3xl font-bold text-gray-900 mb-1">{value}</p>
+          {subtitle && <p className="text-xs text-gray-500">{subtitle}</p>}
+          {change !== undefined && (
+            <div className="flex items-center mt-2">
+              {change >= 0 ? (
+                <ArrowUp className="h-4 w-4 text-green-500 mr-1" />
+              ) : (
+                <ArrowDown className="h-4 w-4 text-red-500 mr-1" />
+              )}
+              <span
+                className={`text-sm font-medium ${
+                  change >= 0 ? "text-green-600" : "text-red-600"
+                }`}
+              >
+                {Math.abs(change)}%
+              </span>
+              <span className="text-xs text-gray-500 ml-1">vs yesterday</span>
+            </div>
+          )}
+        </div>
+        <div className="ml-4">
+          <div
+            className="w-12 h-12 rounded-full flex items-center justify-center"
+            style={{ backgroundColor: `${color}20` }}
+          >
+            <Icon className="h-6 w-6" style={{ color }} />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+  const TableMiniCard = ({ table }) => {
+    const statusColors = {
+      free: "bg-green-500",
+      occupied: "bg-red-500",
+      reserved: "bg-yellow-500",
+    };
+
+    return (
+      <div className="bg-white rounded-lg p-3 border border-gray-200 hover:shadow-md transition-shadow">
+        <div className="flex items-center justify-between mb-2">
+          <span className="font-semibold text-sm">T{table.id}</span>
+          <div
+            className={`w-3 h-3 rounded-full ${statusColors[table.status]}`}
+          ></div>
+        </div>
+        {table.status === "occupied" && (
+          <div className="text-xs text-gray-600">
+            <p>{table.waiter}</p>
+            <p>₹{table.order}</p>
+            <p>{table.time}</p>
+          </div>
+        )}
+        {table.status === "reserved" && (
+          <div className="text-xs text-gray-600">
+            <p>{table.customer}</p>
+            <p>{table.time}</p>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
-    <div className="h-auto flex items-center justify-center px-2 sm:px-6 lg:px-12 bg-gray-50 min-h-screen">
-      {/* Desktop View */}
-      <div className="hidden lg:flex flex-row items-start justify-between py-10 w-full max-w-7xl gap-8">
-        {/* Sidebar */}
-        <div className="w-64 flex-shrink-0">
-          <RestoNav />
-        </div>
-        {/* Main Content */}
-        <main className="flex-1 p-6 pt-4 overflow-auto">
-          <div className="mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">Dashboard</h2>
-            <p className="text-gray-600">Welcome back! Here's what's happening today.</p>
-          </div>
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-            <TabsList className="flex space-x-2 border-b border-gray-200">
-              <TabsTrigger
-                value="overview"
-                className={`pb-2 px-4 text-sm font-medium ${
-                  activeTab === "overview"
-                    ? "border-b-2 border-emerald-500 text-emerald-600"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                Overview
-              </TabsTrigger>
-              <TabsTrigger
-                value="sales"
-                className={`pb-2 px-4 text-sm font-medium ${
-                  activeTab === "sales"
-                    ? "border-b-2 border-emerald-500 text-emerald-600"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                Sales
-              </TabsTrigger>
-              <TabsTrigger
-                value="inventory"
-                className={`pb-2 px-4 text-sm font-medium ${
-                  activeTab === "inventory"
-                    ? "border-b-2 border-emerald-500 text-emerald-600"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                Inventory
-              </TabsTrigger>
-              <TabsTrigger
-                value="orders"
-                className={`pb-2 px-4 text-sm font-medium ${
-                  activeTab === "orders"
-                    ? "border-b-2 border-emerald-500 text-emerald-600"
-                    : "text-gray-600 hover:text-gray-900"
-                }`}
-              >
-                Orders
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="overview" className="space-y-6">
-              {/* Stats Row */}
-              <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                  className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm"
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-500">Today's Sales</p>
-                      <h3 className="text-2xl font-bold text-gray-900">₹{salesData.today.toLocaleString()}</h3>
-                    </div>
-                    <div className="rounded-full bg-emerald-100 p-3">
-                      <CreditCard className="h-6 w-6 text-emerald-600" />
-                    </div>
-                  </div>
-                  <div className="mt-4 flex items-center">
-                    {salesData.percentChange > 0 ? (
-                      <>
-                        <TrendingUp className="mr-1 h-4 w-4 text-emerald-500" />
-                        <span className="text-sm font-medium text-emerald-500">+{salesData.percentChange}%</span>
-                      </>
-                    ) : (
-                      <>
-                        <TrendingDown className="mr-1 h-4 w-4 text-red-500" />
-                        <span className="text-sm font-medium text-red-500">{salesData.percentChange}%</span>
-                      </>
-                    )}
-                    <span className="ml-1 text-sm text-gray-500">vs yesterday</span>
-                  </div>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.1 }}
-                  className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm"
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-500">Orders Today</p>
-                      <h3 className="text-2xl font-bold text-gray-900">{salesData.orders}</h3>
-                    </div>
-                    <div className="rounded-full bg-blue-100 p-3">
-                      <Clipboard className="h-6 w-6 text-blue-600" />
-                    </div>
-                  </div>
-                  <div className="mt-4 flex items-center">
-                    <span className="text-sm text-gray-500">Avg. Order Value:</span>
-                    <span className="ml-1 text-sm font-medium text-gray-700">₹{salesData.averageOrder}</span>
-                  </div>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.2 }}
-                  className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm"
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-500">Inventory Alerts</p>
-                      <h3 className="text-2xl font-bold text-gray-900">{inventoryAlerts.length}</h3>
-                    </div>
-                    <div className="rounded-full bg-amber-100 p-3">
-                      <AlertCircle className="h-6 w-6 text-amber-600" />
-                    </div>
-                  </div>
-                  <div className="mt-4 flex items-center">
-                    <span className="text-sm text-gray-500">{inventoryAlerts.length} items need attention</span>
-                  </div>
-                </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: 0.3 }}
-                  className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm"
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-gray-500">Today's Reservations</p>
-                      <h3 className="text-2xl font-bold text-gray-900">{reservations.length}</h3>
-                    </div>
-                    <div className="rounded-full bg-purple-100 p-3">
-                      <Calendar className="h-6 w-6 text-purple-600" />
-                    </div>
-                  </div>
-                  <div className="mt-4 flex items-center">
-                    <Clock className="mr-1 h-4 w-4 text-gray-500" />
-                    <span className="text-sm text-gray-500">Next at {reservations[0]?.time}</span>
-                  </div>
-                </motion.div>
-              </div>
-              {/* Two Column Layout */}
-              <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-                {/* Left Column - 2/3 width */}
-                <div className="lg:col-span-2 space-y-6">
-                  {/* Top Selling Items */}
-                  <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-                    <div className="mb-4 flex items-center justify-between">
-                      <h3 className="text-lg font-semibold text-gray-900">Top Selling Items</h3>
-                      <button
-                        onClick={() => openViewAll("topSelling")}
-                        className="text-sm font-medium text-emerald-600 hover:text-emerald-700"
-                      >
-                        View All
-                      </button>
-                    </div>
-                    <div className="overflow-x-auto">
-                      <table className="w-full">
-                        <thead>
-                          <tr className="border-b border-gray-200">
-                            <th className="pb-3 text-left text-xs font-medium uppercase text-gray-500">Item</th>
-                            <th className="pb-3 text-right text-xs font-medium uppercase text-gray-500">Quantity</th>
-                            <th className="pb-3 text-right text-xs font-medium uppercase text-gray-500">Revenue</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {topSellingItems.map((item, index) => (
-                            <tr key={index} className="border-b border-gray-100">
-                              <td className="py-3 text-sm font-medium text-gray-900">{item.name}</td>
-                              <td className="py-3 text-right text-sm text-gray-500">{item.quantity}</td>
-                              <td className="py-3 text-right text-sm font-medium text-gray-900">
-                                ₹{item.revenue.toLocaleString()}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                  {/* Pending Orders */}
-                  <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-                    <div className="mb-4 flex items-center justify-between">
-                      <h3 className="text-lg font-semibold text-gray-900">Pending Orders</h3>
-                      <button
-                        onClick={() => openViewAll("orders")}
-                        className="text-sm font-medium text-emerald-600 hover:text-emerald-700"
-                      >
-                        View All
-                      </button>
-                    </div>
-                    <div className="space-y-4">
-                      {pendingOrders.map((order) => (
-                        <div
-                          key={order.id}
-                          className="flex items-center justify-between rounded-lg border border-gray-100 p-4"
-                        >
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <span className="font-medium text-gray-900">{order.id}</span>
-                              <span className="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-600">
-                                {order.table}
-                              </span>
-                            </div>
-                            <div className="mt-1 text-sm text-gray-500">
-                              {order.items} items • {order.time}
-                            </div>
-                          </div>
-                          <div className="flex items-center gap-3">
-                            <span
-                              className={`rounded-full px-3 py-1 text-xs font-medium ${
-                                order.status === "Ready"
-                                  ? "bg-emerald-100 text-emerald-700"
-                                  : "bg-amber-100 text-amber-700"
-                              }`}
-                            >
-                              {order.status}
-                            </span>
-                            <button className="rounded-lg border border-gray-200 px-3 py-1 text-sm font-medium text-gray-700 hover:bg-gray-50">
-                              View
-                            </button>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                {/* Right Column - 1/3 width */}
-                <div className="space-y-6">
-                  {/* Quick Actions */}
-                  <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-                    <h3 className="mb-4 text-lg font-semibold text-gray-900">Quick Actions</h3>
-                    <div className="grid grid-cols-2 gap-3">
-                      <button
-                        onClick={() => setQuickActionModal("newOrder")}
-                        className="flex flex-col items-center rounded-lg border border-gray-200 p-4 hover:bg-gray-50"
-                      >
-                        <CreditCard className="h-6 w-6 text-emerald-600" />
-                        <span className="mt-2 text-sm font-medium text-gray-700">New Order</span>
-                      </button>
-                      <button
-                        onClick={() => setQuickActionModal("reservation")}
-                        className="flex flex-col items-center rounded-lg border border-gray-200 p-4 hover:bg-gray-50"
-                      >
-                        <Calendar className="h-6 w-6 text-blue-600" />
-                        <span className="mt-2 text-sm font-medium text-gray-700">Reservation</span>
-                      </button>
-                      <button
-                        onClick={() => setQuickActionModal("inventory")}
-                        className="flex flex-col items-center rounded-lg border border-gray-200 p-4 hover:bg-gray-50"
-                      >
-                        <Package className="h-6 w-6 text-amber-600" />
-                        <span className="mt-2 text-sm font-medium text-gray-700">Inventory</span>
-                      </button>
-                      <button
-                        onClick={() => setQuickActionModal("reports")}
-                        className="flex flex-col items-center rounded-lg border border-gray-200 p-4 hover:bg-gray-50"
-                      >
-                        <BarChart3 className="h-6 w-6 text-purple-600" />
-                        <span className="mt-2 text-sm font-medium text-gray-700">Reports</span>
-                      </button>
-                    </div>
-                  </div>
-                  {/* Inventory Alerts */}
-                  <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-                    <div className="mb-4 flex items-center justify-between">
-                      <h3 className="text-lg font-semibold text-gray-900">Inventory Alerts</h3>
-                      <button
-                        onClick={() => openViewAll("inventory")}
-                        className="text-sm font-medium text-emerald-600 hover:text-emerald-700"
-                      >
-                        View All
-                      </button>
-                    </div>
-                    <div className="space-y-3">
-                      {inventoryAlerts.map((alert, index) => (
-                        <div key={index} className="rounded-lg border border-gray-100 p-3">
-                          <div className="flex items-center justify-between">
-                            <span className="font-medium text-gray-900">{alert.item}</span>
-                            <span
-                              className={`rounded-full px-2 py-1 text-xs font-medium ${
-                                alert.status === "Low Stock" ? "bg-red-100 text-red-700" : "bg-amber-100 text-amber-700"
-                              }`}
-                            >
-                              {alert.status}
-                            </span>
-                          </div>
-                          <div className="mt-1 text-sm text-gray-500">
-                            {alert.status === "Low Stock" ? (
-                              <>
-                                Current: {alert.quantity} (Min: {alert.threshold})
-                              </>
-                            ) : (
-                              <>Expires on: {new Date(alert.expiryDate).toLocaleDateString()}</>
-                            )}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                  {/* Today's Reservations */}
-                  <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-                    <div className="mb-4 flex items-center justify-between">
-                      <h3 className="text-lg font-semibold text-gray-900">Today's Reservations</h3>
-                      <button
-                        onClick={() => openViewAll("reservations")}
-                        className="text-sm font-medium text-emerald-600 hover:text-emerald-700"
-                      >
-                        View All
-                      </button>
-                    </div>
-                    <div className="space-y-3">
-                      {reservations.map((reservation) => (
-                        <div key={reservation.id} className="rounded-lg border border-gray-100 p-3">
-                          <div className="flex items-center justify-between">
-                            <span className="font-medium text-gray-900">{reservation.name}</span>
-                            <span className="text-sm text-gray-500">{reservation.time}</span>
-                          </div>
-                          <div className="mt-1 text-sm text-gray-500">
-                            {reservation.guests} guests • {reservation.table}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-            <TabsContent value="sales" className="space-y-6">
-              <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-900">Sales Overview</h3>
-                <p className="text-gray-500">Detailed sales information will be displayed here.</p>
-              </div>
-            </TabsContent>
-            <TabsContent value="inventory" className="space-y-6">
-              <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-900">Inventory Overview</h3>
-                <p className="text-gray-500">Detailed inventory information will be displayed here.</p>
-              </div>
-            </TabsContent>
-            <TabsContent value="orders" className="space-y-6">
-              <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
-                <h3 className="text-lg font-semibold text-gray-900">Orders Overview</h3>
-                <p className="text-gray-500">Detailed order information will be displayed here.</p>
-              </div>
-            </TabsContent>
-          </Tabs>
-          {/* View All Modal */}
-          <Dialog open={!!viewAllType} onOpenChange={closeViewAll}>
-            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle>
-                  {viewAllType === "topSelling" && "All Top Selling Items"}
-                  {viewAllType === "orders" && "All Pending Orders"}
-                  {viewAllType === "inventory" && "All Inventory Alerts"}
-                  {viewAllType === "reservations" && "All Reservations"}
-                </DialogTitle>
-              </DialogHeader>
-              <div className="mt-4">
-                {viewAllType === "topSelling" && (
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b border-gray-200">
-                        <th className="pb-3 text-left text-xs font-medium uppercase text-gray-500">Item</th>
-                        <th className="pb-3 text-right text-xs font-medium uppercase text-gray-500">Quantity</th>
-                        <th className="pb-3 text-right text-xs font-medium uppercase text-gray-500">Revenue</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {topSellingItems.map((item, index) => (
-                        <tr key={index} className="border-b border-gray-100">
-                          <td className="py-3 text-sm font-medium text-gray-900">{item.name}</td>
-                          <td className="py-3 text-right text-sm text-gray-500">{item.quantity}</td>
-                          <td className="py-3 text-right text-sm font-medium text-gray-900">
-                            ₹{item.revenue.toLocaleString()}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                )}
-                {viewAllType === "orders" && (
-                  <div className="space-y-4">
-                    {pendingOrders.map((order) => (
-                      <div
-                        key={order.id}
-                        className="flex items-center justify-between rounded-lg border border-gray-100 p-4"
-                      >
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <span className="font-medium text-gray-900">{order.id}</span>
-                            <span className="rounded-full bg-gray-100 px-2 py-1 text-xs text-gray-600">
-                              {order.table}
-                            </span>
-                          </div>
-                          <div className="mt-1 text-sm text-gray-500">
-                            {order.items} items • {order.time}
-                          </div>
-                        </div>
-                        <div className="flex items-center gap-3">
-                          <span
-                            className={`rounded-full px-3 py-1 text-xs font-medium ${
-                              order.status === "Ready"
-                                ? "bg-emerald-100 text-emerald-700"
-                                : "bg-amber-100 text-amber-700"
-                            }`}
-                          >
-                            {order.status}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                {viewAllType === "inventory" && (
-                  <div className="space-y-3">
-                    {inventoryAlerts.map((alert, index) => (
-                      <div key={index} className="rounded-lg border border-gray-100 p-3">
-                        <div className="flex items-center justify-between">
-                          <span className="font-medium text-gray-900">{alert.item}</span>
-                          <span
-                            className={`rounded-full px-2 py-1 text-xs font-medium ${
-                              alert.status === "Low Stock"
-                                ? "bg-red-100 text-red-700"
-                                : "bg-amber-100 text-amber-700"
-                            }`}
-                          >
-                            {alert.status}
-                          </span>
-                        </div>
-                        <div className="mt-1 text-sm text-gray-500">
-                          {alert.status === "Low Stock" ? (
-                            <>
-                              Current: {alert.quantity} (Min: {alert.threshold})
-                            </>
-                          ) : (
-                            <>Expires on: {new Date(alert.expiryDate).toLocaleDateString()}</>
-                          )}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                {viewAllType === "reservations" && (
-                  <div className="space-y-3">
-                    {reservations.map((reservation) => (
-                      <div key={reservation.id} className="rounded-lg border border-gray-100 p-3">
-                        <div className="flex items-center justify-between">
-                          <span className="font-medium text-gray-900">{reservation.name}</span>
-                          <span className="text-sm text-gray-500">{reservation.time}</span>
-                        </div>
-                        <div className="mt-1 text-sm text-gray-500">
-                          {reservation.guests} guests • {reservation.table}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </DialogContent>
-          </Dialog>
-          {/* Quick Actions Modal */}
-          <Dialog open={!!quickActionModal} onOpenChange={closeQuickAction}>
-            <DialogContent className="max-w-lg">
-              <DialogHeader>
-                <DialogTitle>
-                  {quickActionModal === "newOrder" && "New Order"}
-                  {quickActionModal === "reservation" && "New Reservation"}
-                  {quickActionModal === "inventory" && "Inventory"}
-                  {quickActionModal === "reports" && "Reports"}
-                </DialogTitle>
-              </DialogHeader>
-              <div className="mt-4">
-                {quickActionModal === "newOrder" && (
-                  <div>
-                    <p className="text-gray-700 mb-2">Start a new order from POS.</p>
-                    <Link
-                      to="/pos"
-                      className="inline-block rounded bg-emerald-600 px-4 py-2 text-white font-medium hover:bg-emerald-700"
-                      onClick={closeQuickAction}
-                    >
-                      Go to POS
-                    </Link>
-                  </div>
-                )}
-                {quickActionModal === "reservation" && (
-                  <div>
-                    <p className="text-gray-700 mb-2">Create a new reservation.</p>
-                    <Link
-                      to="/reservations"
-                      className="inline-block rounded bg-blue-600 px-4 py-2 text-white font-medium hover:bg-blue-700"
-                      onClick={closeQuickAction}
-                    >
-                      Go to Reservations
-                    </Link>
-                  </div>
-                )}
-                {quickActionModal === "inventory" && (
-                  <div>
-                    <p className="text-gray-700 mb-2">Manage your inventory.</p>
-                    <Link
-                      to="/inventory"
-                      className="inline-block rounded bg-amber-600 px-4 py-2 text-white font-medium hover:bg-amber-700"
-                      onClick={closeQuickAction}
-                    >
-                      Go to Inventory
-                    </Link>
-                  </div>
-                )}
-                {quickActionModal === "reports" && (
-                  <div>
-                    <p className="text-gray-700 mb-2">View sales and inventory reports.</p>
-                    <Link
-                      to="/reports"
-                      className="inline-block rounded bg-purple-600 px-4 py-2 text-white font-medium hover:bg-purple-700"
-                      onClick={closeQuickAction}
-                    >
-                      Go to Reports
-                    </Link>
-                  </div>
-                )}
-              </div>
-            </DialogContent>
-          </Dialog>
-        </main>
+    <div className="lg:ml-64 flex">
+      {/* Sidebar navigation for desktop */}
+      <div className="hidden lg:block">
+        <RestoNav />
       </div>
-      {/* Mobile/Tablet View */}
-      <div className="flex flex-col lg:hidden items-center justify-center gap-6 py-6 w-full">
-        {/* Mobile Nav */}
-        <div className="w-full max-w-2xl">
+      {/* Main content */}
+      <div className="flex-1 min-h-screen bg-gray-50">
+        {/* Responsive Nav for mobile */}
+        <div className="block lg:hidden">
           <RestoNav />
         </div>
-        {/* Main Content */}
-        <main className="w-full max-w-2xl px-2">
-          <div className="mb-4 text-center">
-            <h2 className="text-xl font-bold text-gray-800">Dashboard</h2>
-            <p className="text-gray-600 text-sm">Welcome back! Here's what's happening today.</p>
+        <div className="max-w-7xl mx-auto px-2 sm:px-4 md:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+          {/* Key Metrics */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 lg:mb-8">
+            <StatCard
+              title="Today's Revenue"
+              value="₹45,230"
+              change={12.5}
+              icon={DollarSign}
+              color="#10b981"
+              subtitle="Target: ₹50,000"
+            />
+            <StatCard
+              title="Orders Completed"
+              value="127"
+              change={8.2}
+              icon={Receipt}
+              color="#3b82f6"
+              subtitle="Avg: ₹356 per order"
+            />
+            <StatCard
+              title="Table Occupancy"
+              value="60%"
+              change={-5.1}
+              icon={Table}
+              color="#f59e0b"
+              subtitle="12 of 20 tables"
+            />
+            <StatCard
+              title="Kitchen Queue"
+              value="4"
+              change={-25.0}
+              icon={ChefHat}
+              color="#ef4444"
+              subtitle="Avg wait: 8 min"
+            />
           </div>
-          {/* Stats Row */}
-          <div className="grid grid-cols-2 gap-3 mb-4">
-            <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-sm">
-              <p className="text-xs font-medium text-gray-500">Today's Sales</p>
-              <h3 className="text-lg font-bold text-gray-900">₹{salesData.today.toLocaleString()}</h3>
-              <div className="flex items-center mt-2">
-                {salesData.percentChange > 0 ? (
-                  <>
-                    <TrendingUp className="mr-1 h-3 w-3 text-emerald-500" />
-                    <span className="text-xs font-medium text-emerald-500">+{salesData.percentChange}%</span>
-                  </>
-                ) : (
-                  <>
-                    <TrendingDown className="mr-1 h-3 w-3 text-red-500" />
-                    <span className="text-xs font-medium text-red-500">{salesData.percentChange}%</span>
-                  </>
-                )}
+
+          {/* Charts Row 1 */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 lg:mb-8">
+            {/* Sales Trend */}
+            <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900">
+                  Weekly Sales & Profit
+                </h3>
+                <TrendingUp className="h-5 w-5 text-green-500" />
               </div>
+              <ResponsiveContainer width="100%" height={220}>
+                <AreaChart data={salesData}>
+                  <defs>
+                    <linearGradient
+                      id="salesGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#3b82f6" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient
+                      id="profitGradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="5%" stopColor="#10b981" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#10b981" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <XAxis dataKey="name" stroke="#888" />
+                  <YAxis stroke="#888" />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "white",
+                      border: "1px solid #e5e7eb",
+                      borderRadius: "8px",
+                      boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                    }}
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="sales"
+                    stroke="#3b82f6"
+                    strokeWidth={2}
+                    fillOpacity={1}
+                    fill="url(#salesGradient)"
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="profit"
+                    stroke="#10b981"
+                    strokeWidth={2}
+                    fillOpacity={1}
+                    fill="url(#profitGradient)"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
             </div>
-            <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-sm">
-              <p className="text-xs font-medium text-gray-500">Orders</p>
-              <h3 className="text-lg font-bold text-gray-900">{salesData.orders}</h3>
-              <div className="text-xs text-gray-500 mt-2">Avg: ₹{salesData.averageOrder}</div>
-            </div>
-            <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-sm">
-              <p className="text-xs font-medium text-gray-500">Inventory Alerts</p>
-              <h3 className="text-lg font-bold text-gray-900">{inventoryAlerts.length}</h3>
-            </div>
-            <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-sm">
-              <p className="text-xs font-medium text-gray-500">Reservations</p>
-              <h3 className="text-lg font-bold text-gray-900">{reservations.length}</h3>
-              <div className="flex items-center mt-2">
-                <Clock className="mr-1 h-3 w-3 text-gray-500" />
-                <span className="text-xs text-gray-500">Next: {reservations[0]?.time}</span>
+
+            {/* Hourly Performance */}
+            <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900">
+                  Today's Hourly Performance
+                </h3>
+                <Clock className="h-5 w-5 text-blue-500" />
               </div>
+              <ResponsiveContainer width="100%" height={220}>
+                <LineChart data={hourlyData}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                  <XAxis dataKey="hour" stroke="#888" />
+                  <YAxis stroke="#888" />
+                  <Tooltip
+                    contentStyle={{
+                      backgroundColor: "white",
+                      border: "1px solid #e5e7eb",
+                      borderRadius: "8px",
+                      boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                    }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="orders"
+                    stroke="#f59e0b"
+                    strokeWidth={3}
+                    dot={{ r: 4 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
           </div>
-          {/* Quick Actions */}
-          <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm mb-4">
-            <h3 className="mb-2 text-base font-semibold text-gray-900">Quick Actions</h3>
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                onClick={() => setQuickActionModal("newOrder")}
-                className="flex flex-col items-center rounded-lg border border-gray-200 p-2 hover:bg-gray-50"
-              >
-                <CreditCard className="h-5 w-5 text-emerald-600" />
-                <span className="mt-1 text-xs font-medium text-gray-700">New Order</span>
-              </button>
-              <button
-                onClick={() => setQuickActionModal("reservation")}
-                className="flex flex-col items-center rounded-lg border border-gray-200 p-2 hover:bg-gray-50"
-              >
-                <Calendar className="h-5 w-5 text-blue-600" />
-                <span className="mt-1 text-xs font-medium text-gray-700">Reservation</span>
-              </button>
-              <button
-                onClick={() => setQuickActionModal("inventory")}
-                className="flex flex-col items-center rounded-lg border border-gray-200 p-2 hover:bg-gray-50"
-              >
-                <Package className="h-5 w-5 text-amber-600" />
-                <span className="mt-1 text-xs font-medium text-gray-700">Inventory</span>
-              </button>
-              <button
-                onClick={() => setQuickActionModal("reports")}
-                className="flex flex-col items-center rounded-lg border border-gray-200 p-2 hover:bg-gray-50"
-              >
-                <BarChart3 className="h-5 w-5 text-purple-600" />
-                <span className="mt-1 text-xs font-medium text-gray-700">Reports</span>
-              </button>
-            </div>
-          </div>
-          {/* Top Selling Items */}
-          <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm mb-4">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-base font-semibold text-gray-900">Top Selling Items</h3>
-              <button
-                onClick={() => openViewAll("topSelling")}
-                className="text-xs font-medium text-emerald-600 hover:text-emerald-700"
-              >
-                View All
-              </button>
-            </div>
-            <table className="w-full text-xs">
-              <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="pb-2 text-left font-medium text-gray-500">Item</th>
-                  <th className="pb-2 text-right font-medium text-gray-500">Qty</th>
-                  <th className="pb-2 text-right font-medium text-gray-500">Revenue</th>
-                </tr>
-              </thead>
-              <tbody>
-                {topSellingItems.slice(0, 3).map((item, index) => (
-                  <tr key={index} className="border-b border-gray-100">
-                    <td className="py-2 font-medium text-gray-900">{item.name}</td>
-                    <td className="py-2 text-right text-gray-500">{item.quantity}</td>
-                    <td className="py-2 text-right font-medium text-gray-900">
-                      ₹{item.revenue.toLocaleString()}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          {/* Pending Orders */}
-          <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm mb-4">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-base font-semibold text-gray-900">Pending Orders</h3>
-              <button
-                onClick={() => openViewAll("orders")}
-                className="text-xs font-medium text-emerald-600 hover:text-emerald-700"
-              >
-                View All
-              </button>
-            </div>
-            <div className="space-y-2">
-              {pendingOrders.slice(0, 2).map((order) => (
-                <div
-                  key={order.id}
-                  className="flex items-center justify-between rounded-lg border border-gray-100 p-2"
-                >
-                  <div>
-                    <div className="flex items-center gap-1">
-                      <span className="font-medium text-gray-900">{order.id}</span>
-                      <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">
-                        {order.table}
-                      </span>
-                    </div>
-                    <div className="mt-0.5 text-xs text-gray-500">
-                      {order.items} items • {order.time}
-                    </div>
-                  </div>
-                  <span
-                    className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                      order.status === "Ready"
-                        ? "bg-emerald-100 text-emerald-700"
-                        : "bg-amber-100 text-amber-700"
-                    }`}
+
+          {/* Second Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 mb-6 lg:mb-8">
+            {/* Category Performance */}
+            <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">
+                Sales by Category
+              </h3>
+              <ResponsiveContainer width="100%" height={180}>
+                <PieChart>
+                  <Pie
+                    data={categoryData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={30}
+                    outerRadius={60}
+                    paddingAngle={5}
+                    dataKey="value"
                   >
-                    {order.status}
-                  </span>
+                    {categoryData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(value, name, props) => [
+                      `${value}% (₹${props.payload.amount})`,
+                      props.payload.name,
+                    ]}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="mt-4 space-y-2">
+                {categoryData.map((item, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between text-sm"
+                  >
+                    <div className="flex items-center">
+                      <div
+                        className="w-3 h-3 rounded-full mr-2"
+                        style={{ backgroundColor: item.color }}
+                      ></div>
+                      <span>{item.name}</span>
+                    </div>
+                    <span className="font-medium">₹{item.amount}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Top Menu Items */}
+            <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100">
+              <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4">
+                Top Selling Items
+              </h3>
+              <div className="space-y-4">
+                {topItems.map((item, index) => (
+                  <div key={index} className="flex items-center justify-between">
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium text-sm">{item.name}</span>
+                        <div className="flex items-center">
+                          {item.growth >= 0 ? (
+                            <ArrowUp className="h-3 w-3 text-green-500 mr-1" />
+                          ) : (
+                            <ArrowDown className="h-3 w-3 text-red-500 mr-1" />
+                          )}
+                          <span
+                            className={`text-xs ${
+                              item.growth >= 0
+                                ? "text-green-600"
+                                : "text-red-600"
+                            }`}
+                          >
+                            {Math.abs(item.growth)}%
+                          </span>
+                        </div>
+                      </div>
+                      <div className="flex justify-between text-xs text-gray-500 mt-1">
+                        <span>{item.sales} orders</span>
+                        <span>₹{item.revenue}</span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Live Tables */}
+            <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900">
+                  Table Status
+                </h3>
+                <div className="flex space-x-3 text-xs">
+                  <div className="flex items-center">
+                    <div className="w-2 h-2 bg-green-500 rounded-full mr-1"></div>
+                    <span>Free</span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-2 h-2 bg-red-500 rounded-full mr-1"></div>
+                    <span>Occupied</span>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="w-2 h-2 bg-yellow-500 rounded-full mr-1"></div>
+                    <span>Reserved</span>
+                  </div>
                 </div>
-              ))}
+              </div>
+              <div className="grid grid-cols-4 sm:grid-cols-4 gap-2">
+                {tableStatus.map((table) => (
+                  <TableMiniCard key={table.id} table={table} />
+                ))}
+              </div>
             </div>
           </div>
-          {/* Inventory Alerts */}
-          <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm mb-4">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-base font-semibold text-gray-900">Inventory Alerts</h3>
-              <button
-                onClick={() => openViewAll("inventory")}
-                className="text-xs font-medium text-emerald-600 hover:text-emerald-700"
-              >
-                View All
-              </button>
-            </div>
-            <div className="space-y-2">
-              {inventoryAlerts.slice(0, 2).map((alert, index) => (
-                <div key={index} className="rounded-lg border border-gray-100 p-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium text-gray-900">{alert.item}</span>
-                    <span
-                      className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                        alert.status === "Low Stock" ? "bg-red-100 text-red-700" : "bg-amber-100 text-amber-700"
-                      }`}
-                    >
-                      {alert.status}
-                    </span>
-                  </div>
-                  <div className="mt-0.5 text-xs text-gray-500">
-                    {alert.status === "Low Stock" ? (
-                      <>
-                        Current: {alert.quantity} (Min: {alert.threshold})
-                      </>
-                    ) : (
-                      <>Expires on: {new Date(alert.expiryDate).toLocaleDateString()}</>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-          {/* Today's Reservations */}
-          <div className="rounded-lg border border-gray-200 bg-white p-4 shadow-sm mb-4">
-            <div className="flex items-center justify-between mb-2">
-              <h3 className="text-base font-semibold text-gray-900">Today's Reservations</h3>
-              <button
-                onClick={() => openViewAll("reservations")}
-                className="text-xs font-medium text-emerald-600 hover:text-emerald-700"
-              >
-                View All
-              </button>
-            </div>
-            <div className="space-y-2">
-              {reservations.slice(0, 2).map((reservation) => (
-                <div key={reservation.id} className="rounded-lg border border-gray-100 p-2">
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium text-gray-900">{reservation.name}</span>
-                    <span className="text-xs text-gray-500">{reservation.time}</span>
-                  </div>
-                  <div className="mt-0.5 text-xs text-gray-500">
-                    {reservation.guests} guests • {reservation.table}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </main>
-      </div>
-      {/* Modals for mobile/tablet */}
-      <Dialog open={!!viewAllType} onOpenChange={closeViewAll}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>
-              {viewAllType === "topSelling" && "All Top Selling Items"}
-              {viewAllType === "orders" && "All Pending Orders"}
-              {viewAllType === "inventory" && "All Inventory Alerts"}
-              {viewAllType === "reservations" && "All Reservations"}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="mt-4">
-            {viewAllType === "topSelling" && (
-              <table className="w-full text-xs">
-                <thead>
-                  <tr className="border-b border-gray-200">
-                    <th className="pb-2 text-left font-medium text-gray-500">Item</th>
-                    <th className="pb-2 text-right font-medium text-gray-500">Qty</th>
-                    <th className="pb-2 text-right font-medium text-gray-500">Revenue</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {topSellingItems.map((item, index) => (
-                    <tr key={index} className="border-b border-gray-100">
-                      <td className="py-2 font-medium text-gray-900">{item.name}</td>
-                      <td className="py-2 text-right text-gray-500">{item.quantity}</td>
-                      <td className="py-2 text-right font-medium text-gray-900">
-                        ₹{item.revenue.toLocaleString()}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-            {viewAllType === "orders" && (
-              <div className="space-y-2">
-                {pendingOrders.map((order) => (
+
+          {/* Bottom Row */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+            {/* Kitchen Orders */}
+            <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900">
+                  Kitchen Queue
+                </h3>
+                <ChefHat className="h-5 w-5 text-orange-500" />
+              </div>
+              <div className="space-y-3">
+                {kitchenOrders.map((order) => (
                   <div
                     key={order.id}
-                    className="flex items-center justify-between rounded-lg border border-gray-100 p-2"
+                    className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
                   >
-                    <div>
-                      <div className="flex items-center gap-1">
-                        <span className="font-medium text-gray-900">{order.id}</span>
-                        <span className="rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">
-                          {order.table}
+                    <div className="flex items-center">
+                      <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3">
+                        <span className="text-xs font-medium text-blue-600">
+                          T{order.table}
                         </span>
                       </div>
-                      <div className="mt-0.5 text-xs text-gray-500">
-                        {order.items} items • {order.time}
+                      <div>
+                        <p className="font-medium text-sm">{order.id}</p>
+                        <p className="text-xs text-gray-500">
+                          {order.items} items
+                        </p>
                       </div>
                     </div>
-                    <span
-                      className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                        order.status === "Ready"
-                          ? "bg-emerald-100 text-emerald-700"
-                          : "bg-amber-100 text-amber-700"
-                      }`}
-                    >
-                      {order.status}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            )}
-            {viewAllType === "inventory" && (
-              <div className="space-y-2">
-                {inventoryAlerts.map((alert, index) => (
-                  <div key={index} className="rounded-lg border border-gray-100 p-2">
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium text-gray-900">{alert.item}</span>
+                    <div className="text-right">
                       <span
-                        className={`rounded-full px-2 py-0.5 text-xs font-medium ${
-                          alert.status === "Low Stock"
-                            ? "bg-red-100 text-red-700"
-                            : "bg-amber-100 text-amber-700"
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          order.status === "ready"
+                            ? "bg-green-100 text-green-800"
+                            : order.status === "cooking"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-gray-100 text-gray-800"
                         }`}
                       >
-                        {alert.status}
+                        {order.status}
                       </span>
-                    </div>
-                    <div className="mt-0.5 text-xs text-gray-500">
-                      {alert.status === "Low Stock" ? (
-                        <>
-                          Current: {alert.quantity} (Min: {alert.threshold})
-                        </>
-                      ) : (
-                        <>Expires on: {new Date(alert.expiryDate).toLocaleDateString()}</>
-                      )}
+                      <p className="text-xs text-gray-500 mt-1">{order.time}</p>
                     </div>
                   </div>
                 ))}
               </div>
-            )}
-            {viewAllType === "reservations" && (
-              <div className="space-y-2">
-                {reservations.map((reservation) => (
-                  <div key={reservation.id} className="rounded-lg border border-gray-100 p-2">
+            </div>
+
+            {/* Stock Alerts */}
+            <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900">
+                  Stock Alerts
+                </h3>
+                <AlertTriangle className="h-5 w-5 text-red-500" />
+              </div>
+              <div className="space-y-3">
+                {lowStockItems.map((item, index) => (
+                  <div
+                    key={index}
+                    className={`p-3 rounded-lg border-l-4 ${
+                      item.urgency === "high"
+                        ? "bg-red-50 border-red-500"
+                        : "bg-yellow-50 border-yellow-500"
+                    }`}
+                  >
                     <div className="flex items-center justify-between">
-                      <span className="font-medium text-gray-900">{reservation.name}</span>
-                      <span className="text-xs text-gray-500">{reservation.time}</span>
-                    </div>
-                    <div className="mt-0.5 text-xs text-gray-500">
-                      {reservation.guests} guests • {reservation.table}
+                      <div>
+                        <p className="font-medium text-sm">{item.name}</p>
+                        <p className="text-xs text-gray-600">
+                          Current: {item.current} {item.unit} | Min: {item.min}{" "}
+                          {item.unit}
+                        </p>
+                      </div>
+                      <div
+                        className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          item.urgency === "high"
+                            ? "bg-red-100 text-red-800"
+                            : "bg-yellow-100 text-yellow-800"
+                        }`}
+                      >
+                        {item.urgency}
+                      </div>
                     </div>
                   </div>
                 ))}
               </div>
-            )}
+            </div>
           </div>
-        </DialogContent>
-      </Dialog>
-      <Dialog open={!!quickActionModal} onOpenChange={closeQuickAction}>
-        <DialogContent className="max-w-lg">
-          <DialogHeader>
-            <DialogTitle>
-              {quickActionModal === "newOrder" && "New Order"}
-              {quickActionModal === "reservation" && "New Reservation"}
-              {quickActionModal === "inventory" && "Inventory"}
-              {quickActionModal === "reports" && "Reports"}
-            </DialogTitle>
-          </DialogHeader>
-          <div className="mt-4">
-            {quickActionModal === "newOrder" && (
-              <div>
-                <p className="text-gray-700 mb-2">Start a new order from POS.</p>
-                <Link
-                  to="/pos"
-                  className="inline-block rounded bg-emerald-600 px-4 py-2 text-white font-medium hover:bg-emerald-700"
-                  onClick={closeQuickAction}
-                >
-                  Go to POS
-                </Link>
-              </div>
-            )}
-            {quickActionModal === "reservation" && (
-              <div>
-                <p className="text-gray-700 mb-2">Create a new reservation.</p>
-                <Link
-                  to="/reservations"
-                  className="inline-block rounded bg-blue-600 px-4 py-2 text-white font-medium hover:bg-blue-700"
-                  onClick={closeQuickAction}
-                >
-                  Go to Reservations
-                </Link>
-              </div>
-            )}
-            {quickActionModal === "inventory" && (
-              <div>
-                <p className="text-gray-700 mb-2">Manage your inventory.</p>
-                <Link
-                  to="/inventory"
-                  className="inline-block rounded bg-amber-600 px-4 py-2 text-white font-medium hover:bg-amber-700"
-                  onClick={closeQuickAction}
-                >
-                  Go to Inventory
-                </Link>
-              </div>
-            )}
-            {quickActionModal === "reports" && (
-              <div>
-                <p className="text-gray-700 mb-2">View sales and inventory reports.</p>
-                <Link
-                  to="/reports"
-                  className="inline-block rounded bg-purple-600 px-4 py-2 text-white font-medium hover:bg-purple-700"
-                  onClick={closeQuickAction}
-                >
-                  Go to Reports
-                </Link>
-              </div>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
+        </div>
+      </div>
     </div>
-  )
-}
+  );
+};
+
+export default RestaurantDashboard;
