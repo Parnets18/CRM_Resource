@@ -8,7 +8,7 @@ export default function Home() {
     {
       title: "Common CRM Management",
       description: "Manage multiple companies with a powerful admin dashboard",
-    },   
+    },
     {
       title: "Resturant CRM",
       description: "Resturant CRM for management",
@@ -76,11 +76,7 @@ export default function Home() {
                         navigate("/RestaurantCrmDashboard");
                       } else if (feature.title == "Construction CRM") {
                         navigate("/ConstructionDashboard");
-<<<<<<< HEAD
                       } else if (feature.title == "Common CRM Management") {
-=======
-                      }else if(feature.title == "Common CRM Management") {
->>>>>>> 6b120b8570ecbaa8153f6a23e7688fe3398d79b2
                         navigate("/common");
                       }
                     }}
@@ -91,7 +87,7 @@ export default function Home() {
                     </h3>
                     <p className="text-gray-600 text-sm mt-1 group-hover:text-gray-800 transition-colors duration-300">
                       {feature.description}
-                    </p>
+                    </p> 
                   </div>
                 ))}
               </div>
