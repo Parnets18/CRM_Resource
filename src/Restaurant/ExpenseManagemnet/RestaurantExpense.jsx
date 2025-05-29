@@ -192,10 +192,14 @@ const ExpenseManagement = () => {
   );
 
   return (
-    <div className="ml-64">
-      <div className="min-h-screen bg-gray-50 p-6">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50">
+      {/* Sidebar Navigation */}
+      <div className="w-full md:w-64 border-b md:border-b-0 md:border-r bg-white shadow-sm">
+        <RestoNav />
+      </div>
+      {/* Main Content */}
+      <div className="flex-1 p-4 sm:p-6 md:p-8 mt-12">
         <div className="max-w-7xl mx-auto">
-          <RestoNav />
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900 mb-2">
               Expense Management
@@ -206,7 +210,7 @@ const ExpenseManagement = () => {
           </div>
 
           {/* Navigation Tabs */}
-          <div className="flex space-x-1 mb-6 bg-gray-100 p-1 rounded-lg w-fit">
+          <div className="flex flex-wrap gap-2 mb-6 bg-gray-100 p-1 rounded-lg w-fit">
             {[
               { id: "expenses", label: "Expenses", icon: CurrencyDollarIcon },
               { id: "reports", label: "Reports", icon: ChartBarIcon },
@@ -228,7 +232,7 @@ const ExpenseManagement = () => {
           </div>
 
           {/* Period Filter */}
-          <div className="flex items-center space-x-4 mb-6">
+          <div className="flex flex-wrap items-center gap-4 mb-6">
             <CalendarIcon className="w-5 h-5 text-gray-500" />
             <select
               value={selectedPeriod}
@@ -255,13 +259,13 @@ const ExpenseManagement = () => {
                 className="space-y-6"
               >
                 {/* Add Expense Button */}
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                   <h2 className="text-xl font-semibold text-gray-900">
                     Recent Expenses
                   </h2>
                   <button
                     onClick={() => setShowAddExpense(true)}
-                    className="flex items-center space-x-2 bg-purple-600 text-white px-4 py-2 rounded-md  transition-colors"
+                    className="flex items-center space-x-2 bg-purple-600 text-white px-4 py-2 rounded-md transition-colors"
                   >
                     <PlusIcon className="w-4 h-4" />
                     <span>Add Expense</span>
@@ -281,7 +285,7 @@ const ExpenseManagement = () => {
                         animate={{ opacity: 1, scale: 1 }}
                         className="bg-white rounded-lg shadow-sm p-6 border border-gray-200"
                       >
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                           <div className="flex items-center space-x-4">
                             <div
                               className="w-4 h-4 rounded-full"
@@ -308,7 +312,7 @@ const ExpenseManagement = () => {
                           </div>
                         </div>
 
-                        <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
+                        <div className="mt-4 flex flex-col sm:flex-row items-start sm:items-center justify-between text-sm text-gray-500 gap-2">
                           <span>Voucher: {expense.voucherNumber || "N/A"}</span>
                           <div className="flex items-center space-x-3">
                             {expense.receipt && (
@@ -431,7 +435,7 @@ const ExpenseManagement = () => {
                 exit={{ opacity: 0, y: -20 }}
                 className="space-y-6"
               >
-                <div className="flex justify-between items-center">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                   <h2 className="text-xl font-semibold text-gray-900">
                     Expense Categories
                   </h2>
@@ -450,7 +454,7 @@ const ExpenseManagement = () => {
                       key={type.id}
                       className="bg-white rounded-lg shadow-sm p-6 border border-gray-200"
                     >
-                      <div className="flex items-center justify-between">
+                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2">
                         <div className="flex items-center space-x-4">
                           <div
                             className="w-6 h-6 rounded-full"
@@ -461,7 +465,7 @@ const ExpenseManagement = () => {
                               {type.name}
                             </h3>
                             <p className="text-sm text-gray-500">
-                              Budget: ${type.budget.toFixed(2)}
+                              Budget: ${parseFloat(type.budget).toFixed(2)}
                             </p>
                           </div>
                         </div>
@@ -482,110 +486,108 @@ const ExpenseManagement = () => {
                 </div>
               </motion.div>
             )}
-            // Edit Category Modal
-            {/* <AnimatePresence> */}
-              {showEditType && editType && (
+            {/* Edit Category Modal */}
+            {showEditType && editType && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50"
+                onClick={() => setShowEditType(false)}
+              >
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50"
-                  onClick={() => setShowEditType(false)}
+                  initial={{ scale: 0.95, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.95, opacity: 0 }}
+                  className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md m-4"
+                  onClick={(e) => e.stopPropagation()}
                 >
-                  <motion.div
-                    initial={{ scale: 0.95, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0.95, opacity: 0 }}
-                    className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md m-4"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                      Edit Category
-                    </h3>
-                    <div className="space-y-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Category Name
-                        </label>
-                        <input
-                          type="text"
-                          value={editType.name}
-                          onChange={(e) =>
-                            setEditType((prev) => ({
-                              ...prev,
-                              name: e.target.value,
-                            }))
-                          }
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          placeholder="Enter category name"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Color
-                        </label>
-                        <input
-                          type="color"
-                          value={editType.color}
-                          onChange={(e) =>
-                            setEditType((prev) => ({
-                              ...prev,
-                              color: e.target.value,
-                            }))
-                          }
-                          className="w-full h-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                          Budget
-                        </label>
-                        <input
-                          type="number"
-                          step="0.01"
-                          value={editType.budget}
-                          onChange={(e) =>
-                            setEditType((prev) => ({
-                              ...prev,
-                              budget: e.target.value,
-                            }))
-                          }
-                          className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                          placeholder="0.00"
-                        />
-                      </div>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Edit Category
+                  </h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Category Name
+                      </label>
+                      <input
+                        type="text"
+                        value={editType.name}
+                        onChange={(e) =>
+                          setEditType((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
+                        }
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Enter category name"
+                      />
                     </div>
-                    <div className="flex justify-end space-x-3 mt-6">
-                      <button
-                        onClick={() => setShowEditType(false)}
-                        className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        onClick={() => {
-                          setExpenseTypes((prev) =>
-                            prev.map((t) =>
-                              t.id === editType.id
-                                ? {
-                                    ...editType,
-                                    budget: parseFloat(editType.budget) || 0,
-                                  }
-                                : t
-                            )
-                          );
-                          setShowEditType(false);
-                        }}
-                        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-                      >
-                        Save Changes
-                      </button>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Color
+                      </label>
+                      <input
+                        type="color"
+                        value={editType.color}
+                        onChange={(e) =>
+                          setEditType((prev) => ({
+                            ...prev,
+                            color: e.target.value,
+                          }))
+                        }
+                        className="w-full h-10 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
                     </div>
-                  </motion.div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Budget
+                      </label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={editType.budget}
+                        onChange={(e) =>
+                          setEditType((prev) => ({
+                            ...prev,
+                            budget: e.target.value,
+                          }))
+                        }
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="0.00"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex justify-end space-x-3 mt-6">
+                    <button
+                      onClick={() => setShowEditType(false)}
+                      className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => {
+                        setExpenseTypes((prev) =>
+                          prev.map((t) =>
+                            t.id === editType.id
+                              ? {
+                                  ...editType,
+                                  budget: parseFloat(editType.budget) || 0,
+                                }
+                              : t
+                          )
+                        );
+                        setShowEditType(false);
+                      }}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                    >
+                      Save Changes
+                    </button>
+                  </div>
                 </motion.div>
-              )}
-            </AnimatePresence>
-          {/* </AnimatePresence> */}
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Add Type Modal */}
           <AnimatePresence>
@@ -676,6 +678,148 @@ const ExpenseManagement = () => {
                       className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                     >
                       Add Category
+                    </button>
+                  </div>
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
+          {/* Add Expense Modal */}
+          <AnimatePresence>
+            {showAddExpense && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50"
+                onClick={() => setShowAddExpense(false)}
+              >
+                <motion.div
+                  initial={{ scale: 0.95, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.95, opacity: 0 }}
+                  className="bg-white rounded-lg shadow-xl p-6 w-full max-w-md m-4"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Add New Expense
+                  </h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Category
+                      </label>
+                      <select
+                        value={newExpense.type}
+                        onChange={(e) =>
+                          setNewExpense((prev) => ({
+                            ...prev,
+                            type: e.target.value,
+                          }))
+                        }
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="">Select category</option>
+                        {expenseTypes.map((type) => (
+                          <option key={type.id} value={type.name}>
+                            {type.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Amount
+                      </label>
+                      <input
+                        type="number"
+                        step="0.01"
+                        value={newExpense.amount}
+                        onChange={(e) =>
+                          setNewExpense((prev) => ({
+                            ...prev,
+                            amount: e.target.value,
+                          }))
+                        }
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="0.00"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Description
+                      </label>
+                      <input
+                        type="text"
+                        value={newExpense.description}
+                        onChange={(e) =>
+                          setNewExpense((prev) => ({
+                            ...prev,
+                            description: e.target.value,
+                          }))
+                        }
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Description"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Date
+                      </label>
+                      <input
+                        type="date"
+                        value={newExpense.date}
+                        onChange={(e) =>
+                          setNewExpense((prev) => ({
+                            ...prev,
+                            date: e.target.value,
+                          }))
+                        }
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Voucher Number
+                      </label>
+                      <input
+                        type="text"
+                        value={newExpense.voucherNumber}
+                        onChange={(e) =>
+                          setNewExpense((prev) => ({
+                            ...prev,
+                            voucherNumber: e.target.value,
+                          }))
+                        }
+                        className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Voucher Number"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Receipt (optional)
+                      </label>
+                      <input
+                        type="file"
+                        accept="image/*,application/pdf"
+                        onChange={handleReceiptUpload}
+                        className="w-full"
+                      />
+                    </div>
+                  </div>
+                  <div className="flex justify-end space-x-3 mt-6">
+                    <button
+                      onClick={() => setShowAddExpense(false)}
+                      className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={addExpense}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+                    >
+                      Add Expense
                     </button>
                   </div>
                 </motion.div>

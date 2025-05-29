@@ -61,13 +61,13 @@ export default function ManageStock() {
   return (
     <div className="p-4 sm:p-6 bg-white min-h-screen">
       <div className="absolute inset-0 z-0">
-        <RestoNav />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-gray-100 to-white"></div>
+         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-gray-100 to-white"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
       </div>
+        <RestoNav />
 
       <div className="relative z-10 max-w-5xl mx-auto lg:ml-[16rem]">
-        <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4">
+        <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4 mt-12">
           <div>
             <h2 className="text-2xl font-bold text-black">
               Stock Inward Management
@@ -76,13 +76,13 @@ export default function ManageStock() {
               Record new stock from purchase or manual entry
             </p>
           </div>
-          <Button
+          {/* <Button
             variant="ghost"
             size="icon"
             className="text-gray-700 hover:bg-gray-100"
           >
             <Calendar className="w-5 h-5" />
-          </Button>
+          </Button> */}
         </div>
 
         <Tabs defaultValue="purchase" className="w-full">

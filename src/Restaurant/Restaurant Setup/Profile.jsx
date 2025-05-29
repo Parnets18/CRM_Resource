@@ -18,7 +18,7 @@ export default function Profile() {
       <div className="relative z-10 flex">
         <RestoNav />
         <div className="flex-1 p-8">
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex justify-between items-center mb-8 mt-12">
             <div>
               <h2 className="text-2xl font-bold text-black">Restaurant Profile</h2>
               <p className="text-gray-700">Manage your business details</p>

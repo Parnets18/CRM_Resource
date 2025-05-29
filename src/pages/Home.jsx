@@ -76,11 +76,7 @@ export default function Home() {
                         navigate("/RestaurantCrmDashboard");
                       } else if (feature.title == "Construction CRM") {
                         navigate("/ConstructionDashboard");
-<<<<<<< HEAD
-                      } else if (feature.title == "Common CRM Management") {
-=======
                       }else if(feature.title == "Common CRM Management") {
->>>>>>> 6b120b8570ecbaa8153f6a23e7688fe3398d79b2
                         navigate("/common");
                       }
                     }}

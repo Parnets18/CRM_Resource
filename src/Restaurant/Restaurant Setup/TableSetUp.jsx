@@ -234,20 +234,20 @@ export default function TableManagement() {
       </div>
 
       <div className="relative z-10">
-        <div className="flex-1 p-8">
+        <div className="flex-1 p-2 sm:p-4 md:p-8">
           {/* Header */}
           <RestoNav />
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4">
             <div>
-              <h2 className="text-2xl font-bold text-black">
+              <h2 className="text-2xl font-bold text-black mt-12">
                 Dine-In Table Management
               </h2>
-              <div className="flex items-center gap-2 mt-1">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 mt-1">
                 <Select
                   value={selectedRestaurant.id.toString()}
                   onValueChange={handleRestaurantChange}
                 >
-                  <SelectTrigger className="bg-gray-100 border-gray-300 text-black w-48">
+                  <SelectTrigger className="bg-gray-100 border-gray-300 text-black w-full sm:w-48">
                     <SelectValue placeholder="Select Restaurant" />
                   </SelectTrigger>
                   <SelectContent className="bg-white border-gray-300 text-black">
@@ -272,7 +272,7 @@ export default function TableManagement() {
                 </span>
               </div>
             </div>
-            <div className="flex gap-3">
+            <div className="flex flex-wrap gap-2">
               <Button
                 variant={viewMode === "grid" ? "default" : "outline"}
                 onClick={() => setViewMode("grid")}
@@ -301,13 +301,12 @@ export default function TableManagement() {
 
           {/* Add Table Popup */}
           {isPopupOpen && (
-            <div className="fixed inset-0  bg-opacity-30 flex items-center justify-center  z-50">
+            <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50">
               <motion.div
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-white border border-purple-500/30 rounded-xl shadow-2xl w-full max-w-md"
-                                style={{ minHeight: "auto", maxHeight: 500, overflowY: "auto" }}
-
+                className="bg-white border border-purple-500/30 rounded-xl shadow-2xl w-full max-w-md mx-2"
+                style={{ minHeight: "auto", maxHeight: 500, overflowY: "auto" }}
               >
                 <div className="flex justify-between items-center border-b border-purple-500/20 p-4">
                   <h3 className="text-lg font-semibold text-black">
@@ -321,6 +320,11 @@ export default function TableManagement() {
                   </button>
                 </div>
                 <form onSubmit={handleSubmit} className="p-4 space-y-4">
+                  {/* ...form fields unchanged... */}
+                  {/* (Keep your form fields here as in your original code) */}
+                  {/* ... */}
+                  {/* The rest of your form code remains unchanged */}
+                  {/* ... */}
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-1">
                       Restaurant
@@ -390,7 +394,7 @@ export default function TableManagement() {
                       ))}
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <div>
                       <label className="block text-xs font-medium text-gray-700 mb-1">
                         Location Zone *
@@ -490,11 +494,11 @@ export default function TableManagement() {
 
           {/* Edit Table Modal */}
           {isEditModalOpen && editTableData && (
-            <div className="fixed inset-0  bg-opacity-30 flex items-center justify-center z-50">
+            <div className="fixed inset-0 bg-black/20 flex items-center justify-center z-50">
               <motion.div
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-white border border-purple-500/30 rounded-xl shadow-2xl w-full max-w-2xl mx-auto"
+                className="bg-white border border-purple-500/30 rounded-xl shadow-2xl w-full max-w-2xl mx-2"
                 style={{ minHeight: "auto", maxHeight: 500, overflowY: "auto" }}
               >
                 <div className="flex justify-between items-center border-b border-purple-500/20 p-4">
@@ -509,6 +513,7 @@ export default function TableManagement() {
                   </button>
                 </div>
                 <form onSubmit={handleEditSubmit} className="p-4 space-y-4">
+                  {/* ...edit form fields unchanged... */}
                   <div>
                     <label className="block text-xs font-medium text-gray-700 mb-1">
                       Table Number *
@@ -564,7 +569,7 @@ export default function TableManagement() {
                       ))}
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <div>
                       <label className="block text-xs font-medium text-gray-700 mb-1">
                         Location Zone *
@@ -664,7 +669,7 @@ export default function TableManagement() {
           {/* Main Content */}
           <div>
             {viewMode === "grid" ? (
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
                 {filteredTables.map((table) => (
                   <motion.div
                     key={table.id}
@@ -723,94 +728,96 @@ export default function TableManagement() {
                 ))}
               </div>
             ) : (
-              <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
+              <Card className="border border-purple-500/20 bg-white backdrop-blur-sm overflow-x-auto">
                 <CardHeader>
-                  <div className="flex justify-between items-center">
+                  <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
                     <CardTitle className="text-black">All Tables</CardTitle>
                     <Input
                       placeholder="Search tables..."
-                      className="bg-gray-100 border-gray-300 text-black w-64"
+                      className="bg-gray-100 border-gray-300 text-black w-full sm:w-64"
                     />
                   </div>
                 </CardHeader>
                 <CardContent>
-                  <Table>
-                    <TableHeader>
-                      <TableRow className="hover:bg-transparent">
-                        <TableHead className="text-gray-700">Table</TableHead>
-                        <TableHead className="text-gray-700">Type</TableHead>
-                        <TableHead className="text-gray-700">
-                          Capacity
-                        </TableHead>
-                        <TableHead className="text-gray-700">
-                          Location
-                        </TableHead>
-                        <TableHead className="text-gray-700">Status</TableHead>
-                        <TableHead className="text-right text-gray-700">
-                          Actions
-                        </TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {filteredTables.map((table) => (
-                        <motion.tr
-                          key={table.id}
-                          whileHover={{
-                            backgroundColor: "rgba(168, 85, 247, 0.08)",
-                          }}
-                          className="border-b border-gray-200"
-                        >
-                          <TableCell className="font-medium text-black">
-                            {table.number}
-                          </TableCell>
-                          <TableCell>
-                            <Badge
-                              variant="outline"
-                              className="border-purple-500/50 text-purple-700 bg-purple-50"
-                            >
-                              {table.type}
-                            </Badge>
-                          </TableCell>
-                          <TableCell className="text-gray-700">
-                            <div className="flex items-center">
-                              {table.capacity}
-                            </div>
-                          </TableCell>
-                          <TableCell className="text-gray-500">
-                            {table.location}
-                          </TableCell>
-                          <TableCell>
-                            <span
-                              className={`px-2 py-1 rounded-full text-xs ${getStatusColor(
-                                table.status
-                              )}`}
-                            >
-                              {table.status}
-                            </span>
-                          </TableCell>
-                          <TableCell className="text-right">
-                            <div className="flex justify-end gap-2">
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="text-purple-600 hover:bg-purple-100"
-                                onClick={() => openEditModal(table)}
+                  <div className="overflow-x-auto">
+                    <Table>
+                      <TableHeader>
+                        <TableRow className="hover:bg-transparent">
+                          <TableHead className="text-gray-700">Table</TableHead>
+                          <TableHead className="text-gray-700">Type</TableHead>
+                          <TableHead className="text-gray-700">
+                            Capacity
+                          </TableHead>
+                          <TableHead className="text-gray-700">
+                            Location
+                          </TableHead>
+                          <TableHead className="text-gray-700">Status</TableHead>
+                          <TableHead className="text-right text-gray-700">
+                            Actions
+                          </TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {filteredTables.map((table) => (
+                          <motion.tr
+                            key={table.id}
+                            whileHover={{
+                              backgroundColor: "rgba(168, 85, 247, 0.08)",
+                            }}
+                            className="border-b border-gray-200"
+                          >
+                            <TableCell className="font-medium text-black">
+                              {table.number}
+                            </TableCell>
+                            <TableCell>
+                              <Badge
+                                variant="outline"
+                                className="border-purple-500/50 text-purple-700 bg-purple-50"
                               >
-                                <Edit className="w-4 h-4" />
-                              </Button>
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                className="text-red-600 hover:bg-red-100"
+                                {table.type}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-gray-700">
+                              <div className="flex items-center">
+                                {table.capacity}
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-gray-500">
+                              {table.location}
+                            </TableCell>
+                            <TableCell>
+                              <span
+                                className={`px-2 py-1 rounded-full text-xs ${getStatusColor(
+                                  table.status
+                                )}`}
                               >
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
-                            </div>
-                          </TableCell>
-                        </motion.tr>
-                      ))}
-                    </TableBody>
-                  </Table>
+                                {table.status}
+                              </span>
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex justify-end gap-2">
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="text-purple-600 hover:bg-purple-100"
+                                  onClick={() => openEditModal(table)}
+                                >
+                                  <Edit className="w-4 h-4" />
+                                </Button>
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="text-red-600 hover:bg-red-100"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </motion.tr>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
                 </CardContent>
               </Card>
             )}
