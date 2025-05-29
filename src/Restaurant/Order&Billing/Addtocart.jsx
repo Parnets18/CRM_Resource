@@ -969,7 +969,7 @@ export default function POSSystem() {
                   <button
                     className={`flex-1 py-3 px-4 flex items-center justify-center gap-2 ${
                       activeTab === "order"
-                        ? "bg-blue-600 text-white"
+                        ? "bg-purple-600 text-white"
                         : "text-gray-300 hover:bg-gray-700"
                     } ${orderFinalized ? "opacity-50 cursor-not-allowed" : ""}`}
                     onClick={() => !orderFinalized && setActiveTab("order")}
@@ -981,7 +981,7 @@ export default function POSSystem() {
                   <button
                     className={`flex-1 py-3 px-4 flex items-center justify-center gap-2 ${
                       activeTab === "billing"
-                        ? "bg-blue-600 text-white"
+                        ? "bg-purple-600 text-white"
                         : "text-gray-300 hover:bg-gray-700"
                     } ${
                       cartItems.length === 0 || orderFinalized
@@ -1001,7 +1001,7 @@ export default function POSSystem() {
                   <button
                     className={`flex-1 py-3 px-4 flex items-center justify-center gap-2 ${
                       activeTab === "payment"
-                        ? "bg-blue-600 text-white"
+                        ? "bg-purple-600 text-white"
                         : "text-gray-300 hover:bg-gray-700"
                     } ${
                       cartItems.length === 0 || orderFinalized
@@ -1056,7 +1056,7 @@ export default function POSSystem() {
                                 key={table.id}
                                 className={`py-2 px-3 rounded-md ${
                                   selectedTable === table.id
-                                    ? "bg-blue-600 hover:bg-blue-700 text-white"
+                                    ? "bg-purple-600  text-white"
                                     : "border border-gray-700 text-black "
                                 } ${
                                   cartItems.length > 0 &&
@@ -1090,7 +1090,7 @@ export default function POSSystem() {
                             Cart Summary
                           </h3>
                           {kotId && (
-                            <span className="px-2 py-1 text-xs bg-blue-600 rounded-full text-white">
+                            <span className="px-2 py-1 text-xs bg-purple-600 rounded-full text-white">
                               {kotId}
                             </span>
                           )}
@@ -1193,7 +1193,7 @@ export default function POSSystem() {
                                 key={category.id}
                                 className={`py-2 px-3 rounded-md flex items-center gap-2 ${
                                   selectedCategory === category.id
-                                    ? "bg-blue-600 hover:bg-blue-700 text-white"
+                                    ? "bg-purple-600  text-white"
                                     : "border border-gray-700 "
                                 }`}
                                 onClick={() => setSelectedCategory(category.id)}
@@ -1216,14 +1216,14 @@ export default function POSSystem() {
                               >
                                 <div className="font-medium  ">{item.name}</div>
                                 <div className="flex justify-between items-center mt-1">
-                                  <div className="text-blue-400 font-medium">
+                                  <div className="text-black-400 font-medium">
                                     ₹{item.price}
                                   </div>
                                   <div className="text-xs ">
                                     Stock: {item.stock}
                                   </div>
                                 </div>
-                                <button className="w-full mt-2 py-1 px-2 bg-blue-600  rounded-md text-sm flex items-center justify-center gap-1 text-white">
+                                <button className="w-full mt-2 py-1 px-2 bg-purple-600  rounded-md text-sm flex items-center justify-center gap-1 text-white">
                                   <Plus className="w-3 h-3" />
                                   Add
                                 </button>
@@ -1403,7 +1403,7 @@ export default function POSSystem() {
                                       }
                                     />
                                     <button
-                                      className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-white"
+                                      className="px-4 py-2 bg-purple-600  rounded-md text-white"
                                       onClick={() => applyCoupon(couponCode)}
                                     >
                                       Apply
@@ -1472,7 +1472,7 @@ export default function POSSystem() {
                               Back to Order
                             </button>
                             <button
-                              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-white"
+                              className="px-4 py-2 bg-purple-600 rounded-md text-white"
                               onClick={() => setActiveTab("payment")}
                             >
                               Proceed to Payment
@@ -1558,7 +1558,7 @@ export default function POSSystem() {
                             className={`w-full mt-6 py-2 px-4 rounded-md flex items-center justify-center gap-2 ${
                               totalPaid < totalAmount
                                 ? "bg-gray-100 cursor-not-allowed"
-                                : "bg-blue-600 hover:bg-blue-700"
+                                : "bg-purple-600 "
                             } text-black`}
                             disabled={totalPaid < totalAmount}
                             onClick={finalizeBill}
@@ -1699,7 +1699,7 @@ export default function POSSystem() {
                             </button>
 
                             <button
-                              className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-md text-white"
+                              className="px-4 py-2 bg-purple-600  rounded-md text-white"
                               onClick={() => {
                                 // Set exact amount to first payment method
                                 const updatedPayments = [...paymentModes];
@@ -1724,8 +1724,8 @@ export default function POSSystem() {
                             <button
                               className={`px-4 py-2 rounded-md flex items-center justify-center gap-2 ${
                                 totalPaid < totalAmount
-                                  ? "bg-blue-600 cursor-not-allowed"
-                                  : "bg-blue-600 hover:bg-blue-700"
+                                  ? "bg-purple-600 cursor-not-allowed"
+                                  : "bg-purple-600 "
                               } text-white`}
                               disabled={totalPaid < totalAmount}
                               onClick={finalizeBill}

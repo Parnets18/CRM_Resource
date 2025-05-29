@@ -76,7 +76,11 @@ export default function Home() {
                         navigate("/RestaurantCrmDashboard");
                       } else if (feature.title == "Construction CRM") {
                         navigate("/ConstructionDashboard");
+<<<<<<< HEAD
                       } else if (feature.title == "Common CRM Management") {
+=======
+                      }else if(feature.title == "Common CRM Management") {
+>>>>>>> 6b120b8570ecbaa8153f6a23e7688fe3398d79b2
                         navigate("/common");
                       }
                     }}
@@ -96,7 +100,7 @@ export default function Home() {
         </section>
       </main>
 
-      <footer className="h-16 bg-blue-50 flex items-center justify-between px-10 text-black text-sm">
+      {/* <footer className="h-16 bg-blue-50 flex items-center justify-between px-10 text-black text-sm">
         <p>© 2023 CRM. All rights reserved.</p>
         <div className="flex items-center gap-4">
           <Link
@@ -112,7 +116,7 @@ export default function Home() {
             Privacy
           </Link>
         </div>
-      </footer>
+      </footer> */}
     </div>
   );
 }

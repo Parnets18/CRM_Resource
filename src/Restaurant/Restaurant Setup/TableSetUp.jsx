@@ -301,7 +301,7 @@ export default function TableManagement() {
 
           {/* Add Table Popup */}
           {isPopupOpen && (
-            <div className="fixed inset-0 bg-white bg-opacity-30 flex items-center justify-center  z-50">
+            <div className="fixed inset-0  bg-opacity-30 flex items-center justify-center  z-50">
               <motion.div
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -490,7 +490,7 @@ export default function TableManagement() {
 
           {/* Edit Table Modal */}
           {isEditModalOpen && editTableData && (
-            <div className="fixed inset-0 bg-white bg-opacity-30 flex items-center justify-center z-50">
+            <div className="fixed inset-0  bg-opacity-30 flex items-center justify-center z-50">
               <motion.div
                 initial={{ opacity: 0, scale: 0.97 }}
                 animate={{ opacity: 1, scale: 1 }}

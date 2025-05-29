@@ -6,7 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 
 // Admin Pages
-import Dashboard from './Admin/DashboardcConstruction';
+import Dashboard from "./Admin/DashboardcConstruction";
 import Nav from "./Admin/Nav";
 import AdminPayroll from "./Admin/HR/AdminPayroll";
 
@@ -42,6 +42,14 @@ import CommonLayout from "../src/Common/CommonLayout";
 import CreateRole from "./Admin/HR/Admin/CreateRole";
 import ConfigPage from "./Admin/HR/Admin/Salary";
 import ReportsPage from "./Admin/HR/Admin/Reports";
+import EmployeeProfile from "./Admin/HR/Admin/Employee/EmployeeProfile";
+import LeaveApplication from "./Admin/HR/Admin/Employee/LeaveApplication";
+import PayslipDownload from "./Admin/HR/Admin/Employee/PayslipDownload";
+import RestaurantAttendence from "./Admin/HR/Admin/Employee/RestaurantAttendence";
+
+
+
+
 // import EmployeeForm from './Admin/HR/HRManager/EmployeeForm';
 // import AttendanceTracker from './Admin/HR/HRManager/AttendanceTracker';
 // Common Components
@@ -53,34 +61,40 @@ import SalesManagement from "../src/Common/SalesManagement";
 import Inventory from "../src/Common/Inventory";
 import CRMManagement from "../src/Common/Crmmanagement";
 import CRMHRManagement from "../src/Common/CRMHRManagement";
-import Attend from "./Common/Attendence";
+// import Attend from "./Common/Attendence";
 import Payroll from "../src/Common/Payroll";
 import AccountsFinance from "../src/Common/Account&Finance";
 import SecurityRoles from "./Common/SecurityRoles";
+import ReportAnalytics from "../src/Common/ReportAnalytics";
 
 //restaurant components
-import RestoDashboard from '../src/Restaurant/RestoDashboard'
-import RawMaterialsManagement from './Restaurant/Stock Management/RawMaterial';
-import RawMaterial from './Restaurant/Stock Management/RawMaterial';
-import StoreLocation from './Restaurant/Stock Management/StoreLocation';
-import StockLevel from './Restaurant/Stock Management/StockLevel';
-import ManageStock from './Restaurant/Stock Management/ManageStock';
-import RecipeStockDeduction from './Restaurant/Stock Management/StockDeduction';
-import SuppliersVendors from './Restaurant/Purchase Management/SuppliersVendors';
-import PurchaseOrders from './Restaurant/Purchase Management/PurchaseOrder';
-import GoodsReceiptNotes from './Restaurant/Purchase Management/GoodsReceiptNotes';
-import StockInwardApproval from './Restaurant/Purchase Management/StockInwardApproval';
-import PendingPOsPayment from './Restaurant/Purchase Management/PaymentStatus';
-import ReportAnalytics from '../src/Common/ReportAnalytics';
-import Addtocart from '../src/Restaurant/Order&Billing/Addtocart'
-import CustomerProfile from './Restaurant/CustomerManagement/CustomerProfile';
+import RestoDashboard from "../src/Restaurant/RestoDashboard";
+import RawMaterialsManagement from "./Restaurant/Stock Management/RawMaterial";
+import RawMaterial from "./Restaurant/Stock Management/RawMaterial";
+import StoreLocation from "./Restaurant/Stock Management/StoreLocation";
+import StockLevel from "./Restaurant/Stock Management/StockLevel";
+import ManageStock from "./Restaurant/Stock Management/ManageStock";
+import RecipeStockDeduction from "./Restaurant/Stock Management/StockDeduction";
+import SuppliersVendors from "./Restaurant/Purchase Management/SuppliersVendors";
+import PurchaseOrders from "./Restaurant/Purchase Management/PurchaseOrder";
+import GoodsReceiptNotes from "./Restaurant/Purchase Management/GoodsReceiptNotes";
+import StockInwardApproval from "./Restaurant/Purchase Management/StockInwardApproval";
+import PendingPOsPayment from "./Restaurant/Purchase Management/PaymentStatus";
+import Addtocart from "../src/Restaurant/Order&Billing/Addtocart";
+import CustomerProfile from "./Restaurant/CustomerManagement/CustomerProfile";
 import TableManagement from "./Restaurant/Reservations & Table Management/TableManagement";
 import KitchenManagement from "./Restaurant/KitchenManagement.jsx/Kitchen";
+import ExpenseManagement from "./Restaurant/ExpenseManagemnet/RestaurantExpense";
+import RestaurantAnalytics from "./Restaurant/Report/Restaurant&Analytics";
+import Supervisor from "./Restaurant/Supervisor/Supervisor";
+
+
 
 // Import the AlertsAndNotifications component
 import AlertsAndNotifications from "./Common/AlertsAndNotifications";
 import HRAndPayroll from "./Restaurant/Hr&Managenent/HrPayroll";
 import ConstructionDashboard from "./Admin/DashboardcConstruction";
+// import RestaurantAnalytics from "./Restaurant/Report/Restaurant&Analytics";
 
 function App() {
   return (
@@ -115,46 +129,48 @@ function App() {
         <Route path='/salesaccountant' element={<SalesAccountant />} /> */}
 
         {/* RESTAURANT */}
-        <Route path='/RestaurantCrmDashboard' element={<RestoDashboard />} />
-      
-        <Route path='/Profile' element={<Profile />} />
-        <Route path='/Role' element={<Roles />} />
-        <Route path='/TableSetup' element={<TableSetUp />} />
-        <Route path='/Configure' element={<Configure />} />
-        <Route path='/Menu' element={<MenuItems />} />
-        <Route path='/Category' element={<Category />} />
-        <Route path='/Recipe' element={<Recipe />} />
-        <Route path='/Price' element={<Price />} />
-        <Route path='/RawMaterial' element={<RawMaterial />} />
-        <Route path='/StoreLocation' element={<StoreLocation />} />
-        <Route path='/StockLevel' element={<StockLevel />} />
-        <Route path='/ManageStock' element={<ManageStock />} />
-        <Route path='/StockDeduction' element={<RecipeStockDeduction />} />
-        <Route path='/SuppliersVendors' element={<SuppliersVendors />} />
-        <Route path='/PurchaseOrders' element={<PurchaseOrders />} />
-        <Route path='/GoodsReceiptNotes' element={<GoodsReceiptNotes />} />
-        <Route path='/StockInwardApproval' element={<StockInwardApproval />} />
-        <Route path='/PendingPOsPayment' element={<PendingPOsPayment />} />
-        <Route path='/Addtocart' element={<Addtocart />} />
-        <Route path='/Customermanagemnet' element={<CustomerProfile />} />
-        <Route path='/Tablemangement' element={<TableManagement />} />
-        <Route path='/Kitchebnmanagement' element={<KitchenManagement />} />
-        <Route path='/HrPayroll' element={<HRAndPayroll />} />
+        <Route path="/RestaurantCrmDashboard" element={<RestoDashboard />} />
 
-
-
-
-
-
-
-
-
+        <Route path="/Profile" element={<Profile />} />
+        <Route path="/Role" element={<Roles />} />
+        <Route path="/TableSetup" element={<TableSetUp />} />
+        <Route path="/Configure" element={<Configure />} />
+        <Route path="/Menu" element={<MenuItems />} />
+        <Route path="/Category" element={<Category />} />
+        <Route path="/Recipe" element={<Recipe />} />
+        <Route path="/Price" element={<Price />} />
+        <Route path="/RawMaterial" element={<RawMaterial />} />
+        <Route path="/StoreLocation" element={<StoreLocation />} />
+        <Route path="/StockLevel" element={<StockLevel />} />
+        <Route path="/ManageStock" element={<ManageStock />} />
+        <Route path="/StockDeduction" element={<RecipeStockDeduction />} />
+        <Route path="/SuppliersVendors" element={<SuppliersVendors />} />
+        <Route path="/PurchaseOrders" element={<PurchaseOrders />} />
+        <Route path="/GoodsReceiptNotes" element={<GoodsReceiptNotes />} />
+        <Route path="/StockInwardApproval" element={<StockInwardApproval />} />
+        <Route path="/PendingPOsPayment" element={<PendingPOsPayment />} />
+        <Route path="/Addtocart" element={<Addtocart />} />
+        <Route path="/Customermanagemnet" element={<CustomerProfile />} />
+        <Route path="/Tablemangement" element={<TableManagement />} />
+        <Route path="/Kitchebnmanagement" element={<KitchenManagement />} />
+        <Route path="/HrPayroll" element={<HRAndPayroll />} />
+        <Route path="/Restaurantexpense" element={<ExpenseManagement />} />
+        {/* <Route path="/Restaurant&analytics" element={<ReportAnalytics />} /> */}
+        {/* <Route path="/Restaurant&analytics" element={<ReportAnalytics />} /> */}
+        <Route path="/Restaurant&analytics" element={<RestaurantAnalytics />} />
+        <Route path="/Supervisor" element={<Supervisor />} />
+        
+        
+ 
         <Route path="/register" element={<RegisterPage />} />
 
         {/* Admin Routes */}
         {/* <Route path="/dashboard" element={<Dashboard />} /> */}
         <Route path="/nav" element={<Nav />} />
-        <Route path="/ConstructionDashboard" element={<ConstructionDashboard />} />
+        <Route
+          path="/ConstructionDashboard"
+          element={<ConstructionDashboard />}
+        />
 
         <Route path="/manager" element={<HRManager />} />
         <Route path="/adminPayroll" element={<AdminPayroll />} />
@@ -180,9 +196,16 @@ function App() {
         <Route path="/admin/create" element={<CreateRole />} />
         <Route path="/admin/config" element={<ConfigPage />} />
         <Route path="/admin/report" element={<ReportsPage />} />
+        <Route path="/employee/profile" element={<EmployeeProfile/>} />
+        <Route path="/employee/profile" element={<EmployeeProfile/>} />
+        <Route path="/employee/leave" element={<LeaveApplication/>} />
+        <Route path="/employee/payslip" element={<PayslipDownload/>} />
+        <Route path="/employee/attendance" element={<RestaurantAttendence/>} />
+
         {/* <Route path='/manager/employee' element={<EmployeeForm/>}/>
         <Route path='/manager/attendence' element={<AttendanceTracker/>}/> */}
-
+{/*         
+         common routes */}
         <Route path="/common" element={<CommonLayout />}>
           <Route index element={<Dashboardc />} />
           <Route path="layout" element={<Layout />} />
@@ -191,7 +214,7 @@ function App() {
           <Route path="inventory" element={<Inventory />} />
           <Route path="customers" element={<CRMManagement />} />
           <Route path="hr" element={<CRMHRManagement />} />
-          <Route path="attendance" element={<Attend />} />
+          {/* <Route path="attendance" element={<Attend />} /> */}
           <Route path="payroll" element={<Payroll />} />
           <Route path="payroll" element={<Payroll />} />
           <Route path="finance" element={<AccountsFinance />} />

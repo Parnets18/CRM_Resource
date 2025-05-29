@@ -181,10 +181,10 @@ export default function MenuManagement() {
       </div>
 
       <div className="relative z-10">
-        <div className="flex-1 p-8">
+        <div className="flex-1 p-4 md:p-8">
           {/* Header with restaurant info */}
           <RestoNav />
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-8 gap-2">
             <div>
               <h2 className="text-2xl font-bold text-black">Menu Management</h2>
               <div className="flex items-center gap-2 mt-1">
@@ -202,10 +202,14 @@ export default function MenuManagement() {
           </div>
 
           {/* Subcategory filters */}
-          <div className="flex gap-3 mb-6 flex-wrap">
+          <div className="flex flex-wrap gap-2 mb-6">
             <Button
               variant={!activeFilter ? "default" : "outline"}
-              className={!activeFilter ? "bg-purple-600 text-white" : "border-gray-300 text-gray-700"}
+              className={
+                !activeFilter
+                  ? "bg-purple-600 text-white"
+                  : "border-gray-300 text-gray-700"
+              }
               onClick={() => setActiveFilter(null)}
             >
               All Items
@@ -268,7 +272,9 @@ export default function MenuManagement() {
                 style={{ maxHeight: 400, overflowY: "auto" }}
               >
                 <div className="flex justify-between items-center border-b border-purple-500/20 p-4">
-                  <h3 className="text-lg font-semibold text-black">Edit Menu Item</h3>
+                  <h3 className="text-lg font-semibold text-black">
+                    Edit Menu Item
+                  </h3>
                   <button
                     onClick={() => setEditItem(null)}
                     className="text-gray-500 hover:text-black"
@@ -404,107 +410,109 @@ export default function MenuManagement() {
 
                   {expandedCategories[category.name] && (
                     <CardContent className="p-0">
-                      <Table>
-                        <TableHeader>
-                          <TableRow className="hover:bg-transparent">
-                            <TableHead className="text-gray-700 w-[40%]">
-                              Item
-                            </TableHead>
-                            <TableHead className="text-gray-700">
-                              Type
-                            </TableHead>
-                            <TableHead className="text-gray-700">
-                              Price
-                            </TableHead>
-                            <TableHead className="text-gray-700">
-                              Status
-                            </TableHead>
-                            <TableHead className="text-right text-gray-700">
-                              Actions
-                            </TableHead>
-                          </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                          {itemsInCategory.map((item) => (
-                            <motion.tr
-                              key={item.id}
-                              whileHover={{
-                                backgroundColor: "rgba(168, 85, 247, 0.08)",
-                              }}
-                              className="border-t border-gray-200"
-                            >
-                              <TableCell>
-                                <div className="font-medium text-black">
-                                  {item.name}
-                                </div>
-                                <div className="text-xs text-gray-500">
-                                  {item.ingredients}
-                                </div>
-                              </TableCell>
-                              <TableCell>
-                                {item.subcategory === "Veg" ? (
+                      <div className="overflow-x-auto">
+                        <Table>
+                          <TableHeader>
+                            <TableRow className="hover:bg-transparent">
+                              <TableHead className="text-gray-700 w-[40%] min-w-[120px]">
+                                Item
+                              </TableHead>
+                              <TableHead className="text-gray-700 min-w-[80px]">
+                                Type
+                              </TableHead>
+                              <TableHead className="text-gray-700 min-w-[80px]">
+                                Price
+                              </TableHead>
+                              <TableHead className="text-gray-700 min-w-[80px]">
+                                Status
+                              </TableHead>
+                              <TableHead className="text-right text-gray-700 min-w-[80px]">
+                                Actions
+                              </TableHead>
+                            </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                            {itemsInCategory.map((item) => (
+                              <motion.tr
+                                key={item.id}
+                                whileHover={{
+                                  backgroundColor: "rgba(168, 85, 247, 0.08)",
+                                }}
+                                className="border-t border-gray-200"
+                              >
+                                <TableCell>
+                                  <div className="font-medium text-black">
+                                    {item.name}
+                                  </div>
+                                  <div className="text-xs text-gray-500">
+                                    {item.ingredients}
+                                  </div>
+                                </TableCell>
+                                <TableCell>
+                                  {item.subcategory === "Veg" ? (
+                                    <Badge
+                                      variant="outline"
+                                      className="border-green-500/50 text-green-700 bg-green-50"
+                                    >
+                                      <Leaf className="w-3 h-3 mr-1" />
+                                      Veg
+                                    </Badge>
+                                  ) : item.subcategory === "Non-Veg" ? (
+                                    <Badge
+                                      variant="outline"
+                                      className="border-red-500/50 text-red-700 bg-red-50"
+                                    >
+                                      <Beef className="w-3 h-3 mr-1" />
+                                      Non-Veg
+                                    </Badge>
+                                  ) : (
+                                    <Badge
+                                      variant="outline"
+                                      className="border-purple-500/50 text-purple-700 bg-purple-50"
+                                    >
+                                      {item.subcategory}
+                                    </Badge>
+                                  )}
+                                </TableCell>
+                                <TableCell className="text-black">
+                                  ${item.price.toFixed(2)}
+                                </TableCell>
+                                <TableCell>
                                   <Badge
                                     variant="outline"
-                                    className="border-green-500/50 text-green-700 bg-green-50"
+                                    className={
+                                      item.status === "Available"
+                                        ? "border-green-500/50 text-green-700 bg-green-50"
+                                        : "border-yellow-500/50 text-yellow-700 bg-yellow-50"
+                                    }
                                   >
-                                    <Leaf className="w-3 h-3 mr-1" />
-                                    Veg
+                                    {item.status}
                                   </Badge>
-                                ) : item.subcategory === "Non-Veg" ? (
-                                  <Badge
-                                    variant="outline"
-                                    className="border-red-500/50 text-red-700 bg-red-50"
-                                  >
-                                    <Beef className="w-3 h-3 mr-1" />
-                                    Non-Veg
-                                  </Badge>
-                                ) : (
-                                  <Badge
-                                    variant="outline"
-                                    className="border-purple-500/50 text-purple-700 bg-purple-50"
-                                  >
-                                    {item.subcategory}
-                                  </Badge>
-                                )}
-                              </TableCell>
-                              <TableCell className="text-black">
-                                ${item.price.toFixed(2)}
-                              </TableCell>
-                              <TableCell>
-                                <Badge
-                                  variant="outline"
-                                  className={
-                                    item.status === "Available"
-                                      ? "border-green-500/50 text-green-700 bg-green-50"
-                                      : "border-yellow-500/50 text-yellow-700 bg-yellow-50"
-                                  }
-                                >
-                                  {item.status}
-                                </Badge>
-                              </TableCell>
-                              <TableCell className="text-right">
-                                <div className="flex justify-end gap-2">
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="text-purple-700 hover:bg-purple-100"
-                                    onClick={() => openEditModal(item)}
-                                  >
-                                    <Edit className="w-4 h-4" />
-                                  </Button>
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    className="text-red-700 hover:bg-red-100"
-                                  >
-                                    <Trash2 className="w-4 h-4" />
-                                  </Button>
-                                </div>
-                              </TableCell>
-                            </motion.tr>
-                          ))}
-                        </TableBody>
-                      </Table>
+                                </TableCell>
+                                <TableCell className="text-right">
+                                  <div className="flex justify-end gap-2">
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      className="text-purple-700 hover:bg-purple-100"
+                                      onClick={() => openEditModal(item)}
+                                    >
+                                      <Edit className="w-4 h-4" />
+                                    </Button>
+                                    <Button
+                                      variant="ghost"
+                                      size="icon"
+                                      className="text-red-700 hover:bg-red-100"
+                                    >
+                                      <Trash2 className="w-4 h-4" />
+                                    </Button>
+                                  </div>
+                                </TableCell>
+                              </motion.tr>
+                            ))}
+                          </TableBody>
+                        </Table>
+                      </div>
                     </CardContent>
                   )}
                 </Card>
