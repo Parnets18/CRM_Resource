@@ -6,7 +6,7 @@ export default function Home() {
 
   const features = [   
     {
-      title: " Common CRM Management",
+      title: "Common CRM Management",
       description: "Manage multiple companies with a powerful admin dashboard",
     },   
     {
@@ -76,7 +76,7 @@ export default function Home() {
                         navigate("/RestaurantCrmDashboard");
                       } else if (feature.title == "Construction CRM") {
                         navigate("/ConstructionDashboard");
-                      }else if(feature.title == "CRM Management") {
+                      } else if (feature.title == "Common CRM Management") {
                         navigate("/common");
                       }
                     }}

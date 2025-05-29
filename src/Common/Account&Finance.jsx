@@ -4,7 +4,9 @@ import {
   DocumentTextIcon, 
   ChartBarIcon, 
   CurrencyDollarIcon,
-  ArrowDownTrayIcon,
+  ArrowDownTrayIcon, 
+  ArrowDownIcon,
+  ArrowUpIcon,
   ArrowPathIcon,
   PlusIcon,
   MagnifyingGlassIcon,
@@ -24,7 +26,8 @@ const AccountFinance = () => {
   const [isGeneratingReport, setIsGeneratingReport] = useState(false);
   const [generatedReport, setGeneratedReport] = useState(null);
   const [showExportOptions, setShowExportOptions] = useState(false);
-
+ 
+  
   // Sample data for demonstration
   const chartOfAccounts = [
     { id: 1, code: "1000", name: "Assets", type: "Asset", balance: 250000 },
@@ -47,13 +50,15 @@ const AccountFinance = () => {
     { id: 1, customer: "ABC Corp", invoice: "INV-2025-001", date: "2025-04-15", amount: 12500, due: "2025-05-15", status: "Outstanding", aging: "Current" },
     { id: 2, customer: "XYZ Ltd", invoice: "INV-2025-002", date: "2025-04-01", amount: 8750, due: "2025-05-01", status: "Overdue", aging: "1-30 days" },
     { id: 3, customer: "123 Industries", invoice: "INV-2025-003", date: "2025-03-15", amount: 15000, due: "2025-04-15", status: "Overdue", aging: "31-60 days" },
-  ];
+];
 
   const payables = [
     { id: 1, vendor: "Supplier Co", invoice: "S-1234", date: "2025-04-20", amount: 7500, due: "2025-05-20", status: "Outstanding", aging: "Current" },
     { id: 2, vendor: "Office Supplies Inc", invoice: "OS-5678", date: "2025-04-10", amount: 2500, due: "2025-05-10", status: "Outstanding", aging: "Current" },
     { id: 3, vendor: "Tech Solutions", invoice: "TS-9012", date: "2025-03-25", amount: 12000, due: "2025-04-25", status: "Overdue", aging: "1-30 days" },
-  ];
+  ];                  
+   
+  
 
   // Handle generate report
   const handleGenerateReport = () => {
