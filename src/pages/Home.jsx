@@ -4,11 +4,11 @@ import { Link, useNavigate } from "react-router-dom";
 export default function Home() {
   const navigate = useNavigate();
 
-  const features = [   
+  const features = [
     {
       title: "Common CRM Management",
       description: "Manage multiple companies with a powerful admin dashboard",
-    },   
+    },
     {
       title: "Resturant CRM",
       description: "Resturant CRM for management",
@@ -17,16 +17,18 @@ export default function Home() {
       title: "Construction CRM",
       description: "Create detailed company profiles with custom modules",
     },
-   
-  
   ];
 
   return (
     <div className="flex flex-col h-screen overflow-hidden text-white">
-      <header className="h-16 w-full bg-white px-12 flex items-center justify-between fixed top-0 z-50">
+      {/* Header */}
+      <header className="h-16 w-full bg-white px-6 sm:px-12 flex items-center justify-between fixed top-0 z-50">
         <div className="flex items-center space-x-2">
           <Link to="/" className="flex items-center space-x-2">
             <span className="hidden md:inline font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
+              CRM
+            </span>
+            <span className="md:hidden font-bold text-xl bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">
               CRM
             </span>
           </Link>
@@ -41,7 +43,8 @@ export default function Home() {
         </Link>
       </header>
 
-      <main className="flex flex-1 pt-16">
+      {/* Desktop View */}
+      <main className="hidden lg:flex flex-1 pt-16">
         <section className="w-full h-full relative">
           <div className="absolute inset-0 z-0">
             <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-gray-900/10 to-black"></div>
@@ -55,7 +58,7 @@ export default function Home() {
               <img
                 src="/Image/dlvrit-customer-relations-blog-1.png"
                 alt="Customer Relationship"
-                className="w-300 h-100      "
+                className="w-300 h-100"
               />
             </div>
 
@@ -72,11 +75,11 @@ export default function Home() {
                   <div
                     key={index}
                     onClick={() => {
-                      if (feature.title == "Resturant CRM") {
+                      if (feature.title === "Resturant CRM") {
                         navigate("/RestaurantCrmDashboard");
-                      } else if (feature.title == "Construction CRM") {
+                      } else if (feature.title === "Construction CRM") {
                         navigate("/ConstructionDashboard");
-                      }else if(feature.title == "Common CRM Management") {
+                      } else if (feature.title === "Common CRM Management") {
                         navigate("/common");
                       }
                     }}
@@ -96,23 +99,49 @@ export default function Home() {
         </section>
       </main>
 
-      {/* <footer className="h-16 bg-blue-50 flex items-center justify-between px-10 text-black text-sm">
-        <p>© 2023 CRM. All rights reserved.</p>
-        <div className="flex items-center gap-4">
-          <Link
-            to="/terms"
-            className="underline underline-offset-4   transition-colors"
-          >
-            Terms
-          </Link>
-          <Link
-            to="/privacy"
-            className="underline underline-offset-4   transition-colors"
-          >
-            Privacy
-          </Link>
-        </div>
-      </footer> */}
+      {/* Mobile & Tablet View */}
+      <main className="flex flex-1 pt-16 lg:hidden">
+        <section className="w-full h-full flex flex-col items-center justify-center py-10 px-4 gap-6">
+          {/* Image */}
+          <div className="w-full flex items-center justify-center">
+            <img
+              src="/Image/dlvrit-customer-relations-blog-1.png"
+              alt="Customer Relationship"
+              className="w-full max-w-xs sm:max-w-md h-auto object-contain"
+            />
+          </div>
+          {/* Text + Cards */}
+          <div className="text-center w-full flex flex-col gap-4 mt-4">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-black via-purple-300 to-pink-400">
+              Everything you need to manage your business
+            </h2>
+            <div className="grid gap-4">
+              {features.map((feature, index) => (
+                <div
+                  key={index}
+                  onClick={() => {
+                    if (feature.title === "Resturant CRM") {
+                      navigate("/RestaurantCrmDashboard");
+                    } else if (feature.title === "Construction CRM") {
+                      navigate("/ConstructionDashboard");
+                    } else if (feature.title === "Common CRM Management") {
+                      navigate("/common");
+                    }
+                  }}
+                  className="group rounded-xl border border-purple-200 bg-purple-50 p-4 cursor-pointer transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 hover:border-purple-500"
+                >
+                  <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors duration-300">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm mt-1 group-hover:text-gray-800 transition-colors duration-300">
+                    {feature.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      </main>
     </div>
   );
 }
