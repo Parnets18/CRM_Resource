@@ -49,7 +49,7 @@ export default function StoreLocation() {
         <RestoNav />
 
         <div className="flex-1 p-8">
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex justify-between items-center mb-8 mt-12">
             <div>
               <h2 className="text-2xl font-bold text-black">Store Locations</h2>
               <p className="text-gray-700">Manage your inventory locations</p>

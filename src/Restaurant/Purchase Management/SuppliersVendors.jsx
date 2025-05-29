@@ -12,7 +12,7 @@ import {
   ShoppingCart,
   Package,
   X,
-  Minus
+  Minus,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -53,7 +53,7 @@ export default function SuppliersVendors() {
 
   // Purchase order state
   const [purchaseOrder, setPurchaseOrder] = useState({
-    items: [{ name: "", quantity: 1, unit: "", pricePerUnit: 0, total: 0 }]
+    items: [{ name: "", quantity: 1, unit: "", pricePerUnit: 0, total: 0 }],
   });
 
   // Sample suppliers data
@@ -66,7 +66,7 @@ export default function SuppliersVendors() {
       category: "Produce",
       address: "123 Farm Road, Springfield",
       status: "Active",
-      lastOrder: "2024-01-15"
+      lastOrder: "2024-01-15",
     },
     {
       id: 2,
@@ -76,7 +76,7 @@ export default function SuppliersVendors() {
       category: "Dairy",
       address: "456 Milk Lane, Springfield",
       status: "Active",
-      lastOrder: "2024-01-10"
+      lastOrder: "2024-01-10",
     },
     {
       id: 3,
@@ -86,7 +86,7 @@ export default function SuppliersVendors() {
       category: "Grains",
       address: "789 Wheat Street, Springfield",
       status: "Inactive",
-      lastOrder: "2023-12-20"
+      lastOrder: "2023-12-20",
     },
     {
       id: 4,
@@ -96,7 +96,7 @@ export default function SuppliersVendors() {
       category: "Meat",
       address: "321 Butcher Ave, Springfield",
       status: "Active",
-      lastOrder: "2024-01-18"
+      lastOrder: "2024-01-18",
     },
     {
       id: 5,
@@ -106,31 +106,32 @@ export default function SuppliersVendors() {
       category: "Spices",
       address: "654 Flavor St, Springfield",
       status: "Active",
-      lastOrder: "2024-01-12"
-    }
+      lastOrder: "2024-01-12",
+    },
   ]);
 
   const filteredSuppliers = suppliers.filter((supplier) => {
-    const matchesSearch = 
+    const matchesSearch =
       supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       supplier.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
       supplier.email.toLowerCase().includes(searchTerm.toLowerCase());
-    
-    const matchesCategory = categoryFilter === "all" || 
+
+    const matchesCategory =
+      categoryFilter === "all" ||
       supplier.category.toLowerCase() === categoryFilter.toLowerCase();
-    
+
     return matchesSearch && matchesCategory;
   });
 
   const handleAddSupplier = () => {
-    const newId = Math.max(...suppliers.map(s => s.id)) + 1;
+    const newId = Math.max(...suppliers.map((s) => s.id)) + 1;
     const supplierToAdd = {
       ...newSupplier,
       id: newId,
       status: "Active",
-      lastOrder: "Never"
+      lastOrder: "Never",
     };
-    
+
     setSuppliers([...suppliers, supplierToAdd]);
     setIsAddDialogOpen(false);
     setIsSuccessDialogOpen(true);
@@ -151,11 +152,13 @@ export default function SuppliersVendors() {
   };
 
   const handleEditSupplier = () => {
-    setSuppliers(suppliers.map(supplier => 
-      supplier.id === selectedSupplier.id 
-        ? { ...supplier, ...newSupplier }
-        : supplier
-    ));
+    setSuppliers(
+      suppliers.map((supplier) =>
+        supplier.id === selectedSupplier.id
+          ? { ...supplier, ...newSupplier }
+          : supplier
+      )
+    );
     setIsEditDialogOpen(false);
     setIsSuccessDialogOpen(true);
 
@@ -167,7 +170,9 @@ export default function SuppliersVendors() {
   };
 
   const handleDeleteSupplier = () => {
-    setSuppliers(suppliers.filter(supplier => supplier.id !== selectedSupplier.id));
+    setSuppliers(
+      suppliers.filter((supplier) => supplier.id !== selectedSupplier.id)
+    );
     setIsDeleteDialogOpen(false);
     setIsSuccessDialogOpen(true);
 
@@ -182,7 +187,10 @@ export default function SuppliersVendors() {
   const addOrderItem = () => {
     setPurchaseOrder({
       ...purchaseOrder,
-      items: [...purchaseOrder.items, { name: "", quantity: 1, unit: "", pricePerUnit: 0, total: 0 }]
+      items: [
+        ...purchaseOrder.items,
+        { name: "", quantity: 1, unit: "", pricePerUnit: 0, total: 0 },
+      ],
     });
   };
 
@@ -196,27 +204,30 @@ export default function SuppliersVendors() {
   const updateOrderItem = (index, field, value) => {
     const newItems = [...purchaseOrder.items];
     newItems[index][field] = value;
-    
+
     // Calculate total for this item
-    if (field === 'quantity' || field === 'pricePerUnit') {
-      newItems[index].total = newItems[index].quantity * newItems[index].pricePerUnit;
+    if (field === "quantity" || field === "pricePerUnit") {
+      newItems[index].total =
+        (parseFloat(newItems[index].quantity) || 0) *
+        (parseFloat(newItems[index].pricePerUnit) || 0);
     }
-    
+
     setPurchaseOrder({ ...purchaseOrder, items: newItems });
   };
 
   const getTotalOrderValue = () => {
-    return purchaseOrder.items.reduce((sum, item) => sum + item.total, 0).toFixed(2);
+    return purchaseOrder.items
+      .reduce((sum, item) => sum + (parseFloat(item.total) || 0), 0)
+      .toFixed(2);
   };
 
   const handleCreatePurchaseOrder = () => {
-    // Here you would implement the actual purchase order creation logic
     setIsPurchaseOrderOpen(false);
     setIsSuccessDialogOpen(true);
-    
+
     // Reset purchase order
     setPurchaseOrder({
-      items: [{ name: "", quantity: 1, unit: "", pricePerUnit: 0, total: 0 }]
+      items: [{ name: "", quantity: 1, unit: "", pricePerUnit: 0, total: 0 }],
     });
 
     // Auto-close success dialog
@@ -226,12 +237,80 @@ export default function SuppliersVendors() {
     }, 2000);
   };
 
+  // Responsive Supplier Card for mobile
+  const SupplierCard = ({ supplier }) => (
+    <div className="border border-gray-200 rounded-lg p-4 mb-3 flex flex-col gap-2 bg-white">
+      <div className="flex justify-between items-center">
+        <span className="font-semibold text-black">{supplier.name}</span>
+        <span
+          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+            supplier.status === "Active"
+              ? "bg-green-100 text-green-800"
+              : "bg-red-100 text-red-800"
+          }`}
+        >
+          {supplier.status}
+        </span>
+      </div>
+      <div className="text-sm text-gray-500">{supplier.address}</div>
+      <div className="flex flex-wrap gap-2 text-sm text-gray-700">
+        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+          {supplier.category}
+        </span>
+        <span>Contact: {supplier.contact}</span>
+        <span>Email: {supplier.email}</span>
+      </div>
+      <div className="flex flex-wrap gap-2 text-sm text-gray-700">
+        <span>Last Order: {supplier.lastOrder}</span>
+      </div>
+      <div className="flex gap-2 mt-2">
+        <Button
+          size="sm"
+          variant="outline"
+          className="h-8 w-8 p-0"
+          onClick={() => {
+            setSelectedSupplier(supplier);
+            setIsPurchaseOrderOpen(true);
+          }}
+        >
+          <ShoppingCart className="h-3 w-3" />
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          className="h-8 w-8 p-0"
+          onClick={() => {
+            setSelectedSupplier(supplier);
+            setNewSupplier(supplier);
+            setIsEditDialogOpen(true);
+          }}
+        >
+          <Edit className="h-3 w-3" />
+        </Button>
+        <Button
+          size="sm"
+          variant="outline"
+          className="h-8 w-8 p-0 text-red-600 hover:text-red-700"
+          onClick={() => {
+            setSelectedSupplier(supplier);
+            setIsDeleteDialogOpen(true);
+          }}
+        >
+          <Trash2 className="h-3 w-3" />
+        </Button>
+      </div>
+    </div>
+  );
+
   return (
-    <div className="ml-64">
-<div className="p-6 bg-gray-50 min-h-screen">
+    <div className="lg:ml-64 min-h-screen bg-gray-50">
+      <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-gray-100 to-white"></div>
+        <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
+      </div>
       <RestoNav />
-      <div className="max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
+      <div className="relative z-10 max-w-7xl mx-auto p-4 sm:p-6 mt-12">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
           <div>
             <h2 className="text-3xl font-bold text-gray-900">
               Suppliers & Vendors
@@ -241,7 +320,7 @@ export default function SuppliersVendors() {
             </p>
           </div>
           <Button
-            className="bg-purple-600 hover:bg-purple-700 text-white"
+            className="bg-purple-600 hover:bg-purple-700 text-white w-full sm:w-auto"
             onClick={() => setIsAddDialogOpen(true)}
           >
             <Plus className="w-4 h-4 mr-2" /> Add Supplier
@@ -265,7 +344,10 @@ export default function SuppliersVendors() {
                 </div>
               </div>
               <div className="w-full md:w-48">
-                <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                <Select
+                  value={categoryFilter}
+                  onValueChange={setCategoryFilter}
+                >
                   <SelectTrigger>
                     <SelectValue placeholder="Filter by category" />
                   </SelectTrigger>
@@ -283,8 +365,8 @@ export default function SuppliersVendors() {
           </CardContent>
         </Card>
 
-        {/* Suppliers Table */}
-        <Card>
+        {/* Suppliers Table - Desktop */}
+        <Card className="hidden md:block">
           <CardHeader>
             <CardTitle className="flex items-center">
               <Truck className="w-5 h-5 mr-2 text-purple-600" />
@@ -296,27 +378,45 @@ export default function SuppliersVendors() {
               <table className="w-full">
                 <thead>
                   <tr className="border-b border-gray-200">
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">Supplier</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">Category</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">Contact</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">Email</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">Status</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">Last Order</th>
-                    <th className="text-left py-3 px-4 font-medium text-gray-900">Actions</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-900">
+                      Supplier
+                    </th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-900">
+                      Category
+                    </th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-900">
+                      Contact
+                    </th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-900">
+                      Email
+                    </th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-900">
+                      Status
+                    </th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-900">
+                      Last Order
+                    </th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-900">
+                      Actions
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
                   {filteredSuppliers.map((supplier, index) => (
-                    <tr 
+                    <tr
                       key={supplier.id}
                       className={`border-b border-gray-100 hover:bg-gray-50 ${
-                        index % 2 === 0 ? 'bg-white' : 'bg-gray-50/50'
+                        index % 2 === 0 ? "bg-white" : "bg-gray-50/50"
                       }`}
                     >
                       <td className="py-4 px-4">
                         <div>
-                          <div className="font-medium text-gray-900">{supplier.name}</div>
-                          <div className="text-sm text-gray-500">{supplier.address}</div>
+                          <div className="font-medium text-gray-900">
+                            {supplier.name}
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            {supplier.address}
+                          </div>
                         </div>
                       </td>
                       <td className="py-4 px-4">
@@ -324,18 +424,26 @@ export default function SuppliersVendors() {
                           {supplier.category}
                         </span>
                       </td>
-                      <td className="py-4 px-4 text-gray-900">{supplier.contact}</td>
-                      <td className="py-4 px-4 text-gray-900">{supplier.email}</td>
+                      <td className="py-4 px-4 text-gray-900">
+                        {supplier.contact}
+                      </td>
+                      <td className="py-4 px-4 text-gray-900">
+                        {supplier.email}
+                      </td>
                       <td className="py-4 px-4">
-                        <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          supplier.status === 'Active' 
-                            ? 'bg-green-100 text-green-800' 
-                            : 'bg-red-100 text-red-800'
-                        }`}>
+                        <span
+                          className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            supplier.status === "Active"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
+                          }`}
+                        >
                           {supplier.status}
                         </span>
                       </td>
-                      <td className="py-4 px-4 text-gray-900">{supplier.lastOrder}</td>
+                      <td className="py-4 px-4 text-gray-900">
+                        {supplier.lastOrder}
+                      </td>
                       <td className="py-4 px-4">
                         <div className="flex space-x-2">
                           <Button
@@ -378,17 +486,40 @@ export default function SuppliersVendors() {
                   ))}
                 </tbody>
               </table>
-              
+
               {filteredSuppliers.length === 0 && (
                 <div className="text-center py-12">
                   <Truck className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">No suppliers found</h3>
-                  <p className="text-gray-500">Try adjusting your search or filter criteria.</p>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    No suppliers found
+                  </h3>
+                  <p className="text-gray-500">
+                    Try adjusting your search or filter criteria.
+                  </p>
                 </div>
               )}
             </div>
           </CardContent>
         </Card>
+
+        {/* Mobile Supplier Cards */}
+        <div className="md:hidden">
+          {filteredSuppliers.length === 0 ? (
+            <div className="text-center py-12">
+              <Truck className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">
+                No suppliers found
+              </h3>
+              <p className="text-gray-500">
+                Try adjusting your search or filter criteria.
+              </p>
+            </div>
+          ) : (
+            filteredSuppliers.map((supplier) => (
+              <SupplierCard key={supplier.id} supplier={supplier} />
+            ))
+          )}
+        </div>
       </div>
 
       {/* Add Supplier Dialog */}
@@ -568,26 +699,34 @@ export default function SuppliersVendors() {
           <div className="py-4">
             <div className="space-y-4">
               <div className="bg-gray-50 p-4 rounded-lg">
-                <h4 className="font-medium text-gray-900 mb-2">Supplier Information</h4>
-                <div className="grid grid-cols-2 gap-4 text-sm">
+                <h4 className="font-medium text-gray-900 mb-2">
+                  Supplier Information
+                </h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                   <div>
-                    <span className="text-gray-600">Contact:</span> {selectedSupplier?.contact}
+                    <span className="text-gray-600">Contact:</span>{" "}
+                    {selectedSupplier?.contact}
                   </div>
                   <div>
-                    <span className="text-gray-600">Email:</span> {selectedSupplier?.email}
+                    <span className="text-gray-600">Email:</span>{" "}
+                    {selectedSupplier?.email}
                   </div>
                   <div>
-                    <span className="text-gray-600">Category:</span> {selectedSupplier?.category}
+                    <span className="text-gray-600">Category:</span>{" "}
+                    {selectedSupplier?.category}
                   </div>
                   <div>
-                    <span className="text-gray-600">Address:</span> {selectedSupplier?.address}
+                    <span className="text-gray-600">Address:</span>{" "}
+                    {selectedSupplier?.address}
                   </div>
                 </div>
               </div>
 
               <div>
-                <div className="flex justify-between items-center mb-4">
-                  <h4 className="font-medium text-gray-900">Items to Purchase</h4>
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
+                  <h4 className="font-medium text-gray-900">
+                    Items to Purchase
+                  </h4>
                   <Button
                     onClick={addOrderItem}
                     className="bg-green-600 hover:bg-green-700 text-white"
@@ -599,14 +738,19 @@ export default function SuppliersVendors() {
 
                 <div className="space-y-3">
                   {purchaseOrder.items.map((item, index) => (
-                    <div key={index} className="border border-gray-200 rounded-lg p-4">
-                      <div className="grid grid-cols-6 gap-4 items-end">
-                        <div className="col-span-2">
+                    <div
+                      key={index}
+                      className="border border-gray-200 rounded-lg p-4"
+                    >
+                      <div className="grid grid-cols-1 sm:grid-cols-6 gap-4 items-end">
+                        <div className="sm:col-span-2">
                           <Label>Item Name</Label>
                           <Input
                             placeholder="e.g. Tomatoes, Milk, Rice"
                             value={item.name}
-                            onChange={(e) => updateOrderItem(index, 'name', e.target.value)}
+                            onChange={(e) =>
+                              updateOrderItem(index, "name", e.target.value)
+                            }
                           />
                         </div>
                         <div>
@@ -615,14 +759,22 @@ export default function SuppliersVendors() {
                             type="number"
                             min="1"
                             value={item.quantity}
-                            onChange={(e) => updateOrderItem(index, 'quantity', parseFloat(e.target.value) || 0)}
+                            onChange={(e) =>
+                              updateOrderItem(
+                                index,
+                                "quantity",
+                                parseFloat(e.target.value) || 0
+                              )
+                            }
                           />
                         </div>
                         <div>
                           <Label>Unit</Label>
                           <Select
                             value={item.unit}
-                            onValueChange={(value) => updateOrderItem(index, 'unit', value)}
+                            onValueChange={(value) =>
+                              updateOrderItem(index, "unit", value)
+                            }
                           >
                             <SelectTrigger>
                               <SelectValue placeholder="Unit" />
@@ -644,7 +796,13 @@ export default function SuppliersVendors() {
                             step="0.01"
                             min="0"
                             value={item.pricePerUnit}
-                            onChange={(e) => updateOrderItem(index, 'pricePerUnit', parseFloat(e.target.value) || 0)}
+                            onChange={(e) =>
+                              updateOrderItem(
+                                index,
+                                "pricePerUnit",
+                                parseFloat(e.target.value) || 0
+                              )
+                            }
                           />
                         </div>
                         <div className="flex items-center space-x-2">
@@ -672,15 +830,22 @@ export default function SuppliersVendors() {
 
                 <div className="border-t pt-4 mt-6">
                   <div className="flex justify-between items-center">
-                    <span className="text-lg font-medium">Total Order Value:</span>
-                    <span className="text-xl font-bold text-green-600">${getTotalOrderValue()}</span>
+                    <span className="text-lg font-medium">
+                      Total Order Value:
+                    </span>
+                    <span className="text-xl font-bold text-green-600">
+                      ${getTotalOrderValue()}
+                    </span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsPurchaseOrderOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setIsPurchaseOrderOpen(false)}
+            >
               Cancel
             </Button>
             <Button
@@ -713,7 +878,10 @@ export default function SuppliersVendors() {
             </p>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsDeleteDialogOpen(false)}>
+            <Button
+              variant="outline"
+              onClick={() => setIsDeleteDialogOpen(false)}
+            >
               Cancel
             </Button>
             <Button
@@ -743,7 +911,5 @@ export default function SuppliersVendors() {
         </DialogContent>
       </Dialog>
     </div>
-    </div>
-     
   );
 }

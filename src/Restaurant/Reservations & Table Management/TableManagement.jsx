@@ -5,7 +5,7 @@ import { UsersIcon, PlusCircleIcon, PencilIcon, TrashIcon, SearchIcon } from "lu
 import RestoNav from "../RestoNav"
 
 // Utility function for conditional class names (inline to avoid import errors)
-const cn = (...classes) => classes.filter(Boolean).join(" ")
+const cn = (...classes) => classes.filter(Boolean).join("")
 
 // Mock data for initial tables
 const initialTables = Array.from({ length: 12 }, (_, i) => ({
@@ -190,7 +190,7 @@ export default function TableManagement() {
     switch (status) {
       case "Free":
         return {
-          bg: "bg-purple-100", // <-- Table bg is now purple-300 for all statuses
+          bg: "bg-purple-100",
           border: "border-gray-300",
           text: "bg-gray-200 text-gray-700",
           pill: "bg-gray-100 text-gray-700",
@@ -232,18 +232,18 @@ export default function TableManagement() {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex flex-col md:flex-row min-h-screen bg-gray-50">
       {/* Left sidebar navigation */}
-      <div className="w-64 border-r bg-white shadow-sm">
+      <div className="w-full md:w-64 border-b md:border-b-0 md:border-r bg-white shadow-sm">
         <RestoNav />
       </div>
 
       {/* Main content area */}
-      <div className="flex-1 p-6">
+      <div className="flex-1 p-4 sm:p-6 mt-12">
         <h1 className="text-2xl font-bold mb-6">Table Management</h1>
 
         <div className="border-b mb-4">
-          <div className="flex">
+          <div className="flex flex-col sm:flex-row">
             <button
               onClick={() => setActiveTab("layout")}
               className={`px-4 py-2 font-medium ${activeTab === "layout" ? "border-b-2 border-purple-500 text-purple-600" : ""}`}
@@ -261,7 +261,7 @@ export default function TableManagement() {
 
         {activeTab === "layout" && (
           <div className="py-4">
-            <div className="flex justify-between mb-4">
+            <div className="flex flex-col sm:flex-row justify-between gap-2 mb-4">
               <h2 className="text-xl font-semibold">Restaurant Floor Plan</h2>
               <button
                 onClick={() => handleNewReservation()}
@@ -272,7 +272,7 @@ export default function TableManagement() {
               </button>
             </div>
 
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
               {tables.map((table) => {
                 const statusColors = getStatusColorClasses(table.status)
                 return (
@@ -310,7 +310,7 @@ export default function TableManagement() {
 
             <div className="mt-6">
               <h3 className="font-medium mb-2">Table Status Legend:</h3>
-              <div className="flex gap-4">
+              <div className="flex flex-wrap gap-4">
                 {statusOptions.map((status) => {
                   const statusColors = getStatusColorClasses(status)
                   return (
@@ -327,17 +327,17 @@ export default function TableManagement() {
 
         {activeTab === "reservations" && (
           <div className="py-4">
-            <div className="flex justify-between items-center mb-4">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
               <h2 className="text-xl font-semibold">Reservations</h2>
-              <div className="flex gap-2">
-                <div className="relative">
+              <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+                <div className="relative w-full sm:w-auto">
                   <SearchIcon size={16} className="absolute left-2 top-2.5 text-gray-400" />
                   <input
                     type="text"
                     placeholder="Search reservations..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-8 pr-4 py-1.5 border rounded-md text-sm"
+                    className="pl-8 pr-4 py-1.5 border rounded-md text-sm w-full sm:w-auto"
                   />
                 </div>
                 <button
@@ -350,7 +350,8 @@ export default function TableManagement() {
               </div>
             </div>
 
-            <div className="overflow-x-auto">
+            {/* Responsive Table: show table on md+, cards on mobile */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="min-w-full bg-purple-300 border rounded-lg shadow-sm">
                 <thead>
                   <tr className="bg-gray-100">
@@ -418,13 +419,75 @@ export default function TableManagement() {
                 </tbody>
               </table>
             </div>
+            {/* Mobile Cards */}
+            <div className="md:hidden flex flex-col gap-3">
+              {filteredReservations.length > 0 ? (
+                filteredReservations.map((reservation) => {
+                  const statusColors = getStatusColorClasses(reservation.status)
+                  return (
+                    <div key={reservation.id} className="bg-white border rounded-lg shadow-sm p-4 flex flex-col gap-2">
+                      <div className="flex justify-between items-center">
+                        <div className="font-semibold text-purple-700">
+                          {tables.find((t) => t.id.toString() === reservation.tableId)?.name || reservation.tableId}
+                        </div>
+                        <span className={`px-2 py-1 rounded-full text-xs ${statusColors.pill}`}>
+                          {reservation.status}
+                        </span>
+                      </div>
+                      <div className="text-sm">
+                        <div className="font-medium">{reservation.customerName}</div>
+                        <div className="text-xs text-gray-500">{reservation.customerPhone}</div>
+                        <div className="text-xs text-gray-500">{reservation.customerEmail}</div>
+                      </div>
+                      <div className="flex flex-wrap gap-2 text-xs text-gray-700">
+                        <div>
+                          <span className="font-semibold">Date:</span>{" "}
+                          {new Date(reservation.reservationDate).toLocaleDateString()}
+                        </div>
+                        <div>
+                          <span className="font-semibold">Time:</span> {reservation.timeSlot}
+                        </div>
+                        <div>
+                          <span className="font-semibold">Guests:</span> {reservation.guestCount}
+                        </div>
+                        <div>
+                          <span className="font-semibold">Waiter:</span>{" "}
+                          {waiters.find((w) => w.id.toString() === reservation.waiterId)?.name || "Not assigned"}
+                        </div>
+                      </div>
+                      {reservation.notes && (
+                        <div className="text-xs text-gray-500 italic">Notes: {reservation.notes}</div>
+                      )}
+                      <div className="flex gap-2 mt-2">
+                        <button
+                          onClick={() => handleEditReservationClick(reservation)}
+                          className="p-1 text-purple-600 hover:bg-purple-50 rounded"
+                        >
+                          <PencilIcon size={16} />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteReservation(reservation.id)}
+                          className="p-1 text-red-600 hover:bg-red-50 rounded"
+                        >
+                          <TrashIcon size={16} />
+                        </button>
+                      </div>
+                    </div>
+                  )
+                })
+              ) : (
+                <div className="py-8 text-center text-gray-500">
+                  No reservations found
+                </div>
+              )}
+            </div>
           </div>
         )}
 
         {/* Reservation Dialog */}
         {isDialogOpen && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-xl h-[480px] overflow-y-auto">
+            <div className="bg-white p-4 sm:p-6 rounded-lg shadow-lg w-full max-w-xl h-[90vh] max-h-[600px] overflow-y-auto">
               <h2 className="text-xl font-bold mb-4">{currentReservation ? "Edit Reservation" : "New Reservation"}</h2>
 
               <div className="space-y-4">
@@ -462,7 +525,7 @@ export default function TableManagement() {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="customerPhone" className="block text-sm font-medium mb-1">
                       Phone
@@ -505,7 +568,7 @@ export default function TableManagement() {
                   />
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label htmlFor="reservationDate" className="block text-sm font-medium mb-1">
                       Date
@@ -592,7 +655,7 @@ export default function TableManagement() {
                 </div>
               </div>
 
-              <div className="mt-6 flex justify-end gap-2">
+              <div className="mt-6 flex flex-col sm:flex-row justify-end gap-2">
                 <button onClick={() => setIsDialogOpen(false)} className="px-4 py-2 border rounded-md">
                   Cancel
                 </button>

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Package, Search, Check, AlertTriangle, Plus, Edit, Trash2 } from "lucide-react"
+import { Package, Search, Check, Plus, Edit, Trash2 } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -60,11 +60,8 @@ export default function PurchaseOrders() {
   )
 
   const handleAddPO = () => {
-    // Here you would implement the actual PO addition logic
     setIsAddDialogOpen(false)
     setIsSuccessDialogOpen(true)
-    
-    // Reset form
     setNewPO({
       supplier: "",
       orderDate: "",
@@ -72,19 +69,14 @@ export default function PurchaseOrders() {
       status: "",
       total: ""
     })
-
-    // Auto-close success dialog
     setTimeout(() => {
       setIsSuccessDialogOpen(false)
     }, 2000)
   }
 
   const handleEditPO = () => {
-    // Here you would implement the actual PO edit logic
     setIsEditDialogOpen(false)
     setIsSuccessDialogOpen(true)
-    
-    // Auto-close success dialog
     setTimeout(() => {
       setIsSuccessDialogOpen(false)
       setSelectedPO(null)
@@ -92,42 +84,68 @@ export default function PurchaseOrders() {
   }
 
   const handleDeletePO = () => {
-    // Here you would implement the actual PO deletion logic
     setIsDeleteDialogOpen(false)
     setIsSuccessDialogOpen(true)
-    
-    // Auto-close success dialog
     setTimeout(() => {
       setIsSuccessDialogOpen(false)
       setSelectedPO(null)
     }, 2000)
   }
 
- // ...existing code...
+  // Responsive PO Card for mobile
+  const POCard = ({ po }) => (
+    <div
+      className={`p-4 rounded-lg mb-3 border border-gray-200 bg-white ${
+        selectedPO?.id === po.id
+          ? "ring-2 ring-purple-400"
+          : "hover:bg-gray-50"
+      }`}
+      onClick={() => setSelectedPO(po)}
+    >
+      <div className="flex justify-between items-center">
+        <span className="font-semibold text-black flex items-center">
+          <Package className="w-4 h-4 mr-2 text-purple-400" />
+          {po.supplier}
+        </span>
+        <span className="text-xs font-medium text-purple-700">{po.status}</span>
+      </div>
+      <div className="flex flex-wrap gap-2 text-sm text-gray-700 mt-2">
+        <span>Order: {po.orderDate}</span>
+        <span>Delivery: {po.deliveryDate}</span>
+      </div>
+      <div className="flex flex-wrap gap-2 text-sm text-gray-700">
+        <span>Total: {po.total}</span>
+      </div>
+    </div>
+  )
+
   return (
-    <div className="p-6 bg-white min-h-screen">
+    <div className="min-h-screen bg-white">
+      
+      <RestoNav />
       <div className="absolute inset-0 z-0">
-        <RestoNav />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-gray-100 to-white"></div>
+         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-gray-100 to-white"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
       </div>
 
-      <div className="relative z-10 max-w-5xl mx-auto ml-[16rem]">
-        <div className="flex justify-between items-center mb-8">
+      <div className="relative z-10 max-w-5xl mx-auto px-2 sm:px-6 py-6 lg:ml-64 mt-12">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
           <div>
             <h2 className="text-2xl font-bold text-black">Purchase Orders</h2>
             <p className="text-gray-700">Manage your restaurant's purchase orders</p>
           </div>
-          <Button 
-            className="bg-purple-600 hover:bg-purple-700 text-white"
+          <Button
+            className="bg-purple-600 hover:bg-purple-700 text-white w-full sm:w-auto"
             onClick={() => setIsAddDialogOpen(true)}
           >
             <Plus className="w-4 h-4 mr-2" /> Create PO
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="md:col-span-1">
+        {/* Responsive layout: stack on mobile, side-by-side on desktop */}
+        <div className="flex flex-col md:grid md:grid-cols-3 gap-6">
+          {/* PO List */}
+          <div className="md:col-span-1 w-full">
             <Card className="border border-purple-500/20 bg-white backdrop-blur-sm h-full">
               <CardHeader>
                 <CardTitle className="text-black">PO List</CardTitle>
@@ -145,7 +163,8 @@ export default function PurchaseOrders() {
                     />
                   </div>
 
-                  <div className="space-y-2 mt-4">
+                  {/* Desktop list */}
+                  <div className="hidden md:block space-y-2 mt-6">
                     <Label>Status Filter</Label>
                     <Select>
                       <SelectTrigger className="bg-gray-100 border-gray-300 text-black">
@@ -158,10 +177,7 @@ export default function PurchaseOrders() {
                         <SelectItem value="delivered">Delivered</SelectItem>
                       </SelectContent>
                     </Select>
-                  </div>
-
-                  <div className="space-y-2 mt-6">
-                    <Label>Purchase Orders</Label>
+                    <Label className="mt-4">Purchase Orders</Label>
                     <div className="space-y-2 max-h-[400px] overflow-y-auto pr-2">
                       {filteredPOs.map((po) => (
                         <div
@@ -184,12 +200,23 @@ export default function PurchaseOrders() {
                       ))}
                     </div>
                   </div>
+
+                  {/* Mobile cards */}
+                  <div className="md:hidden mt-4">
+                    <Label>Purchase Orders</Label>
+                    <div className="space-y-2">
+                      {filteredPOs.map((po) => (
+                        <POCard key={po.id} po={po} />
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </CardContent>
             </Card>
           </div>
 
-          <div className="md:col-span-2">
+          {/* PO Details */}
+          <div className="md:col-span-2 w-full mt-6 md:mt-0">
             <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
               <CardHeader>
                 <CardTitle className="text-black">PO Details</CardTitle>
@@ -197,14 +224,14 @@ export default function PurchaseOrders() {
               <CardContent>
                 {selectedPO ? (
                   <div className="space-y-6">
-                    <div className="flex items-center justify-between">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                       <h3 className="text-xl font-medium text-black flex items-center">
                         <Package className="w-5 h-5 mr-2 text-purple-400" />
                         {selectedPO.supplier}
                       </h3>
-                      <div className="space-x-2">
-                        <Button 
-                          className="bg-blue-600 hover:bg-blue-700 text-white"
+                      <div className="flex gap-2 w-full sm:w-auto">
+                        <Button
+                          className="bg-blue-600 hover:bg-blue-700 text-white w-full sm:w-auto"
                           onClick={() => {
                             setNewPO(selectedPO)
                             setIsEditDialogOpen(true)
@@ -212,8 +239,8 @@ export default function PurchaseOrders() {
                         >
                           <Edit className="w-4 h-4 mr-2" /> Edit
                         </Button>
-                        <Button 
-                          className="bg-red-600 hover:bg-red-700 text-white"
+                        <Button
+                          className="bg-red-600 hover:bg-red-700 text-white w-full sm:w-auto"
                           onClick={() => setIsDeleteDialogOpen(true)}
                         >
                           <Trash2 className="w-4 h-4 mr-2" /> Delete
@@ -221,7 +248,7 @@ export default function PurchaseOrders() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <Label>Order Date</Label>
                         <p className="text-gray-700">{selectedPO.orderDate}</p>
@@ -457,5 +484,4 @@ export default function PurchaseOrders() {
       </Dialog>
     </div>
   )
-// ...existing code...
 }

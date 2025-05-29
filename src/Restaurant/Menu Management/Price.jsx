@@ -230,7 +230,7 @@ export default function MenuManagement() {
       </div>
       <RestoNav />
 
-      <div className="relative z-10 p-4 sm:p-8">
+      <div className="relative z-10 p-4 sm:p-8 mt-12">
         {/* Restaurant Selection */}
         <Card className="border border-purple-500/20 bg-white backdrop-blur-sm mb-6">
           <CardHeader>

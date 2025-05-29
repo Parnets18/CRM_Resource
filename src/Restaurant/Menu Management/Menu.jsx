@@ -462,7 +462,7 @@ export default function MenuManagement() {
         <div className="flex-1 p-4 md:p-8">
           {/* Header */}
           <RestoNav />
-          <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4 mt-12">
             <div>
               <h2 className="text-2xl font-bold text-black">Menu Items</h2>
               <p className="text-gray-700">

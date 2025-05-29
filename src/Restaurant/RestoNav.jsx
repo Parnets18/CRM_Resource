@@ -228,17 +228,17 @@ export default function RestoNav() {
 
   return (
     <div>
-      {/* Hamburger Menu Button */}
-      {isMobile && (
+    {/* Hamburger Menu Button */}
+      {isMobile && !isNavOpen && (
         <button
-          onClick={() => setIsNavOpen(!isNavOpen)}
+          onClick={() => setIsNavOpen(true)}
           className="md:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white hover:bg-gray-100 text-purple-700 border border-purple-200"
         >
-          {isNavOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          <Menu className="w-6 h-6" />
         </button>
       )}
 
-      <div
+     <div
         className="w-64 fixed top-0 left-0 h-screen border-r border-purple-500/20 bg-white backdrop-blur-sm p-4 overflow-y-auto z-40"
         style={{ display: isMobile && !isNavOpen ? "none" : "block" }}
       >
@@ -246,12 +246,13 @@ export default function RestoNav() {
           <h1 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-400">
             CRM
           </h1>
-          {isMobile && (
+          {isMobile && isNavOpen && (
             <button onClick={() => setIsNavOpen(false)} className="ml-auto">
               <X className="w-6 h-6 text-purple-400" />
             </button>
           )}
         </div>
+
 
         <nav className="space-y-1">
           {navItems.map((item) => (

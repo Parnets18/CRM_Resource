@@ -108,8 +108,9 @@ export default function Configuration() {
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-gray-100 to-white"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-blue-600/10 to-transparent"></div>
       </div>
+            <RestoNav />
 
-      <div className="relative z-10">
+      <div className="relative z-10 mt-12">
         <div className="flex-1 p-4 md:p-8">
           <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8 gap-4">
             <div>
@@ -120,7 +121,6 @@ export default function Configuration() {
                 Manage system settings and preferences
               </p>
             </div>
-            <RestoNav />
           </div>
 
           {/* Restaurant Selection */}
