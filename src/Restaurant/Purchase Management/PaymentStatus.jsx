@@ -138,17 +138,101 @@ Generated on: ${new Date().toLocaleString()}
     );
   };
 
-  // ...existing code...
+  // Responsive PO Card for mobile
+  const POCard = ({ po }) => (
+    <div
+      className={`border border-gray-200 rounded-lg p-4 mb-3 bg-white ${
+        selectedPO?.id === po.id ? "ring-2 ring-purple-400" : ""
+      }`}
+      onClick={() => setSelectedPO(po)}
+    >
+      <div className="flex justify-between items-center">
+        <span className="font-semibold text-black">{po.poNumber}</span>
+        <span
+          className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${
+            po.paymentStatus === "Paid"
+              ? "border-green-500/50 text-green-700 bg-green-100"
+              : po.paymentStatus === "Overdue"
+              ? "border-red-500/50 text-red-700 bg-red-100"
+              : "border-yellow-500/50 text-yellow-700 bg-yellow-100"
+          }`}
+        >
+          {po.paymentStatus}
+        </span>
+      </div>
+      <div className="text-sm text-gray-700">
+        <span className="font-medium">Supplier:</span> {po.supplier}
+      </div>
+      <div className="flex flex-wrap gap-2 text-sm text-gray-700">
+        <span>Order: {po.orderDate}</span>
+        <span>Delivery: {po.deliveryDate}</span>
+      </div>
+      <div className="text-sm text-gray-700">
+        <span className="font-medium">Items:</span> {po.items}
+      </div>
+      <div className="text-sm text-gray-700">
+        <span className="font-medium">Total:</span> {po.total}
+      </div>
+      <div className="flex gap-2 mt-2">
+        <input
+          type="checkbox"
+          checked={selectedPOs.includes(po.id)}
+          onChange={(e) => {
+            e.stopPropagation();
+            handleBulkSelection(po.id);
+          }}
+        />
+        {po.paymentStatus !== "Paid" && (
+          <button
+            className="text-green-700 hover:bg-green-100 p-2 rounded-full"
+            title="Mark as Paid"
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedPO(po);
+              setIsMarkPaidDialogOpen(true);
+            }}
+          >
+            <CheckCircle className="w-4 h-4" />
+          </button>
+        )}
+        {po.paymentStatus === "Paid" && (
+          <button
+            className="text-yellow-700 hover:bg-yellow-100 p-2 rounded-full"
+            title="Mark as Pending"
+            onClick={(e) => {
+              e.stopPropagation();
+              setSelectedPO(po);
+              setIsMarkPendingDialogOpen(true);
+            }}
+          >
+            <XCircle className="w-4 h-4" />
+          </button>
+        )}
+        <button
+          className="text-purple-700 hover:bg-purple-100 p-2 rounded-full"
+          title="Download Report"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleDownloadPOReport(po);
+          }}
+        >
+          <Download className="w-4 h-4" />
+        </button>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-white lg:ml-64 relative">
+      <RestoNav />
+
       <div className="absolute inset-0 z-0">
-        <RestoNav />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-gray-100 to-white"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
       </div>
 
-      <div className="relative z-10 p-8 max-w-7xl mx-auto">
-        <div className="flex justify-between items-center mb-8">
+      <div className="relative z-10 p-4 sm:p-8 max-w-7xl mx-auto">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4 mt-12">
           <div>
             <h2 className="text-3xl font-bold text-black flex items-center">
               <Truck className="w-8 h-8 mr-3 text-purple-400" />
@@ -159,16 +243,16 @@ Generated on: ${new Date().toLocaleString()}
             </p>
           </div>
           {selectedPOs.length > 0 && (
-            <div className="flex gap-2">
+            <div className="flex gap-2 w-full sm:w-auto">
               <button
-                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center"
+                className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg flex items-center w-full sm:w-auto"
                 onClick={() => setIsMarkPaidDialogOpen(true)}
               >
                 <CheckCircle className="w-4 h-4 mr-2" />
                 Mark Paid ({selectedPOs.length})
               </button>
               <button
-                className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg flex items-center"
+                className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg flex items-center w-full sm:w-auto"
                 onClick={() => setIsMarkPendingDialogOpen(true)}
               >
                 <XCircle className="w-4 h-4 mr-2" />
@@ -179,7 +263,7 @@ Generated on: ${new Date().toLocaleString()}
         </div>
 
         <div className="bg-white/90 backdrop-blur-sm border border-purple-500/20 rounded-xl overflow-hidden">
-          <div className="p-6">
+          <div className="p-4 sm:p-6">
             <h3 className="text-2xl font-semibold text-black mb-6">
               PO & Payment Management
             </h3>
@@ -206,7 +290,8 @@ Generated on: ${new Date().toLocaleString()}
               </select>
             </div>
 
-            <div className="overflow-x-auto">
+            {/* Desktop Table */}
+            <div className="hidden md:block overflow-x-auto">
               <table className="w-full text-left">
                 <thead>
                   <tr className="border-b border-gray-200">
@@ -314,11 +399,28 @@ Generated on: ${new Date().toLocaleString()}
                 </tbody>
               </table>
             </div>
+
+            {/* Mobile Cards */}
+            <div className="md:hidden mt-4">
+              {filteredPOs.length === 0 ? (
+                <div className="text-center py-12">
+                  <Truck className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    No POs found
+                  </h3>
+                  <p className="text-gray-500">
+                    Try adjusting your search or filter criteria.
+                  </p>
+                </div>
+              ) : (
+                filteredPOs.map((po) => <POCard key={po.id} po={po} />)
+              )}
+            </div>
           </div>
         </div>
 
         {selectedPO && (
-          <div className="mt-6 bg-white/90 backdrop-blur-sm border border-purple-500/20 rounded-xl p-6">
+          <div className="mt-6 bg-white/90 backdrop-blur-sm border border-purple-500/20 rounded-xl p-4 sm:p-6">
             <h3 className="text-xl font-semibold text-black mb-4">
               PO & Payment Details
             </h3>
@@ -505,5 +607,4 @@ Generated on: ${new Date().toLocaleString()}
       </div>
     </div>
   );
-  // ...existing code...
 }

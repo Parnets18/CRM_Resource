@@ -1231,27 +1231,27 @@ export default function PurchaseManagement() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-white/70 flex items-center justify-center p-4 z-50"
+            className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50"
             onClick={() => setShowNewVendorForm(false)}
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-white-900 border border-purple-700/30 rounded-lg w-full max-w-md shadow-xl"
+              className="bg-white border border-purple-700/30 rounded-lg w-full max-w-md shadow-xl"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-4 border-b border-purple-700/30 flex justify-between items-center bg-white/30">
-                <h2 className="font-bold text-lg ">Add New Vendor</h2>
+              <div className="p-4 border-b border-purple-700/30 flex justify-between items-center bg-white">
+                <h2 className="font-bold text-lg text-black">Add New Vendor</h2>
                 <button
-                  className="p-1 rounded-lg hover:bg-purple-900/20 text-white-400 hover:text-white transition-colors"
+                  className="p-1 rounded-lg hover:bg-purple-100 text-gray-600 hover:text-gray-800 transition-colors"
                   onClick={() => setShowNewVendorForm(false)}
                 >
                   <X size={20} />
                 </button>
               </div>
 
-              <form onSubmit={handleSubmit} className="p-4">
+              <form onSubmit={handleSubmit} className="p-4 bg-white">
                 <div className="space-y-4">
                   <div>
                     <label className="block text-black mb-1">Vendor Name*</label>
@@ -1260,7 +1260,7 @@ export default function PurchaseManagement() {
                       name="name"
                       value={formData.name}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500 text-black"
                       required
                     />
                   </div>
@@ -1272,7 +1272,7 @@ export default function PurchaseManagement() {
                       name="contact"
                       value={formData.contact}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500 text-black"
                       required
                     />
                   </div>
@@ -1285,7 +1285,7 @@ export default function PurchaseManagement() {
                         name="email"
                         value={formData.email}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500 text-black"
                         required
                       />
                     </div>
@@ -1296,7 +1296,7 @@ export default function PurchaseManagement() {
                         name="phone"
                         value={formData.phone}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500 text-black"
                       />
                     </div>
                   </div>
@@ -1310,7 +1310,7 @@ export default function PurchaseManagement() {
                         value={formData.value}
                         onChange={handleInputChange}
                         placeholder="$0.00"
-                        className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500 text-black"
                         required
                       />
                     </div>
@@ -1320,7 +1320,7 @@ export default function PurchaseManagement() {
                         name="category"
                         value={formData.category}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500 text-black"
                       >
                         <option value="Office Supplies">Office Supplies</option>
                         <option value="IT Equipment">IT Equipment</option>
@@ -1341,7 +1341,7 @@ export default function PurchaseManagement() {
                       value={formData.notes}
                       onChange={handleInputChange}
                       rows={3}
-                      className="w-full px-3 py-2 bg-white/30 border border-purple-700/30 rounded-lg focus:outline-none focus:border-purple-500 text-white"
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:border-purple-500 text-black"
                     ></textarea>
                   </div>
                 </div>
@@ -1349,7 +1349,7 @@ export default function PurchaseManagement() {
                 <div className="flex justify-end gap-3 mt-6">
                   <button
                     type="button"
-                    className="px-4 py-2 bg-white/50 border border-purple-700/30 rounded-lg text-black hover:bg-purple-900/20 transition-colors"
+                    className="px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-black hover:bg-gray-200 transition-colors"
                     onClick={() => setShowNewVendorForm(false)}
                   >
                     Cancel

@@ -1,25 +1,45 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
-import { Package, Search, Check, AlertTriangle, Plus, Edit, Trash2, Download } from "lucide-react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Badge } from "@/components/ui/badge"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { motion } from "framer-motion"
-import RestoNav from "../RestoNav"
+import React, { useState } from "react";
+import {
+  Package,
+  Search,
+  Check,
+  AlertTriangle,
+  Plus,
+  Edit,
+  Trash2,
+  Download,
+} from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Badge } from "@/components/ui/badge";
+import { motion } from "framer-motion";
+import RestoNav from "../RestoNav";
 
 export default function GoodsReceiptNotes() {
-  const [searchTerm, setSearchTerm] = useState("")
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false)
-  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
-  const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false)
-  const [selectedGRN, setSelectedGRN] = useState(null)
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false);
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [isSuccessDialogOpen, setIsSuccessDialogOpen] = useState(false);
+  const [selectedGRN, setSelectedGRN] = useState(null);
   const [newGRN, setNewGRN] = useState({
     poNumber: "",
     supplier: "",
@@ -27,9 +47,9 @@ export default function GoodsReceiptNotes() {
     items: "",
     status: "",
     quantity: "",
-    notes: ""
-  })
-  const [statusFilter, setStatusFilter] = useState("all")
+    notes: "",
+  });
+  const [statusFilter, setStatusFilter] = useState("all");
 
   // Sample goods receipt notes data
   const goodsReceiptNotes = [
@@ -41,7 +61,7 @@ export default function GoodsReceiptNotes() {
       items: "Tomatoes, Lettuce",
       status: "Received",
       quantity: "50 kg",
-      notes: "All items in good condition"
+      notes: "All items in good condition",
     },
     {
       id: 2,
@@ -51,7 +71,7 @@ export default function GoodsReceiptNotes() {
       items: "Milk, Cheese",
       status: "Partial",
       quantity: "100 L",
-      notes: "Partial delivery due to stock shortage"
+      notes: "Partial delivery due to stock shortage",
     },
     {
       id: 3,
@@ -61,21 +81,22 @@ export default function GoodsReceiptNotes() {
       items: "Flour, Rice",
       status: "Pending",
       quantity: "200 kg",
-      notes: "Awaiting delivery confirmation"
-    }
-  ]
+      notes: "Awaiting delivery confirmation",
+    },
+  ];
 
   const filteredGRNs = goodsReceiptNotes.filter(
     (grn) =>
       (grn.poNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
-       grn.supplier.toLowerCase().includes(searchTerm.toLowerCase())) &&
-      (statusFilter === "all" || grn.status.toLowerCase() === statusFilter.toLowerCase())
-  )
+        grn.supplier.toLowerCase().includes(searchTerm.toLowerCase())) &&
+      (statusFilter === "all" ||
+        grn.status.toLowerCase() === statusFilter.toLowerCase())
+  );
 
   const handleAddGRN = () => {
-    setIsAddDialogOpen(false)
-    setIsSuccessDialogOpen(true)
-    
+    setIsAddDialogOpen(false);
+    setIsSuccessDialogOpen(true);
+
     setNewGRN({
       poNumber: "",
       supplier: "",
@@ -83,33 +104,33 @@ export default function GoodsReceiptNotes() {
       items: "",
       status: "",
       quantity: "",
-      notes: ""
-    })
+      notes: "",
+    });
 
     setTimeout(() => {
-      setIsSuccessDialogOpen(false)
-    }, 2000)
-  }
+      setIsSuccessDialogOpen(false);
+    }, 2000);
+  };
 
   const handleEditGRN = () => {
-    setIsEditDialogOpen(false)
-    setIsSuccessDialogOpen(true)
-    
+    setIsEditDialogOpen(false);
+    setIsSuccessDialogOpen(true);
+
     setTimeout(() => {
-      setIsSuccessDialogOpen(false)
-      setSelectedGRN(null)
-    }, 2000)
-  }
+      setIsSuccessDialogOpen(false);
+      setSelectedGRN(null);
+    }, 2000);
+  };
 
   const handleDeleteGRN = () => {
-    setIsDeleteDialogOpen(false)
-    setIsSuccessDialogOpen(true)
-    
+    setIsDeleteDialogOpen(false);
+    setIsSuccessDialogOpen(true);
+
     setTimeout(() => {
-      setIsSuccessDialogOpen(false)
-      setSelectedGRN(null)
-    }, 2000)
-  }
+      setIsSuccessDialogOpen(false);
+      setSelectedGRN(null);
+    }, 2000);
+  };
 
   const handleDownloadGRN = (grn) => {
     const content = `
@@ -124,35 +145,111 @@ Status: ${grn.status}
 Notes: ${grn.notes}
 -----------------
 Generated on: ${new Date().toLocaleString()}
-    `
-    const blob = new Blob([content], { type: "text/plain" })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement("a")
-    link.href = url
-    link.download = `GRN_${grn.poNumber}.txt`
-    link.click()
-    URL.revokeObjectURL(url)
-  }
+    `;
+    const blob = new Blob([content], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `GRN_${grn.poNumber}.txt`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  // Responsive GRN Card for mobile
+  const GRNCard = ({ grn }) => (
+    <motion.div
+      key={grn.id}
+      whileHover={{ backgroundColor: "rgba(139, 92, 246, 0.05)" }}
+      className="border border-gray-200 rounded-lg p-4 mb-3 flex flex-col gap-2 bg-white"
+      onClick={() => setSelectedGRN(grn)}
+    >
+      <div className="flex justify-between items-center">
+        <span className="font-semibold text-black">{grn.poNumber}</span>
+        <Badge
+          variant="outline"
+          className={
+            grn.status === "Received"
+              ? "border-green-500/50 text-green-700"
+              : grn.status === "Partial"
+              ? "border-yellow-500/50 text-yellow-700"
+              : "border-red-500/50 text-red-700"
+          }
+        >
+          {grn.status}
+        </Badge>
+      </div>
+      <div className="text-sm text-gray-700">
+        <span className="font-medium">Supplier:</span> {grn.supplier}
+      </div>
+      <div className="flex flex-wrap gap-2 text-sm text-gray-700">
+        <span>Receipt: {grn.receiptDate}</span>
+        <span>Qty: {grn.quantity}</span>
+      </div>
+      <div className="text-sm text-gray-700">
+        <span className="font-medium">Items:</span> {grn.items}
+      </div>
+      <div className="flex gap-2 mt-2">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-blue-600 hover:bg-blue-100"
+          onClick={(e) => {
+            e.stopPropagation();
+            setNewGRN(grn);
+            setIsEditDialogOpen(true);
+          }}
+        >
+          <Edit className="w-4 h-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-red-600 hover:bg-red-100"
+          onClick={(e) => {
+            e.stopPropagation();
+            setSelectedGRN(grn);
+            setIsDeleteDialogOpen(true);
+          }}
+        >
+          <Trash2 className="w-4 h-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="icon"
+          className="text-purple-600 hover:bg-purple-100"
+          onClick={(e) => {
+            e.stopPropagation();
+            handleDownloadGRN(grn);
+          }}
+        >
+          <Download className="w-4 h-4" />
+        </Button>
+      </div>
+    </motion.div>
+  );
 
   return (
     <div className="min-h-screen bg-white lg:ml-64">
+              <RestoNav />
+
       <div className="absolute inset-0 z-0">
-        <RestoNav />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-gray-100 to-white"></div>
+         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-gray-100 to-white"></div>
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
       </div>
 
-      <div className="relative z-10 p-8">
-        <div className="flex justify-between items-center mb-8">
+      <div className="relative z-10 p-4 sm:p-8 mt-12">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
           <div>
             <h2 className="text-3xl font-bold text-black flex items-center">
               <Package className="w-8 h-8 mr-3 text-purple-400" />
               Goods Receipt Notes
             </h2>
-            <p className="text-gray-700 mt-2">Track and manage delivery receipts for your restaurant</p>
+            <p className="text-gray-700 mt-2">
+              Track and manage delivery receipts for your restaurant
+            </p>
           </div>
-          <Button 
-            className="bg-purple-600 hover:bg-purple-700 text-white"
+          <Button
+            className="bg-purple-600 hover:bg-purple-700 text-white w-full sm:w-auto"
             onClick={() => setIsAddDialogOpen(true)}
           >
             <Plus className="w-4 h-4 mr-2" /> Add GRN
@@ -162,7 +259,9 @@ Generated on: ${new Date().toLocaleString()}
         <div className="grid grid-cols-1 gap-6">
           <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
             <CardHeader>
-              <CardTitle className="text-black text-2xl">GRN Management</CardTitle>
+              <CardTitle className="text-black text-2xl">
+                GRN Management
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -189,117 +288,181 @@ Generated on: ${new Date().toLocaleString()}
                 </Select>
               </div>
 
-              <Table>
-                <TableHeader>
-                  <TableRow className="hover:bg-transparent border-b border-gray-200">
-                    <TableHead className="text-gray-700">PO Number</TableHead>
-                    <TableHead className="text-gray-700">Supplier</TableHead>
-                    <TableHead className="text-gray-700">Receipt Date</TableHead>
-                    <TableHead className="text-gray-700">Items</TableHead>
-                    <TableHead className="text-gray-700">Quantity</TableHead>
-                    <TableHead className="text-gray-700">Status</TableHead>
-                    <TableHead className="text-right text-gray-700">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {filteredGRNs.map((grn) => (
-                    <motion.tr
-                      key={grn.id}
-                      whileHover={{ backgroundColor: "rgba(139, 92, 246, 0.05)" }}
-                      className="border-t border-gray-200"
-                      onClick={() => setSelectedGRN(grn)}
-                    >
-                      <TableCell className="text-black font-medium">{grn.poNumber}</TableCell>
-                      <TableCell className="text-black">{grn.supplier}</TableCell>
-                      <TableCell className="text-black">{grn.receiptDate}</TableCell>
-                      <TableCell className="text-black">{grn.items}</TableCell>
-                      <TableCell className="text-black">{grn.quantity}</TableCell>
-                      <TableCell>
-                        <Badge
-                          variant="outline"
-                          className={
-                            grn.status === "Received" ? "border-green-500/50 text-green-700" :
-                            grn.status === "Partial" ? "border-yellow-500/50 text-yellow-700" :
-                            "border-red-500/50 text-red-700"
-                          }
-                        >
-                          {grn.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end gap-2">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="text-blue-600 hover:bg-blue-100"
-                            onClick={() => {
-                              setNewGRN(grn)
-                              setIsEditDialogOpen(true)
-                            }}
+              {/* Desktop Table */}
+              <div className="hidden md:block">
+                <table className="w-full">
+                  <thead>
+                    <tr className="hover:bg-transparent border-b border-gray-200">
+                      <th className="text-gray-700 py-2 px-2">PO Number</th>
+                      <th className="text-gray-700 py-2 px-2">Supplier</th>
+                      <th className="text-gray-700 py-2 px-2">Receipt Date</th>
+                      <th className="text-gray-700 py-2 px-2">Items</th>
+                      <th className="text-gray-700 py-2 px-2">Quantity</th>
+                      <th className="text-gray-700 py-2 px-2">Status</th>
+                      <th className="text-right text-gray-700 py-2 px-2">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredGRNs.map((grn) => (
+                      <motion.tr
+                        key={grn.id}
+                        whileHover={{
+                          backgroundColor: "rgba(139, 92, 246, 0.05)",
+                        }}
+                        className="border-t border-gray-200"
+                        onClick={() => setSelectedGRN(grn)}
+                      >
+                        <td className="text-black font-medium py-2 px-2">
+                          {grn.poNumber}
+                        </td>
+                        <td className="text-black py-2 px-2">{grn.supplier}</td>
+                        <td className="text-black py-2 px-2">
+                          {grn.receiptDate}
+                        </td>
+                        <td className="text-black py-2 px-2">{grn.items}</td>
+                        <td className="text-black py-2 px-2">{grn.quantity}</td>
+                        <td className="py-2 px-2">
+                          <Badge
+                            variant="outline"
+                            className={
+                              grn.status === "Received"
+                                ? "border-green-500/50 text-green-700"
+                                : grn.status === "Partial"
+                                ? "border-yellow-500/50 text-yellow-700"
+                                : "border-red-500/50 text-red-700"
+                            }
                           >
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="text-red-600 hover:bg-red-100"
-                            onClick={() => setIsDeleteDialogOpen(true)}
-                          >
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="text-purple-600 hover:bg-purple-100"
-                            onClick={() => handleDownloadGRN(grn)}
-                          >
-                            <Download className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </motion.tr>
-                  ))}
-                </TableBody>
-              </Table>
+                            {grn.status}
+                          </Badge>
+                        </td>
+                        <td className="text-right py-2 px-2">
+                          <div className="flex justify-end gap-2">
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="text-blue-600 hover:bg-blue-100"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setNewGRN(grn);
+                                setIsEditDialogOpen(true);
+                              }}
+                            >
+                              <Edit className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="text-red-600 hover:bg-red-100"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setSelectedGRN(grn);
+                                setIsDeleteDialogOpen(true);
+                              }}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="text-purple-600 hover:bg-purple-100"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDownloadGRN(grn);
+                              }}
+                            >
+                              <Download className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </td>
+                      </motion.tr>
+                    ))}
+                  </tbody>
+                </table>
+                {filteredGRNs.length === 0 && (
+                  <div className="text-center py-12">
+                    <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                      No GRNs found
+                    </h3>
+                    <p className="text-gray-500">
+                      Try adjusting your search or filter criteria.
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Mobile Cards */}
+              <div className="md:hidden">
+                {filteredGRNs.length === 0 ? (
+                  <div className="text-center py-12">
+                    <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                      No GRNs found
+                    </h3>
+                    <p className="text-gray-500">
+                      Try adjusting your search or filter criteria.
+                    </p>
+                  </div>
+                ) : (
+                  filteredGRNs.map((grn) => <GRNCard key={grn.id} grn={grn} />)
+                )}
+              </div>
             </CardContent>
           </Card>
 
+          {/* GRN Details */}
           {selectedGRN && (
             <Card className="border border-purple-500/20 bg-white backdrop-blur-sm mt-6">
               <CardHeader>
-                <CardTitle className="text-black text-xl">GRN Details</CardTitle>
+                <CardTitle className="text-black text-xl">
+                  GRN Details
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <Label className="text-gray-700">PO Number</Label>
-                      <p className="text-black font-medium">{selectedGRN.poNumber}</p>
+                      <p className="text-black font-medium">
+                        {selectedGRN.poNumber}
+                      </p>
                     </div>
                     <div>
                       <Label className="text-gray-700">Supplier</Label>
-                      <p className="text-black font-medium">{selectedGRN.supplier}</p>
+                      <p className="text-black font-medium">
+                        {selectedGRN.supplier}
+                      </p>
                     </div>
                     <div>
                       <Label className="text-gray-700">Receipt Date</Label>
-                      <p className="text-black font-medium">{selectedGRN.receiptDate}</p>
+                      <p className="text-black font-medium">
+                        {selectedGRN.receiptDate}
+                      </p>
                     </div>
                     <div>
                       <Label className="text-gray-700">Quantity</Label>
-                      <p className="text-black font-medium">{selectedGRN.quantity}</p>
+                      <p className="text-black font-medium">
+                        {selectedGRN.quantity}
+                      </p>
                     </div>
                     <div>
                       <Label className="text-gray-700">Items</Label>
-                      <p className="text-black font-medium">{selectedGRN.items}</p>
+                      <p className="text-black font-medium">
+                        {selectedGRN.items}
+                      </p>
                     </div>
                     <div>
                       <Label className="text-gray-700">Status</Label>
                       <Badge
                         variant="outline"
                         className={
-                          selectedGRN.status === "Received" ? "border-green-500/50 text-green-700" :
-                          selectedGRN.status === "Partial" ? "border-yellow-500/50 text-yellow-700" :
-                          "border-red-500/50 text-red-700"
+                          selectedGRN.status === "Received"
+                            ? "border-green-500/50 text-green-700"
+                            : selectedGRN.status === "Partial"
+                            ? "border-yellow-500/50 text-yellow-700"
+                            : "border-red-500/50 text-red-700"
                         }
                       >
                         {selectedGRN.status}
@@ -308,7 +471,9 @@ Generated on: ${new Date().toLocaleString()}
                   </div>
                   <div>
                     <Label className="text-gray-700">Notes</Label>
-                    <p className="text-black font-medium">{selectedGRN.notes || "No additional notes"}</p>
+                    <p className="text-black font-medium">
+                      {selectedGRN.notes || "No additional notes"}
+                    </p>
                   </div>
                 </div>
               </CardContent>
@@ -320,7 +485,9 @@ Generated on: ${new Date().toLocaleString()}
         <Dialog open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen}>
           <DialogContent className="bg-white border border-purple-500/20 text-black rounded-xl max-w-md p-0">
             <DialogHeader>
-              <DialogTitle className="text-xl px-5 py-1">Add New Goods Receipt Note</DialogTitle>
+              <DialogTitle className="text-xl px-5 py-1">
+                Add New Goods Receipt Note
+              </DialogTitle>
             </DialogHeader>
             <div className=" space-y-4 px-6">
               <div className="space-y-2">
@@ -329,13 +496,17 @@ Generated on: ${new Date().toLocaleString()}
                   id="poNumber"
                   className="bg-gray-100 border-gray-300 text-black rounded-lg"
                   value={newGRN.poNumber}
-                  onChange={(e) => setNewGRN({ ...newGRN, poNumber: e.target.value })}
+                  onChange={(e) =>
+                    setNewGRN({ ...newGRN, poNumber: e.target.value })
+                  }
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="supplier">Supplier</Label>
                 <Select
-                  onValueChange={(value) => setNewGRN({ ...newGRN, supplier: value })}
+                  onValueChange={(value) =>
+                    setNewGRN({ ...newGRN, supplier: value })
+                  }
                 >
                   <SelectTrigger className="bg-gray-100 border-gray-300 text-black rounded-lg">
                     <SelectValue placeholder="Select supplier" />
@@ -354,7 +525,9 @@ Generated on: ${new Date().toLocaleString()}
                   type="date"
                   className="bg-gray-100 border-gray-300 text-black rounded-lg"
                   value={newGRN.receiptDate}
-                  onChange={(e) => setNewGRN({ ...newGRN, receiptDate: e.target.value })}
+                  onChange={(e) =>
+                    setNewGRN({ ...newGRN, receiptDate: e.target.value })
+                  }
                 />
               </div>
               <div className="space-y-2">
@@ -363,7 +536,9 @@ Generated on: ${new Date().toLocaleString()}
                   id="items"
                   className="bg-gray-100 border-gray-300 text-black rounded-lg"
                   value={newGRN.items}
-                  onChange={(e) => setNewGRN({ ...newGRN, items: e.target.value })}
+                  onChange={(e) =>
+                    setNewGRN({ ...newGRN, items: e.target.value })
+                  }
                 />
               </div>
               <div className="space-y-2">
@@ -372,13 +547,17 @@ Generated on: ${new Date().toLocaleString()}
                   id="quantity"
                   className="bg-gray-100 border-gray-300 text-black rounded-lg"
                   value={newGRN.quantity}
-                  onChange={(e) => setNewGRN({ ...newGRN, quantity: e.target.value })}
+                  onChange={(e) =>
+                    setNewGRN({ ...newGRN, quantity: e.target.value })
+                  }
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="status">Status</Label>
                 <Select
-                  onValueChange={(value) => setNewGRN({ ...newGRN, status: value })}
+                  onValueChange={(value) =>
+                    setNewGRN({ ...newGRN, status: value })
+                  }
                 >
                   <SelectTrigger className="bg-gray-100 border-gray-300 text-black rounded-lg">
                     <SelectValue placeholder="Select status" />
@@ -396,15 +575,24 @@ Generated on: ${new Date().toLocaleString()}
                   id="notes"
                   className="bg-gray-100 border-gray-300 text-black rounded-lg"
                   value={newGRN.notes}
-                  onChange={(e) => setNewGRN({ ...newGRN, notes: e.target.value })}
+                  onChange={(e) =>
+                    setNewGRN({ ...newGRN, notes: e.target.value })
+                  }
                 />
               </div>
             </div>
             <DialogFooter className="px-6 pb-4">
-              <Button variant="outline" className="border-gray-300 rounded-lg text-gray-700" onClick={() => setIsAddDialogOpen(false)}>
+              <Button
+                variant="outline"
+                className="border-gray-300 rounded-lg text-gray-700"
+                onClick={() => setIsAddDialogOpen(false)}
+              >
                 Cancel
               </Button>
-              <Button className="bg-purple-600 hover:bg-purple-700 rounded-lg text-white" onClick={handleAddGRN}>
+              <Button
+                className="bg-purple-600 hover:bg-purple-700 rounded-lg text-white"
+                onClick={handleAddGRN}
+              >
                 Add GRN
               </Button>
             </DialogFooter>
@@ -415,7 +603,9 @@ Generated on: ${new Date().toLocaleString()}
         <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
           <DialogContent className="bg-white border border-purple-500/20 text-black rounded-xl max-w-md p-0">
             <DialogHeader>
-              <DialogTitle className="text-xl py-1 px-5">Edit Goods Receipt Note</DialogTitle>
+              <DialogTitle className="text-xl py-1 px-5">
+                Edit Goods Receipt Note
+              </DialogTitle>
             </DialogHeader>
             <div className=" space-y-4 px-6">
               <div className="space-y-2">
@@ -424,14 +614,18 @@ Generated on: ${new Date().toLocaleString()}
                   id="poNumber"
                   className="bg-gray-100 border-gray-300 text-black rounded-lg"
                   value={newGRN.poNumber}
-                  onChange={(e) => setNewGRN({ ...newGRN, poNumber: e.target.value })}
+                  onChange={(e) =>
+                    setNewGRN({ ...newGRN, poNumber: e.target.value })
+                  }
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="supplier">Supplier</Label>
                 <Select
                   value={newGRN.supplier}
-                  onValueChange={(value) => setNewGRN({ ...newGRN, supplier: value })}
+                  onValueChange={(value) =>
+                    setNewGRN({ ...newGRN, supplier: value })
+                  }
                 >
                   <SelectTrigger className="bg-gray-100 border-gray-300 text-black rounded-lg">
                     <SelectValue placeholder="Select supplier" />
@@ -450,7 +644,9 @@ Generated on: ${new Date().toLocaleString()}
                   type="date"
                   className="bg-gray-100 border-gray-300 text-black rounded-lg"
                   value={newGRN.receiptDate}
-                  onChange={(e) => setNewGRN({ ...newGRN, receiptDate: e.target.value })}
+                  onChange={(e) =>
+                    setNewGRN({ ...newGRN, receiptDate: e.target.value })
+                  }
                 />
               </div>
               <div className="space-y-2">
@@ -459,7 +655,9 @@ Generated on: ${new Date().toLocaleString()}
                   id="items"
                   className="bg-gray-100 border-gray-300 text-black rounded-lg"
                   value={newGRN.items}
-                  onChange={(e) => setNewGRN({ ...newGRN, items: e.target.value })}
+                  onChange={(e) =>
+                    setNewGRN({ ...newGRN, items: e.target.value })
+                  }
                 />
               </div>
               <div className="space-y-2">
@@ -468,14 +666,18 @@ Generated on: ${new Date().toLocaleString()}
                   id="quantity"
                   className="bg-gray-100 border-gray-300 text-black rounded-lg"
                   value={newGRN.quantity}
-                  onChange={(e) => setNewGRN({ ...newGRN, quantity: e.target.value })}
+                  onChange={(e) =>
+                    setNewGRN({ ...newGRN, quantity: e.target.value })
+                  }
                 />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="status">Status</Label>
                 <Select
                   value={newGRN.status}
-                  onValueChange={(value) => setNewGRN({ ...newGRN, status: value })}
+                  onValueChange={(value) =>
+                    setNewGRN({ ...newGRN, status: value })
+                  }
                 >
                   <SelectTrigger className="bg-gray-100 border-gray-300 text-black rounded-lg">
                     <SelectValue placeholder="Select status" />
@@ -493,15 +695,24 @@ Generated on: ${new Date().toLocaleString()}
                   id="notes"
                   className="bg-gray-100 border-gray-300 text-black rounded-lg"
                   value={newGRN.notes}
-                  onChange={(e) => setNewGRN({ ...newGRN, notes: e.target.value })}
+                  onChange={(e) =>
+                    setNewGRN({ ...newGRN, notes: e.target.value })
+                  }
                 />
               </div>
             </div>
             <DialogFooter className="px-6 pb-4">
-              <Button variant="outline" className="border-gray-300 rounded-lg text-gray-700" onClick={() => setIsEditDialogOpen(false)}>
+              <Button
+                variant="outline"
+                className="border-gray-300 rounded-lg text-gray-700"
+                onClick={() => setIsEditDialogOpen(false)}
+              >
                 Cancel
               </Button>
-              <Button className="bg-blue-600 hover:bg-blue-700 rounded-lg text-white" onClick={handleEditGRN}>
+              <Button
+                className="bg-blue-600 hover:bg-blue-700 rounded-lg text-white"
+                onClick={handleEditGRN}
+              >
                 Save Changes
               </Button>
             </DialogFooter>
@@ -520,17 +731,27 @@ Generated on: ${new Date().toLocaleString()}
             <div className="py-4 px-6">
               <p className="text-gray-700">
                 Are you sure you want to delete GRN{" "}
-                <span className="font-medium text-black">{selectedGRN?.poNumber}</span>?
+                <span className="font-medium text-black">
+                  {selectedGRN?.poNumber}
+                </span>
+                ?
               </p>
               <p className="text-gray-500 text-sm mt-2">
                 This action cannot be undone.
               </p>
             </div>
             <DialogFooter className="px-6 pb-4">
-              <Button variant="outline" className="border-gray-300 rounded-lg text-gray-700" onClick={() => setIsDeleteDialogOpen(false)}>
+              <Button
+                variant="outline"
+                className="border-gray-300 rounded-lg text-gray-700"
+                onClick={() => setIsDeleteDialogOpen(false)}
+              >
                 Cancel
               </Button>
-              <Button className="bg-red-600 hover:bg-red-700 rounded-lg text-white" onClick={handleDeleteGRN}>
+              <Button
+                className="bg-red-600 hover:bg-red-700 rounded-lg text-white"
+                onClick={handleDeleteGRN}
+              >
                 Delete GRN
               </Button>
             </DialogFooter>
@@ -538,7 +759,10 @@ Generated on: ${new Date().toLocaleString()}
         </Dialog>
 
         {/* Success Dialog */}
-        <Dialog open={isSuccessDialogOpen} onOpenChange={setIsSuccessDialogOpen}>
+        <Dialog
+          open={isSuccessDialogOpen}
+          onOpenChange={setIsSuccessDialogOpen}
+        >
           <DialogContent className="bg-white border border-purple-500/20 text-black rounded-xl max-w-xs p-0">
             <DialogHeader>
               <DialogTitle className="text-xl flex items-center">
@@ -555,5 +779,5 @@ Generated on: ${new Date().toLocaleString()}
         </Dialog>
       </div>
     </div>
-  )
+  );
 }

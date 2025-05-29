@@ -345,6 +345,7 @@ export default function KitchenManagement() {
       // If no saved data, use initial data
       setKOTs(initialKOTs);
     }
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -354,11 +355,12 @@ export default function KitchenManagement() {
         <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
       </div>
 
-      <div className="relative z-10 flex">
+      <div className="relative z-10 flex flex-col lg:flex-row">
         <RestoNav />
 
-        <div className="flex-1 p-8">
-          <div className="flex justify-between items-center mb-8">
+        <div className="flex-1 p-4 sm:p-6 md:p-8 mt-12">
+          {/* Header */}
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
             <div>
               <h2 className="text-2xl font-bold text-black">
                 Kitchen Management
@@ -384,7 +386,6 @@ export default function KitchenManagement() {
                     </span>
                   )}
                 </Button>
-
                 {/* Notifications Panel */}
                 <div
                   id="notificationsPanel"
@@ -436,7 +437,6 @@ export default function KitchenManagement() {
                   </div>
                 </div>
               </div>
-
               <Button
                 variant="ghost"
                 size="icon"
@@ -445,7 +445,6 @@ export default function KitchenManagement() {
               >
                 <RotateCcw className="w-5 h-5" />
               </Button>
-
               <Button
                 variant="ghost"
                 size="icon"
@@ -531,8 +530,7 @@ export default function KitchenManagement() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
-
-                <div className="flex gap-4">
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
                   <div className="flex items-center gap-2">
                     <Filter className="w-4 h-4 text-gray-500" />
                     <select
@@ -546,7 +544,6 @@ export default function KitchenManagement() {
                       <option value="Dessert">Dessert</option>
                     </select>
                   </div>
-
                   <div className="flex items-center gap-2">
                     <Clock3 className="w-4 h-4 text-gray-500" />
                     <select
@@ -587,7 +584,7 @@ export default function KitchenManagement() {
                             {getCategoryIcon(kot.category)}
                           </div>
                           <div>
-                            <div className="flex items-center gap-2">
+                            <div className="flex flex-wrap items-center gap-2">
                               <h3 className="font-semibold text-gray-800">
                                 {kot.id}
                               </h3>
@@ -600,12 +597,10 @@ export default function KitchenManagement() {
                             </div>
                             <div className="text-sm text-gray-600 flex items-center gap-2">
                               <Clock className="w-3 h-3" />
-                              {getTimeElapsed(kot.orderTime)} • Waiter:{" "}
-                              {kot.waiterName}
+                              {getTimeElapsed(kot.orderTime)} • Waiter: {kot.waiterName}
                             </div>
                           </div>
                         </div>
-
                         {areAllItemsReady(kot) ? (
                           <Button
                             className="bg-green-600 hover:bg-green-700 text-white"
@@ -617,18 +612,13 @@ export default function KitchenManagement() {
                         ) : (
                           <div className="flex items-center gap-2">
                             <div className="text-sm text-gray-600">
-                              {
-                                kot.items.filter(
-                                  (item) => item.status === "Ready"
-                                ).length
-                              }{" "}
-                              of {kot.items.length} items ready
+                              {kot.items.filter((item) => item.status === "Ready").length} of {kot.items.length} items ready
                             </div>
                           </div>
                         )}
                       </div>
-
-                      <div className="p-4">
+                      {/* Responsive Table: show table on md+, cards on mobile */}
+                      <div className="hidden md:block p-4">
                         <table className="w-full">
                           <thead>
                             <tr className="text-left text-gray-600 text-sm border-b border-gray-200">
@@ -642,29 +632,12 @@ export default function KitchenManagement() {
                           </thead>
                           <tbody>
                             {kot.items.map((item) => (
-                              <tr
-                                key={item.id}
-                                className="border-b border-gray-100"
-                              >
-                                <td className="py-3 font-medium text-gray-800">
-                                  {item.name}
-                                </td>
-                                <td className="py-3 text-gray-700">
-                                  {item.quantity}x
-                                </td>
-                                <td className="py-3 text-gray-700">
-                                  {item.notes ? (
-                                    item.notes
-                                  ) : (
-                                    <span className="text-gray-400">-</span>
-                                  )}
-                                </td>
+                              <tr key={item.id} className="border-b border-gray-100">
+                                <td className="py-3 font-medium text-gray-800">{item.name}</td>
+                                <td className="py-3 text-gray-700">{item.quantity}x</td>
+                                <td className="py-3 text-gray-700">{item.notes ? item.notes : <span className="text-gray-400">-</span>}</td>
                                 <td className="py-3">
-                                  <span
-                                    className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(
-                                      item.status
-                                    )}`}
-                                  >
+                                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}>
                                     {item.status}
                                   </span>
                                 </td>
@@ -672,14 +645,9 @@ export default function KitchenManagement() {
                                   {item.status === "Pending" ? (
                                     <span>-</span>
                                   ) : item.status === "In Progress" ? (
-                                    <span>
-                                      Started {getTimeElapsed(item.startTime)}
-                                    </span>
+                                    <span>Started {getTimeElapsed(item.startTime)}</span>
                                   ) : (
-                                    <span>
-                                      Completed{" "}
-                                      {getTimeElapsed(item.completionTime)}
-                                    </span>
+                                    <span>Completed {getTimeElapsed(item.completionTime)}</span>
                                   )}
                                 </td>
                                 <td className="py-3">
@@ -688,13 +656,7 @@ export default function KitchenManagement() {
                                       <Button
                                         size="sm"
                                         className="h-8 bg-purple-600 hover:bg-purple-600 text-white"
-                                        onClick={() =>
-                                          updateItemStatus(
-                                            kot.id,
-                                            item.id,
-                                            "In Progress"
-                                          )
-                                        }
+                                        onClick={() => updateItemStatus(kot.id, item.id, "In Progress")}
                                       >
                                         Start Cooking
                                       </Button>
@@ -702,13 +664,7 @@ export default function KitchenManagement() {
                                       <Button
                                         size="sm"
                                         className="h-8 bg-green-600 hover:bg-green-700 text-white"
-                                        onClick={() =>
-                                          updateItemStatus(
-                                            kot.id,
-                                            item.id,
-                                            "Ready"
-                                          )
-                                        }
+                                        onClick={() => updateItemStatus(kot.id, item.id, "Ready")}
                                       >
                                         Mark Ready
                                       </Button>
@@ -723,7 +679,6 @@ export default function KitchenManagement() {
                                         Ready
                                       </Button>
                                     )}
-
                                     {item.status === "Ready" && (
                                       <Button
                                         size="sm"
@@ -736,10 +691,7 @@ export default function KitchenManagement() {
                                             time: new Date().toISOString(),
                                             read: false,
                                           };
-                                          setNotifications((prev) => [
-                                            notification,
-                                            ...prev,
-                                          ]);
+                                          setNotifications((prev) => [notification, ...prev]);
                                           saveToLocalStorage();
                                         }}
                                       >
@@ -752,6 +704,80 @@ export default function KitchenManagement() {
                             ))}
                           </tbody>
                         </table>
+                      </div>
+                      {/* Mobile Cards */}
+                      <div className="md:hidden flex flex-col gap-2 p-4">
+                        {kot.items.map((item) => (
+                          <div key={item.id} className="border rounded-md p-3 mb-2 bg-gray-50">
+                            <div className="flex justify-between items-center">
+                              <div className="font-medium text-gray-800">{item.name}</div>
+                              <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(item.status)}`}>
+                                {item.status}
+                              </span>
+                            </div>
+                            <div className="flex flex-wrap gap-2 text-xs text-gray-600 mt-1">
+                              <span>Qty: {item.quantity}</span>
+                              {item.notes && <span>Notes: {item.notes}</span>}
+                            </div>
+                            <div className="text-xs text-gray-500 mt-1">
+                              {item.status === "Pending" ? (
+                                <span>-</span>
+                              ) : item.status === "In Progress" ? (
+                                <span>Started {getTimeElapsed(item.startTime)}</span>
+                              ) : (
+                                <span>Completed {getTimeElapsed(item.completionTime)}</span>
+                              )}
+                            </div>
+                            <div className="flex gap-2 mt-2">
+                              {item.status === "Pending" ? (
+                                <Button
+                                  size="sm"
+                                  className="h-8 bg-purple-600 hover:bg-purple-600 text-white"
+                                  onClick={() => updateItemStatus(kot.id, item.id, "In Progress")}
+                                >
+                                  Start Cooking
+                                </Button>
+                              ) : item.status === "In Progress" ? (
+                                <Button
+                                  size="sm"
+                                  className="h-8 bg-green-600 hover:bg-green-700 text-white"
+                                  onClick={() => updateItemStatus(kot.id, item.id, "Ready")}
+                                >
+                                  Mark Ready
+                                </Button>
+                              ) : (
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  className="h-8 border-green-500 text-green-600"
+                                  disabled
+                                >
+                                  <CheckCircle className="w-4 h-4 mr-1" />
+                                  Ready
+                                </Button>
+                              )}
+                              {item.status === "Ready" && (
+                                <Button
+                                  size="sm"
+                                  variant="ghost"
+                                  className="h-8 text-purple-600"
+                                  onClick={() => {
+                                    const notification = {
+                                      id: Date.now(),
+                                      message: `Reminder: ${item.name} for Table ${kot.tableNumber} is ready for service!`,
+                                      time: new Date().toISOString(),
+                                      read: false,
+                                    };
+                                    setNotifications((prev) => [notification, ...prev]);
+                                    saveToLocalStorage();
+                                  }}
+                                >
+                                  <Send className="w-4 h-4" />
+                                </Button>
+                              )}
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   ))}
@@ -787,7 +813,7 @@ export default function KitchenManagement() {
             <CardContent>
               {completedKOTs.length > 0 ? (
                 <div className="overflow-x-auto">
-                  <table className="w-full">
+                  <table className="w-full text-xs sm:text-sm">
                     <thead>
                       <tr className="text-left text-gray-600 text-sm border-b border-gray-200">
                         <th className="pb-3 font-medium">KOT ID</th>

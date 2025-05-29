@@ -1,4 +1,4 @@
-"use client"
+
 
 import { useState } from "react"
 import {
@@ -42,6 +42,7 @@ export default function PurchaseManagement() {
     industry: "all",
   })
   const [showFilterMenu, setShowFilterMenu] = useState(false)
+  const [showPurchaseTypeModal, setShowPurchaseTypeModal] = useState(false)
 
   // Form state for CRUD operations
   const [formData, setFormData] = useState({
@@ -308,7 +309,7 @@ export default function PurchaseManagement() {
         requester: item ? item.requester : "",
         department: item ? item.department : "",
         requestDate: item ? item.date : new Date().toISOString().split("T")[0],
-        priority: "normal",
+        priority: item ? item.priority || "normal" : "normal",
         items: item
           ? item.items.map((i) => ({
               name: i.name,
@@ -317,30 +318,18 @@ export default function PurchaseManagement() {
               justification: i.justification,
             }))
           : [{ name: "", quantity: 1, estimatedCost: "", justification: "" }],
-        notes: "",
+        notes: item ? item.notes || "" : "",
         industryType: item ? item.industryType : industryType === "all" ? "construction" : industryType,
         constructionSite: item ? item.constructionSite || "" : "",
         restaurantLocation: item ? item.restaurantLocation || "" : "",
-      })
-    } else if (type === "new-vendor" || type === "edit-vendor") {
-      setFormData({
-        ...formData,
-        vendorName: item ? item.name : "",
-        contactPerson: item ? item.contact.name : "",
-        email: item ? item.contact.email : "",
-        phone: item ? item.contact.phone : "",
-        address: item ? item.contact.address : "",
-        taxNumber: "",
-        vendorCategory: "",
-        industryType: item ? item.industryType : "both",
       })
     } else if (type === "new-po" || type === "edit-po") {
       setFormData({
         ...formData,
         poVendor: item ? item.vendor : "",
         poDate: item ? item.date : new Date().toISOString().split("T")[0],
-        expectedDelivery: "",
-        paymentTerms: "Net 30",
+        expectedDelivery: item ? item.expectedDelivery || "" : "",
+        paymentTerms: item ? item.paymentTerms || "Net 30" : "Net 30",
         poItems: item
           ? item.items.map((i) => ({
               item: i.name,
@@ -349,12 +338,16 @@ export default function PurchaseManagement() {
               taxPercentage: "9",
             }))
           : [{ item: "", quantity: 1, unitPrice: "", taxPercentage: "9" }],
-        shippingCost: "0",
-        additionalNotes: "",
+        shippingCost: item ? item.shippingCost || "0" : "0",
+        additionalNotes: item ? item.additionalNotes || "" : "",
         industryType: item ? item.industryType : industryType === "all" ? "construction" : industryType,
         constructionSite: item ? item.constructionSite || "" : "",
         restaurantLocation: item ? item.restaurantLocation || "" : "",
       })
+    } else if (type === "new-purchase") {
+      // Show a selection dialog for the type of purchase
+      setShowModal(false) // Close the current modal
+      setShowPurchaseTypeModal(true) // Show the purchase type selection modal
     }
   }
 
@@ -605,6 +598,92 @@ export default function PurchaseManagement() {
   const filteredRequests = filterData(purchaseRequests, "request")
   const filteredPOs = filterData(purchaseOrders, "po")
 
+  // Add this function to handle the export functionality
+  const handleExport = () => {
+    // Determine which data to export based on active tab
+    let dataToExport = [];
+    let filename = "";
+    let headers = [];
+
+    if (activeTab === "purchase-requests") {
+      dataToExport = filteredRequests;
+      filename = "purchase_requests.csv";
+      headers = ["Request ID", "Requester", "Department", "Date", "Status", "Industry", "Location"];
+    } else if (activeTab === "purchase-orders") {
+      dataToExport = filteredPOs;
+      filename = "purchase_orders.csv";
+      headers = ["PO Number", "Vendor", "Date", "Amount", "Status", "Industry", "Location"];
+    } else if (activeTab === "vendors") {
+      dataToExport = filteredVendors;
+      filename = "vendors.csv";
+      headers = ["Vendor ID", "Name", "Contact Person", "Email", "Phone", "Category"];
+    } else {
+      // Default case or other tabs
+      alert("Export not implemented for this tab yet");
+      return;
+    }
+
+    // Create CSV content
+    const csvContent = [
+      headers.join(","),
+      ...dataToExport.map(item => {
+        if (activeTab === "purchase-requests") {
+          return [
+            item.id,
+            item.requester,
+            item.department,
+            item.date,
+            item.status,
+            item.industryType,
+            item.industryType === "construction" ? item.constructionSite : item.restaurantLocation
+          ].join(",");
+        } else if (activeTab === "purchase-orders") {
+          return [
+            item.id,
+            item.vendor,
+            item.date,
+            item.amount,
+            item.status,
+            item.industryType,
+            item.industryType === "construction" ? item.constructionSite : item.restaurantLocation
+          ].join(",");
+        } else if (activeTab === "vendors") {
+          return [
+            item.id,
+            item.name,
+            item.contact?.name || "",
+            item.contact?.email || "",
+            item.contact?.phone || "",
+            item.category || ""
+          ].join(",");
+        }
+        return [];
+      })
+    ].join("\n");
+  
+    // Create a blob and download link
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", filename);
+    link.style.visibility = "hidden";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Add this function to handle purchase type selection
+  const handlePurchaseTypeSelect = (purchaseType) => {
+    setShowPurchaseTypeModal(false)
+    
+    if (purchaseType === "request") {
+      openModal("new-request")
+    } else if (purchaseType === "po") {
+      openModal("new-po")
+    }
+  }
+
   return (
     <div className="p-6 bg-white border-r border-gray-300 backdrop-blur-md text-black min-h-screen">
       {/* Header */}
@@ -630,7 +709,7 @@ export default function PurchaseManagement() {
             <Download className="h-4 w-4 mr-2" /> Export
           </button>
           <button
-            className="px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-md flex items-center"
+            className="px-4 py-2 bg-purple-600 cursor-pointer text-black rounded-md flex items-center"
             onClick={() => openModal("new-purchase")}
           >
             <Plus className="h-4 w-4 mr-2" /> New Purchase
@@ -819,7 +898,7 @@ export default function PurchaseManagement() {
               <p className="text-sm text-black">Manage and track purchase requisitions</p>
             </div>
             <button
-              className="px-3 py-1 bg-black hover:bg-gray-800 text-white rounded-md text-sm flex items-center"
+              className="px-3 py-1 bg-purple-600 hover:bg-gray-800 text-white rounded-md text-sm flex items-center"
               onClick={() => openModal("new-request")}
             >
               <Plus className="h-4 w-4 mr-1" /> New Request
@@ -883,7 +962,7 @@ export default function PurchaseManagement() {
                           <Eye className="h-4 w-4 mr-1" /> View
                         </button>
                         <button
-                          className="px-3 py-1 bg-blue-600/20 hover:bg-blue-600/40 text-blue-300 rounded-md text-sm flex items-center"
+                          className="px-3 py-1 bg-purple-600/20 hover:bg-purple-600/40 text-blue-300 rounded-md text-sm flex items-center"
                           onClick={() => openModal("edit-request", request)}
                         >
                           <Edit className="h-4 w-4 mr-1" /> Edit
@@ -1117,7 +1196,7 @@ export default function PurchaseManagement() {
       {/* Modals */}
       {showModal && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-black border border-gray-300 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+          <div className="bg-white border border-gray-300 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
             {/* Modal Header */}
             <div className="bg-gray-100 p-4 border-b border-gray-300 flex justify-between items-center">
               <h3 className="text-lg font-medium text-black">
@@ -1228,7 +1307,7 @@ export default function PurchaseManagement() {
                       <label className="block text-sm text-black">Items</label>
                       <button
                         type="button"
-                        className="px-2 py-1 bg-black hover:bg-gray-800 text-white rounded-md text-xs flex items-center"
+                        className="px-2 py-1 bg-purple-900 hover:bg-gray-800 text-white rounded-md text-xs flex items-center"
                         onClick={() => addItemRow("items")}
                       >
                         <Plus className="h-3 w-3 mr-1" /> Add Item
@@ -1317,7 +1396,7 @@ export default function PurchaseManagement() {
                     </button>
                     <button
                       type="submit"
-                      className="px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-md flex items-center"
+                      className="px-4 py-2 bg-purple-900 hover:bg-gray-800 text-white rounded-md flex items-center"
                     >
                       <Save className="h-4 w-4 mr-2" />{" "}
                       {modalType === "new-request" ? "Submit Request" : "Update Request"}

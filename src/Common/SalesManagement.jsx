@@ -1238,9 +1238,10 @@ export default function PurchaseManagement() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              className="bg-gray-900 border border-purple-700/30 rounded-lg w-full max-w-md shadow-xl"
+              className="bg-white border border-purple-700/30 rounded-lg w-full max-w-md shadow-xl"
               onClick={(e) => e.stopPropagation()}
             >
+
               <div className="p-4 border-b border-purple-700/30 flex justify-between items-center bg-white/30">
                 <h2 className="font-bold text-lg">Add New Vendor</h2>
                 <button

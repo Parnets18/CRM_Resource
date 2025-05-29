@@ -378,7 +378,7 @@ const RecipeManagement = () => {
     <div className="lg:ml-64">
       <div className="max-w-7xl mx-auto p-4 sm:p-6 bg-gray-50 min-h-screen">
         <RestoNav />
-        <div className="mb-8">
+        <div className="mb-8 mt-12">
           <h1 className="text-3xl font-bold text-gray-800 mb-2 flex items-center gap-3">
             <ChefHat className="w-8 h-8 text-purple-600" />
             Recipe Management

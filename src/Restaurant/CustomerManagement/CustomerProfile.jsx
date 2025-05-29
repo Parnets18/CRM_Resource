@@ -6,7 +6,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Users, Search, UserPlus, Star, Gift, Calendar, Phone, Mail, Heart, MessageSquare, Menu } from "lucide-react"
+import {
+  Users,
+  Search,
+  UserPlus,
+  Star,
+  Gift,
+  Calendar,
+  Phone,
+  Mail,
+  Heart,
+  MessageSquare,
+  Menu,
+} from "lucide-react"
 import RestoNav from "../RestoNav"
 
 export default function CustomerManagement() {
@@ -81,7 +93,9 @@ export default function CustomerManagement() {
       alert("Customer added successfully!")
     } else {
       // Update existing customer
-      const updatedCustomers = customers.map((customer) => (customer.id === customerData.id ? customerData : customer))
+      const updatedCustomers = customers.map((customer) =>
+        customer.id === customerData.id ? customerData : customer
+      )
 
       setCustomers(updatedCustomers)
 
@@ -134,7 +148,7 @@ export default function CustomerManagement() {
     (customer) =>
       customer.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
       customer.mobileNumber.includes(searchQuery) ||
-      customer.email.toLowerCase().includes(searchQuery.toLowerCase()),
+      customer.email.toLowerCase().includes(searchQuery.toLowerCase())
   )
 
   // Load saved customers on component mount
@@ -151,84 +165,146 @@ export default function CustomerManagement() {
     }
   }, [])
 
+  // Responsive customer card for mobile
+  const CustomerCard = ({ customer }) => (
+    <div className="border border-gray-200 rounded-lg p-4 mb-3 bg-white">
+      <div className="flex flex-col xs:flex-row xs:justify-between xs:items-center gap-2">
+        <div className="font-medium text-black">{customer.name}</div>
+        <div className="flex gap-2">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 px-2 text-purple-600"
+            onClick={() => handleEdit(customer)}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 px-2 text-red-600"
+            onClick={() => handleDelete(customer.id)}
+          >
+            Delete
+          </Button>
+        </div>
+      </div>
+      <div className="mt-2 text-gray-700 text-sm flex flex-col gap-1">
+        <div className="flex items-center">
+          <Phone className="w-3 h-3 mr-1" />
+          {customer.mobileNumber}
+        </div>
+        <div className="flex items-center">
+          <Mail className="w-3 h-3 mr-1" />
+          {customer.email}
+        </div>
+        {customer.dob && (
+          <div className="flex items-center">
+            <Calendar className="w-3 h-3 mr-1" />
+            Birthday: {customer.dob}
+          </div>
+        )}
+        {customer.anniversary && (
+          <div className="flex items-center">
+            <Heart className="w-3 h-3 mr-1" />
+            Anniversary: {customer.anniversary}
+          </div>
+        )}
+        <div className="flex items-center">
+          <Gift className="w-4 h-4 text-purple-500 mr-1" />
+          <span className="font-medium">{customer.loyaltyPoints} points</span>
+        </div>
+        <div className="flex">
+          {[1, 2, 3, 4, 5].map((star) => (
+            <Star
+              key={star}
+              className={`w-4 h-4 ${
+                star <= customer.rating ? "text-yellow-400 fill-yellow-400" : "text-gray-300"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+
   return (
     <div className="min-h-screen bg-white lg:ml-64">
       <div className="absolute inset-0 z-0">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/10 via-gray-100 to-white"></div>
-        <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
+        <div className="absolute top-0 left-0 right-0 h-[300px] sm:h-[400px] md:h-[500px] bg-gradient-to-b from-purple-600/10 to-transparent"></div>
       </div>
 
-      <div className="relative z-10 flex">
+      <div className="relative z-10 flex flex-col lg:flex-row">
         <RestoNav />
 
-        <div className="flex-1 p-8">
-          <div className="flex justify-between items-center mb-8">
+        <div className="flex-1 p-4 sm:p-6 md:p-8 mt-12">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4">
             <div>
-              <h2 className="text-2xl font-bold text-black">Customer Management</h2>
-              <p className="text-gray-700">Manage your customer relationships</p>
+              <h2 className="text-xl sm:text-2xl font-bold text-black">Customer Management</h2>
+              <p className="text-gray-700 text-sm sm:text-base">Manage your customer relationships</p>
             </div>
             <Button variant="ghost" size="icon" className="text-gray-700 hover:bg-gray-200">
-              <Menu className="w-5 h-5" />
             </Button>
           </div>
 
           {/* Customer Insights Section */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mb-6 sm:mb-8">
             <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
               <CardHeader className="pb-2">
-                <CardTitle className="text-black text-lg flex items-center gap-2">
+                <CardTitle className="text-black text-base sm:text-lg flex items-center gap-2">
                   <Users className="w-4 h-4 text-purple-400" />
                   Total Customers
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-purple-600">{customers.length}</div>
-                <p className="text-gray-600 text-sm">Active customer records</p>
+                <div className="text-2xl sm:text-3xl font-bold text-purple-600">{customers.length}</div>
+                <p className="text-gray-600 text-xs sm:text-sm">Active customer records</p>
               </CardContent>
             </Card>
 
             <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
               <CardHeader className="pb-2">
-                <CardTitle className="text-black text-lg flex items-center gap-2">
+                <CardTitle className="text-black text-base sm:text-lg flex items-center gap-2">
                   <Gift className="w-4 h-4 text-purple-400" />
                   Total Loyalty Points
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-purple-600">
+                <div className="text-2xl sm:text-3xl font-bold text-purple-600">
                   {customers.reduce((total, customer) => total + (Number.parseInt(customer.loyaltyPoints) || 0), 0)}
                 </div>
-                <p className="text-gray-600 text-sm">Points issued to customers</p>
+                <p className="text-gray-600 text-xs sm:text-sm">Points issued to customers</p>
               </CardContent>
             </Card>
 
             <Card className="border border-purple-500/20 bg-white backdrop-blur-sm">
               <CardHeader className="pb-2">
-                <CardTitle className="text-black text-lg flex items-center gap-2">
+                <CardTitle className="text-black text-base sm:text-lg flex items-center gap-2">
                   <MessageSquare className="w-4 h-4 text-purple-400" />
                   Feedback Collected
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="text-3xl font-bold text-purple-600">
+                <div className="text-2xl sm:text-3xl font-bold text-purple-600">
                   {customers.filter((customer) => customer.feedback && customer.feedback.trim() !== "").length}
                 </div>
-                <p className="text-gray-600 text-sm">Customer feedback entries</p>
+                <p className="text-gray-600 text-xs sm:text-sm">Customer feedback entries</p>
               </CardContent>
             </Card>
           </div>
 
           {/* Customer Form Section */}
-          <Card className="border border-purple-500/20 bg-white backdrop-blur-sm mb-8">
+          <Card className="border border-purple-500/20 bg-white backdrop-blur-sm mb-6 sm:mb-8">
             <CardHeader>
-              <CardTitle className="text-black flex items-center gap-2">
+              <CardTitle className="text-black flex items-center gap-2 text-base sm:text-lg">
                 <UserPlus className="w-5 h-5 text-purple-400" />
                 {isEditMode ? "Edit Customer" : "Add New Customer"}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <form className="space-y-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <form className="space-y-4 sm:space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                   <div className="space-y-2">
                     <Label className="text-gray-700" htmlFor="name">
                       Customer Name
@@ -255,7 +331,7 @@ export default function CustomerManagement() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
                   <div className="space-y-2">
                     <Label className="text-gray-700" htmlFor="email">
                       Email
@@ -295,7 +371,7 @@ export default function CustomerManagement() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                   <div className="space-y-2">
                     <Label className="text-gray-700" htmlFor="preferences">
                       Preferences
@@ -322,7 +398,7 @@ export default function CustomerManagement() {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                   <div className="space-y-2">
                     <Label className="text-gray-700">Rating</Label>
                     <div className="flex items-center gap-1">
@@ -358,7 +434,7 @@ export default function CustomerManagement() {
                   </div>
                 </div>
 
-                <div className="flex justify-end gap-4 mt-4">
+                <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-4 mt-2 sm:mt-4">
                   <Button
                     type="button"
                     variant="outline"
@@ -367,7 +443,11 @@ export default function CustomerManagement() {
                   >
                     {isEditMode ? "Cancel" : "Clear"}
                   </Button>
-                  <Button type="button" className="bg-purple-600 hover:bg-purple-700 text-white" onClick={handleSave}>
+                  <Button
+                    type="button"
+                    className="bg-purple-600 hover:bg-purple-700 text-white"
+                    onClick={handleSave}
+                  >
                     {isEditMode ? "Update Customer" : "Add Customer"}
                   </Button>
                 </div>
@@ -376,14 +456,14 @@ export default function CustomerManagement() {
           </Card>
 
           {/* Customer List Section */}
-          <Card className="border border-purple-500/20 bg-white backdrop-blur-sm mb-8">
+          <Card className="border border-purple-500/20 bg-white backdrop-blur-sm mb-6 sm:mb-8">
             <CardHeader>
-              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                <CardTitle className="text-black flex items-center gap-2">
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-2 sm:gap-4">
+                <CardTitle className="text-black flex items-center gap-2 text-base sm:text-lg">
                   <Users className="w-5 h-5 text-purple-400" />
                   Customer List
                 </CardTitle>
-                <div className="relative w-full md:w-64">
+                <div className="relative w-full md:w-64 mt-2 md:mt-0">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 w-4 h-4" />
                   <Input
                     placeholder="Search customers..."
@@ -395,8 +475,9 @@ export default function CustomerManagement() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="overflow-x-auto">
-                <table className="w-full border-collapse">
+              {/* Desktop Table */}
+              <div className="hidden md:block overflow-x-auto">
+                <table className="w-full border-collapse text-xs sm:text-sm">
                   <thead>
                     <tr className="border-b border-gray-200">
                       <th className="text-left py-3 px-4 font-semibold text-gray-700">Name</th>
@@ -494,19 +575,33 @@ export default function CustomerManagement() {
                   </tbody>
                 </table>
               </div>
+              {/* Mobile Cards */}
+              <div className="md:hidden flex flex-col gap-3">
+                {filteredCustomers.length > 0 ? (
+                  filteredCustomers.map((customer) => (
+                    <CustomerCard key={customer.id} customer={customer} />
+                  ))
+                ) : (
+                  <div className="py-8 text-center text-gray-500">
+                    {searchQuery
+                      ? "No customers found matching your search."
+                      : "No customers added yet. Add your first customer above."}
+                  </div>
+                )}
+              </div>
             </CardContent>
           </Card>
 
           {/* Upcoming Birthdays & Anniversaries */}
-          <Card className="border border-purple-500/20 bg-white backdrop-blur-sm mb-8">
+          <Card className="border border-purple-500/20 bg-white backdrop-blur-sm mb-6 sm:mb-8">
             <CardHeader>
-              <CardTitle className="text-black flex items-center gap-2">
+              <CardTitle className="text-black flex items-center gap-2 text-base sm:text-lg">
                 <Calendar className="w-5 h-5 text-purple-400" />
                 Upcoming Special Dates
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                 <div>
                   <h3 className="font-semibold text-gray-800 mb-3 flex items-center">
                     <Calendar className="w-4 h-4 mr-2 text-purple-500" />
