@@ -15,7 +15,7 @@ import {
   Users
 } from "lucide-react";
 
-// Mock data for payroll
+
 const payrollData = [
   { id: 1, employee: "Rahul Sharma", department: "Engineering", salary: 85000, bonus: 5000, deductions: 12500, netPay: 77500, status: "Paid", date: "2023-05-31" },
   { id: 2, employee: "Priya Patel", department: "HR", salary: 75000, bonus: 3000, deductions: 10000, netPay: 68000, status: "Paid", date: "2023-05-31" },

@@ -61,7 +61,7 @@ import SalesManagement from "../src/Common/SalesManagement";
 import Inventory from "../src/Common/Inventory";
 import CRMManagement from "../src/Common/Crmmanagement";
 import CRMHRManagement from "../src/Common/CRMHRManagement";
-// import Attend from "./Common/Attendence";
+import ProfessionalAttendanceSystem from "./Common/Attendence";
 import Payroll from "../src/Common/Payroll";
 import AccountsFinance from "../src/Common/Account&Finance";
 import SecurityRoles from "./Common/SecurityRoles";
@@ -214,8 +214,7 @@ function App() {
           <Route path="inventory" element={<Inventory />} />
           <Route path="customers" element={<CRMManagement />} />
           <Route path="hr" element={<CRMHRManagement />} />
-          {/* <Route path="attendance" element={<Attend />} /> */}
-          <Route path="payroll" element={<Payroll />} />
+          <Route path="attendance" element={<ProfessionalAttendanceSystem />} />
           <Route path="payroll" element={<Payroll />} />
           <Route path="finance" element={<AccountsFinance />} />
           <Route path="reports" element={<ReportAnalytics />} />
