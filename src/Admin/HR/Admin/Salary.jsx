@@ -1,7 +1,6 @@
 import { useState } from "react"
 import { Building2, Plus, Eye, Edit2, Trash2, X, DollarSign, Calendar, Clock } from "lucide-react"
 import Nav from "@/Admin/Nav"
-
 const HRConfigurationSystem = () => {
   const [configurations, setConfigurations] = useState([
     {
@@ -456,196 +455,215 @@ const HRConfigurationSystem = () => {
   return (
     <div className="min-h-screen bg-gray-50 p-6 ml-64">
       <Nav/>
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-            <Building2 className="w-8 h-8 text-blue-600" />
-            HR Configuration Management
-          </h1>
-          <p className="text-gray-600 mt-2">Manage salary structures, leave policies, and attendance configurations</p>
+      <div className="max-w-7xl mx-auto">
+        <div className="flex justify-between items-center mb-8">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
+              <Building2 className="w-8 h-8 text-blue-600" />
+              HR Configuration Management
+            </h1>
+            <p className="text-gray-600 mt-2">Manage salary structures, leave policies, and attendance configurations</p>
+          </div>
+          <button
+            onClick={handleAddNew}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg flex items-center gap-2 font-medium transition-colors"
+          >
+            <Plus className="w-5 h-5" />
+            Add Configuration
+          </button>
         </div>
-        <button
-          onClick={handleAddNew}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg flex items-center gap-2 font-medium transition-colors"
-        >
-          <Plus className="w-5 h-5" />
-          Add Configuration
-        </button>
-      </div>
 
-      {/* Statistics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-        {["salary", "leave", "attendance"].map((type) => {
-          const count = configurations.filter((c) => c.type === type).length
-          const labels = { salary: "Salary Structures", leave: "Leave Policies", attendance: "Attendance Policies" }
-          const colors = {
-            salary: "from-green-500 to-green-600",
-            leave: "from-blue-500 to-blue-600",
-            attendance: "from-purple-500 to-purple-600",
-          }
+        {/* Statistics Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          {["salary", "leave", "attendance"].map((type) => {
+            const count = configurations.filter((c) => c.type === type).length
+            const labels = { salary: "Salary Structures", leave: "Leave Policies", attendance: "Attendance Policies" }
+            const colors = {
+              salary: "from-green-500 to-green-600",
+              leave: "from-blue-500 to-blue-600",
+              attendance: "from-purple-500 to-purple-600",
+            }
 
-          return (
-            <div key={type} className={`bg-gradient-to-r ${colors[type]} p-6 rounded-xl text-white`}>
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-white/80 text-sm font-medium">{labels[type]}</p>
-                  <p className="text-3xl font-bold mt-1">{count}</p>
+            return (
+              <div key={type} className={`bg-gradient-to-r ${colors[type]} p-6 rounded-xl text-white`}>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-white/80 text-sm font-medium">{labels[type]}</p>
+                    <p className="text-3xl font-bold mt-1">{count}</p>
+                  </div>
+                  <div className="bg-white/20 p-3 rounded-lg">{getTypeIcon(type)}</div>
                 </div>
-                <div className="bg-white/20 p-3 rounded-lg">{getTypeIcon(type)}</div>
               </div>
-            </div>
-          )
-        })}
-      </div>
-
-      {/* Configurations Table */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-gray-900">All Configurations</h2>
-          <p className="text-sm text-gray-600 mt-1">Manage and view all HR configuration policies</p>
+            )
+          })}
         </div>
 
-        <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Configuration
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Key Details
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Created By
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Last Updated
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {configurations.map((config) => (
-                <tr key={config.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div>
-                      <div className="text-sm font-medium text-gray-900">{config.name}</div>
-                      <div className="text-sm text-gray-500">ID: {config.id}</div>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">{getTypeBadge(config.type)}</td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900 max-w-xs">{config.details}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{config.createdBy}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900">{config.lastUpdated}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center gap-2">
-                    
-                      <button 
-                        onClick={() => handleEdit(config)}
-                        className="text-green-600 hover:text-green-800 p-1 rounded transition-colors"
-                        title="Edit Configuration"
-                      >
-                        <Edit2 className="w-4 h-4" />
-                      </button>
-                      <button
-                        onClick={() => handleDelete(config.id)}
-                        className="text-red-600 hover:text-red-800 p-1 rounded transition-colors"
-                        title="Delete Configuration"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </td>
+        {/* Configurations Table */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h2 className="text-xl font-semibold text-gray-900">All Configurations</h2>
+            <p className="text-sm text-gray-600 mt-1">Manage and view all HR configuration policies</p>
+          </div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead className="bg-gray-50">
+                <tr>
+                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Configuration
+                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Key Details
+                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Created By
+                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Last Updated
+                  </th>
+                  <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Actions
+                  </th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-            {/* Modal Header */}
-            <div className="flex justify-between items-center p-6 border-b border-gray-200">
-              <h2 className="text-2xl font-bold text-gray-900">
-                {isEditing ? `Edit Configuration: ${editingConfig?.name}` : "Add New Configuration"}
-              </h2>
-              <button
-                onClick={handleModalClose}
-                className="text-gray-400 hover:text-gray-600 p-1 rounded transition-colors"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-
-            {/* Tab Navigation - Disabled during edit mode */}
-            <div className="px-6 pt-6">
-              <div className="flex space-x-1 bg-gray-100 p-1 rounded-lg">
-                {[
-                  { id: "salary", label: "Salary Structure", icon: DollarSign },
-                  { id: "leave", label: "Leave Policy", icon: Calendar },
-                  { id: "attendance", label: "Attendance Policy", icon: Clock },
-                ].map((tab) => (
-                  <button
-                    key={tab.id}
-                    onClick={() => !isEditing && setActiveTab(tab.id)}
-                    disabled={isEditing}
-                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium rounded-md transition-colors ${
-                      activeTab === tab.id 
-                        ? "bg-white text-blue-600 shadow-sm" 
-                        : isEditing 
-                        ? "text-gray-400 cursor-not-allowed" 
-                        : "text-gray-600 hover:text-gray-900"
-                    }`}
-                  >
-                    <tab.icon className="w-4 h-4" />
-                    {tab.label}
-                  </button>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
+                {configurations.map((config) => (
+                  <tr key={config.id} className="hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div>
+                        <div className="text-sm font-medium text-gray-900">{config.name}</div>
+                        <div className="text-sm text-gray-500">ID: {config.id}</div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">{getTypeBadge(config.type)}</td>
+                    <td className="px-6 py-4">
+                      <div className="text-sm text-gray-900 max-w-xs">{config.details}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">{config.createdBy}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900">{config.lastUpdated}</div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center gap-2">
+                        <button 
+                          onClick={() => handleEdit(config)}
+                          className="text-green-600 hover:text-green-800 p-1 rounded transition-colors"
+                          title="Edit Configuration"
+                        >
+                          <Edit2 className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(config.id)}
+                          className="text-red-600 hover:text-red-800 p-1 rounded transition-colors"
+                          title="Delete Configuration"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
                 ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Professional Modal */}
+        {isModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            {/* Subtle backdrop */}
+            <div 
+              className="fixed inset-0 bg-gray-900/20 backdrop-blur-sm transition-opacity"
+              onClick={handleModalClose}
+            />
+            
+            {/* Modal Content */}
+            <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden transform transition-all scale-100">
+              {/* Modal Header */}
+              <div className="flex justify-between items-center p-6 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    {isEditing ? `Edit Configuration` : "Add New Configuration"}
+                  </h2>
+                  {isEditing && (
+                    <p className="text-sm text-gray-600 mt-1">
+                      Editing: {editingConfig?.name}
+                    </p>
+                  )}
+                </div>
+                <button
+                  onClick={handleModalClose}
+                  className="text-gray-400 hover:text-gray-600 hover:bg-white p-2 rounded-lg transition-all duration-200"
+                >
+                  <X className="w-6 h-6" />
+                </button>
               </div>
-              {isEditing && (
-                <p className="text-sm text-gray-500 mt-2">
-                  Configuration type cannot be changed during edit mode.
-                </p>
-              )}
-            </div>
 
-            {/* Form Content */}
-            <div className="p-6">
-              {renderTabContent()}
+              {/* Modal Body */}
+              <div className="overflow-y-auto max-h-[calc(90vh-200px)]">
+                {/* Tab Navigation */}
+                <div className="px-6 pt-6 pb-4 bg-gray-50 border-b border-gray-100">
+                  <div className="flex space-x-1 bg-white p-1 rounded-xl shadow-sm">
+                    {[
+                      { id: "salary", label: "Salary Structure", icon: DollarSign, color: "text-green-600" },
+                      { id: "leave", label: "Leave Policy", icon: Calendar, color: "text-blue-600" },
+                      { id: "attendance", label: "Attendance Policy", icon: Clock, color: "text-purple-600" },
+                    ].map((tab) => (
+                      <button
+                        key={tab.id}
+                        onClick={() => !isEditing && setActiveTab(tab.id)}
+                        disabled={isEditing}
+                        className={`flex-1 flex items-center justify-center gap-2 px-4 py-3 text-sm font-medium rounded-lg transition-all duration-200 ${
+                          activeTab === tab.id 
+                            ? `bg-gradient-to-r from-${tab.color.split('-')[1]}-50 to-${tab.color.split('-')[1]}-100 ${tab.color} shadow-sm border border-${tab.color.split('-')[1]}-200` 
+                            : isEditing 
+                            ? "text-gray-400 cursor-not-allowed" 
+                            : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                        }`}
+                      >
+                        <tab.icon className="w-4 h-4" />
+                        {tab.label}
+                      </button>
+                    ))}
+                  </div>
+                  {isEditing && (
+                    <p className="text-sm text-amber-600 mt-3 flex items-center gap-2 bg-amber-50 px-3 py-2 rounded-lg border border-amber-200">
+                      <span className="w-1.5 h-1.5 bg-amber-500 rounded-full"></span>
+                      Configuration type cannot be changed during edit mode
+                    </p>
+                  )}
+                </div>
 
-              {/* Form Actions */}
-              <div className="flex justify-end gap-3 mt-8 pt-6 border-t border-gray-200">
+                {/* Form Content */}
+                <div className="p-6">
+                  {renderTabContent()}
+                </div>
+              </div>
+
+              {/* Modal Footer */}
+              <div className="flex justify-end gap-3 p-6 border-t border-gray-100 bg-gray-50">
                 <button
                   type="button"
                   onClick={handleModalClose}
-                  className="px-6 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  className="px-6 py-2.5 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 hover:border-gray-400 transition-all duration-200 font-medium"
                 >
                   Cancel
                 </button>
                 <button
                   type="button"
                   onClick={handleSubmit}
-                  className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  className="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl"
                 >
                   {isEditing ? "Update Configuration" : "Create Configuration"}
                 </button>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   )
 }

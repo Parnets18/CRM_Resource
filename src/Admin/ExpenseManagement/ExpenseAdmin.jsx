@@ -461,7 +461,7 @@ export default function ExpenseAdmin() {
       </Card>
 
       {/* Monthly Trends */}
-      <Card className="mt-8">
+      {/* <Card className="mt-8">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Calendar className="w-5 h-5" />
@@ -495,7 +495,7 @@ export default function ExpenseAdmin() {
             ))}
           </div>
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   );
 }

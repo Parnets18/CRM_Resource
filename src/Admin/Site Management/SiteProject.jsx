@@ -1,7 +1,4 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Nav from "../Nav";
 import { 
   ClipboardList, 
   Upload, 
@@ -11,45 +8,138 @@ import {
   Clock,
   XCircle,
   Plus,
-  Camera,
   Trash2,
-  Edit3
+  Calendar,
+  FileText,
+  Search,
+  Download,
+  Building2
 } from "lucide-react";
+import Nav from "../Nav";
 
-export default function ProjectManager() {
+export default function SimpleProjectManager() {
   const [tasks, setTasks] = useState([
-    { id: 1, name: "Foundation Pouring", status: "In Progress", assigned: "John Smith", deadline: "2024-05-30", priority: "High" },
-    { id: 2, name: "Steel Framing", status: "Delayed", assigned: "Sarah Wilson", deadline: "2024-06-02", priority: "Urgent" },
-    { id: 3, name: "Electrical Wiring", status: "Completed", assigned: "Mike Johnson", deadline: "2024-05-28", priority: "Normal" }
+    { 
+      id: 1, 
+      name: "Foundation Excavation & Concrete Pouring", 
+      status: "In Progress", 
+      assigned: "John Smith", 
+      deadline: "2024-06-15", 
+      priority: "High",
+      progress: 75,
+      category: "Structural"
+    },
+    { 
+      id: 2, 
+      name: "Steel Frame Installation - Level 1-3", 
+      status: "Delayed", 
+      assigned: "Sarah Wilson", 
+      deadline: "2024-06-20", 
+      priority: "Urgent",
+      progress: 40,
+      category: "Structural"
+    },
+    { 
+      id: 3, 
+      name: "Electrical Rough-in Installation", 
+      status: "Completed", 
+      assigned: "Mike Johnson", 
+      deadline: "2024-06-10", 
+      priority: "Normal",
+      progress: 100,
+      category: "MEP"
+    },
+    { 
+      id: 4, 
+      name: "HVAC Ductwork Installation", 
+      status: "Pending", 
+      assigned: "Tom Brown", 
+      deadline: "2024-06-25", 
+      priority: "Normal",
+      progress: 0,
+      category: "MEP"
+    }
   ]);
 
-  const [newTask, setNewTask] = useState({ name: "", assigned: "", deadline: "", priority: "Normal" });
+  const [newTask, setNewTask] = useState({ 
+    name: "", 
+    assigned: "", 
+    deadline: "", 
+    priority: "Normal", 
+    category: "General"
+  });
+
   const [alerts, setAlerts] = useState([
-    { id: 1, message: "Concrete delivery delayed by 2 hours", time: "2 hours ago" },
-    { id: 2, message: "Safety inspection scheduled for tomorrow", time: "1 day ago" }
+    { 
+      id: 1, 
+      message: "Concrete delivery delayed by 2 hours", 
+      time: "2 hours ago", 
+      type: "warning"
+    },
+    { 
+      id: 2, 
+      message: "Safety inspection scheduled for tomorrow", 
+      time: "1 day ago", 
+      type: "info"
+    }
   ]);
-  const [newAlert, setNewAlert] = useState("");
-  const [reports, setReports] = useState(["daily_report_0524.pdf", "site_progress_0524.jpg"]);
 
-  const manpower = [
-    { trade: "Carpenters", allocated: 15, total: 20, efficiency: 75 },
-    { trade: "Electricians", allocated: 8, total: 12, efficiency: 67 },
-    { trade: "Plumbers", allocated: 6, total: 10, efficiency: 60 },
-    { trade: "Labor", allocated: 12, total: 15, efficiency: 80 }
+  const [newAlert, setNewAlert] = useState("");
+  const [alertType, setAlertType] = useState("info");
+  
+  const [reports, setReports] = useState([
+    { name: "Daily Progress Report - June 12", type: "PDF", date: "2024-06-12" },
+    { name: "Site Safety Inspection", type: "PDF", date: "2024-06-11" },
+    { name: "Material Delivery Receipt", type: "JPG", date: "2024-06-10" }
+  ]);
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filterStatus, setFilterStatus] = useState("All");
+
+  const teamMembers = [
+    "John Smith", "Sarah Wilson", "Mike Johnson", "Tom Brown", "Lisa Davis", 
+    "Robert Chen", "Maria Garcia", "David Kim", "Jennifer Taylor"
   ];
 
-  const teamMembers = ["John Smith", "Sarah Wilson", "Mike Johnson", "Tom Brown", "Lisa Davis"];
+  const categories = ["General", "Structural", "MEP", "Finishing", "Safety"];
 
   const addTask = (e) => {
     e.preventDefault();
-    if (newTask.name && newTask.assigned) {
-      setTasks([...tasks, { ...newTask, id: Date.now(), status: "Pending" }]);
-      setNewTask({ name: "", assigned: "", deadline: "", priority: "Normal" });
+    if (newTask.name && newTask.assigned && newTask.deadline) {
+      setTasks([...tasks, { 
+        ...newTask, 
+        id: Date.now(), 
+        status: "Pending", 
+        progress: 0
+      }]);
+      setNewTask({ 
+        name: "", 
+        assigned: "", 
+        deadline: "", 
+        priority: "Normal", 
+        category: "General"
+      });
     }
   };
 
   const updateTaskStatus = (id, status) => {
-    setTasks(tasks.map(task => task.id === id ? { ...task, status } : task));
+    setTasks(tasks.map(task => 
+      task.id === id ? { 
+        ...task, 
+        status,
+        progress: status === "Completed" ? 100 : task.progress
+      } : task
+    ));
+  };
+
+  const updateTaskProgress = (id, progress) => {
+    setTasks(tasks.map(task => 
+      task.id === id ? { 
+        ...task, 
+        progress: parseInt(progress),
+        status: parseInt(progress) === 100 ? "Completed" : task.status === "Completed" ? "In Progress" : task.status
+      } : task
+    ));
   };
 
   const deleteTask = (id) => {
@@ -58,7 +148,12 @@ export default function ProjectManager() {
 
   const addAlert = () => {
     if (newAlert.trim()) {
-      setAlerts([{ id: Date.now(), message: newAlert, time: "Just now" }, ...alerts]);
+      setAlerts([{ 
+        id: Date.now(), 
+        message: newAlert, 
+        time: "Just now", 
+        type: alertType
+      }, ...alerts]);
       setNewAlert("");
     }
   };
@@ -67,10 +162,44 @@ export default function ProjectManager() {
     setAlerts(alerts.filter(alert => alert.id !== id));
   };
 
-  const handleFileUpload = () => {
-    const fileName = `report_${Date.now()}.pdf`;
-    setReports([fileName, ...reports]);
+  const handleFileUpload = (event) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const newReport = {
+          name: file.name,
+          type: file.name.split('.').pop().toUpperCase(),
+          date: new Date().toISOString().split('T')[0],
+          size: (file.size / 1024).toFixed(1) + ' KB',
+          file: file
+        };
+        setReports(prev => [newReport, ...prev]);
+      }
+    }
+    // Reset the input
+    event.target.value = '';
   };
+
+  const downloadFile = (report) => {
+    if (report.file) {
+      const url = URL.createObjectURL(report.file);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = report.name;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  };
+
+  const filteredTasks = tasks.filter(task => {
+    const matchesSearch = task.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         task.assigned.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStatus = filterStatus === "All" || task.status === filterStatus;
+    return matchesSearch && matchesStatus;
+  });
 
   const getStatusIcon = (status) => {
     const icons = {
@@ -84,226 +213,328 @@ export default function ProjectManager() {
 
   const getPriorityColor = (priority) => {
     const colors = {
-      "Urgent": "bg-red-100 text-red-800 border-red-200",
-      "High": "bg-orange-100 text-orange-800 border-orange-200",
-      "Normal": "bg-blue-100 text-blue-800 border-blue-200"
+      "Urgent": "text-red-600 bg-red-100",
+      "High": "text-orange-600 bg-orange-100",
+      "Normal": "text-blue-600 bg-blue-100"
     };
     return colors[priority] || colors["Normal"];
   };
 
-  return (
-    <div className="min-h-screen bg-gray-50 p-6 ml-64">
-      <Nav/>
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">Project Manager</h1>
-          <p className="text-gray-600 text-lg">Downtown Tower Construction - Site Management Dashboard</p>
-        </div>
+  const getAlertColor = (type) => {
+    const colors = {
+      "warning": "bg-yellow-100 border-yellow-300 text-yellow-800",
+      "error": "bg-red-100 border-red-300 text-red-800",
+      "info": "bg-blue-100 border-blue-300 text-blue-800",
+      "success": "bg-green-100 border-green-300 text-green-800"
+    };
+    return colors[type] || colors["info"];
+  };
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-          {/* Task Assignment */}
-          <Card className="shadow-sm">
-            <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100">
-              <CardTitle className="flex items-center gap-2 text-blue-900">
-                <ClipboardList className="w-5 h-5" />
-                Create New Task
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-6">
-              <div className="space-y-4">
-                <input
-                  type="text"
-                  value={newTask.name}
-                  onChange={(e) => setNewTask({...newTask, name: e.target.value})}
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  placeholder="Task description"
-                  required
-                />
+  const completedTasks = tasks.filter(t => t.status === "Completed").length;
+  const totalProgress = Math.round(tasks.reduce((sum, t) => sum + t.progress, 0) / tasks.length);
+
+  return (
+    <div className="min-h-screen bg-gray-100 p-4 ml-64">
+      <Nav/>
+      <div className="bg-white p-4 rounded mb-6 shadow">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Building2 className="w-6 h-6 text-blue-600" />
+            <div>
+              <h1 className="text-xl font-bold">Project Manager</h1>
+              <p className="text-gray-600">Construction Project Dashboard</p>
+            </div>
+          </div>
+          <div className="text-right">
+            <p className="text-sm text-gray-600">Progress: {totalProgress}%</p>
+            <p className="text-sm text-gray-600">Tasks: {completedTasks}/{tasks.length}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Main Content */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Add Task */}
+          <div className="bg-white p-4 rounded shadow">
+            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <Plus className="w-5 h-5" />
+              Add New Task
+            </h2>
+            <form onSubmit={addTask} className="space-y-3">
+              <input
+                type="text"
+                value={newTask.name}
+                onChange={(e) => setNewTask({...newTask, name: e.target.value})}
+                className="w-full p-2 border rounded"
+                placeholder="Task description"
+                required
+              />
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
                 <select
                   value={newTask.assigned}
                   onChange={(e) => setNewTask({...newTask, assigned: e.target.value})}
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
+                  className="p-2 border rounded"
                   required
                 >
-                  <option value="">Select Team Member</option>
+                  <option value="">Select Person</option>
                   {teamMembers.map(member => (
                     <option key={member} value={member}>{member}</option>
                   ))}
                 </select>
-                <div className="grid grid-cols-2 gap-3">
-                  <input
-                    type="date"
-                    value={newTask.deadline}
-                    onChange={(e) => setNewTask({...newTask, deadline: e.target.value})}
-                    className="p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                  <select
-                    value={newTask.priority}
-                    onChange={(e) => setNewTask({...newTask, priority: e.target.value})}
-                    className="p-3 border rounded-lg focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="Normal">Normal</option>
-                    <option value="High">High</option>
-                    <option value="Urgent">Urgent</option>
-                  </select>
-                </div>
-                <Button onClick={addTask} className="w-full bg-blue-600 hover:bg-blue-700">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Task
-                </Button>
+                
+                <select
+                  value={newTask.category}
+                  onChange={(e) => setNewTask({...newTask, category: e.target.value})}
+                  className="p-2 border rounded"
+                >
+                  {categories.map(category => (
+                    <option key={category} value={category}>{category}</option>
+                  ))}
+                </select>
+                
+                <input
+                  type="date"
+                  value={newTask.deadline}
+                  onChange={(e) => setNewTask({...newTask, deadline: e.target.value})}
+                  className="p-2 border rounded"
+                  required
+                />
               </div>
-            </CardContent>
-          </Card>
+              
+              <div className="flex gap-3">
+                <select
+                  value={newTask.priority}
+                  onChange={(e) => setNewTask({...newTask, priority: e.target.value})}
+                  className="p-2 border rounded"
+                >
+                  <option value="Normal">Normal</option>
+                  <option value="High">High</option>
+                  <option value="Urgent">Urgent</option>
+                </select>
+                
+                <button 
+                  type="submit"
+                  className="flex-1 bg-blue-600 text-white p-2 rounded hover:bg-blue-700"
+                >
+                  Add Task
+                </button>
+              </div>
+            </form>
+          </div>
 
-          {/* Task Management */}
-          <Card className="shadow-sm">
-            <CardHeader className="bg-gradient-to-r from-green-50 to-green-100">
-              <CardTitle className="flex items-center gap-2 text-green-900">
-                <CheckCircle className="w-5 h-5" />
-                Task Management ({tasks.length})
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="p-4 max-h-96 overflow-y-auto">
-              <div className="space-y-3">
-                {tasks.map(task => (
-                  <div key={task.id} className="p-4 border rounded-lg bg-white hover:shadow-md transition-all">
-                    <div className="flex justify-between items-start mb-3">
-                      <div className="flex-1">
-                        <h4 className="font-semibold text-gray-900">{task.name}</h4>
-                        <p className="text-sm text-gray-600">{task.assigned}</p>
-                        <p className="text-xs text-gray-500">Due: {task.deadline}</p>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getPriorityColor(task.priority)}`}>
+          {/* Task List */}
+          <div className="bg-white p-4 rounded shadow">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-semibold flex items-center gap-2">
+                <ClipboardList className="w-5 h-5" />
+                Tasks ({filteredTasks.length})
+              </h2>
+            </div>
+            
+            {/* Search and Filter */}
+            <div className="flex gap-3 mb-4">
+              <div className="flex-1 relative">
+                <Search className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
+                <input
+                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  placeholder="Search tasks..."
+                  className="w-full pl-10 p-2 border rounded"
+                />
+              </div>
+              <select
+                value={filterStatus}
+                onChange={(e) => setFilterStatus(e.target.value)}
+                className="p-2 border rounded"
+              >
+                <option value="All">All Status</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+                <option value="Completed">Completed</option>
+                <option value="Delayed">Delayed</option>
+              </select>
+            </div>
+            
+            <div className="space-y-3 max-h-96 overflow-y-auto">
+              {filteredTasks.map(task => (
+                <div key={task.id} className="p-3 border rounded">
+                  <div className="flex justify-between items-start mb-2">
+                    <div className="flex-1">
+                      <h4 className="font-medium">{task.name}</h4>
+                      <div className="flex items-center gap-4 text-sm text-gray-600 mt-1">
+                        <span>{task.assigned}</span>
+                        <span>{task.deadline}</span>
+                        <span className={`px-2 py-1 rounded text-xs ${getPriorityColor(task.priority)}`}>
                           {task.priority}
                         </span>
-                        <button onClick={() => deleteTask(task.id)} className="text-red-500 hover:text-red-700">
-                          <Trash2 className="w-4 h-4" />
-                        </button>
                       </div>
                     </div>
-                    <div className="flex items-center gap-3">
-                      {getStatusIcon(task.status)}
-                      <select
-                        value={task.status}
-                        onChange={(e) => updateTaskStatus(task.id, e.target.value)}
-                        className="flex-1 text-sm border rounded px-3 py-1 focus:ring-2 focus:ring-green-500"
-                      >
-                        <option value="Pending">Pending</option>
-                        <option value="In Progress">In Progress</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Delayed">Delayed</option>
-                      </select>
-                    </div>
+                    <button 
+                      onClick={() => deleteTask(task.id)} 
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
                   </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Reports & Alerts */}
-          <div className="space-y-6">
-            <Card className="shadow-sm">
-              <CardHeader className="bg-gradient-to-r from-purple-50 to-purple-100">
-                <CardTitle className="flex items-center gap-2 text-purple-900">
-                  <Upload className="w-5 h-5" />
-                  Reports ({reports.length})
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-4">
-                <button 
-                  onClick={handleFileUpload}
-                  className="w-full border-2 border-dashed border-purple-300 rounded-lg p-4 text-center hover:border-purple-400 transition-colors mb-4"
-                >
-                  <Camera className="w-6 h-6 mx-auto mb-2 text-purple-600" />
-                  <p className="text-sm text-gray-600">Upload Report</p>
-                </button>
-                <div className="space-y-2 max-h-32 overflow-y-auto">
-                  {reports.map((file, index) => (
-                    <div key={index} className="flex items-center gap-2 p-2 bg-gray-50 rounded text-sm">
-                      <Upload className="w-3 h-3 text-gray-500" />
-                      <span className="flex-1 truncate">{file}</span>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="shadow-sm">
-              <CardHeader className="bg-gradient-to-r from-red-50 to-red-100">
-                <CardTitle className="flex items-center gap-2 text-red-900">
-                  <AlertTriangle className="w-5 h-5" />
-                  Site Alerts ({alerts.length})
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-4">
-                <div className="flex gap-2 mb-4">
-                  <input
-                    type="text"
-                    value={newAlert}
-                    onChange={(e) => setNewAlert(e.target.value)}
-                    placeholder="Describe alert..."
-                    className="flex-1 p-2 border rounded focus:ring-2 focus:ring-red-500"
-                  />
-                  <Button onClick={addAlert} size="sm" className="bg-red-600 hover:bg-red-700">
-                    Add
-                  </Button>
-                </div>
-                <div className="space-y-2 max-h-32 overflow-y-auto">
-                  {alerts.map(alert => (
-                    <div key={alert.id} className="p-3 bg-red-50 border border-red-200 rounded-lg">
-                      <div className="flex justify-between items-start">
-                        <div className="flex-1">
-                          <p className="text-sm text-gray-800">{alert.message}</p>
-                          <p className="text-xs text-gray-500">{alert.time}</p>
-                        </div>
-                        <button onClick={() => deleteAlert(alert.id)} className="text-red-500 hover:text-red-700">
-                          <Trash2 className="w-3 h-3" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-
-        {/* Manpower Allocation */}
-        <Card className="shadow-sm">
-          <CardHeader className="bg-gradient-to-r from-indigo-50 to-indigo-100">
-            <CardTitle className="flex items-center gap-2 text-indigo-900">
-              <Users className="w-5 h-5" />
-              Manpower Allocation & Efficiency
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-              {manpower.map((group, index) => (
-                <div key={index} className="p-5 bg-white border border-gray-200 rounded-lg shadow-sm">
-                  <div className="flex justify-between items-center mb-3">
-                    <h4 className="font-semibold text-gray-900">{group.trade}</h4>
-                    <span className="text-lg font-bold text-indigo-600">{group.allocated}/{group.total}</span>
+                  
+                  <div className="flex items-center gap-3 mb-2">
+                    {getStatusIcon(task.status)}
+                    <select
+                      value={task.status}
+                      onChange={(e) => updateTaskStatus(task.id, e.target.value)}
+                      className="flex-1 text-sm border rounded p-1"
+                    >
+                      <option value="Pending">Pending</option>
+                      <option value="In Progress">In Progress</option>
+                      <option value="Completed">Completed</option>
+                      <option value="Delayed">Delayed</option>
+                    </select>
                   </div>
-                  <div className="w-full bg-gray-200 rounded-full h-3 mb-3">
-                    <div 
-                      className="bg-indigo-500 h-3 rounded-full transition-all duration-500" 
-                      style={{ width: `${(group.allocated/group.total)*100}%` }}
+                  
+                  <div className="flex items-center gap-3">
+                    <span className="text-sm">Progress:</span>
+                    <div className="flex-1 bg-gray-200 rounded h-2">
+                      <div 
+                        className="bg-blue-600 h-2 rounded" 
+                        style={{ width: `${task.progress}%` }}
+                      />
+                    </div>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={task.progress}
+                      onChange={(e) => updateTaskProgress(task.id, e.target.value)}
+                      className="w-20"
                     />
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Efficiency</span>
-                    <span className={`font-medium ${group.efficiency >= 70 ? 'text-green-600' : 'text-orange-600'}`}>
-                      {group.efficiency}%
-                    </span>
+                    <span className="text-sm font-medium w-12">{task.progress}%</span>
                   </div>
                 </div>
               ))}
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
+
+        {/* Sidebar */}
+        <div className="space-y-6">
+          {/* File Upload */}
+          <div className="bg-white p-4 rounded shadow">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <FileText className="w-5 h-5" />
+              Files & Reports
+            </h3>
+            
+            <div className="mb-4">
+              <label className="block w-full p-3 border-2 border-dashed border-gray-300 rounded text-center cursor-pointer hover:border-gray-400">
+                <Upload className="w-6 h-6 mx-auto mb-2 text-gray-500" />
+                <span className="text-sm text-gray-600">Click to upload files</span>
+                <input
+                  type="file"
+                  multiple
+                  onChange={handleFileUpload}
+                  className="hidden"
+                  accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx"
+                />
+              </label>
+            </div>
+            
+            <div className="space-y-2 max-h-64 overflow-y-auto">
+              {reports.map((file, index) => (
+                <div key={index} className="flex items-center gap-3 p-2 bg-gray-50 rounded">
+                  <FileText className="w-4 h-4 text-gray-500" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium truncate">{file.name}</p>
+                    <p className="text-xs text-gray-500">{file.type} • {file.date}</p>
+                  </div>
+                  {file.file && (
+                    <button 
+                      onClick={() => downloadFile(file)}
+                      className="text-blue-500 hover:text-blue-700"
+                    >
+                      <Download className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Alerts */}
+          <div className="bg-white p-4 rounded shadow">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <AlertTriangle className="w-5 h-5" />
+              Alerts
+            </h3>
+            
+            <div className="space-y-2 mb-4">
+              <div className="flex gap-2">
+                <select
+                  value={alertType}
+                  onChange={(e) => setAlertType(e.target.value)}
+                  className="p-2 border rounded text-sm"
+                >
+                  <option value="info">Info</option>
+                  <option value="warning">Warning</option>
+                  <option value="error">Error</option>
+                  <option value="success">Success</option>
+                </select>
+                <input
+                  type="text"
+                  value={newAlert}
+                  onChange={(e) => setNewAlert(e.target.value)}
+                  placeholder="Alert message..."
+                  className="flex-1 p-2 border rounded text-sm"
+                />
+                <button 
+                  onClick={addAlert} 
+                  className="bg-red-600 text-white px-3 py-2 rounded text-sm hover:bg-red-700"
+                >
+                  Add
+                </button>
+              </div>
+            </div>
+            
+            <div className="space-y-2 max-h-64 overflow-y-auto">
+              {alerts.map(alert => (
+                <div key={alert.id} className={`p-3 rounded border ${getAlertColor(alert.type)}`}>
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <p className="text-sm">{alert.message}</p>
+                      <p className="text-xs opacity-75 mt-1">{alert.time}</p>
+                    </div>
+                    <button 
+                      onClick={() => deleteAlert(alert.id)} 
+                      className="text-red-500 hover:text-red-700 ml-2"
+                    >
+                      <Trash2 className="w-3 h-3" />
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Team */}
+          <div className="bg-white p-4 rounded shadow">
+            <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+              <Users className="w-5 h-5" />
+              Team ({teamMembers.length})
+            </h3>
+            <div className="space-y-2">
+              {teamMembers.map((member, index) => (
+                <div key={index} className="flex items-center gap-3 p-2 bg-gray-50 rounded">
+                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                    {member.split(' ').map(n => n[0]).join('')}
+                  </div>
+                  <span className="text-sm">{member}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );
