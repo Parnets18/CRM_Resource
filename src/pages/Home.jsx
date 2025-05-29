@@ -79,7 +79,11 @@ export default function Home() {
                         navigate("/RestaurantCrmDashboard");
                       } else if (feature.title === "Construction CRM") {
                         navigate("/ConstructionDashboard");
+<<<<<<< HEAD
                       } else if (feature.title === "Common CRM Management") {
+=======
+                      } else if (feature.title == "Common CRM Management") {
+>>>>>>> bcd9d665eb4058899ccf65ea08cc07fec0a6f16b
                         navigate("/common");
                       }
                     }}
@@ -90,7 +94,7 @@ export default function Home() {
                     </h3>
                     <p className="text-gray-600 text-sm mt-1 group-hover:text-gray-800 transition-colors duration-300">
                       {feature.description}
-                    </p>
+                    </p> 
                   </div>
                 ))}
               </div>

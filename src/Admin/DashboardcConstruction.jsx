@@ -1,4 +1,4 @@
-"use client";
+
 
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -48,7 +48,7 @@ const siteData = [
     location: "Mumbai",
     progress: 65,
     status: "In Progress",
-    manager: "Rahul Sharma",
+    manager: "Kiran Kumar",
   },
   {
     id: 2,
@@ -56,7 +56,7 @@ const siteData = [
     location: "Delhi",
     progress: 40,
     status: "In Progress",
-    manager: "Priya Singh",
+    manager: "Shreya Kumari",
   },
   {
     id: 3,
@@ -64,7 +64,7 @@ const siteData = [
     location: "Bangalore",
     progress: 90,
     status: "Near Completion",
-    manager: "Amit Kumar",
+    manager: "Chandra sekhar",
   },
   {
     id: 4,
@@ -72,7 +72,7 @@ const siteData = [
     location: "Chennai",
     progress: 20,
     status: "Just Started",
-    manager: "Neha Patel",
+    manager: "Neha Gupta",
   },
 ];
 
