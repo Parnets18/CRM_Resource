@@ -87,7 +87,7 @@ export default function RestoNav() {
       icon: Utensils,
       id: "hr",
       subtabs: [
-        { title: "Admin", icon: FileSpreadsheet, path: "/Role" },
+        { title: "Admin", icon: FileSpreadsheet, path: "/Admin" },
         { title: "TableSetUp", icon: Grid2x2, path: "/TableSetUp" },
         { title: "GSTRATE", icon: TableCellsSplit, path: "/Configure" },
       ],
@@ -225,6 +225,19 @@ export default function RestoNav() {
           title: "Supervisor",
           icon: Users2,
           path: "/Supervisor",
+        },
+      ],
+    },
+
+    {
+      title: "SubAdmin",
+      icon: Users2,
+      id: "subadmin",
+      subtabs: [
+        {
+          title: "SubAdmin",
+          icon: Users2,
+          path: "/SubAdmin",
         },
       ],
     },
