@@ -1,1641 +1,1878 @@
+"use client"
 
-
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
-  ShoppingBag,
+  Users,
   DollarSign,
-  Package,
   Plus,
   Search,
   Filter,
   Calendar,
-  Clipboard,
-  Eye,
+  Mail,
+  Phone,
+  CreditCard,
+  Truck,
+  ShoppingCart,
   Download,
-  FileText,
-  RefreshCw,
+  Printer,
+  Send,
   Edit,
-  Trash2,
-  CheckCircle,
-  XCircle,
-  ChevronDown,
-  Save,
+  Trash,
+  X,
+  Check,
+  Package,
+  Clipboard,
+  Receipt,
   Building,
-  Utensils,
+  FileSearch,
+  AlertTriangle,
+  RefreshCw,
+  MoreHorizontal,
+  Eye,
+  ChevronDown,
+  ArrowUpDown,
+  CheckCircle2,
+  XCircle,
+  Clock,
 } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+
+// Initial data for the purchase management module
+const initialPurchaseStats = [
+  { title: "Total Purchases", value: "$98,750", icon: DollarSign, change: "+8.3%" },
+  { title: "Active Vendors", value: "87", icon: Building, change: "+4.5%" },
+  { title: "Pending Orders", value: "32", icon: Package, change: "+2.1%" },
+  { title: "Avg. Delivery Time", value: "4.2 days", icon: Truck, change: "-0.8%" },
+]
+
+// Initial purchase workflow stages with data
+const initialPurchaseStages = [
+  {
+    id: "quotations",
+    name: "Quotations (PQ)",
+    count: 42,
+    value: "$127,500",
+    icon: FileSearch,
+    items: [
+      {
+        id: 1,
+        name: "Office Supplies Co.",
+        value: "$5,200",
+        date: "May 7",
+        status: "New",
+        contact: "Robert Chen",
+        email: "robert@officesupplies.com",
+        phone: "+1 (555) 123-4567",
+        category: "Office Supplies",
+        notes: "Quotation for Q2 office supplies. Need to compare with other vendors.",
+      },
+      {
+        id: 2,
+        name: "Tech Hardware Inc",
+        value: "$12,800",
+        date: "May 6",
+        status: "Under Review",
+        contact: "Lisa Wong",
+        email: "lisa@techhardware.com",
+        phone: "+1 (555) 987-6543",
+        category: "IT Equipment",
+        notes: "Quotation for new developer workstations. Negotiating bulk discount.",
+      },
+      {
+        id: 3,
+        name: "Industrial Parts Ltd",
+        value: "$8,750",
+        date: "May 5",
+        status: "Approved",
+        contact: "Michael Davis",
+        email: "michael@industrialparts.com",
+        phone: "+1 (555) 456-7890",
+        category: "Manufacturing",
+        notes: "Approved by procurement team. Ready to create purchase order.",
+      },
+    ],
+  },
+  {
+    id: "orders",
+    name: "Purchase Orders",
+    count: 35,
+    value: "$104,200",
+    icon: ShoppingCart,
+    items: [
+      {
+        id: 4,
+        name: "Global Logistics",
+        value: "$14,500",
+        date: "May 4",
+        status: "Pending",
+        contact: "Sarah Johnson",
+        email: "sarah@globallogistics.com",
+        phone: "+1 (555) 234-5678",
+        category: "Shipping",
+        notes: "Order placed for Q2 shipping services. Awaiting confirmation.",
+      },
+      {
+        id: 5,
+        name: "Quality Materials",
+        value: "$9,800",
+        date: "May 3",
+        status: "Confirmed",
+        contact: "James Wilson",
+        email: "james@qualitymaterials.com",
+        phone: "+1 (555) 876-5432",
+        category: "Raw Materials",
+        notes: "Order confirmed. Expected delivery in 7 days.",
+      },
+    ],
+  },
+  {
+    id: "receipts",
+    name: "Goods Receipt (GPN)",
+    count: 28,
+    value: "$87,600",
+    icon: Clipboard,
+    items: [
+      {
+        id: 6,
+        name: "Furniture Depot",
+        value: "$7,200",
+        date: "May 2",
+        status: "Partial",
+        contact: "David Brown",
+        email: "david@furnituredepot.com",
+        phone: "+1 (555) 345-6789",
+        category: "Office Furniture",
+        notes: "Received 70% of order. Remaining items backordered.",
+      },
+      {
+        id: 7,
+        name: "Chemical Suppliers",
+        value: "$11,500",
+        date: "May 1",
+        status: "Complete",
+        contact: "Emma Taylor",
+        email: "emma@chemicalsuppliers.com",
+        phone: "+1 (555) 654-3210",
+        category: "Chemicals",
+        notes: "All items received and verified. Quality check passed.",
+      },
+    ],
+  },
+  {
+    id: "invoices",
+    name: "Purchase Invoices",
+    count: 24,
+    value: "$76,400",
+    icon: Receipt,
+    items: [
+      {
+        id: 8,
+        name: "Packaging Solutions",
+        value: "$6,800",
+        date: "Apr 30",
+        status: "Pending Approval",
+        contact: "Thomas Clark",
+        email: "thomas@packagingsolutions.com",
+        phone: "+1 (555) 789-0123",
+        category: "Packaging",
+        notes: "Invoice received. Pending verification against goods receipt.",
+      },
+      {
+        id: 9,
+        name: "Energy Providers",
+        value: "$15,200",
+        date: "Apr 29",
+        status: "Approved",
+        contact: "Amanda White",
+        email: "amanda@energyproviders.com",
+        phone: "+1 (555) 321-0987",
+        category: "Utilities",
+        notes: "Invoice verified and approved for payment.",
+      },
+    ],
+  },
+  {
+    id: "payments",
+    name: "Vendor Payments",
+    count: 20,
+    value: "$68,500",
+    icon: CreditCard,
+    items: [
+      {
+        id: 10,
+        name: "Maintenance Services",
+        value: "$4,200",
+        date: "Apr 28",
+        status: "Scheduled",
+        contact: "Kevin Martin",
+        email: "kevin@maintenanceservices.com",
+        phone: "+1 (555) 432-1098",
+        category: "Maintenance",
+        notes: "Payment scheduled for next week.",
+      },
+      {
+        id: 11,
+        name: "Software Solutions",
+        value: "$18,700",
+        date: "Apr 27",
+        status: "Completed",
+        contact: "Patricia Moore",
+        email: "patricia@softwaresolutions.com",
+        phone: "+1 (555) 210-9876",
+        category: "Software",
+        notes: "Payment processed. Receipt received from vendor.",
+      },
+    ],
+  },
+]
 
 export default function PurchaseManagement() {
-  // Core state
-  const [activeTab, setActiveTab] = useState("purchase-requests")
-  const [showModal, setShowModal] = useState(false)
-  const [modalType, setModalType] = useState("")
+  const [activeTab, setActiveTab] = useState("quotations")
+  const [isLoading, setIsLoading] = useState(true)
   const [selectedItem, setSelectedItem] = useState(null)
+  const [showNewVendorForm, setShowNewVendorForm] = useState(false)
+  const [showEditForm, setShowEditForm] = useState(false)
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false)
   const [searchTerm, setSearchTerm] = useState("")
-  const [industryType, setIndustryType] = useState("all") // "construction", "restaurant", or "all"
-  const [isDeleteConfirmOpen, setIsDeleteConfirmOpen] = useState(false)
-  const [itemToDelete, setItemToDelete] = useState(null)
-  const [deleteType, setDeleteType] = useState("")
-  const [filterOptions, setFilterOptions] = useState({
-    status: "all",
-    department: "all",
-    dateRange: "all",
-    industry: "all",
-  })
-  const [showFilterMenu, setShowFilterMenu] = useState(false)
-  const [showPurchaseTypeModal, setShowPurchaseTypeModal] = useState(false)
-
-  // Form state for CRUD operations
+  const [purchaseStats, setPurchaseStats] = useState(initialPurchaseStats)
+  const [purchaseStages, setPurchaseStages] = useState(initialPurchaseStages)
+  const [nextId, setNextId] = useState(12) // Start IDs after the initial data
   const [formData, setFormData] = useState({
-    // Common fields
-    requester: "",
-    department: "",
-    requestDate: "",
-    priority: "normal",
-    items: [{ name: "", quantity: 1, estimatedCost: "", justification: "" }],
-    notes: "",
-    industryType: "construction",
-    constructionSite: "",
-    restaurantLocation: "",
-
-    // Vendor fields
-    vendorName: "",
-    contactPerson: "",
+    name: "",
+    contact: "",
     email: "",
     phone: "",
-    address: "",
-    taxNumber: "",
-    vendorCategory: "",
-
-    // PO fields
-    poVendor: "",
-    poDate: "",
-    expectedDelivery: "",
-    paymentTerms: "Net 30",
-    poItems: [{ item: "", quantity: 1, unitPrice: "", taxPercentage: "9" }],
-    shippingCost: "0",
-    additionalNotes: "",
+    value: "",
+    category: "Office Supplies",
+    notes: "",
+    status: "New",
   })
+  const [sortConfig, setSortConfig] = useState({ key: "date", direction: "desc" })
+  const [actionMenuOpen, setActionMenuOpen] = useState(null)
+  const [successMessage, setSuccessMessage] = useState(null)
+  const [filterOptions, setFilterOptions] = useState({
+    status: "all",
+    category: "all",
+    dateRange: "all",
+  })
+  const [showFilterModal, setShowFilterModal] = useState(false)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
-  // Sample data - reduced for brevity
-  const purchaseStats = [
-    { title: "Total Purchases", value: "$87,342.50", change: "+8.3%", icon: ShoppingBag },
-    { title: "Pending Orders", value: "24", change: "-3.7%", icon: Calendar },
-    { title: "Received Items", value: "1,432", change: "+12.2%", icon: Package },
-    { title: "Vendor Payments", value: "$45,230.75", change: "+5.1%", icon: DollarSign },
-  ]
+  // Simulate loading
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1000)
+    return () => clearTimeout(timer)
+  }, [])
 
-  // Sample departments
-  const departments = ["Operations", "Marketing", "IT", "HR", "Finance", "Sales", "Production"]
+  // Get active stage data
+  const activeStage = purchaseStages.find((stage) => stage.id === activeTab) || purchaseStages[0]
 
-  // Construction sites
-  const constructionSites = [
-    { id: "SITE-001", name: "Downtown Tower Project", location: "123 Main St" },
-    { id: "SITE-002", name: "Riverside Apartments", location: "456 River Rd" },
-    { id: "SITE-003", name: "Industrial Park Expansion", location: "789 Industry Way" },
-  ]
+  // Sort and filter items
+  const getSortedAndFilteredItems = () => {
+    // First apply filters
+    const filtered = activeStage.items.filter((item) => {
+      // Apply search filter
+      const matchesSearch =
+        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.contact.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.status.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        item.category.toLowerCase().includes(searchTerm.toLowerCase())
 
-  // Restaurant locations
-  const restaurantLocations = [
-    { id: "REST-001", name: "Downtown Bistro", location: "123 Main St" },
-    { id: "REST-002", name: "Riverside Café", location: "456 River Rd" },
-    { id: "REST-003", name: "Northside Grill", location: "789 North Ave" },
-  ]
+      // Apply status filter
+      const matchesStatus = filterOptions.status === "all" || item.status === filterOptions.status
 
-  // Sample purchase orders data
-  const [purchaseOrders, setPurchaseOrders] = useState([
-    {
-      id: "PO-2001",
-      vendor: "Global Supplies",
-      date: "2025-05-07",
-      amount: "$4,250.00",
-      status: "Received",
-      industryType: "construction",
-      constructionSite: "Downtown Tower Project",
-      items: [
-        { id: 1, name: "Office Desk", quantity: 5, unitPrice: "$350.00", total: "$1,750.00" },
-        { id: 2, name: "Office Chair", quantity: 10, unitPrice: "$250.00", total: "$2,500.00" },
-      ],
-      approvals: [
-        { stage: "Department Head", approver: "John Smith", date: "2025-05-01", status: "Approved" },
-        { stage: "Finance", approver: "David Wilson", date: "2025-05-02", status: "Approved" },
-        { stage: "Procurement", approver: "Emily Davis", date: "2025-05-03", status: "Approved" },
-      ],
-    },
-    {
-      id: "PO-2003",
-      vendor: "Office Solutions",
-      date: "2025-05-05",
-      amount: "$1,240.75",
-      status: "Pending",
-      industryType: "restaurant",
-      restaurantLocation: "Downtown Bistro",
-      items: [
-        { id: 1, name: "Paper (Reams)", quantity: 50, unitPrice: "$4.50", total: "$225.00" },
-        { id: 2, name: "Pens (Box)", quantity: 20, unitPrice: "$12.50", total: "$250.00" },
-        { id: 3, name: "Notebooks", quantity: 100, unitPrice: "$7.65", total: "$765.75" },
-      ],
-      approvals: [
-        { stage: "Department Head", approver: "Sarah Johnson", date: "2025-05-01", status: "Approved" },
-        { stage: "Finance", approver: "David Wilson", date: "2025-05-02", status: "Approved" },
-        { stage: "Procurement", approver: "Emily Davis", date: "2025-05-03", status: "Pending" },
-      ],
-    },
-    {
-      id: "PO-2006",
-      vendor: "Food Suppliers Co",
-      date: "2025-05-02",
-      amount: "$3,450.00",
-      status: "Received",
-      industryType: "restaurant",
-      restaurantLocation: "Northside Grill",
-      items: [
-        { id: 1, name: "Fresh Produce", quantity: 100, unitPrice: "$12.50", total: "$1,250.00" },
-        { id: 2, name: "Meat Products", quantity: 50, unitPrice: "$35.00", total: "$1,750.00" },
-        { id: 3, name: "Dairy Products", quantity: 30, unitPrice: "$15.00", total: "$450.00" },
-      ],
-      approvals: [
-        { stage: "Department Head", approver: "Sarah Johnson", date: "2025-04-28", status: "Approved" },
-        { stage: "Finance", approver: "David Wilson", date: "2025-04-29", status: "Approved" },
-        { stage: "Procurement", approver: "Emily Davis", date: "2025-04-30", status: "Approved" },
-      ],
-    },
-  ])
+      // Apply category filter
+      const matchesCategory = filterOptions.category === "all" || item.category === filterOptions.category
 
-  // Sample vendor data
-  const [vendors, setVendors] = useState([
-    {
-      id: "VEN-001",
-      name: "Global Supplies",
-      purchases: "$12,450.00",
-      orders: 8,
-      rating: "A",
-      industryType: "both", // both, construction, restaurant
-      contact: {
-        name: "Robert Johnson",
-        email: "robert@globalsupplies.com",
-        phone: "555-123-4567",
-        address: "123 Supply St, Business Park, NY 10001",
-      },
-    },
-    {
-      id: "VEN-002",
-      name: "Tech Components",
-      purchases: "$8,975.50",
-      orders: 5,
-      rating: "A",
-      industryType: "construction",
-      contact: {
-        name: "Sarah Miller",
-        email: "sarah@techcomponents.com",
-        phone: "555-234-5678",
-        address: "456 Tech Ave, Innovation Park, CA 90210",
-      },
-    },
-    {
-      id: "VEN-006",
-      name: "Food Suppliers Co",
-      purchases: "$15,450.00",
-      orders: 12,
-      rating: "A",
-      industryType: "restaurant",
-      contact: {
-        name: "Maria Rodriguez",
-        email: "maria@foodsuppliers.com",
-        phone: "555-678-9012",
-        address: "303 Food Ave, Restaurant District, CA 90001",
-      },
-    },
-  ])
+      // Apply date range filter (simplified for demo)
+      const matchesDateRange = filterOptions.dateRange === "all"
 
-  // Sample purchase requests data
-  const [purchaseRequests, setPurchaseRequests] = useState([
-    {
-      id: "PR-1001",
-      requester: "John Smith",
-      department: "Operations",
-      date: "2025-05-07",
-      status: "Approved",
-      industryType: "construction",
-      constructionSite: "Downtown Tower Project",
-      items: [
-        {
-          id: 1,
-          name: "Office Desk",
-          quantity: 5,
-          estimatedCost: "$1,750.00",
-          justification: "Expansion of operations team",
-        },
-        {
-          id: 2,
-          name: "Office Chair",
-          quantity: 10,
-          estimatedCost: "$2,500.00",
-          justification: "Expansion of operations team",
-        },
-      ],
-      approvals: [
-        { stage: "Department Head", approver: "Mark Johnson", date: "2025-05-05", status: "Approved" },
-        { stage: "Finance", approver: "David Wilson", date: "2025-05-06", status: "Approved" },
-        { stage: "Procurement", approver: "Emily Davis", date: "2025-05-07", status: "Approved" },
-      ],
-    },
-    {
-      id: "PR-1002",
-      requester: "Sarah Johnson",
-      department: "Marketing",
-      date: "2025-05-06",
-      status: "Pending",
-      industryType: "restaurant",
-      restaurantLocation: "Downtown Bistro",
-      items: [
-        {
-          id: 1,
-          name: "Digital Camera",
-          quantity: 1,
-          estimatedCost: "$1,200.00",
-          justification: "Product photography",
-        },
-        { id: 2, name: "Tripod", quantity: 1, estimatedCost: "$150.00", justification: "Product photography" },
-        { id: 3, name: "Lighting Kit", quantity: 1, estimatedCost: "$350.00", justification: "Product photography" },
-      ],
-      approvals: [
-        { stage: "Department Head", approver: "Jessica Adams", date: "2025-05-06", status: "Approved" },
-        { stage: "Finance", approver: "David Wilson", date: "", status: "Pending" },
-        { stage: "Procurement", approver: "", date: "", status: "Not Started" },
-      ],
-    },
-    {
-      id: "PR-1006",
-      requester: "Alex Martinez",
-      department: "Kitchen",
-      date: "2025-05-02",
-      status: "Approved",
-      industryType: "restaurant",
-      restaurantLocation: "Northside Grill",
-      items: [
-        {
-          id: 1,
-          name: "Commercial Mixer",
-          quantity: 1,
-          estimatedCost: "$2,200.00",
-          justification: "Replace broken equipment",
-        },
-        {
-          id: 2,
-          name: "Cooking Utensils",
-          quantity: 1,
-          estimatedCost: "$450.00",
-          justification: "Kitchen supplies replenishment",
-        },
-      ],
-      approvals: [
-        { stage: "Department Head", approver: "Maria Rodriguez", date: "2025-05-02", status: "Approved" },
-        { stage: "Finance", approver: "David Wilson", date: "2025-05-02", status: "Approved" },
-        { stage: "Procurement", approver: "Emily Davis", date: "2025-05-02", status: "Approved" },
-      ],
-    },
-  ])
-
-  // Function to handle opening modals
-  const openModal = (type, item = null) => {
-    setModalType(type)
-    setSelectedItem(item)
-    setShowModal(true)
-
-    // Reset form data based on modal type
-    if (type === "new-request" || type === "edit-request") {
-      setFormData({
-        ...formData,
-        requester: item ? item.requester : "",
-        department: item ? item.department : "",
-        requestDate: item ? item.date : new Date().toISOString().split("T")[0],
-        priority: item ? item.priority || "normal" : "normal",
-        items: item
-          ? item.items.map((i) => ({
-              name: i.name,
-              quantity: i.quantity,
-              estimatedCost: i.estimatedCost?.replace("$", ""),
-              justification: i.justification,
-            }))
-          : [{ name: "", quantity: 1, estimatedCost: "", justification: "" }],
-        notes: item ? item.notes || "" : "",
-        industryType: item ? item.industryType : industryType === "all" ? "construction" : industryType,
-        constructionSite: item ? item.constructionSite || "" : "",
-        restaurantLocation: item ? item.restaurantLocation || "" : "",
-      })
-    } else if (type === "new-po" || type === "edit-po") {
-      setFormData({
-        ...formData,
-        poVendor: item ? item.vendor : "",
-        poDate: item ? item.date : new Date().toISOString().split("T")[0],
-        expectedDelivery: item ? item.expectedDelivery || "" : "",
-        paymentTerms: item ? item.paymentTerms || "Net 30" : "Net 30",
-        poItems: item
-          ? item.items.map((i) => ({
-              item: i.name,
-              quantity: i.quantity,
-              unitPrice: i.unitPrice?.replace("$", ""),
-              taxPercentage: "9",
-            }))
-          : [{ item: "", quantity: 1, unitPrice: "", taxPercentage: "9" }],
-        shippingCost: item ? item.shippingCost || "0" : "0",
-        additionalNotes: item ? item.additionalNotes || "" : "",
-        industryType: item ? item.industryType : industryType === "all" ? "construction" : industryType,
-        constructionSite: item ? item.constructionSite || "" : "",
-        restaurantLocation: item ? item.restaurantLocation || "" : "",
-      })
-    } else if (type === "new-purchase") {
-      // Show a selection dialog for the type of purchase
-      setShowModal(false) // Close the current modal
-      setShowPurchaseTypeModal(true) // Show the purchase type selection modal
-    }
-  }
-
-  // Function to handle closing modals
-  const closeModal = () => {
-    setShowModal(false)
-    setModalType("")
-    setSelectedItem(null)
-  }
-
-  // Function to handle search
-  const handleSearch = (e) => {
-    setSearchTerm(e.target.value)
-  }
-
-  // Function to toggle filter menu
-  const toggleFilterMenu = () => {
-    setShowFilterMenu(!showFilterMenu)
-  }
-
-  // Function to handle filter changes
-  const handleFilterChange = (filterType, value) => {
-    setFilterOptions({
-      ...filterOptions,
-      [filterType]: value,
+      return matchesSearch && matchesStatus && matchesCategory && matchesDateRange
     })
 
-    if (filterType === "industry") {
-      setIndustryType(value)
+    // Then sort
+    if (sortConfig.key) {
+      filtered.sort((a, b) => {
+        if (a[sortConfig.key] < b[sortConfig.key]) {
+          return sortConfig.direction === "asc" ? -1 : 1
+        }
+        if (a[sortConfig.key] > b[sortConfig.key]) {
+          return sortConfig.direction === "asc" ? 1 : -1
+        }
+        return 0
+      })
     }
+
+    return filtered
   }
 
-  // Function to handle form input changes
-  const handleInputChange = (e, index = null, field = null) => {
+  const filteredItems = getSortedAndFilteredItems()
+
+  // Handle sort
+  const requestSort = (key) => {
+    let direction = "asc"
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc"
+    }
+    setSortConfig({ key, direction })
+  }
+
+  // Get sort direction icon
+  const getSortDirectionIcon = (key) => {
+    if (sortConfig.key !== key) {
+      return <ArrowUpDown size={14} className="opacity-50" />
+    }
+    return sortConfig.direction === "asc" ? (
+      <ChevronDown size={14} className="text-blue-600" />
+    ) : (
+      <ChevronDown size={14} className="text-blue-600 rotate-180" />
+    )
+  }
+
+  // Get status color
+  const getStatusColor = (status) => {
+    if (["Approved", "Complete", "Completed", "Confirmed"].includes(status))
+      return "bg-green-100 text-green-800 border-green-200"
+    if (["Pending", "New", "Scheduled", "Under Review"].includes(status))
+      return "bg-blue-100 text-blue-800 border-blue-200"
+    if (["Rejected", "Cancelled", "Overdue"].includes(status)) return "bg-red-100 text-red-800 border-red-200"
+    return "bg-amber-100 text-amber-800 border-amber-200"
+  }
+
+  // Get status icon
+  const getStatusIcon = (status) => {
+    if (["Approved", "Complete", "Completed", "Confirmed"].includes(status)) return <CheckCircle2 size={14} />
+    if (["Pending", "New", "Scheduled", "Under Review"].includes(status)) return <Clock size={14} />
+    if (["Rejected", "Cancelled", "Overdue"].includes(status)) return <XCircle size={14} />
+    return <AlertTriangle size={14} />
+  }
+
+  // Format currency
+  const formatCurrency = (value) => {
+    if (!value) return "$0"
+    // If value already has $ sign, return as is
+    if (value.startsWith("$")) return value
+    // Otherwise, add $ sign
+    return `$${value}`
+  }
+
+  // Show success message
+  const showSuccess = (message) => {
+    setSuccessMessage(message)
+    setTimeout(() => {
+      setSuccessMessage(null)
+    }, 3000)
+  }
+
+  // Update stats after CRUD operations
+  const updateStats = () => {
+    // Calculate total purchases value
+    const totalValue = purchaseStages.reduce((sum, stage) => {
+      const stageValue = Number.parseInt(stage.value.replace(/[$,]/g, ""))
+      return sum + stageValue
+    }, 0)
+
+    // Count active vendors (unique vendor names)
+    const uniqueVendors = new Set()
+    purchaseStages.forEach((stage) => {
+      stage.items.forEach((item) => {
+        uniqueVendors.add(item.name)
+      })
+    })
+
+    // Count pending orders
+    const pendingOrders = purchaseStages.find((stage) => stage.id === "orders")?.items.length || 0
+
+    // Update stats
+    setPurchaseStats((prev) => [
+      { ...prev[0], value: `$${totalValue.toLocaleString()}` },
+      { ...prev[1], value: uniqueVendors.size.toString() },
+      { ...prev[2], value: pendingOrders.toString() },
+      { ...prev[3] }, // Keep delivery time as is
+    ])
+  }
+
+  // Handle form input changes
+  const handleInputChange = (e) => {
     const { name, value } = e.target
-
-    if (index !== null && field !== null) {
-      // Handle array fields like items
-      const updatedItems = [...formData[field]]
-      updatedItems[index] = {
-        ...updatedItems[index],
-        [name]: value,
-      }
-
-      setFormData({
-        ...formData,
-        [field]: updatedItems,
-      })
-    } else {
-      // Handle regular fields
-      setFormData({
-        ...formData,
-        [name]: value,
-      })
-    }
+    setFormData({
+      ...formData,
+      [name]: value,
+    })
   }
 
-  // Function to add item row in forms
-  const addItemRow = (field) => {
-    if (field === "items") {
-      setFormData({
-        ...formData,
-        items: [...formData.items, { name: "", quantity: 1, estimatedCost: "", justification: "" }],
-      })
-    } else if (field === "poItems") {
-      setFormData({
-        ...formData,
-        poItems: [...formData.poItems, { item: "", quantity: 1, unitPrice: "", taxPercentage: "9" }],
-      })
-    }
-  }
-
-  // Function to remove item row in forms
-  const removeItemRow = (index, field) => {
-    if (formData[field].length > 1) {
-      const updatedItems = [...formData[field]]
-      updatedItems.splice(index, 1)
-      setFormData({
-        ...formData,
-        [field]: updatedItems,
-      })
-    }
-  }
-
-  // Function to handle form submission
-  const handleFormSubmit = (e) => {
+  // Handle form submission for new vendor
+  const handleSubmit = (e) => {
     e.preventDefault()
 
-    if (modalType === "new-request" || modalType === "edit-request") {
-      // Create or update purchase request
-      const newRequest = {
-        id: modalType === "new-request" ? `PR-${Math.floor(1000 + Math.random() * 9000)}` : selectedItem.id,
-        requester: formData.requester,
-        department: formData.department,
-        date: formData.requestDate,
-        status: modalType === "new-request" ? "Pending" : selectedItem.status,
-        industryType: formData.industryType,
-        constructionSite: formData.industryType === "construction" ? formData.constructionSite : "",
-        restaurantLocation: formData.industryType === "restaurant" ? formData.restaurantLocation : "",
-        items: formData.items.map((item, index) => ({
-          id: index + 1,
-          name: item.name,
-          quantity: Number.parseInt(item.quantity),
-          estimatedCost: `$${Number.parseFloat(item.estimatedCost).toFixed(2)}`,
-          justification: item.justification,
-        })),
-        approvals:
-          modalType === "new-request"
-            ? [
-                { stage: "Department Head", approver: "", date: "", status: "Pending" },
-                { stage: "Finance", approver: "", date: "", status: "Not Started" },
-                { stage: "Procurement", approver: "", date: "", status: "Not Started" },
-              ]
-            : selectedItem.approvals,
-      }
+    // Format the value to ensure it has $ sign
+    const formattedValue = formatCurrency(formData.value)
 
-      if (modalType === "new-request") {
-        setPurchaseRequests([newRequest, ...purchaseRequests])
-      } else {
-        setPurchaseRequests(purchaseRequests.map((req) => (req.id === selectedItem.id ? newRequest : req)))
-      }
-    } else if (modalType === "new-vendor" || modalType === "edit-vendor") {
-      // Create or update vendor
-      const newVendor = {
-        id: modalType === "new-vendor" ? `VEN-${Math.floor(1000 + Math.random() * 9000)}` : selectedItem.id,
-        name: formData.vendorName,
-        purchases: modalType === "new-vendor" ? "$0.00" : selectedItem.purchases,
-        orders: modalType === "new-vendor" ? 0 : selectedItem.orders,
-        rating: modalType === "new-vendor" ? "C" : selectedItem.rating,
-        industryType: formData.industryType,
-        contact: {
-          name: formData.contactPerson,
-          email: formData.email,
-          phone: formData.phone,
-          address: formData.address,
-        },
-      }
+    // Get current date
+    const today = new Date()
+    const formattedDate = `${today.toLocaleString("default", { month: "short" })} ${today.getDate()}`
 
-      if (modalType === "new-vendor") {
-        setVendors([newVendor, ...vendors])
-      } else {
-        setVendors(vendors.map((vendor) => (vendor.id === selectedItem.id ? newVendor : vendor)))
-      }
-    } else if (modalType === "new-po" || modalType === "edit-po") {
-      // Create or update purchase order
-      const totalAmount = formData.poItems.reduce((sum, item) => {
-        const itemTotal = Number.parseFloat(item.quantity) * Number.parseFloat(item.unitPrice)
-        const tax = itemTotal * (Number.parseFloat(item.taxPercentage) / 100)
-        return sum + itemTotal + tax
-      }, Number.parseFloat(formData.shippingCost))
-
-      const newPO = {
-        id: modalType === "new-po" ? `PO-${Math.floor(2000 + Math.random() * 9000)}` : selectedItem.id,
-        vendor: formData.poVendor,
-        date: formData.poDate,
-        amount: `$${totalAmount.toFixed(2)}`,
-        status: modalType === "new-po" ? "Pending" : selectedItem.status,
-        industryType: formData.industryType,
-        constructionSite: formData.industryType === "construction" ? formData.constructionSite : "",
-        restaurantLocation: formData.industryType === "restaurant" ? formData.restaurantLocation : "",
-        items: formData.poItems.map((item, index) => {
-          const itemTotal = Number.parseFloat(item.quantity) * Number.parseFloat(item.unitPrice)
-          return {
-            id: index + 1,
-            name: item.item,
-            quantity: Number.parseInt(item.quantity),
-            unitPrice: `$${Number.parseFloat(item.unitPrice).toFixed(2)}`,
-            total: `$${itemTotal.toFixed(2)}`,
-          }
-        }),
-        approvals:
-          modalType === "new-po"
-            ? [
-                { stage: "Department Head", approver: "", date: "", status: "Pending" },
-                { stage: "Finance", approver: "", date: "", status: "Not Started" },
-                { stage: "Procurement", approver: "", date: "", status: "Not Started" },
-              ]
-            : selectedItem.approvals,
-      }
-
-      if (modalType === "new-po") {
-        setPurchaseOrders([newPO, ...purchaseOrders])
-      } else {
-        setPurchaseOrders(purchaseOrders.map((po) => (po.id === selectedItem.id ? newPO : po)))
-      }
+    // Create new vendor object
+    const newVendor = {
+      id: nextId,
+      name: formData.name,
+      contact: formData.contact,
+      email: formData.email,
+      phone: formData.phone,
+      value: formattedValue,
+      date: formattedDate,
+      category: formData.category,
+      notes: formData.notes,
+      status: "New",
     }
 
-    closeModal()
-  }
+    // Add to quotations stage by default
+    const updatedStages = purchaseStages.map((stage) => {
+      if (stage.id === "quotations") {
+        // Calculate new total value
+        const currentValue = Number.parseInt(stage.value.replace(/[$,]/g, ""))
+        const newItemValue = Number.parseInt(formattedValue.replace(/[$,]/g, ""))
+        const newTotalValue = currentValue + newItemValue
 
-  // Function to handle delete confirmation
-  const confirmDelete = (item, type) => {
-    setItemToDelete(item)
-    setDeleteType(type)
-    setIsDeleteConfirmOpen(true)
-  }
-
-  // Function to handle actual deletion
-  const handleDelete = () => {
-    if (deleteType === "vendor") {
-      setVendors(vendors.filter((vendor) => vendor.id !== itemToDelete.id))
-    } else if (deleteType === "request") {
-      setPurchaseRequests(purchaseRequests.filter((req) => req.id !== itemToDelete.id))
-    } else if (deleteType === "po") {
-      setPurchaseOrders(purchaseOrders.filter((po) => po.id !== itemToDelete.id))
-    }
-
-    setIsDeleteConfirmOpen(false)
-    setItemToDelete(null)
-    setDeleteType("")
-  }
-
-  // Filter data based on search term and filters
-  const filterData = (data, type) => {
-    return data.filter((item) => {
-      // Filter by search term
-      const searchFields =
-        type === "vendor"
-          ? [item.name, item.contact?.name, item.contact?.email]
-          : type === "request"
-            ? [item.id, item.requester, item.department]
-            : [item.id, item.vendor]
-
-      const matchesSearch =
-        searchTerm === "" ||
-        searchFields.some((field) => field && field.toLowerCase().includes(searchTerm.toLowerCase()))
-
-      // Filter by status if applicable
-      const matchesStatus =
-        filterOptions.status === "all" ||
-        (item.status && item.status.toLowerCase() === filterOptions.status.toLowerCase())
-
-      // Filter by department if applicable
-      const matchesDepartment =
-        filterOptions.department === "all" ||
-        (item.department && item.department.toLowerCase() === filterOptions.department.toLowerCase())
-
-      // Filter by industry type
-      const matchesIndustry =
-        industryType === "all" || item.industryType === industryType || item.industryType === "both"
-
-      return matchesSearch && matchesStatus && matchesDepartment && matchesIndustry
-    })
-  }
-
-  // Filtered data
-  const filteredVendors = filterData(vendors, "vendor")
-  const filteredRequests = filterData(purchaseRequests, "request")
-  const filteredPOs = filterData(purchaseOrders, "po")
-
-  // Add this function to handle the export functionality
-  const handleExport = () => {
-    // Determine which data to export based on active tab
-    let dataToExport = [];
-    let filename = "";
-    let headers = [];
-
-    if (activeTab === "purchase-requests") {
-      dataToExport = filteredRequests;
-      filename = "purchase_requests.csv";
-      headers = ["Request ID", "Requester", "Department", "Date", "Status", "Industry", "Location"];
-    } else if (activeTab === "purchase-orders") {
-      dataToExport = filteredPOs;
-      filename = "purchase_orders.csv";
-      headers = ["PO Number", "Vendor", "Date", "Amount", "Status", "Industry", "Location"];
-    } else if (activeTab === "vendors") {
-      dataToExport = filteredVendors;
-      filename = "vendors.csv";
-      headers = ["Vendor ID", "Name", "Contact Person", "Email", "Phone", "Category"];
-    } else {
-      // Default case or other tabs
-      alert("Export not implemented for this tab yet");
-      return;
-    }
-
-    // Create CSV content
-    const csvContent = [
-      headers.join(","),
-      ...dataToExport.map(item => {
-        if (activeTab === "purchase-requests") {
-          return [
-            item.id,
-            item.requester,
-            item.department,
-            item.date,
-            item.status,
-            item.industryType,
-            item.industryType === "construction" ? item.constructionSite : item.restaurantLocation
-          ].join(",");
-        } else if (activeTab === "purchase-orders") {
-          return [
-            item.id,
-            item.vendor,
-            item.date,
-            item.amount,
-            item.status,
-            item.industryType,
-            item.industryType === "construction" ? item.constructionSite : item.restaurantLocation
-          ].join(",");
-        } else if (activeTab === "vendors") {
-          return [
-            item.id,
-            item.name,
-            item.contact?.name || "",
-            item.contact?.email || "",
-            item.contact?.phone || "",
-            item.category || ""
-          ].join(",");
+        return {
+          ...stage,
+          items: [newVendor, ...stage.items],
+          count: stage.count + 1,
+          value: `$${newTotalValue.toLocaleString()}`,
         }
-        return [];
-      })
-    ].join("\n");
-  
-    // Create a blob and download link
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", filename);
-    link.style.visibility = "hidden";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
+      }
+      return stage
+    })
 
-  // Add this function to handle purchase type selection
-  const handlePurchaseTypeSelect = (purchaseType) => {
-    setShowPurchaseTypeModal(false)
-    
-    if (purchaseType === "request") {
-      openModal("new-request")
-    } else if (purchaseType === "po") {
-      openModal("new-po")
+    // Update state
+    setPurchaseStages(updatedStages)
+    setNextId(nextId + 1)
+
+    // Reset form and close modal
+    setFormData({
+      name: "",
+      contact: "",
+      email: "",
+      phone: "",
+      value: "",
+      category: "Office Supplies",
+      notes: "",
+      status: "New",
+    })
+    setShowNewVendorForm(false)
+
+    // Show success message
+    showSuccess(`New vendor "${newVendor.name}" added successfully`)
+
+    // Update stats
+    setTimeout(() => updateStats(), 100)
+  }
+
+  // Handle edit form submission
+  const handleEditSubmit = (e) => {
+    e.preventDefault()
+
+    // Format the value to ensure it has $ sign
+    const formattedValue = formatCurrency(formData.value)
+
+    // Update the item
+    const updatedStages = purchaseStages.map((stage) => {
+      if (stage.id === activeTab) {
+        const updatedItems = stage.items.map((item) => {
+          if (item.id === selectedItem.id) {
+            return {
+              ...item,
+              name: formData.name,
+              contact: formData.contact,
+              email: formData.email,
+              phone: formData.phone,
+              value: formattedValue,
+              category: formData.category,
+              notes: formData.notes,
+              status: formData.status,
+            }
+          }
+          return item
+        })
+
+        // Recalculate stage value
+        const newTotalValue = updatedItems.reduce((sum, item) => {
+          return sum + Number.parseInt(item.value.replace(/[$,]/g, ""))
+        }, 0)
+
+        return {
+          ...stage,
+          items: updatedItems,
+          value: `$${newTotalValue.toLocaleString()}`,
+        }
+      }
+      return stage
+    })
+
+    // Update state
+    setPurchaseStages(updatedStages)
+    setSelectedItem(null)
+    setShowEditForm(false)
+
+    // Show success message
+    showSuccess(`Vendor "${formData.name}" updated successfully`)
+
+    // Update stats
+    setTimeout(() => updateStats(), 100)
+  }
+
+  // Handle edit button click
+  const handleEditClick = (item = null) => {
+    const itemToEdit = item || selectedItem
+    setFormData({
+      name: itemToEdit.name,
+      contact: itemToEdit.contact,
+      email: itemToEdit.email,
+      phone: itemToEdit.phone,
+      value: itemToEdit.value,
+      category: itemToEdit.category || "Office Supplies",
+      notes: itemToEdit.notes,
+      status: itemToEdit.status,
+    })
+    setSelectedItem(itemToEdit)
+    setShowEditForm(true)
+    setActionMenuOpen(null)
+  }
+
+  // Handle delete confirmation
+  const handleDeleteClick = (item = null) => {
+    setSelectedItem(item || selectedItem)
+    setShowDeleteConfirmation(true)
+    setActionMenuOpen(null)
+  }
+
+  // Handle delete
+  const handleDelete = () => {
+    // Remove the item from the stage
+    const updatedStages = purchaseStages.map((stage) => {
+      if (stage.id === activeTab) {
+        // Filter out the deleted item
+        const updatedItems = stage.items.filter((item) => item.id !== selectedItem.id)
+
+        // Recalculate stage value
+        const newTotalValue = updatedItems.reduce((sum, item) => {
+          return sum + Number.parseInt(item.value.replace(/[$,]/g, ""))
+        }, 0)
+
+        return {
+          ...stage,
+          items: updatedItems,
+          count: stage.count - 1,
+          value: `$${newTotalValue.toLocaleString()}`,
+        }
+      }
+      return stage
+    })
+
+    // Store the name for success message
+    const deletedName = selectedItem.name
+
+    // Update state
+    setPurchaseStages(updatedStages)
+    setSelectedItem(null)
+    setShowDeleteConfirmation(false)
+
+    // Show success message
+    showSuccess(`Vendor "${deletedName}" deleted successfully`)
+
+    // Update stats
+    setTimeout(() => updateStats(), 100)
+  }
+
+  // Handle stage transition actions
+  const handleStageAction = (action, targetStage) => {
+    if (!selectedItem) return
+
+    // Create a copy of the current stages
+    const updatedStages = [...purchaseStages]
+
+    // Find source and target stage indexes
+    const sourceStageIndex = updatedStages.findIndex((stage) => stage.id === activeTab)
+    const targetStageIndex = updatedStages.findIndex((stage) => stage.id === targetStage)
+
+    if (sourceStageIndex === -1 || targetStageIndex === -1) return
+
+    // Remove item from source stage
+    const sourceStage = updatedStages[sourceStageIndex]
+    const itemIndex = sourceStage.items.findIndex((item) => item.id === selectedItem.id)
+
+    if (itemIndex === -1) return
+
+    // Get the item and remove it from source
+    const item = { ...sourceStage.items[itemIndex] }
+    const sourceItems = sourceStage.items.filter((_, index) => index !== itemIndex)
+
+    // Update source stage
+    const sourceValue =
+      Number.parseInt(sourceStage.value.replace(/[$,]/g, "")) - Number.parseInt(item.value.replace(/[$,]/g, ""))
+    updatedStages[sourceStageIndex] = {
+      ...sourceStage,
+      items: sourceItems,
+      count: sourceStage.count - 1,
+      value: `$${sourceValue.toLocaleString()}`,
     }
+
+    // Update item status based on action
+    switch (action) {
+      case "approve":
+        item.status = "Approved"
+        break
+      case "reject":
+        item.status = "Rejected"
+        break
+      case "confirm":
+        item.status = "Confirmed"
+        break
+      case "complete":
+        item.status = "Complete"
+        break
+      case "process":
+        item.status = "Processing"
+        break
+      default:
+        // Keep existing status
+        break
+    }
+
+    // Add to target stage
+    const targetStageData = updatedStages[targetStageIndex]
+    const targetValue =
+      Number.parseInt(targetStageData.value.replace(/[$,]/g, "")) + Number.parseInt(item.value.replace(/[$,]/g, ""))
+
+    updatedStages[targetStageIndex] = {
+      ...targetStageData,
+      items: [item, ...targetStageData.items],
+      count: targetStageData.count + 1,
+      value: `$${targetValue.toLocaleString()}`,
+    }
+
+    // Store name for success message
+    const itemName = item.name
+
+    // Update state
+    setPurchaseStages(updatedStages)
+    setSelectedItem(null)
+
+    // Show success message
+    showSuccess(`"${itemName}" moved to ${targetStageData.name} successfully`)
+
+    // Update stats
+    setTimeout(() => updateStats(), 100)
+  }
+
+  // Toggle action menu
+  const toggleActionMenu = (id) => {
+    setActionMenuOpen(actionMenuOpen === id ? null : id)
+  }
+
+  // Handle view details
+  const handleViewDetails = (item) => {
+    setSelectedItem(item)
+    setActionMenuOpen(null)
+  }
+
+  // Reset filters
+  const resetFilters = () => {
+    setFilterOptions({
+      status: "all",
+      category: "all",
+      dateRange: "all",
+    })
+    setShowFilterModal(false)
+  }
+
+  // Apply filters
+  const applyFilters = () => {
+    setShowFilterModal(false)
+  }
+
+  // Get unique categories for filter
+  const getUniqueCategories = () => {
+    const categories = new Set()
+    purchaseStages.forEach((stage) => {
+      stage.items.forEach((item) => {
+        if (item.category) categories.add(item.category)
+      })
+    })
+    return Array.from(categories)
+  }
+
+  // Get unique statuses for filter
+  const getUniqueStatuses = () => {
+    const statuses = new Set()
+    purchaseStages.forEach((stage) => {
+      stage.items.forEach((item) => {
+        if (item.status) statuses.add(item.status)
+      })
+    })
+    return Array.from(statuses)
   }
 
   return (
-    <div className="p-6 bg-white border-r border-gray-300 backdrop-blur-md text-black min-h-screen">
-      {/* Header */}
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-black">Purchase Management</h1>
-          <p className="text-gray-600">Manage vendor orders and procurement</p>
-        </div>
-        <div className="flex gap-3">
-          <div className="flex items-center mr-4">
-            <span className="mr-2">Industry:</span>
-            <select
-              className="bg-white border border-gray-300 rounded-md p-2 text-black"
-              value={industryType}
-              onChange={(e) => setIndustryType(e.target.value)}
-            >
-              <option value="all">All Industries</option>
-              <option value="construction">Construction</option>
-              <option value="restaurant">Restaurant</option>
-            </select>
-          </div>
-          <button className="px-4 py-2 border border-gray-300 text-black hover:bg-gray-100 rounded-md flex items-center">
-            <Download className="h-4 w-4 mr-2" /> Export
-          </button>
-          <button
-            className="px-4 py-2 bg-purple-600 cursor-pointer text-black rounded-md flex items-center"
-            onClick={() => openModal("new-purchase")}
+    <div className="min-h-screen bg-gray-50 text-gray-900 p-4 lg:p-6">
+      {/* Success Message Toast */}
+      <AnimatePresence>
+        {successMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -50 }}
+            className="fixed top-4 right-4 z-50 bg-green-500 text-white px-4 py-3 rounded-lg shadow-lg flex items-center max-w-sm"
           >
-            <Plus className="h-4 w-4 mr-2" /> New Purchase
-          </button>
+            <CheckCircle2 className="h-5 w-5 mr-2 flex-shrink-0" />
+            <span className="text-sm">{successMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+        <div className="flex-1">
+          <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">Purchase Management</h1>
+          <p className="text-gray-600 mt-1">Manage your complete purchase lifecycle</p>
         </div>
+        <button
+          className="w-full sm:w-auto px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-white transition-colors flex items-center justify-center gap-2 shadow-sm"
+          onClick={() => setShowNewVendorForm(true)}
+        >
+          <Plus className="h-4 w-4" /> New Vendor
+        </button>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
         {purchaseStats.map((stat, index) => (
-          <div key={index} className="bg-white border border-gray-300 rounded-lg p-4">
-            <div className="flex items-center mb-2">
-              <div className="p-2 bg-gray-200 rounded-full mr-3">
-                <stat.icon className="h-5 w-5 text-gray-600" />
+          <div
+            key={index}
+            className="bg-white border border-gray-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-all hover:translate-y-[-1px]"
+          >
+            <div className="flex justify-between items-center mb-2">
+              <h3 className="text-gray-600 text-sm font-medium truncate">{stat.title}</h3>
+              <div className="p-2 bg-blue-50 rounded-full flex-shrink-0">
+                <stat.icon className="h-4 w-4 text-blue-600" />
               </div>
-              <span className="text-black font-medium">{stat.title}</span>
             </div>
-            <div className="text-2xl font-bold text-black">{stat.value}</div>
-            <div className="flex items-center mt-1">
-              <span className={`text-sm ${stat.change.startsWith("+") ? "text-green-600" : "text-red-600"}`}>
-                {stat.change}
-              </span>
-              <span className="text-gray-600 text-xs ml-1">from last month</span>
-            </div>
+            <div className="text-xl lg:text-2xl font-bold text-gray-900">{stat.value}</div>
+            <div className="text-xs text-green-600 mt-1">{stat.change} from last month</div>
           </div>
         ))}
       </div>
 
-      {/* Purchase Process Flow */}
-      <div className="mb-8 overflow-x-auto">
-        <div className="border border-gray-300 rounded-lg p-4">
-          <h3 className="text-center text-black font-medium mb-4">Purchase Process Flow</h3>
-          <div className="flex flex-nowrap justify-between">
-            {[
-              { icon: Clipboard, label: "Purchase Request" },
-              { icon: CheckCircle, label: "Request Approval" },
-              { icon: ShoppingBag, label: "Purchase Order" },
-              { icon: Package, label: "Goods Receipt" },
-              { icon: FileText, label: "Purchase Invoice" },
-              { icon: DollarSign, label: "Vendor Payment" },
-            ].map((step, index, arr) => (
-              <>
-                <div key={step.label} className="flex flex-col items-center px-2">
-                  <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center mb-2">
-                    <step.icon className="h-6 w-6 text-gray-600" />
-                  </div>
-                  <span className="text-sm text-center">{step.label}</span>
-                </div>
-                {index < arr.length - 1 && (
-                  <div className="flex-1 flex items-center justify-center">
-                    <div className="h-0.5 w-full bg-gray-300"></div>
-                  </div>
-                )}
-              </>
-            ))}
-          </div>
+      {/* Purchase Workflow Summary Card */}
+      <div className="bg-white border border-gray-200 rounded-lg overflow-hidden mb-6 shadow-sm">
+        <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+          <h2 className="font-semibold text-gray-900">Purchase Workflow Summary</h2>
+          <button
+            className="p-1 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors"
+            onClick={() => updateStats()}
+          >
+            <RefreshCw className="h-4 w-4" />
+          </button>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full min-w-[640px]">
+            <thead className="bg-gray-50">
+              <tr className="text-left text-gray-600">
+                <th className="px-4 py-3 font-medium">Stage</th>
+                <th className="px-4 py-3 font-medium">Count</th>
+                <th className="px-4 py-3 font-medium">Value</th>
+                <th className="px-4 py-3 font-medium">Avg. Order</th>
+                <th className="px-4 py-3 font-medium">Status</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200">
+              {purchaseStages.map((stage) => {
+                const count = stage.count || 0
+                const value = stage.value || "$0"
+                const avgOrder = count > 0 ? Math.round(Number.parseInt(value.replace(/[$,]/g, "")) / count) : 0
+                const formattedAvg = `$${avgOrder.toLocaleString()}`
+
+                // Determine status based on count
+                let status = "Low"
+                let statusColor = "bg-red-100 text-red-800 border-red-200"
+
+                if (count > 30) {
+                  status = "High"
+                  statusColor = "bg-green-100 text-green-800 border-green-200"
+                } else if (count > 20) {
+                  status = "Medium"
+                  statusColor = "bg-amber-100 text-amber-800 border-amber-200"
+                }
+
+                return (
+                  <tr
+                    key={stage.id}
+                    className="hover:bg-gray-50 cursor-pointer transition-colors"
+                    onClick={() => setActiveTab(stage.id)}
+                  >
+                    <td className="px-4 py-3 font-medium">
+                      <div className="flex items-center">
+                        <div className="p-1.5 bg-blue-50 rounded-full mr-3 flex-shrink-0">
+                          <stage.icon className="h-4 w-4 text-blue-600" />
+                        </div>
+                        <span className="truncate">{stage.name}</span>
+                      </div>
+                    </td>
+                    <td className="px-4 py-3 text-gray-900">{count}</td>
+                    <td className="px-4 py-3 text-gray-900">{value}</td>
+                    <td className="px-4 py-3 text-gray-900">{formattedAvg}</td>
+                    <td className="px-4 py-3">
+                      <span className={`px-2 py-1 rounded-full text-xs border ${statusColor}`}>{status}</span>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
 
       {/* Tabs */}
       <div className="mb-6">
-        <div className="flex overflow-x-auto bg-gray-100 border border-gray-300 rounded-lg p-1">
-          {["purchase-requests", "purchase-orders", "goods-receipt", "vendor-invoices", "payments", "vendors"].map(
-            (tab) => (
-              <button
-                key={tab}
-                className={`px-4 py-2 whitespace-nowrap rounded-md ${
-                  activeTab === tab
-                    ? "bg-gray-200 text-black"
-                    : "text-black hover:text-black hover:bg-gray-100"
-                }`}
-                onClick={() => setActiveTab(tab)}
+        {/* Mobile Tab Selector */}
+        <div className="sm:hidden mb-4">
+          <button
+            className="w-full flex items-center justify-between px-4 py-2 bg-white border border-gray-200 rounded-lg"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            <div className="flex items-center">
+              <activeStage.icon className="h-4 w-4 mr-2 text-blue-600" />
+              <span className="font-medium">
+                {activeStage.name} ({activeStage.count})
+              </span>
+            </div>
+            <ChevronDown className={`h-4 w-4 transition-transform ${isMobileMenuOpen ? "rotate-180" : ""}`} />
+          </button>
+
+          <AnimatePresence>
+            {isMobileMenuOpen && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="mt-2 bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden"
               >
-                {tab.replace(/-/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
-              </button>
-            ),
-          )}
+                {purchaseStages.map((stage) => (
+                  <button
+                    key={stage.id}
+                    className={`w-full px-4 py-3 text-left flex items-center hover:bg-gray-50 transition-colors ${
+                      activeTab === stage.id ? "bg-blue-50 text-blue-600" : "text-gray-700"
+                    }`}
+                    onClick={() => {
+                      setActiveTab(stage.id)
+                      setIsMobileMenuOpen(false)
+                    }}
+                  >
+                    <stage.icon className="h-4 w-4 mr-3" />
+                    <span className="truncate">
+                      {stage.name} ({stage.count})
+                    </span>
+                  </button>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Desktop Tabs */}
+        <div className="hidden sm:flex overflow-x-auto border-b border-gray-200">
+          {purchaseStages.map((stage) => (
+            <button
+              key={stage.id}
+              className={`px-4 py-3 whitespace-nowrap flex items-center border-b-2 transition-colors ${
+                activeTab === stage.id
+                  ? "text-blue-600 border-blue-600"
+                  : "text-gray-500 border-transparent hover:text-gray-700 hover:border-gray-300"
+              }`}
+              onClick={() => setActiveTab(stage.id)}
+            >
+              <stage.icon className="h-4 w-4 mr-2" />
+              <span className="truncate">
+                {stage.name} ({stage.count})
+              </span>
+            </button>
+          ))}
         </div>
       </div>
 
       {/* Search and Filter */}
       <div className="flex flex-col sm:flex-row gap-4 mb-6">
         <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-600" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
           <input
             type="text"
-            placeholder="Search..."
-            className="w-full pl-10 pr-4 py-2 bg-white border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 text-black"
+            placeholder={`Search ${activeStage.name.toLowerCase()}...`}
+            className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 shadow-sm"
             value={searchTerm}
-            onChange={handleSearch}
+            onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-        <div className="relative">
-          <button
-            className="px-4 py-2 border border-gray-300 text-black hover:bg-gray-100 rounded-md flex items-center"
-            onClick={toggleFilterMenu}
-          >
-            <Filter className="h-4 w-4 mr-2" /> Filter <ChevronDown className="h-4 w-4 ml-2" />
-          </button>
+        <button
+          className="px-4 py-2.5 bg-white border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors flex items-center justify-center gap-2 shadow-sm"
+          onClick={() => setShowFilterModal(true)}
+        >
+          <Filter className="h-4 w-4" /> Filter
+        </button>
+      </div>
 
-          {showFilterMenu && (
-            <div className="absolute right-0 mt-2 w-64 bg-white border border-gray-300 rounded-md shadow-lg z-10">
-              <div className="p-3">
-                <h4 className="text-black font-medium mb-2">Filter Options</h4>
-                {/* Filter options */}
-                <div className="mb-3">
-                  <label className="block text-sm text-black mb-1">Status</label>
-                  <select
-                    className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
-                    value={filterOptions.status}
-                    onChange={(e) => handleFilterChange("status", e.target.value)}
+      {/* Items List */}
+      <div className="bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm">
+        {isLoading ? (
+          <div className="p-8 flex justify-center">
+            <div className="animate-spin rounded-full h-8 w-8 border-2 border-blue-500 border-t-transparent"></div>
+          </div>
+        ) : (
+          <>
+            {/* Desktop Table View */}
+            <div className="hidden lg:block">
+              <div className="grid grid-cols-12 gap-4 p-4 border-b border-gray-200 bg-gray-50 text-xs font-medium text-gray-600 uppercase tracking-wider">
+                <div
+                  className="col-span-4 flex items-center cursor-pointer hover:text-gray-900 transition-colors"
+                  onClick={() => requestSort("name")}
+                >
+                  Vendor {getSortDirectionIcon("name")}
+                </div>
+                <div
+                  className="col-span-2 flex items-center cursor-pointer hover:text-gray-900 transition-colors"
+                  onClick={() => requestSort("value")}
+                >
+                  Value {getSortDirectionIcon("value")}
+                </div>
+                <div
+                  className="col-span-2 flex items-center cursor-pointer hover:text-gray-900 transition-colors"
+                  onClick={() => requestSort("date")}
+                >
+                  Date {getSortDirectionIcon("date")}
+                </div>
+                <div
+                  className="col-span-2 flex items-center cursor-pointer hover:text-gray-900 transition-colors"
+                  onClick={() => requestSort("status")}
+                >
+                  Status {getSortDirectionIcon("status")}
+                </div>
+                <div className="col-span-2 text-right">Actions</div>
+              </div>
+
+              <div className="divide-y divide-gray-200">
+                {filteredItems.length > 0 ? (
+                  filteredItems.map((item) => (
+                    <div key={item.id} className="grid grid-cols-12 gap-4 p-4 hover:bg-gray-50 transition-colors">
+                      <div className="col-span-4 font-medium flex items-center">
+                        <div
+                          className="cursor-pointer hover:text-blue-600 transition-colors truncate"
+                          onClick={() => handleViewDetails(item)}
+                          title={item.name}
+                        >
+                          {item.name}
+                        </div>
+                      </div>
+                      <div className="col-span-2 text-gray-900">{item.value}</div>
+                      <div className="col-span-2 text-gray-600 flex items-center">
+                        <Calendar className="h-3 w-3 mr-1.5 flex-shrink-0" />
+                        {item.date}
+                      </div>
+                      <div className="col-span-2">
+                        <span
+                          className={`px-2 py-1 rounded-full text-xs border ${getStatusColor(
+                            item.status,
+                          )} flex items-center w-fit gap-1`}
+                        >
+                          {getStatusIcon(item.status)}
+                          <span className="truncate">{item.status}</span>
+                        </span>
+                      </div>
+                      <div className="col-span-2 flex items-center justify-end space-x-2">
+                        <button
+                          className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors"
+                          onClick={() => handleViewDetails(item)}
+                          title="View Details"
+                        >
+                          <Eye size={16} />
+                        </button>
+                        <button
+                          className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors"
+                          onClick={() => handleEditClick(item)}
+                          title="Edit"
+                        >
+                          <Edit size={16} />
+                        </button>
+                        <button
+                          className="p-1.5 rounded-lg hover:bg-red-50 text-gray-500 hover:text-red-600 transition-colors"
+                          onClick={() => handleDeleteClick(item)}
+                          title="Delete"
+                        >
+                          <Trash size={16} />
+                        </button>
+                        <div className="relative">
+                          <button
+                            className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors"
+                            onClick={() => toggleActionMenu(item.id)}
+                            title="More Actions"
+                          >
+                            <MoreHorizontal size={16} />
+                          </button>
+                          {actionMenuOpen === item.id && (
+                            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10 py-1">
+                              <button
+                                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors flex items-center"
+                                onClick={() => {
+                                  setSelectedItem(item)
+                                  setActionMenuOpen(null)
+                                  if (activeTab === "quotations") {
+                                    handleStageAction("approve", "orders")
+                                  } else if (activeTab === "orders") {
+                                    handleStageAction("confirm", "receipts")
+                                  } else if (activeTab === "receipts") {
+                                    handleStageAction("complete", "invoices")
+                                  } else if (activeTab === "invoices") {
+                                    handleStageAction("process", "payments")
+                                  }
+                                }}
+                              >
+                                <ArrowUpDown size={14} className="mr-2" />
+                                Move to Next Stage
+                              </button>
+                              <button
+                                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors flex items-center"
+                                onClick={() => {
+                                  window.location.href = `mailto:${item.email}`
+                                  setActionMenuOpen(null)
+                                }}
+                              >
+                                <Mail size={14} className="mr-2" />
+                                Send Email
+                              </button>
+                              <button
+                                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors flex items-center"
+                                onClick={() => {
+                                  window.location.href = `tel:${item.phone}`
+                                  setActionMenuOpen(null)
+                                }}
+                              >
+                                <Phone size={14} className="mr-2" />
+                                Call Vendor
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="p-8 text-center text-gray-500 flex flex-col items-center">
+                    <AlertTriangle className="h-8 w-8 mb-2 text-amber-500" />
+                    <p>No items found matching your search criteria.</p>
+                    <button
+                      className="mt-4 px-4 py-2 bg-gray-100 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-200 transition-colors"
+                      onClick={() => {
+                        setSearchTerm("")
+                        resetFilters()
+                      }}
+                    >
+                      Clear Filters
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Mobile Card View */}
+            <div className="lg:hidden divide-y divide-gray-200">
+              {filteredItems.length > 0 ? (
+                filteredItems.map((item) => (
+                  <div key={item.id} className="p-4 hover:bg-gray-50 transition-colors">
+                    <div className="flex justify-between items-start mb-3">
+                      <div className="flex-1 min-w-0">
+                        <h3
+                          className="font-medium text-gray-900 truncate cursor-pointer hover:text-blue-600 transition-colors"
+                          onClick={() => handleViewDetails(item)}
+                          title={item.name}
+                        >
+                          {item.name}
+                        </h3>
+                        <p className="text-sm text-gray-600 truncate" title={item.contact}>
+                          {item.contact}
+                        </p>
+                      </div>
+                      <div className="text-right ml-4 flex-shrink-0">
+                        <div className="font-semibold text-gray-900">{item.value}</div>
+                        <div className="text-xs text-gray-500 flex items-center justify-end">
+                          <Calendar className="h-3 w-3 mr-1" />
+                          {item.date}
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="flex justify-between items-center">
+                      <span
+                        className={`px-2 py-1 rounded-full text-xs border ${getStatusColor(
+                          item.status,
+                        )} flex items-center gap-1`}
+                      >
+                        {getStatusIcon(item.status)}
+                        <span className="truncate">{item.status}</span>
+                      </span>
+
+                      <div className="flex items-center space-x-2">
+                        <button
+                          className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors"
+                          onClick={() => handleViewDetails(item)}
+                          title="View Details"
+                        >
+                          <Eye size={16} />
+                        </button>
+                        <button
+                          className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors"
+                          onClick={() => handleEditClick(item)}
+                          title="Edit"
+                        >
+                          <Edit size={16} />
+                        </button>
+                        <div className="relative">
+                          <button
+                            className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors"
+                            onClick={() => toggleActionMenu(item.id)}
+                            title="More Actions"
+                          >
+                            <MoreHorizontal size={16} />
+                          </button>
+                          {actionMenuOpen === item.id && (
+                            <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-10 py-1">
+                              <button
+                                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors flex items-center"
+                                onClick={() => {
+                                  setSelectedItem(item)
+                                  setActionMenuOpen(null)
+                                  if (activeTab === "quotations") {
+                                    handleStageAction("approve", "orders")
+                                  } else if (activeTab === "orders") {
+                                    handleStageAction("confirm", "receipts")
+                                  } else if (activeTab === "receipts") {
+                                    handleStageAction("complete", "invoices")
+                                  } else if (activeTab === "invoices") {
+                                    handleStageAction("process", "payments")
+                                  }
+                                }}
+                              >
+                                <ArrowUpDown size={14} className="mr-2" />
+                                Move to Next Stage
+                              </button>
+                              <button
+                                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors flex items-center"
+                                onClick={() => {
+                                  window.location.href = `mailto:${item.email}`
+                                  setActionMenuOpen(null)
+                                }}
+                              >
+                                <Mail size={14} className="mr-2" />
+                                Send Email
+                              </button>
+                              <button
+                                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors flex items-center"
+                                onClick={() => {
+                                  window.location.href = `tel:${item.phone}`
+                                  setActionMenuOpen(null)
+                                }}
+                              >
+                                <Phone size={14} className="mr-2" />
+                                Call Vendor
+                              </button>
+                              <button
+                                className="w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors flex items-center"
+                                onClick={() => handleDeleteClick(item)}
+                              >
+                                <Trash size={14} className="mr-2" />
+                                Delete
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="p-8 text-center text-gray-500 flex flex-col items-center">
+                  <AlertTriangle className="h-8 w-8 mb-2 text-amber-500" />
+                  <p>No items found matching your search criteria.</p>
+                  <button
+                    className="mt-4 px-4 py-2 bg-gray-100 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-200 transition-colors"
+                    onClick={() => {
+                      setSearchTerm("")
+                      resetFilters()
+                    }}
                   >
-                    <option value="all">All Statuses</option>
-                    <option value="approved">Approved</option>
-                    <option value="pending">Pending</option>
-                    <option value="rejected">Rejected</option>
-                  </select>
+                    Clear Filters
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Pagination */}
+            <div className="flex flex-col sm:flex-row justify-between items-center p-4 border-t border-gray-200 gap-4">
+              <div className="text-gray-600 text-sm">
+                Showing <span className="font-medium text-gray-900">1-{filteredItems.length}</span> of{" "}
+                <span className="font-medium text-gray-900">{activeStage.count}</span> items
+              </div>
+              <div className="flex gap-1">
+                <button
+                  className="px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-gray-400 hover:text-gray-600 hover:bg-gray-50 transition-colors disabled:opacity-50"
+                  disabled
+                >
+                  Previous
+                </button>
+                <button className="px-3 py-1.5 rounded-lg bg-white border border-gray-200 text-gray-600 hover:text-gray-800 hover:bg-gray-50 transition-colors">
+                  Next
+                </button>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* Detail Sidebar - Appears when an item is selected */}
+      <AnimatePresence>
+        {selectedItem && !showEditForm && (
+          <motion.div
+            initial={{ opacity: 0, x: 300 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 300 }}
+            transition={{ duration: 0.3 }}
+            className="fixed top-0 right-0 w-full sm:w-96 h-full bg-white border-l border-gray-200 shadow-xl z-50 overflow-y-auto"
+          >
+            <div className="p-4 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white z-10">
+              <h2 className="font-semibold text-lg text-gray-900 truncate pr-4" title={selectedItem.name}>
+                {selectedItem.name}
+              </h2>
+              <button
+                className="p-1 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors flex-shrink-0"
+                onClick={() => setSelectedItem(null)}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="p-4">
+              <div className="flex justify-between items-center mb-4">
+                <span
+                  className={`px-2 py-1 rounded-full text-xs border ${getStatusColor(
+                    selectedItem.status,
+                  )} flex items-center gap-1`}
+                >
+                  {getStatusIcon(selectedItem.status)}
+                  <span className="truncate">{selectedItem.status}</span>
+                </span>
+                <div className="text-xl font-bold text-gray-900">{selectedItem.value}</div>
+              </div>
+
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-gray-700 font-medium mb-2">Contact Information</h3>
+                  <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+                    <div className="flex items-center">
+                      <Users className="h-4 w-4 text-blue-600 mr-2 flex-shrink-0" />
+                      <span className="truncate" title={selectedItem.contact}>
+                        {selectedItem.contact}
+                      </span>
+                    </div>
+                    <div className="flex items-center">
+                      <Mail className="h-4 w-4 text-blue-600 mr-2 flex-shrink-0" />
+                      <a
+                        href={`mailto:${selectedItem.email}`}
+                        className="text-blue-600 hover:underline truncate"
+                        title={selectedItem.email}
+                      >
+                        {selectedItem.email}
+                      </a>
+                    </div>
+                    <div className="flex items-center">
+                      <Phone className="h-4 w-4 text-blue-600 mr-2 flex-shrink-0" />
+                      <a
+                        href={`tel:${selectedItem.phone}`}
+                        className="text-blue-600 hover:underline"
+                        title={selectedItem.phone}
+                      >
+                        {selectedItem.phone}
+                      </a>
+                    </div>
+                  </div>
                 </div>
 
-                <div className="mb-3">
-                  <label className="block text-sm text-black mb-1">Department</label>
-                  <select
-                    className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
-                    value={filterOptions.department}
-                    onChange={(e) => handleFilterChange("department", e.target.value)}
+                <div>
+                  <h3 className="text-gray-700 font-medium mb-2">Details</h3>
+                  <div className="bg-gray-50 rounded-lg p-3 space-y-2">
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Category:</span>
+                      <span className="text-gray-900 truncate ml-2" title={selectedItem.category}>
+                        {selectedItem.category}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Created:</span>
+                      <span className="text-gray-900">{selectedItem.date}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-600">Stage:</span>
+                      <span className="text-gray-900 truncate ml-2" title={activeStage.name}>
+                        {activeStage.name}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <h3 className="text-gray-700 font-medium mb-2">Notes</h3>
+                  <div className="bg-gray-50 rounded-lg p-3">
+                    <p className="text-sm text-gray-700 break-words">{selectedItem.notes}</p>
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-gray-200">
+                  <h3 className="text-gray-700 font-medium mb-3">Actions</h3>
+                  <div className="grid grid-cols-1 gap-2">
+                    {activeTab === "quotations" && (
+                      <>
+                        <button
+                          className="px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors flex items-center justify-center gap-2 text-sm"
+                          onClick={() => handleStageAction("approve", "orders")}
+                        >
+                          <ShoppingCart className="h-4 w-4" /> Create Purchase Order
+                        </button>
+                        <button
+                          className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 text-sm"
+                          onClick={() => handleStageAction("reject", "quotations")}
+                        >
+                          <X className="h-4 w-4" /> Reject Quotation
+                        </button>
+                      </>
+                    )}
+
+                    {activeTab === "orders" && (
+                      <>
+                        <button
+                          className="px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors flex items-center justify-center gap-2 text-sm"
+                          onClick={() => handleStageAction("confirm", "receipts")}
+                        >
+                          <Clipboard className="h-4 w-4" /> Record Goods Receipt
+                        </button>
+                        <button className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 text-sm">
+                          <Send className="h-4 w-4" /> Send to Vendor
+                        </button>
+                      </>
+                    )}
+
+                    {activeTab === "receipts" && (
+                      <>
+                        <button
+                          className="px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors flex items-center justify-center gap-2 text-sm"
+                          onClick={() => handleStageAction("complete", "invoices")}
+                        >
+                          <Receipt className="h-4 w-4" /> Create Invoice
+                        </button>
+                        <button className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 text-sm">
+                          <Printer className="h-4 w-4" /> Print GPN
+                        </button>
+                      </>
+                    )}
+
+                    {activeTab === "invoices" && (
+                      <>
+                        <button
+                          className="px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors flex items-center justify-center gap-2 text-sm"
+                          onClick={() => handleStageAction("process", "payments")}
+                        >
+                          <CreditCard className="h-4 w-4" /> Process Payment
+                        </button>
+                        <button className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 text-sm">
+                          <Check className="h-4 w-4" /> Approve Invoice
+                        </button>
+                      </>
+                    )}
+
+                    {activeTab === "payments" && (
+                      <>
+                        <button className="px-3 py-2 bg-blue-50 border border-blue-200 rounded-lg text-blue-700 hover:bg-blue-100 transition-colors flex items-center justify-center gap-2 text-sm">
+                          <Download className="h-4 w-4" /> Download Receipt
+                        </button>
+                        <button className="px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 text-sm">
+                          <Send className="h-4 w-4" /> Email Confirmation
+                        </button>
+                      </>
+                    )}
+                  </div>
+
+                  <div className="flex gap-2 mt-4">
+                    <button
+                      className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors flex items-center justify-center gap-2 text-sm"
+                      onClick={handleEditClick}
+                    >
+                      <Edit className="h-4 w-4" /> Edit
+                    </button>
+                    <button
+                      className="flex-1 px-3 py-2 bg-red-50 border border-red-200 rounded-lg text-red-700 hover:bg-red-100 transition-colors flex items-center justify-center gap-2 text-sm"
+                      onClick={handleDeleteClick}
+                    >
+                      <Trash className="h-4 w-4" /> Delete
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* New Vendor Form Modal */}
+      <AnimatePresence>
+        {showNewVendorForm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+            onClick={() => setShowNewVendorForm(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white border border-gray-200 rounded-lg w-full max-w-md shadow-xl max-h-[90vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-4 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white">
+                <h2 className="font-semibold text-lg text-gray-900">Add New Vendor</h2>
+                <button
+                  className="p-1 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors"
+                  onClick={() => setShowNewVendorForm(false)}
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <form onSubmit={handleSubmit} className="p-4">
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-gray-700 font-medium mb-1">Vendor Name*</label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-700 font-medium mb-1">Contact Person*</label>
+                    <input
+                      type="text"
+                      name="contact"
+                      value={formData.contact}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                      required
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-gray-700 font-medium mb-1">Email*</label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-700 font-medium mb-1">Phone</label>
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-gray-700 font-medium mb-1">Initial Order Value*</label>
+                      <input
+                        type="text"
+                        name="value"
+                        value={formData.value}
+                        onChange={handleInputChange}
+                        placeholder="$0.00"
+                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-700 font-medium mb-1">Category</label>
+                      <select
+                        name="category"
+                        value={formData.category}
+                        onChange={handleInputChange}
+                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                      >
+                        <option value="Office Supplies">Office Supplies</option>
+                        <option value="IT Equipment">IT Equipment</option>
+                        <option value="Raw Materials">Raw Materials</option>
+                        <option value="Manufacturing">Manufacturing</option>
+                        <option value="Shipping">Shipping</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Software">Software</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-700 font-medium mb-1">Notes</label>
+                    <textarea
+                      name="notes"
+                      value={formData.notes}
+                      onChange={handleInputChange}
+                      rows={3}
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row justify-end gap-3 mt-6">
+                  <button
+                    type="button"
+                    className="px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-200 transition-colors"
+                    onClick={() => setShowNewVendorForm(false)}
                   >
-                    <option value="all">All Departments</option>
-                    {departments.map((dept) => (
-                      <option key={dept} value={dept.toLowerCase()}>
-                        {dept}
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-600 rounded-lg text-white hover:bg-blue-700 transition-colors shadow-sm"
+                  >
+                    Add Vendor
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Edit Form Modal */}
+      <AnimatePresence>
+        {showEditForm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+            onClick={() => setShowEditForm(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white border border-gray-200 rounded-lg w-full max-w-md shadow-xl max-h-[90vh] overflow-y-auto"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-4 border-b border-gray-200 flex justify-between items-center sticky top-0 bg-white">
+                <h2 className="font-semibold text-lg text-gray-900">Edit Vendor</h2>
+                <button
+                  className="p-1 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors"
+                  onClick={() => setShowEditForm(false)}
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <form onSubmit={handleEditSubmit} className="p-4">
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-gray-700 font-medium mb-1">Vendor Name*</label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-700 font-medium mb-1">Contact Person*</label>
+                    <input
+                      type="text"
+                      name="contact"
+                      value={formData.contact}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                      required
+                    />
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-gray-700 font-medium mb-1">Email*</label>
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-700 font-medium mb-1">Phone</label>
+                      <input
+                        type="tel"
+                        name="phone"
+                        value={formData.phone}
+                        onChange={handleInputChange}
+                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-gray-700 font-medium mb-1">Value*</label>
+                      <input
+                        type="text"
+                        name="value"
+                        value={formData.value}
+                        onChange={handleInputChange}
+                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-gray-700 font-medium mb-1">Category</label>
+                      <select
+                        name="category"
+                        value={formData.category}
+                        onChange={handleInputChange}
+                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                      >
+                        <option value="Office Supplies">Office Supplies</option>
+                        <option value="IT Equipment">IT Equipment</option>
+                        <option value="Raw Materials">Raw Materials</option>
+                        <option value="Manufacturing">Manufacturing</option>
+                        <option value="Shipping">Shipping</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Software">Software</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-700 font-medium mb-1">Status</label>
+                    <select
+                      name="status"
+                      value={formData.status}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                    >
+                      <option value="New">New</option>
+                      <option value="Under Review">Under Review</option>
+                      <option value="Approved">Approved</option>
+                      <option value="Rejected">Rejected</option>
+                      <option value="Pending">Pending</option>
+                      <option value="Confirmed">Confirmed</option>
+                      <option value="Complete">Complete</option>
+                      <option value="Partial">Partial</option>
+                      <option value="Scheduled">Scheduled</option>
+                      <option value="Completed">Completed</option>
+                      <option value="Processing">Processing</option>
+                      <option value="Pending Approval">Pending Approval</option>
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-gray-700 font-medium mb-1">Notes</label>
+                    <textarea
+                      name="notes"
+                      value={formData.notes}
+                      onChange={handleInputChange}
+                      rows={3}
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                    ></textarea>
+                  </div>
+                </div>
+
+                <div className="flex flex-col sm:flex-row justify-end gap-3 mt-6">
+                  <button
+                    type="button"
+                    className="px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-200 transition-colors"
+                    onClick={() => setShowEditForm(false)}
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="px-4 py-2 bg-blue-600 rounded-lg text-white hover:bg-blue-700 transition-colors shadow-sm"
+                  >
+                    Save Changes
+                  </button>
+                </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Delete Confirmation Modal */}
+      <AnimatePresence>
+        {showDeleteConfirmation && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+            onClick={() => setShowDeleteConfirmation(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white border border-gray-200 rounded-lg w-full max-w-md p-6 shadow-xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center mb-4 text-red-600">
+                <AlertTriangle className="h-6 w-6 mr-2" />
+                <h3 className="text-lg font-semibold">Confirm Deletion</h3>
+              </div>
+              <p className="text-gray-700 mb-6">
+                Are you sure you want to delete <span className="text-gray-900 font-medium">{selectedItem?.name}</span>?
+                This action cannot be undone.
+              </p>
+              <div className="flex flex-col sm:flex-row justify-end gap-3">
+                <button
+                  className="px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-200 transition-colors"
+                  onClick={() => setShowDeleteConfirmation(false)}
+                >
+                  Cancel
+                </button>
+                <button
+                  className="px-4 py-2 bg-red-600 rounded-lg text-white hover:bg-red-700 transition-colors shadow-sm"
+                  onClick={handleDelete}
+                >
+                  Delete
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Filter Modal */}
+      <AnimatePresence>
+        {showFilterModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50"
+            onClick={() => setShowFilterModal(false)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="bg-white border border-gray-200 rounded-lg w-full max-w-md shadow-xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+                <h2 className="font-semibold text-lg text-gray-900">Filter Options</h2>
+                <button
+                  className="p-1 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-gray-700 transition-colors"
+                  onClick={() => setShowFilterModal(false)}
+                >
+                  <X size={20} />
+                </button>
+              </div>
+
+              <div className="p-4 space-y-4">
+                <div>
+                  <label className="block text-gray-700 font-medium mb-1">Status</label>
+                  <select
+                    value={filterOptions.status}
+                    onChange={(e) => setFilterOptions({ ...filterOptions, status: e.target.value })}
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
+                  >
+                    <option value="all">All Statuses</option>
+                    {getUniqueStatuses().map((status) => (
+                      <option key={status} value={status}>
+                        {status}
                       </option>
                     ))}
                   </select>
                 </div>
 
-                <div className="mb-3">
-                  <label className="block text-sm text-black mb-1">Industry</label>
+                <div>
+                  <label className="block text-gray-700 font-medium mb-1">Category</label>
                   <select
-                    className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
-                    value={filterOptions.industry}
-                    onChange={(e) => handleFilterChange("industry", e.target.value)}
+                    value={filterOptions.category}
+                    onChange={(e) => setFilterOptions({ ...filterOptions, category: e.target.value })}
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                   >
-                    <option value="all">All Industries</option>
-                    <option value="construction">Construction</option>
-                    <option value="restaurant">Restaurant</option>
+                    <option value="all">All Categories</option>
+                    {getUniqueCategories().map((category) => (
+                      <option key={category} value={category}>
+                        {category}
+                      </option>
+                    ))}
                   </select>
                 </div>
 
-                <div className="flex justify-end">
-                  <button
-                    className="px-3 py-1 bg-gray-200 hover:bg-gray-300 text-black rounded-md text-sm"
-                    onClick={() => {
-                      setFilterOptions({
-                        status: "all",
-                        department: "all",
-                        dateRange: "all",
-                        industry: "all",
-                      })
-                      setShowFilterMenu(false)
-                    }}
+                <div>
+                  <label className="block text-gray-700 font-medium mb-1">Date Range</label>
+                  <select
+                    value={filterOptions.dateRange}
+                    onChange={(e) => setFilterOptions({ ...filterOptions, dateRange: e.target.value })}
+                    className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900"
                   >
-                    Reset
-                  </button>
-                  <button
-                    className="px-3 py-1 bg-black hover:bg-gray-800 text-white rounded-md text-sm ml-2"
-                    onClick={() => setShowFilterMenu(false)}
-                  >
-                    Apply
-                  </button>
+                    <option value="all">All Dates</option>
+                    <option value="today">Today</option>
+                    <option value="week">This Week</option>
+                    <option value="month">This Month</option>
+                    <option value="quarter">This Quarter</option>
+                  </select>
                 </div>
               </div>
-            </div>
-          )}
-        </div>
-        <button className="px-4 py-2 border border-gray-300 text-black hover:bg-gray-100 rounded-md flex items-center">
-          <RefreshCw className="h-4 w-4 mr-2" /> Refresh
-        </button>
-      </div>
 
-      {/* Tab Content */}
-      {activeTab === "purchase-requests" && (
-        <div className="border border-gray-300 rounded-lg overflow-hidden">
-          <div className="bg-gray-100 p-4 border-b border-gray-300 flex justify-between items-center">
-            <div>
-              <h3 className="text-lg font-medium text-black">Purchase Requests</h3>
-              <p className="text-sm text-black">Manage and track purchase requisitions</p>
-            </div>
-            <button
-              className="px-3 py-1 bg-purple-600 hover:bg-gray-800 text-white rounded-md text-sm flex items-center"
-              onClick={() => openModal("new-request")}
-            >
-              <Plus className="h-4 w-4 mr-1" /> New Request
-            </button>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="text-left py-3 px-4 font-medium text-black">Request ID</th>
-                  <th className="text-left py-3 px-4 font-medium text-black">Requester</th>
-                  <th className="text-left py-3 px-4 font-medium text-black">Department</th>
-                  <th className="text-left py-3 px-4 font-medium text-black">Industry</th>
-                  <th className="text-left py-3 px-4 font-medium text-black">Location</th>
-                  <th className="text-left py-3 px-4 font-medium text-black">Status</th>
-                  <th className="text-right py-3 px-4 font-medium text-black">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredRequests.map((request, index) => (
-                  <tr
-                    key={request.id}
-                    className={`border-b border-gray-300 hover:bg-gray-100 ${index % 2 === 0 ? "bg-gray-50" : ""}`}
-                  >
-                    <td className="py-3 px-4 font-medium">{request.id}</td>
-                    <td className="py-3 px-4">{request.requester}</td>
-                    <td className="py-3 px-4">{request.department}</td>
-                    <td className="py-3 px-4">
-                      {request.industryType === "construction" ? (
-                        <span className="flex items-center">
-                          <Building className="h-4 w-4 mr-1 text-blue-400" /> Construction
-                        </span>
-                      ) : (
-                        <span className="flex items-center">
-                          <Utensils className="h-4 w-4 mr-1 text-green-400" /> Restaurant
-                        </span>
-                      )}
-                    </td>
-                    <td className="py-3 px-4">
-                      {request.industryType === "construction" ? request.constructionSite : request.restaurantLocation}
-                    </td>
-                    <td className="py-3 px-4">
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs ${
-                          request.status === "Approved"
-                            ? "bg-green-500/20 text-green-400"
-                            : request.status === "Rejected"
-                              ? "bg-red-500/20 text-red-400"
-                              : "bg-yellow-500/20 text-yellow-400"
-                        }`}
-                      >
-                        {request.status}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-right">
-                      <div className="flex justify-end gap-2">
-                        <button
-                          className="px-3 py-1 bg-gray-200 hover:bg-gray-300 text-black rounded-md text-sm flex items-center"
-                          onClick={() => openModal("view-request", request)}
-                        >
-                          <Eye className="h-4 w-4 mr-1" /> View
-                        </button>
-                        <button
-                          className="px-3 py-1 bg-purple-600/20 hover:bg-purple-600/40 text-blue-300 rounded-md text-sm flex items-center"
-                          onClick={() => openModal("edit-request", request)}
-                        >
-                          <Edit className="h-4 w-4 mr-1" /> Edit
-                        </button>
-                        <button
-                          className="px-3 py-1 bg-red-600/20 hover:bg-red-600/40 text-red-300 rounded-md text-sm flex items-center"
-                          onClick={() => confirmDelete(request, "request")}
-                        >
-                          <Trash2 className="h-4 w-4 mr-1" /> Delete
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-                {filteredRequests.length === 0 && (
-                  <tr>
-                    <td colSpan="7" className="py-4 text-center text-gray-500">
-                      No purchase requests found
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      {activeTab === "purchase-orders" && (
-        <div className="border border-gray-300 rounded-lg overflow-hidden">
-          <div className="bg-gray-100 p-4 border-b border-gray-300 flex justify-between items-center">
-            <div>
-              <h3 className="text-lg font-medium text-black">Purchase Orders</h3>
-              <p className="text-sm text-black">Manage and track vendor orders</p>
-            </div>
-            <button
-              className="px-3 py-1 bg-black hover:bg-gray-800 text-white rounded-md text-sm flex items-center"
-              onClick={() => openModal("new-po")}
-            >
-              <Plus className="h-4 w-4 mr-1" /> New PO
-            </button>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="text-left py-3 px-4 font-medium text-black">PO Number</th>
-                  <th className="text-left py-3 px-4 font-medium text-black">Vendor</th>
-                  <th className="text-left py-3 px-4 font-medium text-black">Amount</th>
-                  <th className="text-left py-3 px-4 font-medium text-black">Industry</th>
-                  <th className="text-left py-3 px-4 font-medium text-black">Location</th>
-                  <th className="text-left py-3 px-4 font-medium text-black">Status</th>
-                  <th className="text-right py-3 px-4 font-medium text-black">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredPOs.map((order, index) => (
-                  <tr
-                    key={order.id}
-                    className={`border-b border-gray-300 hover:bg-gray-100 ${index % 2 === 0 ? "bg-gray-50" : ""}`}
-                  >
-                    <td className="py-3 px-4 font-medium">{order.id}</td>
-                    <td className="py-3 px-4">{order.vendor}</td>
-                    <td className="py-3 px-4 font-medium">{order.amount}</td>
-                    <td className="py-3 px-4">
-                      {order.industryType === "construction" ? (
-                        <span className="flex items-center">
-                          <Building className="h-4 w-4 mr-1 text-blue-400" /> Construction
-                        </span>
-                      ) : (
-                        <span className="flex items-center">
-                          <Utensils className="h-4 w-4 mr-1 text-green-400" /> Restaurant
-                        </span>
-                      )}
-                    </td>
-                    <td className="py-3 px-4">
-                      {order.industryType === "construction" ? order.constructionSite : order.restaurantLocation}
-                    </td>
-                    <td className="py-3 px-4">
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs ${
-                          order.status === "Received"
-                            ? "bg-green-500/20 text-green-400"
-                            : order.status === "In Transit"
-                              ? "bg-blue-500/20 text-blue-400"
-                              : "bg-yellow-500/20 text-yellow-400"
-                        }`}
-                      >
-                        {order.status}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-right">
-                      <div className="flex justify-end gap-2">
-                        <button
-                          className="px-3 py-1 bg-gray-200 hover:bg-gray-300 text-black rounded-md text-sm flex items-center"
-                          onClick={() => openModal("view-po", order)}
-                        >
-                          <Eye className="h-4 w-4 mr-1" /> View
-                        </button>
-                        <button
-                          className="px-3 py-1 bg-blue-600/20 hover:bg-blue-600/40 text-blue-300 rounded-md text-sm flex items-center"
-                          onClick={() => openModal("edit-po", order)}
-                        >
-                          <Edit className="h-4 w-4 mr-1" /> Edit
-                        </button>
-                        <button
-                          className="px-3 py-1 bg-red-600/20 hover:bg-red-600/40 text-red-300 rounded-md text-sm flex items-center"
-                          onClick={() => confirmDelete(order, "po")}
-                        >
-                          <Trash2 className="h-4 w-4 mr-1" /> Delete
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-                {filteredPOs.length === 0 && (
-                  <tr>
-                    <td colSpan="7" className="py-4 text-center text-gray-500">
-                      No purchase orders found
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      {activeTab === "vendors" && (
-        <div className="border border-gray-300 rounded-lg overflow-hidden">
-          <div className="bg-gray-100 p-4 border-b border-gray-300 flex justify-between items-center">
-            <div>
-              <h3 className="text-lg font-medium text-black">Vendor Master</h3>
-              <p className="text-sm text-black">Manage vendor information and history</p>
-            </div>
-            <button
-              className="px-3 py-1 bg-black hover:bg-gray-800 text-white rounded-md text-sm flex items-center"
-              onClick={() => openModal("new-vendor")}
-            >
-              <Plus className="h-4 w-4 mr-1" /> New Vendor
-            </button>
-          </div>
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="bg-gray-100">
-                  <th className="text-left py-3 px-4 font-medium text-black">Vendor Name</th>
-                  <th className="text-left py-3 px-4 font-medium text-black">Contact Person</th>
-                  <th className="text-left py-3 px-4 font-medium text-black">Email</th>
-                  <th className="text-left py-3 px-4 font-medium text-black">Industry</th>
-                  <th className="text-left py-3 px-4 font-medium text-black">Total Purchases</th>
-                  <th className="text-left py-3 px-4 font-medium text-black">Rating</th>
-                  <th className="text-right py-3 px-4 font-medium text-black">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredVendors.map((vendor, index) => (
-                  <tr
-                    key={vendor.id}
-                    className={`border-b border-gray-300 hover:bg-gray-100 ${index % 2 === 0 ? "bg-gray-50" : ""}`}
-                  >
-                    <td className="py-3 px-4 font-medium">{vendor.name}</td>
-                    <td className="py-3 px-4">{vendor.contact.name}</td>
-                    <td className="py-3 px-4">{vendor.contact.email}</td>
-                    <td className="py-3 px-4">
-                      {vendor.industryType === "both" ? (
-                        <span className="flex items-center">
-                          <Building className="h-4 w-4 mr-1 text-blue-400" />
-                          <Utensils className="h-4 w-4 mr-1 text-green-400" /> Both
-                        </span>
-                      ) : vendor.industryType === "construction" ? (
-                        <span className="flex items-center">
-                          <Building className="h-4 w-4 mr-1 text-blue-400" /> Construction
-                        </span>
-                      ) : (
-                        <span className="flex items-center">
-                          <Utensils className="h-4 w-4 mr-1 text-green-400" /> Restaurant
-                        </span>
-                      )}
-                    </td>
-                    <td className="py-3 px-4">{vendor.purchases}</td>
-                    <td className="py-3 px-4">
-                      <span
-                        className={`px-2 py-1 rounded-full text-xs ${
-                          vendor.rating === "A"
-                            ? "bg-green-500/20 text-green-400"
-                            : vendor.rating === "B"
-                              ? "bg-blue-500/20 text-blue-400"
-                              : "bg-yellow-500/20 text-yellow-400"
-                        }`}
-                      >
-                        {vendor.rating}
-                      </span>
-                    </td>
-                    <td className="py-3 px-4 text-right">
-                      <div className="flex justify-end gap-2">
-                        <button
-                          className="px-3 py-1 bg-gray-200 hover:bg-gray-300 text-black rounded-md text-sm flex items-center"
-                          onClick={() => openModal("view-vendor", vendor)}
-                        >
-                          <Eye className="h-4 w-4 mr-1" /> Details
-                        </button>
-                        <button
-                          className="px-3 py-1 bg-blue-600/20 hover:bg-blue-600/40 text-blue-300 rounded-md text-sm flex items-center"
-                          onClick={() => openModal("edit-vendor", vendor)}
-                        >
-                          <Edit className="h-4 w-4 mr-1" /> Edit
-                        </button>
-                        <button
-                          className="px-3 py-1 bg-red-600/20 hover:bg-red-600/40 text-red-300 rounded-md text-sm flex items-center"
-                          onClick={() => confirmDelete(vendor, "vendor")}
-                        >
-                          <Trash2 className="h-4 w-4 mr-1" /> Delete
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-                {filteredVendors.length === 0 && (
-                  <tr>
-                    <td colSpan="7" className="py-4 text-center text-gray-500">
-                      No vendors found
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
-
-      {/* Modals */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white border border-gray-300 rounded-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-            {/* Modal Header */}
-            <div className="bg-gray-100 p-4 border-b border-gray-300 flex justify-between items-center">
-              <h3 className="text-lg font-medium text-black">
-                {modalType === "new-request" && "New Purchase Request"}
-                {modalType === "edit-request" && "Edit Purchase Request"}
-                {modalType === "view-request" && "Purchase Request Details"}
-                {modalType === "new-po" && "New Purchase Order"}
-                {modalType === "edit-po" && "Edit Purchase Order"}
-                {modalType === "view-po" && "Purchase Order Details"}
-                {modalType === "new-vendor" && "New Vendor"}
-                {modalType === "edit-vendor" && "Edit Vendor"}
-                {modalType === "view-vendor" && "Vendor Details"}
-              </h3>
-              <button className="text-black hover:text-white" onClick={closeModal}>
-                <XCircle className="h-5 w-5" />
-              </button>
-            </div>
-
-            {/* Modal Content */}
-            <div className="p-6">
-              {/* New/Edit Purchase Request Form */}
-              {(modalType === "new-request" || modalType === "edit-request") && (
-                <form onSubmit={handleFormSubmit}>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                      <label className="block text-sm text-black mb-1">Requester</label>
-                      <input
-                        type="text"
-                        name="requester"
-                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
-                        placeholder="Your Name"
-                        value={formData.requester}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm text-black mb-1">Department</label>
-                      <select
-                        name="department"
-                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
-                        value={formData.department}
-                        onChange={handleInputChange}
-                        required
-                      >
-                        <option value="">Select Department</option>
-                        {departments.map((dept) => (
-                          <option key={dept} value={dept}>
-                            {dept}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                    <div>
-                      <label className="block text-sm text-black mb-1">Industry Type</label>
-                      <select
-                        name="industryType"
-                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
-                        value={formData.industryType}
-                        onChange={handleInputChange}
-                        required
-                      >
-                        <option value="construction">Construction</option>
-                        <option value="restaurant">Restaurant</option>
-                      </select>
-                    </div>
-                    {formData.industryType === "construction" ? (
-                      <div>
-                        <label className="block text-sm text-black mb-1">Construction Site</label>
-                        <select
-                          name="constructionSite"
-                          className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
-                          value={formData.constructionSite}
-                          onChange={handleInputChange}
-                          required
-                        >
-                          <option value="">Select Construction Site</option>
-                          {constructionSites.map((site) => (
-                            <option key={site.id} value={site.name}>
-                              {site.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    ) : (
-                      <div>
-                        <label className="block text-sm text-black mb-1">Restaurant Location</label>
-                        <select
-                          name="restaurantLocation"
-                          className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
-                          value={formData.restaurantLocation}
-                          onChange={handleInputChange}
-                          required
-                        >
-                          <option value="">Select Restaurant Location</option>
-                          {restaurantLocations.map((location) => (
-                            <option key={location.id} value={location.name}>
-                              {location.name}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="mb-6">
-                    <div className="flex justify-between items-center mb-2">
-                      <label className="block text-sm text-black">Items</label>
-                      <button
-                        type="button"
-                        className="px-2 py-1 bg-purple-900 hover:bg-gray-800 text-white rounded-md text-xs flex items-center"
-                        onClick={() => addItemRow("items")}
-                      >
-                        <Plus className="h-3 w-3 mr-1" /> Add Item
-                      </button>
-                    </div>
-                    <table className="w-full border border-gray-300 rounded-lg overflow-hidden">
-                      <thead>
-                        <tr className="bg-gray-100">
-                          <th className="text-left p-2 text-xs font-medium text-black">Item Name</th>
-                          <th className="text-left p-2 text-xs font-medium text-black">Quantity</th>
-                          <th className="text-left p-2 text-xs font-medium text-black">Est. Cost</th>
-                          <th className="text-left p-2 text-xs font-medium text-black">Justification</th>
-                          <th className="w-10 p-2 text-xs font-medium text-black"></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {formData.items.map((item, index) => (
-                          <tr key={index} className="border-b border-gray-300">
-                            <td className="p-2">
-                              <input
-                                type="text"
-                                name="name"
-                                className="w-full bg-white border border-gray-300 rounded-md p-1 text-black text-sm"
-                                placeholder="Item name"
-                                value={item.name}
-                                onChange={(e) => handleInputChange(e, index, "items")}
-                                required
-                              />
-                            </td>
-                            <td className="p-2">
-                              <input
-                                type="number"
-                                name="quantity"
-                                className="w-full bg-white border border-gray-300 rounded-md p-1 text-black text-sm"
-                                placeholder="Qty"
-                                value={item.quantity}
-                                onChange={(e) => handleInputChange(e, index, "items")}
-                                min="1"
-                                required
-                              />
-                            </td>
-                            <td className="p-2">
-                              <input
-                                type="text"
-                                name="estimatedCost"
-                                className="w-full bg-white border border-gray-300 rounded-md p-1 text-black text-sm"
-                                placeholder="0.00"
-                                value={item.estimatedCost}
-                                onChange={(e) => handleInputChange(e, index, "items")}
-                                required
-                              />
-                            </td>
-                            <td className="p-2">
-                              <input
-                                type="text"
-                                name="justification"
-                                className="w-full bg-white border border-gray-300 rounded-md p-1 text-black text-sm"
-                                placeholder="Reason for purchase"
-                                value={item.justification}
-                                onChange={(e) => handleInputChange(e, index, "items")}
-                                required
-                              />
-                            </td>
-                            <td className="p-2">
-                              <button
-                                type="button"
-                                className="text-red-400 hover:text-red-300"
-                                onClick={() => removeItemRow(index, "items")}
-                              >
-                                <Trash2 className="h-4 w-4" />
-                              </button>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <div className="flex justify-end gap-3">
-                    <button
-                      type="button"
-                      className="px-4 py-2 border border-gray-300 text-black hover:bg-gray-100 rounded-md"
-                      onClick={closeModal}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-4 py-2 bg-purple-900 hover:bg-gray-800 text-white rounded-md flex items-center"
-                    >
-                      <Save className="h-4 w-4 mr-2" />{" "}
-                      {modalType === "new-request" ? "Submit Request" : "Update Request"}
-                    </button>
-                  </div>
-                </form>
-              )}
-
-              {/* New/Edit Vendor Form */}
-              {(modalType === "new-vendor" || modalType === "edit-vendor") && (
-                <form onSubmit={handleFormSubmit}>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                      <label className="block text-sm text-black mb-1">Vendor Name</label>
-                      <input
-                        type="text"
-                        name="vendorName"
-                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
-                        placeholder="Vendor Name"
-                        value={formData.vendorName}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm text-black mb-1">Contact Person</label>
-                      <input
-                        type="text"
-                        name="contactPerson"
-                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
-                        placeholder="Contact Person"
-                        value={formData.contactPerson}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm text-black mb-1">Email</label>
-                      <input
-                        type="email"
-                        name="email"
-                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
-                        placeholder="Email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm text-black mb-1">Phone</label>
-                      <input
-                        type="text"
-                        name="phone"
-                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
-                        placeholder="Phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                    <div className="md:col-span-2">
-                      <label className="block text-sm text-black mb-1">Address</label>
-                      <input
-                        type="text"
-                        name="address"
-                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
-                        placeholder="Address"
-                        value={formData.address}
-                        onChange={handleInputChange}
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label className="block text-sm text-black mb-1">Industry Type</label>
-                      <select
-                        name="industryType"
-                        className="w-full bg-white border border-gray-300 rounded-md p-2 text-black"
-                        value={formData.industryType}
-                        onChange={handleInputChange}
-                        required
-                      >
-                        <option value="both">Both Industries</option>
-                        <option value="construction">Construction Only</option>
-                        <option value="restaurant">Restaurant Only</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-end gap-3">
-                    <button
-                      type="button"
-                      className="px-4 py-2 border border-gray-300 text-black hover:bg-gray-100 rounded-md"
-                      onClick={closeModal}
-                    >
-                      Cancel
-                    </button>
-                    <button
-                      type="submit"
-                      className="px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-md flex items-center"
-                    >
-                      <Save className="h-4 w-4 mr-2" /> {modalType === "new-vendor" ? "Add Vendor" : "Update Vendor"}
-                    </button>
-                  </div>
-                </form>
-              )}
-
-              {/* View Purchase Request */}
-              {modalType === "view-request" && selectedItem && (
-                <div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    <div>
-                      <label className="block text-sm text-black mb-1">Request ID</label>
-                      <div className="p-2 bg-gray-100 border border-gray-300 rounded-md text-black">
-                        {selectedItem.id}
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm text-black mb-1">Status</label>
-                      <div className="p-2 bg-gray-100 border border-gray-300 rounded-md">
-                        <span
-                          className={`px-2 py-1 rounded-full text-xs ${
-                            selectedItem.status === "Approved"
-                              ? "bg-green-500/20 text-green-400"
-                              : selectedItem.status === "Rejected"
-                                ? "bg-red-500/20 text-red-400"
-                                : "bg-yellow-500/20 text-yellow-400"
-                          }`}
-                        >
-                          {selectedItem.status}
-                        </span>
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm text-black mb-1">Requester</label>
-                      <div className="p-2 bg-gray-100 border border-gray-300 rounded-md text-black">
-                        {selectedItem.requester}
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm text-black mb-1">Department</label>
-                      <div className="p-2 bg-gray-100 border border-gray-300 rounded-md text-black">
-                        {selectedItem.department}
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm text-black mb-1">Industry</label>
-                      <div className="p-2 bg-gray-100 border border-gray-300 rounded-md text-black">
-                        {selectedItem.industryType === "construction" ? "Construction" : "Restaurant"}
-                      </div>
-                    </div>
-                    <div>
-                      <label className="block text-sm text-black mb-1">Location</label>
-                      <div className="p-2 bg-gray-100 border border-gray-300 rounded-md text-black">
-                        {selectedItem.industryType === "construction"
-                          ? selectedItem.constructionSite
-                          : selectedItem.restaurantLocation}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="mb-6">
-                    <label className="block text-sm text-black mb-2">Requested Items</label>
-                    <table className="w-full border border-gray-300 rounded-lg overflow-hidden">
-                      <thead>
-                        <tr className="bg-gray-100">
-                          <th className="text-left p-3 text-sm font-medium text-black">Item Name</th>
-                          <th className="text-center p-3 text-sm font-medium text-black">Quantity</th>
-                          <th className="text-right p-3 text-sm font-medium text-black">Est. Cost</th>
-                          <th className="text-left p-3 text-sm font-medium text-black">Justification</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {selectedItem.items.map((item) => (
-                          <tr key={item.id} className="border-b border-gray-300">
-                            <td className="p-3 text-black">{item.name}</td>
-                            <td className="p-3 text-center text-black">{item.quantity}</td>
-                            <td className="p-3 text-right text-black">{item.estimatedCost}</td>
-                            <td className="p-3 text-black">{item.justification}</td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <div className="flex justify-end gap-3">
-                    <button
-                      className="px-4 py-2 border border-gray-300 text-black hover:bg-gray-100 rounded-md"
-                      onClick={closeModal}
-                    >
-                      Close
-                    </button>
-                    {selectedItem.status === "Approved" && (
-                      <button
-                        className="px-4 py-2 bg-black hover:bg-gray-800 text-white rounded-md flex items-center"
-                        onClick={() => {
-                          closeModal()
-                          openModal("create-po", selectedItem)
-                        }}
-                      >
-                        <ShoppingBag className="h-4 w-4 mr-2" /> Create PO
-                      </button>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {/* Delete Confirmation */}
-              {isDeleteConfirmOpen && (
-                <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50">
-                  <div className="bg-black border border-gray-300 rounded-lg p-6 w-full max-w-md">
-                    <h3 className="text-lg font-medium text-black mb-4">Confirm Delete</h3>
-                    <p className="text-black mb-6">
-                      Are you sure you want to delete this {deleteType}? This action cannot be undone.
-                    </p>
-                    <div className="flex justify-end gap-3">
-                      <button
-                        className="px-4 py-2 border border-gray-300 text-black hover:bg-gray-100 rounded-md"
-                        onClick={() => {
-                          setIsDeleteConfirmOpen(false)
-                          setItemToDelete(null)
-                          setDeleteType("")
-                        }}
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        className="px-4 py-2 bg-red-700 hover:bg-red-800 text-white rounded-md flex items-center"
-                        onClick={handleDelete}
-                      >
-                        <Trash2 className="h-4 w-4 mr-2" /> Delete
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      )}
+              <div className="p-4 border-t border-gray-200 flex flex-col sm:flex-row justify-end gap-3">
+                <button
+                  className="px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-200 transition-colors"
+                  onClick={resetFilters}
+                >
+                  Reset
+                </button>
+                <button
+                  className="px-4 py-2 bg-blue-600 rounded-lg text-white hover:bg-blue-700 transition-colors shadow-sm"
+                  onClick={applyFilters}
+                >
+                  Apply Filters
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

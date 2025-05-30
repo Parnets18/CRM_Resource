@@ -11,7 +11,8 @@ export default function Home() {
     },
     {
       title: "Resturant CRM",
-      description: "Resturant CRM for management",
+      description: "Resturant CRM for management",  
+      
     },
     {
       title: "Construction CRM",
