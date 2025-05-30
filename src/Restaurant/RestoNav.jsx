@@ -87,10 +87,9 @@ export default function RestoNav() {
       icon: Utensils,
       id: "hr",
       subtabs: [
-        { title: "Profile", icon: UserPlus, path: "/profile" },
-        { title: "Role", icon: FileSpreadsheet, path: "/Role" },
+        { title: "Admin", icon: FileSpreadsheet, path: "/Role" },
         { title: "TableSetUp", icon: Grid2x2, path: "/TableSetUp" },
-        { title: "Configure", icon: TableCellsSplit, path: "/Configure" },
+        { title: "GSTRATE", icon: TableCellsSplit, path: "/Configure" },
       ],
     },
     {
