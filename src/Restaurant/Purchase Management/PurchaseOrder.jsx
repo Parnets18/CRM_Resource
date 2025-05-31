@@ -1,4 +1,4 @@
-"use client"
+
 
 import { useState } from "react"
 import { Package, Search, Check, Plus, Edit, Trash2 } from "lucide-react"
@@ -483,5 +483,5 @@ export default function PurchaseOrders() {
         </DialogContent>
       </Dialog>
     </div>
-  )
+  )   
 }
