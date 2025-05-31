@@ -47,9 +47,6 @@ import LeaveApplication from "./Admin/HR/Admin/Employee/LeaveApplication";
 import PayslipDownload from "./Admin/HR/Admin/Employee/PayslipDownload";
 import RestaurantAttendence from "./Admin/HR/Admin/Employee/RestaurantAttendence";
 
-
-
-
 // import EmployeeForm from './Admin/HR/HRManager/EmployeeForm';
 // import AttendanceTracker from './Admin/HR/HRManager/AttendanceTracker';
 // Common Components
@@ -87,8 +84,7 @@ import KitchenManagement from "./Restaurant/KitchenManagement.jsx/Kitchen";
 import ExpenseManagement from "./Restaurant/ExpenseManagemnet/RestaurantExpense";
 import RestaurantAnalytics from "./Restaurant/Report/Restaurant&Analytics";
 import Supervisor from "./Restaurant/Supervisor/Supervisor";
-
-
+import SubAdmin from "./Restaurant/SubAdmin/SubAdmin";
 
 // Import the AlertsAndNotifications component
 import AlertsAndNotifications from "./Common/AlertsAndNotifications";
@@ -104,29 +100,6 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        {/* <Route path='/dashboard' element={<Dashboard />} />
-        <Route path='/siteManagement' element={<SiteManagement />} />
-        <Route path='/Nav' element={<Nav />} />
-        <Route path='/adminPayroll' element={<AdminPayroll />} />
-        <Route path='/manager' element={<HRManager />} />
-        <Route path='/employee' element={<Employee />} />
-        <Route path='/siteadmin' element={<SiteAdmin />} />
-        <Route path='/siteproject' element={<SiteProject />} />
-        <Route path='/inventorysite' element={<InventorySite />} />
-        <Route path='/sitesupervisor' element={<SiteSupervisor />} />
-        <Route path='/inventoryofficer' element={<InventoryOfficer />} />
-        <Route path='/inventorymanager' element={<Inventorymanager />} />
-        <Route path='/inventoryadmin' element={<InventoryAdmin />} />
-        <Route path='/purchaseofficer' element={<PurchaseOfficer />} />
-        <Route path='/purchaseaccountant' element={<PurchaseAccountant />} />
-        <Route path='/purchaseadmin' element={<PurchaseAdmin />} />
-        <Route path='/expensesupervisor' element={<ExpenseSupervisor />} />
-        <Route path='/expensemanager' element={<ExpenseManager />} />
-        <Route path='/expenseaccountant' element={<ExpenseAccountant />} />
-        <Route path='/expenseadmin' element={<ExpenseAdmin />} />
-        <Route path='/salesadmin' element={<SalesAdmin />} />
-        <Route path='/salesproject' element={<SalesProject />} />
-        <Route path='/salesaccountant' element={<SalesAccountant />} /> */}
 
         {/* RESTAURANT */}
         <Route path="/RestaurantCrmDashboard" element={<RestoDashboard />} />
@@ -155,13 +128,10 @@ function App() {
         <Route path="/Kitchebnmanagement" element={<KitchenManagement />} />
         <Route path="/HrPayroll" element={<HRAndPayroll />} />
         <Route path="/Restaurantexpense" element={<ExpenseManagement />} />
-        {/* <Route path="/Restaurant&analytics" element={<ReportAnalytics />} /> */}
-        {/* <Route path="/Restaurant&analytics" element={<ReportAnalytics />} /> */}
         <Route path="/Restaurant&analytics" element={<RestaurantAnalytics />} />
         <Route path="/Supervisor" element={<Supervisor />} />
-        
-        
- 
+        <Route path="SubAdmin" element={<SubAdmin/>} />
+
         <Route path="/register" element={<RegisterPage />} />
 
         {/* Admin Routes */}
@@ -196,15 +166,15 @@ function App() {
         <Route path="/admin/create" element={<CreateRole />} />
         <Route path="/admin/config" element={<ConfigPage />} />
         <Route path="/admin/report" element={<ReportsPage />} />
-        <Route path="/employee/profile" element={<EmployeeProfile/>} />
-        <Route path="/employee/profile" element={<EmployeeProfile/>} />
-        <Route path="/employee/leave" element={<LeaveApplication/>} />
-        <Route path="/employee/payslip" element={<PayslipDownload/>} />
-        <Route path="/employee/attendance" element={<RestaurantAttendence/>} />
+        <Route path="/employee/profile" element={<EmployeeProfile />} />
+        <Route path="/employee/profile" element={<EmployeeProfile />} />
+        <Route path="/employee/leave" element={<LeaveApplication />} />
+        <Route path="/employee/payslip" element={<PayslipDownload />} />
+        <Route path="/employee/attendance" element={<RestaurantAttendence />} />
 
         {/* <Route path='/manager/employee' element={<EmployeeForm/>}/>
         <Route path='/manager/attendence' element={<AttendanceTracker/>}/> */}
-{/*         
+        {/*         
          common routes */}
         <Route path="/common" element={<CommonLayout />}>
           <Route index element={<Dashboardc />} />
