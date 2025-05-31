@@ -236,7 +236,7 @@ export default function PurchaseManagement() {
   const [searchTerm, setSearchTerm] = useState("")
   const [purchaseStats, setPurchaseStats] = useState(initialPurchaseStats)
   const [purchaseStages, setPurchaseStages] = useState(initialPurchaseStages)
-  const [nextId, setNextId] = useState(12) // Start IDs after the initial data
+  const [nextId, setNextId] = useState(12) 
   const [formData, setFormData] = useState({
     name: "",
     contact: "",
@@ -368,6 +368,7 @@ export default function PurchaseManagement() {
       const stageValue = Number.parseInt(stage.value.replace(/[$,]/g, ""))
       return sum + stageValue
     }, 0)
+  
 
     // Count active vendors (unique vendor names)
     const uniqueVendors = new Set()

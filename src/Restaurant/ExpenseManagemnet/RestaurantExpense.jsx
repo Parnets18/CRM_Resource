@@ -95,7 +95,7 @@ const ExpenseManagement = () => {
 
     const expense = {
       id: Date.now(),
-      ...newExpense,
+      ...newExpense, 
       amount: parseFloat(newExpense.amount),
       createdAt: new Date().toISOString(),
     };
@@ -112,8 +112,6 @@ const ExpenseManagement = () => {
     });
     setShowAddExpense(false);
   };
-
-  // Add new expense type
   const addExpenseType = () => {
     if (!newType.name) return;
 
@@ -131,8 +129,9 @@ const ExpenseManagement = () => {
     });
     setShowAddType(false);
   };
-
-  // Delete expense
+ 
+  
+ 
   const deleteExpense = (id) => {
     setExpenses((prev) => prev.filter((exp) => exp.id !== id));
   };
