@@ -24,7 +24,7 @@ import {
   Calendar,
   ChefHat,
   UserCheck,
-  DollarSign,
+  // DollarSign, // Removed DollarSign
   TrendingUp,
   Bell,
   Settings,
@@ -216,7 +216,7 @@ const RestaurantDashboard = () => {
               title="Today's Revenue"
               value="₹45,230"
               change={12.5}
-              icon={DollarSign}
+              icon={TrendingUp} // Changed from DollarSign to TrendingUp
               color="#10b981"
               subtitle="Target: ₹50,000"
             />
@@ -247,7 +247,7 @@ const RestaurantDashboard = () => {
           </div>
 
           {/* Charts Row 1 */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 mb-6 lg:mb-8">
+          <div className=" gap-4 sm:gap-6 mb-6 lg:mb-8">
             {/* Sales Trend */}
             <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100">
               <div className="flex items-center justify-between mb-4">
@@ -310,38 +310,6 @@ const RestaurantDashboard = () => {
                 </AreaChart>
               </ResponsiveContainer>
             </div>
-
-            {/* Hourly Performance */}
-            <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-gray-100">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-base sm:text-lg font-semibold text-gray-900">
-                  Today's Hourly Performance
-                </h3>
-                <Clock className="h-5 w-5 text-blue-500" />
-              </div>
-              <ResponsiveContainer width="100%" height={220}>
-                <LineChart data={hourlyData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                  <XAxis dataKey="hour" stroke="#888" />
-                  <YAxis stroke="#888" />
-                  <Tooltip
-                    contentStyle={{
-                      backgroundColor: "white",
-                      border: "1px solid #e5e7eb",
-                      borderRadius: "8px",
-                      boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                    }}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="orders"
-                    stroke="#f59e0b"
-                    strokeWidth={3}
-                    dot={{ r: 4 }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
           </div>
 
           {/* Second Row */}
@@ -400,7 +368,10 @@ const RestaurantDashboard = () => {
               </h3>
               <div className="space-y-4">
                 {topItems.map((item, index) => (
-                  <div key={index} className="flex items-center justify-between">
+                  <div
+                    key={index}
+                    className="flex items-center justify-between"
+                  >
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
                         <span className="font-medium text-sm">{item.name}</span>
