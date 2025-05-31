@@ -31,7 +31,7 @@ import SalesProject from "./Admin/Sales Management/SalesProject";
 import SalesAccountant from "./Admin/Sales Management/SalesAccountant";
 import Restaurant from "./Restaurant/Restaurant";
 // import Profile from "./Restaurant/Restaurant Setup/Profile";
-import Roles from "./Restaurant/Restaurant Setup/Roles";
+import Admin from "./Restaurant/Restaurant Setup/Roles";
 import TableSetUp from "./Restaurant/Restaurant Setup/TableSetUp";
 import Configure from "./Restaurant/Restaurant Setup/Configure";
 import MenuItems from "./Restaurant/Menu Management/Menu";
@@ -105,7 +105,7 @@ function App() {
         <Route path="/RestaurantCrmDashboard" element={<RestoDashboard />} />
 
         {/* <Route path="/Profile" element={<Profile />} /> */}
-        <Route path="/Role" element={<Roles />} />
+        <Route path="/Admin" element={<Admin />} />
         <Route path="/TableSetup" element={<TableSetUp />} />
         <Route path="/Configure" element={<Configure />} />
         <Route path="/Menu" element={<MenuItems />} />
